@@ -1,6 +1,6 @@
 # swagger_client.ProjectresultApi
 
-All URIs are relative to *http://{{ .Host }}/v2*
+All URIs are relative to *http://api.loadero.com/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------

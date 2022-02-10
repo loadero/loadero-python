@@ -9,6 +9,7 @@ Name | Type | Description | Notes
 **id** | **int** |  | [optional] 
 **increment_strategy** | **str** |  | 
 **mode** | **str** |  | 
+**mos_test** | **bool** |  | [optional] 
 **name** | **str** |  | 
 **participant_count** | **int** |  | [optional] 
 **participant_timeout** | **int** |  | 

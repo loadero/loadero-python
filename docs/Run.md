@@ -12,7 +12,6 @@ Name | Type | Description | Notes
 **launching_account_id** | **int** |  | [optional] 
 **metric_status** | **str** |  | [optional] 
 **mos_test** | **bool** |  | [optional] 
-**participant_count** | **int** |  | [optional] 
 **participant_timeout** | **int** |  | [optional] 
 **processing_finished** | **datetime** |  | [optional] 
 **processing_started** | **datetime** |  | [optional] 
@@ -23,7 +22,6 @@ Name | Type | Description | Notes
 **test_id** | **int** |  | [optional] 
 **test_mode** | **str** |  | [optional] 
 **test_name** | **str** |  | [optional] 
-**total_cu_count** | **float** |  | [optional] 
 **updated** | **datetime** |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

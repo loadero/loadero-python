@@ -3,7 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**error** | **str** |  | [optional] 
+**account_id** | **int** |  | [optional] 
 **created** | **datetime** |  | [optional] 
 **id** | **int** |  | [optional] 
 **updated** | **datetime** |  | [optional] 

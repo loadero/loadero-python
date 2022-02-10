@@ -23,7 +23,6 @@ Name | Type | Description | Notes
 **test_id** | **int** |  | [optional] 
 **test_mode** | **str** |  | [optional] 
 **test_name** | **str** |  | [optional] 
-**total_cu_count** | **float** |  | [optional] 
 **updated** | **datetime** |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

@@ -1,6 +1,6 @@
 # swagger_client.ProjectrunApi
 
-All URIs are relative to *http://{{ .Host }}/v2*
+All URIs are relative to *http://api.loadero.com/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -104,7 +104,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **read_project_run**
-> RunBody read_project_run(project_id, run_id)
+> RunBody read_project_run(run_id, project_id)
 
 Read project test run info
 
@@ -124,12 +124,12 @@ configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # create an instance of the API class
 api_instance = swagger_client.ProjectrunApi(swagger_client.ApiClient(configuration))
-project_id = 789 # int | 
 run_id = 789 # int | 
+project_id = 789 # int | 
 
 try:
     # Read project test run info
-    api_response = api_instance.read_project_run(project_id, run_id)
+    api_response = api_instance.read_project_run(run_id, project_id)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling ProjectrunApi->read_project_run: %s\n" % e)
@@ -139,8 +139,8 @@ except ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **project_id** | **int**|  | 
  **run_id** | **int**|  | 
+ **project_id** | **int**|  | 
 
 ### Return type
 

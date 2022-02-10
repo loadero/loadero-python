@@ -3,7 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**max_monthly_cu** | **int** | normalize indentation | [optional] 
+**max_monthly_cu** | **int** |  | [optional] 
 **max_participant_cu** | **str** |  | [optional] 
 **max_test_cu** | **int** |  | [optional] 
 **max_test_duration** | **str** |  | [optional] 

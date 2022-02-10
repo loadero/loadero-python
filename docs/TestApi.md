@@ -1,6 +1,6 @@
 # swagger_client.TestApi
 
-All URIs are relative to *http://{{ .Host }}/v2*
+All URIs are relative to *http://api.loadero.com/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -12,7 +12,7 @@ Method | HTTP request | Description
 [**update_test**](TestApi.md#update_test) | **PUT** /projects/{projectID}/tests/{testID}/ | Update existing test
 
 # **create_test**
-> Test create_test(name, start_interval, participant_timeout, mode, increment_strategy, script, project_id, describe=describe, id=id, created=created, updated=updated, project_id=project_id, script_file_id=script_file_id, deleted=deleted, group_count=group_count, participant_count=participant_count)
+> Test create_test(name, start_interval, participant_timeout, mode, increment_strategy, script, project_id, describe=describe, id=id, created=created, updated=updated, project_id=project_id, script_file_id=script_file_id, mos_test=mos_test, deleted=deleted, group_count=group_count, participant_count=participant_count)
 
 Create new test
 
@@ -45,13 +45,14 @@ created = '2013-10-20T19:20:30+01:00' # datetime | readonly: true (optional)
 updated = '2013-10-20T19:20:30+01:00' # datetime | readonly: true (optional)
 project_id = 789 # int | readonly: true (optional)
 script_file_id = 789 # int | readonly: true (optional)
+mos_test = true # bool | readonly: true (optional)
 deleted = true # bool | readonly: true (optional)
 group_count = 789 # int | readonly: true (optional)
 participant_count = 789 # int | readonly: true (optional)
 
 try:
     # Create new test
-    api_response = api_instance.create_test(name, start_interval, participant_timeout, mode, increment_strategy, script, project_id, describe=describe, id=id, created=created, updated=updated, project_id=project_id, script_file_id=script_file_id, deleted=deleted, group_count=group_count, participant_count=participant_count)
+    api_response = api_instance.create_test(name, start_interval, participant_timeout, mode, increment_strategy, script, project_id, describe=describe, id=id, created=created, updated=updated, project_id=project_id, script_file_id=script_file_id, mos_test=mos_test, deleted=deleted, group_count=group_count, participant_count=participant_count)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling TestApi->create_test: %s\n" % e)
@@ -74,6 +75,7 @@ Name | Type | Description  | Notes
  **updated** | **datetime**| readonly: true | [optional] 
  **project_id** | **int**| readonly: true | [optional] 
  **script_file_id** | **int**| readonly: true | [optional] 
+ **mos_test** | **bool**| readonly: true | [optional] 
  **deleted** | **bool**| readonly: true | [optional] 
  **group_count** | **int**| readonly: true | [optional] 
  **participant_count** | **int**| readonly: true | [optional] 
@@ -333,7 +335,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **update_test**
-> Test update_test(name, start_interval, participant_timeout, mode, increment_strategy, script, test_id, project_id, describe=describe, id=id, created=created, updated=updated, project_id=project_id, script_file_id=script_file_id, deleted=deleted, group_count=group_count, participant_count=participant_count)
+> Test update_test(name, start_interval, participant_timeout, mode, increment_strategy, script, test_id, project_id, describe=describe, id=id, created=created, updated=updated, project_id=project_id, script_file_id=script_file_id, mos_test=mos_test, deleted=deleted, group_count=group_count, participant_count=participant_count)
 
 Update existing test
 
@@ -367,13 +369,14 @@ created = '2013-10-20T19:20:30+01:00' # datetime | readonly: true (optional)
 updated = '2013-10-20T19:20:30+01:00' # datetime | readonly: true (optional)
 project_id = 789 # int | readonly: true (optional)
 script_file_id = 789 # int | readonly: true (optional)
+mos_test = true # bool | readonly: true (optional)
 deleted = true # bool | readonly: true (optional)
 group_count = 789 # int | readonly: true (optional)
 participant_count = 789 # int | readonly: true (optional)
 
 try:
     # Update existing test
-    api_response = api_instance.update_test(name, start_interval, participant_timeout, mode, increment_strategy, script, test_id, project_id, describe=describe, id=id, created=created, updated=updated, project_id=project_id, script_file_id=script_file_id, deleted=deleted, group_count=group_count, participant_count=participant_count)
+    api_response = api_instance.update_test(name, start_interval, participant_timeout, mode, increment_strategy, script, test_id, project_id, describe=describe, id=id, created=created, updated=updated, project_id=project_id, script_file_id=script_file_id, mos_test=mos_test, deleted=deleted, group_count=group_count, participant_count=participant_count)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling TestApi->update_test: %s\n" % e)
@@ -397,6 +400,7 @@ Name | Type | Description  | Notes
  **updated** | **datetime**| readonly: true | [optional] 
  **project_id** | **int**| readonly: true | [optional] 
  **script_file_id** | **int**| readonly: true | [optional] 
+ **mos_test** | **bool**| readonly: true | [optional] 
  **deleted** | **bool**| readonly: true | [optional] 
  **group_count** | **int**| readonly: true | [optional] 
  **participant_count** | **int**| readonly: true | [optional] 
