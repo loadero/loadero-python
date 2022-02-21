@@ -19,5 +19,3 @@ def test_test():
     t = test.Test(params=tp)
 
     t.read(api)
-
-    assert 1 == 2
