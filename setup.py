@@ -1,7 +1,7 @@
 from setuptools import find_packages, setup
 
 
-NAME = "loadero-python"
+NAME = "loadero_python"
 VERSION = "0.0.1"
 REQUIRES = [
     # "urllib3 >= 1.15", "six >= 1.10", "certifi", "python-dateutil"
