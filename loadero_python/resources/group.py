@@ -1,16 +1,22 @@
 # coding: utf-8
 
 """
-    Loadero group resource
+Loadero group resource.
+Group resource is seperated into two parts - GroupParams class that describes
+groups attributes and Group class that in combination with GroupParams and
+APIClient allows to perform CRUD operations on Loadero group resources.
 """
 
 from __future__ import annotations
-from ..api_client import ApiClient
+from ..api_client import APIClient
 
 
 class GroupParams:
-
-    """Group Params"""
+    """
+    GroupParams represents Loadero group resource attributes.
+    GroupParams has a builder patter for group resources read and write
+    attributes.
+    """
 
     # Describes python object attribute name mapping to Loadero resources
     # JSON field names.
@@ -55,20 +61,11 @@ class GroupParams:
         test_id: int or None = None,
         project_id: int or None = None,
     ) -> None:
-        if group_id is not None:
-            self.group_id = group_id
-
-        if name is not None:
-            self.name = name
-
-        if count is not None:
-            self.count = count
-
-        if test_id is not None:
-            self.test_id_path = test_id
-
-        if project_id is not None:
-            self.project_id_path = project_id
+        self.group_id = group_id
+        self.name = name
+        self.count = count
+        self.test_id_path = test_id
+        self.project_id_path = project_id
 
     @property
     def created(self):  # date time
@@ -94,6 +91,11 @@ class GroupParams:
     def test_id(self) -> int:
         return self._test_id_path
 
+    def with_id(self, group_id: int) -> GroupParams:
+        self.group_id = group_id
+
+        return self
+
     def with_name(self, name: str) -> GroupParams:
         self.name = name
 
@@ -117,7 +119,9 @@ class GroupParams:
 
 class Group:
     """
-    GROUP
+    Group class allows to perform CRUD operations on Loadero group resources.
+    APIClient must be previously initialized with a valid Loadero access token.
+    The target Loadero group resource is determined by GroupParams.
     """
 
     params = None
@@ -129,43 +133,82 @@ class Group:
     ) -> None:
         if params is not None:
             self.params = params
-
-        if group_id is not None:
+        else:
             if self.params is None:
                 self.params = GroupParams()
 
             self.params.group_id = group_id
 
-    def create(self, api_client: ApiClient) -> Group:
-        """create operation"""
+    def create(self, api_client: APIClient) -> Group:
+        """Creates new group with given data.
+
+        Args:
+            api_client (APIClient): initalized instance of API client
+
+        Returns:
+            Group: created group resource
+        """
+
+        # TODO: finnish when API client implementation is finished
 
         api_client.call_api(self.params)
 
         return self
 
-    def read(self, api_client: ApiClient) -> Group:
-        """create operation"""
+    def read(self, api_client: APIClient) -> Group:
+        """Reads information about an existing group.
+
+        Args:
+            api_client (APIClient): initalized instance of API client
+
+        Returns:
+            Group: retrived group resource
+        """
+
+        # TODO: finnish when API client implementation is finished
 
         api_client.call_api(self.params)
 
         return self
 
-    def update(self, api_client: ApiClient) -> Group:
-        """create operation"""
+    def update(self, api_client: APIClient) -> Group:
+        """Updates group with given parameters.
+
+        Args:
+            api_client (APIClient): initalized instance of API client
+
+        Returns:
+            Group: updated group resource
+        """
+
+        # TODO: finnish when API client implementation is finished
 
         api_client.call_api(self.params)
 
         return self
 
-    def delete(self, api_client: ApiClient) -> Group:
-        """create operation"""
+    def delete(self, api_client: APIClient) -> None:
+        """Deletes and existing group.
+
+        Args:
+            api_client (APIClient): initalized instance of API client
+        """
+
+        # TODO: finnish when API client implementation is finished
 
         api_client.call_api(self.params)
 
-        return self
+    def duplicate(self, api_client: APIClient) -> Group:
+        """Duplicates and existing group.
 
-    def duplicate(self, api_client: ApiClient) -> Group:
-        """create operation"""
+        Args:
+            api_client (APIClient): initalized instance of API client
+
+        Returns:
+            Group: duplicate instance of group
+        """
+
+        # TODO: finnish when API client implementation is finished
 
         api_client.call_api(self.params)
 

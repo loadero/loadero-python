@@ -3,7 +3,7 @@
 """
 
 
-class ApiClient:
+class APIClient:
     """API client to access Loadero API"""
 
     def __init__(self) -> None:

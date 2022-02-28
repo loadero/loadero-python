@@ -1,16 +1,23 @@
 # coding: utf-8
 
 """
-    Loadero participant resource
+Loadero participant resource.
+Participant resources is seperated into two parts ParticipantParams class that
+describes participant attributes and Participant class that in combination with
+ParticipantParams and APIClient allows to perform CRUD operations on Loadero
+participant resources.
 """
 
 from __future__ import annotations
-from ..api_client import ApiClient
+from ..api_client import APIClient
 
 
 class ParticipantParams:
-
-    """Participant Params"""
+    """
+    ParticipantParams represents Loadero participant resources attributes.
+    ParticipantParams has a builder pattern for Participant resource read and
+    write attributes.
+    """
 
     # Describes python object attribute name mapping to Loadero resources
     # JSON field names.
@@ -89,47 +96,20 @@ class ParticipantParams:
         network: str or None = None,  # classificator
         video_feed: str or None = None,  # classificator
     ) -> None:
-        if participant_id is not None:
-            self.participant_id = participant_id
-
-        if test_id is not None:
-            self._test_id_path = test_id
-
-        if project_id is not None:
-            self._project_id_path = project_id
-
-        if name is not None:
-            self.name = name
-
-        if count is not None:
-            self.count = count
-
-        if compute_unit is not None:
-            self.compute_unit = compute_unit
-
-        if group_id is not None:
-            self.group_id = group_id
-
-        if record_audio is not None:
-            self.record_audio = record_audio
-
-        if audio_feed is not None:
-            self.audio_feed = audio_feed
-
-        if browser is not None:
-            self.browser = browser
-
-        if location is not None:
-            self.location = location
-
-        if media_type is not None:
-            self.media_type = media_type
-
-        if network is not None:
-            self.network = network
-
-        if video_feed is not None:
-            self.video_feed = video_feed
+        self.participant_id = participant_id
+        self._test_id_path = test_id
+        self._project_id_path = project_id
+        self.name = name
+        self.count = count
+        self.compute_unit = compute_unit
+        self.group_id = group_id
+        self.record_audio = record_audio
+        self.audio_feed = audio_feed
+        self.browser = browser
+        self.location = location
+        self.media_type = media_type
+        self.network = network
+        self.video_feed = video_feed
 
     # getters
 
@@ -241,39 +221,83 @@ class Participant:
     ) -> None:
         if params is not None:
             self.params = params
-
-        if test_id is not None:
+        else:
             if self.params is None:
                 self.params = ParticipantParams()
 
             self.params.test_id = test_id
 
-    def create(self, api_client: ApiClient) -> Participant:
-        """create operation"""
+    def create(self, api_client: APIClient) -> Participant:
+        """Creates new participant with given data.
+
+        Args:
+            api_client (APIClient): initalized instance of API client
+
+        Returns:
+            Participant: created participant resource
+        """
+
+        # TODO: finnish when API client implementation is finished
+
         api_client.call_api(self.params)
 
         return self
 
-    def read(self, api_client: ApiClient) -> Participant:
-        """read operation"""
+    def read(self, api_client: APIClient) -> Participant:
+        """Reads information about an existing participant.
+
+        Args:
+            api_client (APIClient): initalized instance of API client
+
+        Returns:
+            Participant: retrived participant resource
+        """
+
+        # TODO: finnish when API client implementation is finished
+
         api_client.call_api(self.params)
 
         return self
 
-    def update(self, api_client: ApiClient) -> Participant:
-        """update operation"""
+    def update(self, api_client: APIClient) -> Participant:
+        """Updates particpant with given parameters.
+
+        Args:
+            api_client (APIClient): initalized instance of API client
+
+        Returns:
+            Participant: updated participant resource
+        """
+
+        # TODO: finnish when API client implementation is finished
+
         api_client.call_api(self.params)
 
         return self
 
-    def delete(self, api_client: ApiClient) -> Participant:
-        """delete operation"""
+    def delete(self, api_client: APIClient) -> None:
+        """Deletes and existing participant.
+
+        Args:
+            api_client (APIClient): initalized instance of API client
+        """
+
+        # TODO: finnish when API client implementation is finished
+
         api_client.call_api(self.params)
 
-        return self
+    def duplicate(self, api_client: APIClient) -> Participant:
+        """Duplicates and existing participant.
 
-    def duplicate(self, api_client: ApiClient) -> Participant:
-        """delete operation"""
+        Args:
+            api_client (APIClient): initalized instance of API client
+
+        Returns:
+            Participant: duplicate instance of participant
+        """
+
+        # TODO: finnish when API client implementation is finished
+
         api_client.call_api(self.params)
 
         return self

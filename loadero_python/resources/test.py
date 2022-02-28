@@ -1,17 +1,23 @@
 # coding: utf-8
 
 """
-    Loadero test resource
+Loadero test resource.
+Test resource is seperated into two parts - TestParams class that describes test
+attributes and Test class that in combination with TestParams and APIClient
+allows to perform CRUD operations on Loadero test resources.
 """
 
 from __future__ import annotations
-from ..api_client import ApiClient
+from ..api_client import APIClient
 from .script import Script
 
 
 class TestParams:
-
-    """Test resource parameters"""
+    """
+    TestParams represents Loadero test parameters.
+    TestParams has a builder method pattern for test resources read and write
+    attributes.
+    """
 
     # Describes python object attribute name mapping to Loadero resources
     # JSON field names.
@@ -77,35 +83,16 @@ class TestParams:
         script: Script or None = None,
         project_id: int or None = None,
     ) -> None:
-        if test_id is not None:
-            self.test_id = test_id
-
-        if project_id is not None:
-            self._project_id_path = project_id
-
-        if name is not None:
-            self.name = name
-
-        if script is not None:
-            self.script = script
-
-        if start_interval is not None:
-            self.start_interval = start_interval
-
-        if name is not None:
-            self.name = name
-
-        if participant_timeout is not None:
-            self.participant_timeout = participant_timeout
-
-        if mode is not None:
-            self.mode = mode
-
-        if increment_strategy is not None:
-            self.increment_strategy = increment_strategy
-
-        if mos_test is not None:
-            self.mos_test = mos_test
+        self.test_id = test_id
+        self._project_id_path = project_id
+        self.name = name
+        self.script = script
+        self.start_interval = start_interval
+        self.name = name
+        self.participant_timeout = participant_timeout
+        self.mode = mode
+        self.increment_strategy = increment_strategy
+        self.mos_test = mos_test
 
     # read only attribute getters
 
@@ -192,7 +179,9 @@ class TestParams:
 
 class Test:
     """
-    Loadero test resource
+    Test class allows to perform CRUD operations on Loadero test resources.
+    APIClient must be previously initialized with a valid Loadero access token.
+    The target Loadero test resource is determined by TestParams.
     """
 
     params = None
@@ -202,39 +191,85 @@ class Test:
     ) -> None:
         if params is not None:
             self.params = params
-
-        if test_id is not None:
+        else:
             if self.params is None:
                 self.params = TestParams()
 
             self.params.test_id = test_id
 
-    def create(self, api_client: ApiClient) -> Test:
-        """create operation"""
+    def create(self, api_client: APIClient) -> Test:
+        """Creates new test with given data.
+
+        Args:
+            api_client (APIClient): initalized instance of API client
+
+        Returns:
+            Test: created test resource
+        """
+
+        # TODO: finnish when API client implementation is finished
+
         api_client.call_api(self.params)
 
         return self
 
-    def read(self, api_client: ApiClient) -> Test:
-        """read operation"""
+    def read(self, api_client: APIClient) -> Test:
+        """Reads information about an existing test.
+
+        Args:
+            api_client (APIClient): initalized instance of API client
+
+        Returns:
+            Test: retrived test resource
+        """
+
+        # TODO: finnish when API client implementation is finished
+
         api_client.call_api(self.params)
 
         return self
 
-    def update(self, api_client: ApiClient) -> Test:
-        """update operation"""
+    def update(self, api_client: APIClient) -> Test:
+        """Updates test with given parameters.
+
+        Args:
+            api_client (APIClient): initalized instance of API client
+
+        Returns:
+            Test: updated test resource
+        """
+
+        # TODO: finnish when API client implementation is finished
+
         api_client.call_api(self.params)
 
         return self
 
-    def delete(self, api_client: ApiClient) -> Test:
-        """delete operation"""
+    def delete(self, api_client: APIClient) -> Test:
+        """Deletes and existing test.
+
+        Args:
+            api_client (APIClient): initalized instance of API client
+        """
+
+        # TODO: finnish when API client implementation is finished
+
         api_client.call_api(self.params)
 
         return self
 
-    def duplicate(self, api_client: ApiClient) -> Test:
-        """delete operation"""
+    def duplicate(self, api_client: APIClient) -> Test:
+        """Duplicates and existing test.
+
+        Args:
+            api_client (APIClient): initalized instance of API client
+
+        Returns:
+            Test: duplicate instance of test
+        """
+
+        # TODO: finnish when API client implementation is finished
+
         api_client.call_api(self.params)
 
         return self
