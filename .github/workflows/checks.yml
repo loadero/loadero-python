@@ -30,4 +30,12 @@ jobs:
         run: black --check --verbose --config pyproject.toml loadero_python tests
 
       - name: test
-        run: pytest -vv --cov=loadero_python --cov-report term tests
+        run: pytest -vv tests
+
+      - name: generate coverage report
+        run: pytest --cov=loadero_python tests > pytest-coverage.txt
+
+      - name: comment coverage
+        uses: coroo/pytest-coverage-commentator@v1.0.2
+        with:
+          pytest-coverage: pytest-coverage.txt
