@@ -192,9 +192,9 @@ class Test:
         if params is not None:
             self.params = params
         else:
-            if self.params is None:
-                self.params = TestParams()
+            self.params = TestParams()
 
+        if test_id is not None:
             self.params.test_id = test_id
 
     def create(self, api_client: APIClient) -> Test:

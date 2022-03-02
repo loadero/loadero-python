@@ -2,6 +2,8 @@
 
 """
 Loadero script resource.
+Script resource can be created by either suppling the scripts contents directly
+or by supplying a filename from which to load the script.
 """
 
 from __future__ import annotations
@@ -16,10 +18,25 @@ class Script:
     _data = None
 
     def __init__(
-        self, script_data: str or None = None, script_file: str or None = None
+        self, content: str or None = None, script_file: str or None = None
     ) -> None:
-        if script_data is not None:
-            self._data = script_data
+        """Creates a new Script object.
+        If no arguments are provided then a new empty Script object is
+        created.
+        If content is provided then a new Script object is initalized with the
+        provided content.
+        If script_file is provided then a new Script object is initalized with
+        script content loaded from file specified by script_file.
+        If both arguments are provided then script_file argument is ignored and
+        a new Script object is created with the provided content.
+
+        Args:
+            content (str or None): Defaults to None.
+            script_file (str or None): Defaults to None.
+        """
+
+        if content is not None:
+            self._data = content
         elif script_file is not None:
             self._load_from_file(script_file)
 
@@ -35,16 +52,16 @@ class Script:
 
         return self._load_from_file(script_file)
 
-    def from_data(self, script_data: str) -> Script:
-        """Loads Loadero script from provides str data.
+    def from_data(self, content: str) -> Script:
+        """Loads Loadero script from provided str data.
 
         Args:
-            script_data (str): script
+            content (str): script
 
         Returns:
             Script: script loaded from data
         """
-        self._data = script_data
+        self._data = content
 
         return self
 

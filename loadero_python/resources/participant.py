@@ -31,7 +31,6 @@ class ParticipantParams:
         "audio_feed": "audio_feed",
         "browser": "browser",
         "location": "location",
-        "media_type": "media_type",
         "network": "network",
         "video_feed": "video_feed",
         "_test_id_path": "test_id",
@@ -48,7 +47,6 @@ class ParticipantParams:
         "audio_feed",
         "browser",
         "location",
-        "media_type",
         "network",
         "video_feed",
     ]
@@ -67,7 +65,6 @@ class ParticipantParams:
     audio_feed = None
     browser = None
     location = None
-    media_type = None
     network = None
     video_feed = None
 
@@ -77,7 +74,6 @@ class ParticipantParams:
 
     _created = None
     _updated = None
-    # profile id ?
 
     def __init__(
         self,
@@ -88,11 +84,10 @@ class ParticipantParams:
         count: int or None = None,
         compute_unit: str or None = None,  # classificator
         group_id: int or None = None,
-        record_audio: int or None = None,
+        record_audio: bool or None = None,
         audio_feed: str or None = None,  # classificator
         browser: str or None = None,  # classificator
         location: str or None = None,  # classificator
-        media_type: str or None = None,  # classificator
         network: str or None = None,  # classificator
         video_feed: str or None = None,  # classificator
     ) -> None:
@@ -107,7 +102,6 @@ class ParticipantParams:
         self.audio_feed = audio_feed
         self.browser = browser
         self.location = location
-        self.media_type = media_type
         self.network = network
         self.video_feed = video_feed
 
@@ -191,12 +185,6 @@ class ParticipantParams:
         return self
 
     # TODO: change to classificator
-    def with_media_type(self, mt: str) -> ParticipantParams:
-        self.media_type = mt
-
-        return self
-
-    # TODO: change to classificator
     def with_network(self, nt: str) -> ParticipantParams:
         self.network = nt
 
@@ -211,7 +199,10 @@ class ParticipantParams:
 
 class Participant:
     """
-    Loadero participant resource
+    Participant class allows to perform CRUD operations on Loadero participant
+    resources. APIClient must be previously initialized with a valid Loadero
+    access token. The target Loadero participant resource is determined by
+    ParticipantParams.
     """
 
     def __init__(

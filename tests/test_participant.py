@@ -81,11 +81,6 @@ class TestParticipantParams:
         p.with_location("us-west-2")
         assert p.location == "us-west-2"
 
-    def test_builder_media_type(self):
-        p = participant.ParticipantParams()
-        p.with_media_type("custom")
-        assert p.media_type == "custom"
-
     def test_builder_network(self):
         p = participant.ParticipantParams()
         p.with_network("100perc")

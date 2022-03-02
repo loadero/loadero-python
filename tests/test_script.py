@@ -21,7 +21,7 @@ def test_script_from_file():
 
 
 def test_script_from_data():
-    s1 = Script(script_data=sample_test_script_py_data)
+    s1 = Script(content=sample_test_script_py_data)
 
     assert s1.script == sample_test_script_py_data
 

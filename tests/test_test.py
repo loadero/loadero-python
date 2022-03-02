@@ -88,7 +88,7 @@ class TestTestParams:
 
     def test_builder_script(self):
         t = test.TestParams()
-        t.with_script(script.Script(script_data="hello"))
+        t.with_script(script.Script(content="hello"))
         assert t.script.script == "hello"
 
 
