@@ -134,9 +134,9 @@ class Group:
         if params is not None:
             self.params = params
         else:
-            if self.params is None:
-                self.params = GroupParams()
+            self.params = GroupParams()
 
+        if group_id is not None:
             self.params.group_id = group_id
 
     def create(self, api_client: APIClient) -> Group:
