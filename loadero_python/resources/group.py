@@ -8,10 +8,12 @@ APIClient allows to perform CRUD operations on Loadero group resources.
 """
 
 from __future__ import annotations
+from dateutil import parser
 from ..api_client import APIClient
+from .resource import LoaderoResource, to_json, from_json, to_string
 
 
-class GroupParams:
+class GroupParams(LoaderoResource):
     """
     GroupParams represents Loadero group resource attributes.
     GroupParams has a builder patter for group resources read and write
@@ -20,34 +22,38 @@ class GroupParams:
 
     # Describes python object attribute name mapping to Loadero resources
     # JSON field names.
-    attribute_map = {
+    __attribute_map = {
         "group_id": "id",
         "count": "count",
         "name": "name",
-        "_test_id_path": "test_id",
+        "_test_id": "test_id",
         "_created": "created",
         "_updated": "updated",
         "_total_cu_count": "total_cu_count",
         "_participant_count": "participant_count",
     }
 
-    body_attributes = {
+    # Describes a mapping from Loadero resources JSON field names to custom
+    # deserialization functions.
+    __body_attributes = {
         "count": "count",
         "name": "name",
     }
 
-    # id. read as path, update as body
+    # Describes a mapping from Loadero resources JSON field names to custom
+    # deserialization functions.
+    __custom_deserializers = {
+        "created": parser.parse,
+        "updated": parser.parse,
+    }
+
     group_id = None
 
-    # required
     count = None
     name = None
 
-    # route paths
-    _project_id_path = None
-    _test_id_path = None
-
-    # read only
+    _project_id = None
+    _test_id = None
     _total_cu_count = None
     _participant_count = None
     _created = None
@@ -64,8 +70,11 @@ class GroupParams:
         self.group_id = group_id
         self.name = name
         self.count = count
-        self.test_id_path = test_id
+        self._test_id = test_id
         self.project_id_path = project_id
+
+    def __str__(self) -> str:
+        return to_string(self.__dict__, self.__attribute_map)
 
     @property
     def created(self):  # date time
@@ -85,11 +94,11 @@ class GroupParams:
 
     @property
     def project_id(self) -> int:
-        return self._project_id_path
+        return self._project_id
 
     @property
     def test_id(self) -> int:
-        return self._test_id_path
+        return self._test_id
 
     def with_id(self, group_id: int) -> GroupParams:
         self.group_id = group_id
@@ -106,13 +115,45 @@ class GroupParams:
 
         return self
 
-    def in_project(self, pid: int) -> GroupParams:
-        self._project_id_path = pid
+    def in_test(self, tid: int) -> GroupParams:
+        self._test_id = tid
 
         return self
 
-    def in_test(self, tid: int) -> GroupParams:
-        self._test_id_path = tid
+    def to_json(
+        self, body_attributes: list[str] or None = None
+    ) -> dict[str, any]:
+        """Serializes group resource to JSON.
+
+        Args:
+            body_attributes (list[str]orNone, optional): String list of JSON
+                field names that will be serialized. Defaults to None, then
+                the default body attributed for group resource are used.
+
+        Returns:
+            dict[str, any]: JSON dictionary.
+        """
+        if body_attributes is None:
+            body_attributes = self.__body_attributes
+
+        return to_json(self.__dict__, self.__attribute_map, body_attributes)
+
+    def from_json(self, json_value: dict[str, any]) -> GroupParams:
+        """Serializes group resource from JSON.
+
+        Args:
+            json_value (dict[str, any]): JSON dictionary.
+
+        Returns:
+            GroupParams: Serialized group resource.
+        """
+
+        from_json(
+            self.__dict__,
+            json_value,
+            self.__attribute_map,
+            self.__custom_deserializers,
+        )
 
         return self
 
@@ -139,77 +180,195 @@ class Group:
         if group_id is not None:
             self.params.group_id = group_id
 
-    def create(self, api_client: APIClient) -> Group:
+    def create(self) -> Group:
         """Creates new group with given data.
 
-        Args:
-            api_client (APIClient): initalized instance of API client
-
         Returns:
-            Group: created group resource
+            Group: Created group resource.
         """
 
-        # TODO: finnish when API client implementation is finished
-
-        api_client.call_api(self.params)
+        GroupAPI.create(self.params)
 
         return self
 
-    def read(self, api_client: APIClient) -> Group:
+    def read(self) -> Group:
         """Reads information about an existing group.
 
-        Args:
-            api_client (APIClient): initalized instance of API client
-
         Returns:
-            Group: retrived group resource
+            Group: Read group resource.
         """
 
-        # TODO: finnish when API client implementation is finished
-
-        api_client.call_api(self.params)
+        GroupAPI.read(self.params)
 
         return self
 
-    def update(self, api_client: APIClient) -> Group:
+    def update(self) -> Group:
         """Updates group with given parameters.
 
-        Args:
-            api_client (APIClient): initalized instance of API client
-
         Returns:
-            Group: updated group resource
+            Group: Updated group resource.
         """
 
-        # TODO: finnish when API client implementation is finished
-
-        api_client.call_api(self.params)
+        GroupAPI.update(self.params)
 
         return self
 
-    def delete(self, api_client: APIClient) -> None:
-        """Deletes and existing group.
+    def delete(self) -> None:
+        """Deletes and existing group."""
 
-        Args:
-            api_client (APIClient): initalized instance of API client
-        """
+        GroupAPI.delete(self.params)
 
-        # TODO: finnish when API client implementation is finished
-
-        api_client.call_api(self.params)
-
-    def duplicate(self, api_client: APIClient) -> Group:
+    def duplicate(self) -> Group:
         """Duplicates and existing group.
 
-        Args:
-            api_client (APIClient): initalized instance of API client
-
         Returns:
-            Group: duplicate instance of group
+            Group: Duplicate instance of group.
         """
 
-        # TODO: finnish when API client implementation is finished
+        return Group(params=GroupAPI.duplicate(self.params))
 
-        api_client.call_api(self.params)
 
-        return self
+class GroupAPI:
+    """GroupAPI defines Loadero API operations for group resources."""
+
+    @staticmethod
+    def create(params: GroupParams) -> GroupParams:
+        """Create a new group resource.
+
+        Args:
+            params (GroupParams): Describes the group resource to be created.
+
+        Raises:
+            Exception: GroupParams.test_id was not defined.
+
+        Returns:
+            GroupParams: Created group resource.
+        """
+
+        if params.test_id is None:
+            raise Exception("GroupParams.test_id must be a valid int")
+
+        return params.from_json(
+            APIClient().post(
+                f"projects/{APIClient().project_id}"
+                f"/tests/{params.test_id}/groups/",
+                params.to_json(),
+            )
+        )
+
+    @staticmethod
+    def read(params: GroupParams) -> GroupParams:
+        """Read an existing group resource.
+
+        Args:
+            params (GroupParams): Describes the group resource to read.
+
+        Raises:
+            Exception: GroupParams.test_id was not defined.
+            Exception: GroupParams.group_id was not defined.
+
+        Returns:
+            GroupParams: Read group resource.
+        """
+
+        if params.test_id is None:
+            raise Exception("GroupParams.test_id must be a valid int")
+
+        if params.group_id is None:
+            raise Exception("GroupParams.group_id must be a valid int")
+
+        return params.from_json(
+            APIClient().get(
+                f"projects/{APIClient().project_id}"
+                f"/tests/{params.test_id}/groups/{params.group_id}",
+            )
+        )
+
+    @staticmethod
+    def update(params: GroupParams) -> GroupParams:
+        """Update an existing group resource.
+
+        Args:
+            params (GroupParams): Describes the group resource to update.
+
+        Raises:
+            Exception: GroupParams.test_id was not defined.
+            Exception: GroupParams.group_id was not defined.
+
+        Returns:
+            GroupParams: Updated group resource.
+        """
+
+        if params.test_id is None:
+            raise Exception("GroupParams.test_id must be a valid int")
+
+        if params.group_id is None:
+            raise Exception("GroupParams.group_id must be a valid int")
+
+        return params.from_json(
+            APIClient().put(
+                f"projects/{APIClient().project_id}"
+                f"/tests/{params.test_id}/groups/{params.group_id}",
+                params.to_json(),
+            )
+        )
+
+    @staticmethod
+    def delete(params: GroupParams) -> None:
+        """Delete an existing group resource.
+
+        Args:
+            params (GroupParams): Describes the group resource to delete.
+
+        Raises:
+            Exception: GroupParams.test_id was not defined.
+            Exception: GroupParams.group_id was not defined.
+        """
+
+        if params.test_id is None:
+            raise Exception("GroupParams.test_id must be a valid int")
+
+        if params.group_id is None:
+            raise Exception("GroupParams.group_id must be a valid int")
+
+        APIClient().delete(
+            f"projects/{APIClient().project_id}"
+            f"/tests/{params.test_id}/groups/{params.group_id}",
+        )
+
+    @staticmethod
+    def duplicate(params: GroupParams) -> GroupParams:
+        """Duplicate an existing group resource.
+
+        Args:
+            params (GroupParams): Describe the group resource to duplicate and
+            the name of duplicate group resource.
+
+        Raises:
+            Exception: GroupParams.test_id was not defined.
+            Exception: GroupParams.group_id was not defined.
+
+        Returns:
+            GroupParams: Duplicate group resource.
+        """
+
+        if params.test_id is None:
+            raise Exception("GroupParams.test_id must be a valid int")
+
+        if params.group_id is None:
+            raise Exception("GroupParams.group_id must be a valid int")
+
+        dupl = GroupParams()
+
+        return dupl.from_json(
+            APIClient().post(
+                f"projects/{APIClient().project_id}"
+                f"/tests/{params.test_id}/groups/{params.group_id}/copy/",
+                params.to_json(["name"]),
+            )
+        )
+
+    @staticmethod
+    def read_all(test_id: int) -> list[GroupParams]:
+        # TODO: implement.
+        pass

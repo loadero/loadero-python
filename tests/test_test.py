@@ -3,7 +3,7 @@
 
 from datetime import datetime
 from loadero_python.resources import test, script
-from loadero_python.api_client import APIClient
+
 
 time_now = datetime.now()
 
@@ -39,22 +39,18 @@ class TestTestParams:
     def test_deleted(self):
         t = test.TestParams()
         t.__dict__["_deleted"] = True
+
         assert t.deleted is True
 
     def test_project_id(self):
         t = test.TestParams()
-        t.__dict__["_project_id_path"] = 5
+        t.__dict__["_project_id"] = 5
         assert t.project_id == 5
 
     def test_builder_id(self):
         t = test.TestParams()
         t.with_id(5)
         assert t.test_id == 5
-
-    def test_builder_project_id(self):
-        t = test.TestParams()
-        t.in_project(5)
-        assert t.project_id == 5
 
     def test_builder_name(self):
         t = test.TestParams()
@@ -96,14 +92,14 @@ def test_test_params():
     tp = test.TestParams(start_interval=4)
     assert tp.start_interval == 4
 
-    tp.in_project(5)
-    assert tp.project_id == 5
+    tp.with_name("webrtc test")
+    assert tp.name == "webrtc test"
 
 
-def test_test():
-    api = APIClient()
-    tp = test.TestParams(start_interval=4)
+# def test_test():
+#     api = APIClient()
+#     tp = test.TestParams(start_interval=4)
 
-    t = test.Test(params=tp)
+#     t = test.Test(params=tp)
 
-    t.read(api)
+#     t.read()

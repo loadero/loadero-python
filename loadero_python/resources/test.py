@@ -8,11 +8,14 @@ allows to perform CRUD operations on Loadero test resources.
 """
 
 from __future__ import annotations
+from datetime import datetime
+from dateutil import parser
 from ..api_client import APIClient
 from .script import Script
+from .resource import LoaderoResource, to_json, from_json, to_string
 
 
-class TestParams:
+class TestParams(LoaderoResource):
     """
     TestParams represents Loadero test parameters.
     TestParams has a builder method pattern for test resources read and write
@@ -21,9 +24,9 @@ class TestParams:
 
     # Describes python object attribute name mapping to Loadero resources
     # JSON field names.
-    attribute_map = {
+    __attribute_map = {
         "test_id": "id",
-        "_project_id_path": "project_id",
+        "__project_id": "project_id",
         "name": "name",
         "script_file_id": "script_file_id",
         "start_interval": "start_interval",
@@ -39,7 +42,17 @@ class TestParams:
         "_deleted": "deleted",
     }
 
-    body_attributes = [
+    # Describes a mapping from Loadero resources JSON field names to custom
+    # deserialization functions.
+    __custom_deserializers = {
+        "script": Script.from_json,
+        "created": parser.parse,
+        "updated": parser.parse,
+    }
+
+    # Describes Loadero resources JSON field names that are required for CRUD
+    # operations.
+    __body_attributes = [
         "name",
         "start_interval",
         "participant_timeout",
@@ -49,7 +62,6 @@ class TestParams:
         "script",
     ]
 
-    # id
     test_id = None
 
     name = None
@@ -60,13 +72,10 @@ class TestParams:
     script = None
     mos_test = None
 
-    # route path
-    _project_id_path = None
-
-    # readonly attributes
-    _created = None  # datetime
-    _updated = None  # datetime
+    _created = None
+    _updated = None
     _script_file_id = None
+    _project_id = None
     _group_count = None
     _participant_count = None
     _deleted = None
@@ -94,14 +103,15 @@ class TestParams:
         self.increment_strategy = increment_strategy
         self.mos_test = mos_test
 
-    # read only attribute getters
+    def __str__(self) -> str:
+        return to_string(self.__dict__, self.__attribute_map)
 
     @property
-    def created(self):  # date time
+    def created(self) -> datetime:
         return self._created
 
     @property
-    def updated(self):  # date time
+    def updated(self) -> datetime:
         return self._updated
 
     @property
@@ -122,17 +132,12 @@ class TestParams:
 
     @property
     def project_id(self) -> bool:
-        return self._project_id_path
+        return self._project_id
 
     # parameter builder
 
     def with_id(self, tid) -> TestParams:
         self.test_id = tid
-
-        return self
-
-    def in_project(self, pid: int) -> TestParams:
-        self._project_id_path = pid
 
         return self
 
@@ -173,8 +178,45 @@ class TestParams:
 
         return self
 
-    # to dict
-    # from dict
+    # serializers
+
+    def to_json(
+        self, body_attributes: list[str] or None = None
+    ) -> dict[str, any]:
+        """Serializes test resource to JSON.
+
+        Args:
+            body_attributes (list[str]orNone, optional): String list of JSON
+                field names that will be serialized. Defaults to None, then
+                the default body attributed for test resource are used.
+
+        Returns:
+            dict[str, any]: JSON dictionary.
+        """
+
+        if body_attributes is None:
+            body_attributes = self.__body_attributes
+
+        return to_json(self.__dict__, self.__attribute_map, body_attributes)
+
+    def from_json(self, json_value: dict[str, any]) -> TestParams:
+        """Serializes test resource from JSON.
+
+        Args:
+            json_value (dict[str, any]): JSON dictionary.
+
+        Returns:
+            TestParams: Serialized test resource.
+        """
+
+        from_json(
+            self.__dict__,
+            json_value,
+            self.__attribute_map,
+            self.__custom_deserializers,
+        )
+
+        return self
 
 
 class Test:
@@ -197,79 +239,184 @@ class Test:
         if test_id is not None:
             self.params.test_id = test_id
 
-    def create(self, api_client: APIClient) -> Test:
+    def create(self) -> Test:
         """Creates new test with given data.
 
-        Args:
-            api_client (APIClient): initalized instance of API client
-
         Returns:
-            Test: created test resource
+            Test: Created test resource.
         """
 
-        # TODO: finnish when API client implementation is finished
-
-        api_client.call_api(self.params)
+        TestAPI.create(self.params)
 
         return self
 
-    def read(self, api_client: APIClient) -> Test:
+    def read(self) -> Test:
         """Reads information about an existing test.
 
-        Args:
-            api_client (APIClient): initalized instance of API client
-
         Returns:
-            Test: retrived test resource
+            Test: Read test resource.
         """
 
-        # TODO: finnish when API client implementation is finished
-
-        api_client.call_api(self.params)
+        TestAPI.read(self.params)
 
         return self
 
-    def update(self, api_client: APIClient) -> Test:
+    def update(self) -> Test:
         """Updates test with given parameters.
 
-        Args:
-            api_client (APIClient): initalized instance of API client
-
         Returns:
-            Test: updated test resource
+            Test: Updated test resource.
         """
 
-        # TODO: finnish when API client implementation is finished
-
-        api_client.call_api(self.params)
+        TestAPI.update(self.params)
 
         return self
 
-    def delete(self, api_client: APIClient) -> Test:
+    def delete(self) -> Test:
         """Deletes and existing test.
 
-        Args:
-            api_client (APIClient): initalized instance of API client
+        Returns:
+            Test: Deleted test resource.
         """
 
-        # TODO: finnish when API client implementation is finished
-
-        api_client.call_api(self.params)
+        TestAPI.delete(self.params)
 
         return self
 
-    def duplicate(self, api_client: APIClient) -> Test:
+    def duplicate(self) -> Test:
         """Duplicates and existing test.
 
-        Args:
-            api_client (APIClient): initalized instance of API client
 
         Returns:
-            Test: duplicate instance of test
+            Test: Duplicate test resource.
+        """
+        t = Test(params=TestAPI.duplicate(self.params))
+
+        return t
+
+
+class TestAPI:
+    """TestAPI defines Loadero API operations for test resources."""
+
+    @staticmethod
+    def create(params: TestParams) -> TestParams:
+        """Create a new test resource.
+
+        Args:
+            params (TestParams): Describes the test resource to be created.
+
+        Returns:
+            TestParams: Created participant resource.
         """
 
-        # TODO: finnish when API client implementation is finished
+        return params.from_json(
+            APIClient().post(
+                f"projects/{APIClient().project_id}/tests/",
+                params.to_json(),
+            )
+        )
 
-        api_client.call_api(self.params)
+    @staticmethod
+    def read(params: TestParams) -> TestParams:
+        """Read an existing test resource.
 
-        return self
+        Args:
+            params (TestParams): Describes the test resource to read.
+
+        Raises:
+            Exception: TestParams.test_id was not defined.
+
+        Returns:
+            TestParams: Read test resource.
+        """
+
+        if params.test_id is None:
+            raise Exception("TestParams.test_id must be a valid int")
+
+        return params.from_json(
+            APIClient().get(
+                f"projects/{APIClient().project_id}/tests/{params.test_id}/"
+            )
+        )
+
+    @staticmethod
+    def update(params: TestParams) -> TestParams:
+        """Update an existing test resource.
+
+        Args:
+            params (TestParams): Describe the test resource to update.
+
+        Raises:
+            Exception: TestParams.test_id was not defined.
+
+        Returns:
+            TestParams: Updated test resource.
+        """
+
+        if params.test_id is None:
+            raise Exception("TestParams.test_id must be a valid int")
+
+        return params.from_json(
+            APIClient().put(
+                f"projects/{APIClient().project_id}/tests/{params.test_id}/",
+                params.to_json(),
+            )
+        )
+
+    @staticmethod
+    def delete(params: TestParams) -> TestParams:
+        """Delete an existing test resource.
+
+        Args:
+            params (TestParams): Describes the test resource to delete.
+
+        Raises:
+            Exception: TestParams.test_id was not defined.
+
+        Returns:
+            TestParams: Deleted test resource.
+        """
+
+        if params.test_id is None:
+            raise Exception("TestParams.test_id must be a valid int")
+
+        APIClient().delete(
+            f"projects/{APIClient().project_id}/tests/{params.test_id}/",
+        )
+
+        params.__dict__["__deleted"] = True
+
+        return params
+
+    @staticmethod
+    def duplicate(params: TestParams) -> TestParams:
+        """Created a duplicate test resource from an existing test resource.
+
+        Args:
+            params (TestParams): Describe the test resources to duplicate and
+                the name of the duplicate test resource.
+
+        Raises:
+            Exception: TestParams.test_id was not defined.
+
+        Returns:
+            TestParams: Duplicated test resource.
+        """
+
+        if params.test_id is None:
+            raise Exception("TestParams.test_id must be a valid int")
+
+        dupl = TestParams()
+
+        return dupl.from_json(
+            APIClient().post(
+                f"projects/{APIClient().project_id}"
+                f"/tests/{params.test_id}/copy/",
+                params.to_json(["name"]),
+            )
+        )
+
+    @staticmethod
+    def read_all() -> list[TestParams]:
+        # TODO: implement.
+        pass

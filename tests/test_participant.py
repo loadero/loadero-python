@@ -2,7 +2,6 @@
 
 from datetime import datetime
 from loadero_python.resources import participant
-from loadero_python.api_client import APIClient
 
 
 time_now = datetime.now()
@@ -23,12 +22,12 @@ class TestParticipantParams:
 
     def test_project_id(self):
         p = participant.ParticipantParams()
-        p.__dict__["_project_id_path"] = 5
+        p.__dict__["_project_id"] = 5
         assert p.project_id == 5
 
     def test_test_id(self):
         p = participant.ParticipantParams()
-        p.__dict__["_test_id_path"] = 5
+        p.__dict__["_test_id"] = 5
         assert p.test_id == 5
 
     def test_builder_id(self):
@@ -98,11 +97,3 @@ def test_participant_params():
 
     pp.in_project(5)
     assert pp.project_id == 5
-
-
-def test_participant():
-    api = APIClient()
-    pp = participant.ParticipantParams(count=4)
-    p = participant.Participant(params=pp)
-
-    p.read(api)

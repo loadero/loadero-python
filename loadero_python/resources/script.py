@@ -7,9 +7,10 @@ or by supplying a filename from which to load the script.
 """
 
 from __future__ import annotations
+from .resource import LoaderoResource
 
 
-class Script:
+class Script(LoaderoResource):
     """
     Script describes a single Loadero test Script.
     Script can be created from str data or loaded from file.
@@ -39,6 +40,12 @@ class Script:
             self._data = content
         elif script_file is not None:
             self._load_from_file(script_file)
+
+    def __str__(self) -> str:
+        if self._data is None:
+            return ""
+
+        return self._data
 
     def from_file(self, script_file: str) -> Script:
         """Loads Loadero script from file.
@@ -74,3 +81,16 @@ class Script:
     @property
     def script(self) -> str:
         return self._data
+
+    def to_json(self) -> str:
+        if self._data is None:
+            return ""
+
+        return self._data
+
+    # does this realy need to be static
+    @staticmethod
+    def from_json(json_value) -> Script:
+        s = Script(content=json_value)
+
+        return s

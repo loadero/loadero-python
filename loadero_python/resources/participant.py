@@ -9,10 +9,13 @@ participant resources.
 """
 
 from __future__ import annotations
+from datetime import datetime
+from dateutil import parser
 from ..api_client import APIClient
+from .resource import LoaderoResource, to_json, from_json, to_string
 
 
-class ParticipantParams:
+class ParticipantParams(LoaderoResource):
     """
     ParticipantParams represents Loadero participant resources attributes.
     ParticipantParams has a builder pattern for Participant resource read and
@@ -21,7 +24,7 @@ class ParticipantParams:
 
     # Describes python object attribute name mapping to Loadero resources
     # JSON field names.
-    attribute_map = {
+    __attribute_map = {
         "participant_id": "id",
         "name": "name",
         "count": "count",
@@ -33,12 +36,14 @@ class ParticipantParams:
         "location": "location",
         "network": "network",
         "video_feed": "video_feed",
-        "_test_id_path": "test_id",
+        "_test_id": "test_id",
         "_created": "created",
         "_updated": "updated",
     }
 
-    body_attributes = [
+    # Describes a mapping from Loadero resources JSON field names to custom
+    # deserialization functions.
+    __body_attributes = [
         "name",
         "count",
         "compute_unit",
@@ -51,27 +56,29 @@ class ParticipantParams:
         "video_feed",
     ]
 
-    # id
+    # Describes Loadero resources JSON field names that are required for CRUD
+    # operations.
+    __custom_deserializers = {
+        "created": parser.parse,
+        "updated": parser.parse,
+    }
+
     participant_id = None
 
-    # body
     name = None
     count = None
     compute_unit = None  # classificator
     group_id = None
     record_audio = None
 
-    # profile params all classificators
     audio_feed = None
     browser = None
     location = None
     network = None
     video_feed = None
 
-    # route paths
-    _project_id_path = None
-    _test_id_path = None
-
+    _project_id = None
+    _test_id = None
     _created = None
     _updated = None
 
@@ -92,8 +99,8 @@ class ParticipantParams:
         video_feed: str or None = None,  # classificator
     ) -> None:
         self.participant_id = participant_id
-        self._test_id_path = test_id
-        self._project_id_path = project_id
+        self._test_id = test_id
+        self._project_id = project_id
         self.name = name
         self.count = count
         self.compute_unit = compute_unit
@@ -105,25 +112,24 @@ class ParticipantParams:
         self.network = network
         self.video_feed = video_feed
 
-    # getters
+    def __str__(self) -> str:
+        return to_string(self.__dict__, self.__attribute_map)
 
     @property
-    def created(self):  # date time
+    def created(self) -> datetime:
         return self._created
 
     @property
-    def updated(self):  # date time
+    def updated(self) -> datetime:
         return self._updated
 
     @property
     def project_id(self) -> int:
-        return self._project_id_path
+        return self._project_id
 
     @property
     def test_id(self) -> int:
-        return self._test_id_path
-
-    # builder
+        return self._test_id
 
     def with_id(self, pid: int) -> ParticipantParams:
         self.participant_id = pid
@@ -131,12 +137,12 @@ class ParticipantParams:
         return self
 
     def in_test(self, tid: int) -> ParticipantParams:
-        self._test_id_path = tid
+        self._test_id = tid
 
         return self
 
     def in_project(self, pid: int) -> ParticipantParams:
-        self._project_id_path = pid
+        self._project_id = pid
 
         return self
 
@@ -196,6 +202,44 @@ class ParticipantParams:
 
         return self
 
+    def to_json(
+        self, body_attributes: list[str] or None = None
+    ) -> dict[str, any]:
+        """Serializes participant resource to JSON.
+
+        Args:
+            body_attributes (list[str]orNone, optional): String list of JSON
+                field names that will be serialized. Defaults to None, then
+                the default body attributed for participant resource are used.
+
+        Returns:
+            dict[str, any]: JSON dictionary.
+        """
+
+        if body_attributes is None:
+            body_attributes = self.__body_attributes
+
+        return to_json(self.__dict__, self.__attribute_map, body_attributes)
+
+    def from_json(self, json_value: dict[str, any]) -> ParticipantParams:
+        """Serializes participant resource from JSON.
+
+        Args:
+            json_value (dict[str, any]): JSON dictionary.
+
+        Returns:
+            ParticipantParams: Serialized participant resource.
+        """
+
+        from_json(
+            self.__dict__,
+            json_value,
+            self.__attribute_map,
+            self.__custom_deserializers,
+        )
+
+        return self
+
 
 class Participant:
     """
@@ -218,77 +262,213 @@ class Participant:
         if test_id is not None:
             self.params.test_id = test_id
 
-    def create(self, api_client: APIClient) -> Participant:
+    def create(self) -> Participant:
         """Creates new participant with given data.
 
-        Args:
-            api_client (APIClient): initalized instance of API client
-
         Returns:
-            Participant: created participant resource
+            Participant: Created participant resource.
         """
 
-        # TODO: finnish when API client implementation is finished
-
-        api_client.call_api(self.params)
+        ParticipantAPI.create(self.params)
 
         return self
 
-    def read(self, api_client: APIClient) -> Participant:
+    def read(self) -> Participant:
         """Reads information about an existing participant.
 
-        Args:
-            api_client (APIClient): initalized instance of API client
-
         Returns:
-            Participant: retrived participant resource
+            Participant: Read participant resource.
         """
 
-        # TODO: finnish when API client implementation is finished
-
-        api_client.call_api(self.params)
+        ParticipantAPI.read(self.params)
 
         return self
 
-    def update(self, api_client: APIClient) -> Participant:
+    def update(
+        self,
+    ) -> Participant:
         """Updates particpant with given parameters.
 
-        Args:
-            api_client (APIClient): initalized instance of API client
-
         Returns:
-            Participant: updated participant resource
+            Participant: Updated participant resource.
         """
 
-        # TODO: finnish when API client implementation is finished
-
-        api_client.call_api(self.params)
+        ParticipantAPI.update(self.params)
 
         return self
 
-    def delete(self, api_client: APIClient) -> None:
-        """Deletes and existing participant.
+    def delete(self) -> None:
+        """Deletes and existing participant."""
 
-        Args:
-            api_client (APIClient): initalized instance of API client
-        """
+        ParticipantAPI.delete(self.params)
 
-        # TODO: finnish when API client implementation is finished
-
-        api_client.call_api(self.params)
-
-    def duplicate(self, api_client: APIClient) -> Participant:
+    def duplicate(self) -> Participant:
         """Duplicates and existing participant.
 
-        Args:
-            api_client (APIClient): initalized instance of API client
-
         Returns:
-            Participant: duplicate instance of participant
+            Participant: Duplicate instance of participant.
         """
 
-        # TODO: finnish when API client implementation is finished
+        p = Participant(params=ParticipantAPI.duplicate(self.params))
 
-        api_client.call_api(self.params)
+        return p
 
-        return self
+
+class ParticipantAPI:
+    """
+    ParticipantAPI defines Loadero API operations for participant resources.
+    """
+
+    @staticmethod
+    def create(params: ParticipantParams) -> ParticipantParams:
+        """Create a new participant resource.
+
+        Args:
+            params (ParticipantParams): Describes the participant resource to
+                be created.
+
+        Raises:
+            Exception: ParticipantParams.test_id was not defined.
+
+        Returns:
+            ParticipantParams: Created participant resource.
+        """
+
+        if params.test_id is None:
+            raise Exception("ParticipantParams.test_id must be a valid int")
+
+        return params.from_json(
+            APIClient().post(
+                f"projects/{APIClient().project_id}"
+                f"/tests/{params.test_id}"
+                "/participants/",
+                params.to_json(),
+            )
+        )
+
+    @staticmethod
+    def read(params: ParticipantParams) -> ParticipantParams:
+        """Read an existing participant resource.
+
+        Args:
+            params (ParticipantParams): Describes the participant resource to
+                read.
+
+        Raises:
+            Exception: ParticipantParams.test_id was not defined.
+            Exception: ParticipantParams.participant_id was not defined.
+
+        Returns:
+            ParticipantParams: Read participant resource.
+        """
+
+        if params.test_id is None:
+            raise Exception("ParticipantParams.test_id must be a valid int")
+
+        if params.participant_id is None:
+            raise Exception(
+                "ParticipantParams.participant_id must be a valid int"
+            )
+
+        return params.from_json(
+            APIClient().get(
+                f"projects/{APIClient().project_id}"
+                f"/tests/{params.test_id}"
+                f"/participants/{params.participant_id}",
+            )
+        )
+
+    @staticmethod
+    def update(params: ParticipantParams) -> ParticipantParams:
+        """Update an existing participant resource.
+
+        Args:
+            params (ParticipantParams): Describes the participant resource to
+                update.
+
+        Raises:
+            Exception: ParticipantParams.test_id was not defined.
+            Exception: ParticipantParams.participant_id was not defined.
+
+        Returns:
+            ParticipantParams: Updated participant resource.
+        """
+
+        if params.test_id is None:
+            raise Exception("ParticipantParams.test_id must be a valid int")
+
+        if params.participant_id is None:
+            raise Exception(
+                "ParticipantParams.participant_id must be a valid int"
+            )
+
+        return params.from_json(
+            APIClient().put(
+                f"projects/{APIClient().project_id}"
+                f"/tests/{params.test_id}"
+                f"/participants/{params.participant_id}",
+                params.to_json(),
+            )
+        )
+
+    @staticmethod
+    def delete(params: ParticipantParams) -> None:
+        """Delete an existing participant resource.
+
+        Args:
+            params (ParticipantParams): Describes the participant resource to
+                delete.
+
+        Raises:
+            Exception: ParticipantParams.test_id was not defined.
+            Exception: ParticipantParams.participant_id was not defined.
+        """
+
+        if params.test_id is None:
+            raise Exception("ParticipantParams.test_id must be a valid int")
+
+        if params.participant_id is None:
+            raise Exception(
+                "ParticipantParams.participant_id must be a valid int"
+            )
+
+        APIClient().delete(
+            f"projects/{APIClient().project_id}"
+            f"/tests/{params.test_id}"
+            f"/participants/{params.participant_id}",
+        )
+
+    @staticmethod
+    def duplicate(params: ParticipantParams) -> ParticipantParams:
+        """Duplicate an existing participant resource.
+
+        Args:
+            params (ParticipantParams): Describes the participant resource to
+                duplicate and the name of duplicate participant resource.
+
+        Raises:
+            Exception: ParticipantParams.test_id was not defined.
+            Exception: ParticipantParams.participant_id was not defined.
+
+        Returns:
+            ParticipantParams: Duplicate participant resource.
+        """
+
+        if params.test_id is None:
+            raise Exception("ParticipantParams.test_id must be a valid int")
+
+        if params.participant_id is None:
+            raise Exception(
+                "ParticipantParams.participant_id must be a valid int"
+            )
+
+        dupl = ParticipantParams()
+
+        return dupl.from_json(
+            APIClient().put(
+                f"projects/{APIClient().project_id}"
+                f"/tests/{params.test_id}"
+                f"/participants/{params.participant_id}/copy",
+                params.to_json(),
+            )
+        )
