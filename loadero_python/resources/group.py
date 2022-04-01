@@ -26,7 +26,7 @@ class GroupParams(LoaderoResource):
         "group_id": "id",
         "count": "count",
         "name": "name",
-        "_test_id": "test_id",
+        "test_id": "test_id",
         "_created": "created",
         "_updated": "updated",
         "_total_cu_count": "total_cu_count",
@@ -48,12 +48,12 @@ class GroupParams(LoaderoResource):
     }
 
     group_id = None
+    test_id = None
 
     count = None
     name = None
 
     _project_id = None
-    _test_id = None
     _total_cu_count = None
     _participant_count = None
     _created = None
@@ -70,7 +70,7 @@ class GroupParams(LoaderoResource):
         self.group_id = group_id
         self.name = name
         self.count = count
-        self._test_id = test_id
+        self.test_id = test_id
         self.project_id_path = project_id
 
     def __str__(self) -> str:
@@ -96,10 +96,6 @@ class GroupParams(LoaderoResource):
     def project_id(self) -> int:
         return self._project_id
 
-    @property
-    def test_id(self) -> int:
-        return self._test_id
-
     def with_id(self, group_id: int) -> GroupParams:
         self.group_id = group_id
 
@@ -116,7 +112,7 @@ class GroupParams(LoaderoResource):
         return self
 
     def in_test(self, tid: int) -> GroupParams:
-        self._test_id = tid
+        self.test_id = tid
 
         return self
 
@@ -170,6 +166,7 @@ class Group:
     def __init__(
         self,
         group_id: int or None = None,
+        test_id: int or None = None,
         params: GroupParams or None = None,
     ) -> None:
         if params is not None:
@@ -179,6 +176,9 @@ class Group:
 
         if group_id is not None:
             self.params.group_id = group_id
+
+        if test_id is not None:
+            self.params.test_id = test_id
 
     def create(self) -> Group:
         """Creates new group with given data.
@@ -218,14 +218,20 @@ class Group:
 
         GroupAPI.delete(self.params)
 
-    def duplicate(self) -> Group:
+    def duplicate(self, name: str) -> Group:
         """Duplicates and existing group.
 
         Returns:
             Group: Duplicate instance of group.
         """
 
-        return Group(params=GroupAPI.duplicate(self.params))
+        dupl = GroupParams(
+            group_id=self.params.group_id,
+            test_id=self.params.test_id,
+            name=name,
+        )
+
+        return Group(params=GroupAPI.duplicate(dupl))
 
 
 class GroupAPI:
@@ -280,7 +286,7 @@ class GroupAPI:
         return params.from_json(
             APIClient().get(
                 f"projects/{APIClient().project_id}"
-                f"/tests/{params.test_id}/groups/{params.group_id}",
+                f"/tests/{params.test_id}/groups/{params.group_id}/",
             )
         )
 
@@ -308,7 +314,7 @@ class GroupAPI:
         return params.from_json(
             APIClient().put(
                 f"projects/{APIClient().project_id}"
-                f"/tests/{params.test_id}/groups/{params.group_id}",
+                f"/tests/{params.test_id}/groups/{params.group_id}/",
                 params.to_json(),
             )
         )
@@ -333,7 +339,7 @@ class GroupAPI:
 
         APIClient().delete(
             f"projects/{APIClient().project_id}"
-            f"/tests/{params.test_id}/groups/{params.group_id}",
+            f"/tests/{params.test_id}/groups/{params.group_id}/",
         )
 
     @staticmethod
