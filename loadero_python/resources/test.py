@@ -22,6 +22,10 @@ class TestParams(LoaderoResource):
     attributes.
     """
 
+    # TestParams has a Test prefix and pytest thinks it is a class with tests.
+    # This disables that.
+    __test__ = False
+
     # Describes python object attribute name mapping to Loadero resources
     # JSON field names.
     __attribute_map = {
@@ -225,6 +229,10 @@ class Test:
     APIClient must be previously initialized with a valid Loadero access token.
     The target Loadero test resource is determined by TestParams.
     """
+
+    # TestParams has a Test prefix and pytest thinks it is a class with tests.
+    # This disables that.
+    __test__ = False
 
     params = None
 

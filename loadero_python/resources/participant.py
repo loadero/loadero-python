@@ -36,10 +36,12 @@ class ParticipantParams(LoaderoResource):
         "location": "location",
         "network": "network",
         "video_feed": "video_feed",
-        "_test_id": "test_id",
+        "test_id": "test_id",
         "_created": "created",
         "_updated": "updated",
     }
+
+    # TODO: make group id optional
 
     # Describes a mapping from Loadero resources JSON field names to custom
     # deserialization functions.
@@ -64,6 +66,7 @@ class ParticipantParams(LoaderoResource):
     }
 
     participant_id = None
+    test_id = None
 
     name = None
     count = None
@@ -78,7 +81,6 @@ class ParticipantParams(LoaderoResource):
     video_feed = None
 
     _project_id = None
-    _test_id = None
     _created = None
     _updated = None
 
@@ -99,7 +101,7 @@ class ParticipantParams(LoaderoResource):
         video_feed: str or None = None,  # classificator
     ) -> None:
         self.participant_id = participant_id
-        self._test_id = test_id
+        self.test_id = test_id
         self._project_id = project_id
         self.name = name
         self.count = count
@@ -127,17 +129,13 @@ class ParticipantParams(LoaderoResource):
     def project_id(self) -> int:
         return self._project_id
 
-    @property
-    def test_id(self) -> int:
-        return self._test_id
-
     def with_id(self, pid: int) -> ParticipantParams:
         self.participant_id = pid
 
         return self
 
     def in_test(self, tid: int) -> ParticipantParams:
-        self._test_id = tid
+        self.test_id = tid
 
         return self
 
@@ -251,6 +249,7 @@ class Participant:
 
     def __init__(
         self,
+        participant_id: int or None = None,
         test_id: int or None = None,
         params: ParticipantParams or None = None,
     ) -> None:
@@ -258,6 +257,9 @@ class Participant:
             self.params = params
         else:
             self.params = ParticipantParams()
+
+        if participant_id is not None:
+            self.params.participant_id = participant_id
 
         if test_id is not None:
             self.params.test_id = test_id
@@ -302,16 +304,22 @@ class Participant:
 
         ParticipantAPI.delete(self.params)
 
-    def duplicate(self) -> Participant:
+    def duplicate(self, name: str) -> Participant:
         """Duplicates and existing participant.
 
         Returns:
             Participant: Duplicate instance of participant.
         """
 
-        p = Participant(params=ParticipantAPI.duplicate(self.params))
+        dp = ParticipantParams(
+            participant_id=self.params.participant_id,
+            test_id=self.params.test_id,
+            name=name,
+        )
 
-        return p
+        dupl = Participant(params=ParticipantAPI.duplicate(dp))
+
+        return dupl
 
 
 class ParticipantAPI:
@@ -374,7 +382,7 @@ class ParticipantAPI:
             APIClient().get(
                 f"projects/{APIClient().project_id}"
                 f"/tests/{params.test_id}"
-                f"/participants/{params.participant_id}",
+                f"/participants/{params.participant_id}/",
             )
         )
 
@@ -406,7 +414,7 @@ class ParticipantAPI:
             APIClient().put(
                 f"projects/{APIClient().project_id}"
                 f"/tests/{params.test_id}"
-                f"/participants/{params.participant_id}",
+                f"/participants/{params.participant_id}/",
                 params.to_json(),
             )
         )
@@ -435,7 +443,7 @@ class ParticipantAPI:
         APIClient().delete(
             f"projects/{APIClient().project_id}"
             f"/tests/{params.test_id}"
-            f"/participants/{params.participant_id}",
+            f"/participants/{params.participant_id}/",
         )
 
     @staticmethod
@@ -465,10 +473,15 @@ class ParticipantAPI:
         dupl = ParticipantParams()
 
         return dupl.from_json(
-            APIClient().put(
-                f"projects/{APIClient().project_id}"
-                f"/tests/{params.test_id}"
-                f"/participants/{params.participant_id}/copy",
-                params.to_json(),
+            APIClient().post(
+                f"projects/{APIClient().project_id}/"
+                f"tests/{params.test_id}/"
+                f"participants/{params.participant_id}/copy/",
+                params.to_json(["name"]),
             )
         )
+
+    @staticmethod
+    def read_all(test_id: int):
+        # TODO: implement.
+        pass

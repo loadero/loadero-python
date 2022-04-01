@@ -225,13 +225,15 @@ class Group:
             Group: Duplicate instance of group.
         """
 
-        dupl = GroupParams(
+        dp = GroupParams(
             group_id=self.params.group_id,
             test_id=self.params.test_id,
             name=name,
         )
 
-        return Group(params=GroupAPI.duplicate(dupl))
+        dupl = Group(params=GroupAPI.duplicate(dp))
+
+        return dupl
 
 
 class GroupAPI:

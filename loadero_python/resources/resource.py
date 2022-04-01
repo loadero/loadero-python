@@ -77,6 +77,10 @@ def from_json(
         reverse_attribute_map[v] = k
 
     for k, v in json_value.items():
+        if k not in reverse_attribute_map:
+            # Loadero API returned some field that is not needed.
+            continue
+
         if custom_deserializers is not None and k in custom_deserializers:
             resource[reverse_attribute_map[k]] = custom_deserializers[k](v)
         else:
