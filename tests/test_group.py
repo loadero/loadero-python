@@ -2,7 +2,6 @@
 
 
 # pylint: disable=W0613
-# pylint: disable=missing-class-docstring
 # pylint: disable=missing-function-docstring
 # pylint: disable=redefined-outer-name
 # pylint: disable=wildcard-import
@@ -11,8 +10,8 @@
 from datetime import datetime
 import os
 import json
-import pytest
 import re
+import pytest
 import httpretty
 from loadero_python.resources.group import *
 from loadero_python.api_client import APIClient
@@ -445,7 +444,8 @@ def mock_duplicate():
     httpretty.register_uri(
         httpretty.POST,
         re.compile(
-            r"^http://mock\.loadero\.api/v2/projects/\d*/tests/\d*/groups/\d*/copy/$"
+            r"^http://mock\.loadero\.api/v2/"
+            r"projects/\d*/tests/\d*/groups/\d*/copy/$"
         ),
         body=json.dumps(dupl),
         forcing_headers={"Content-Type": "application/json"},
