@@ -7,7 +7,79 @@ or by supplying a filename from which to load the script.
 """
 
 from __future__ import annotations
-from .resource import LoaderoResource
+from datetime import datetime
+from dateutil import parser
+from ..api_client import APIClient
+from .resource import LoaderoResource, from_json
+
+
+class FileParams(LoaderoResource):
+    """FileParams represents Loadero file parameters."""
+
+    __attribute_map = {
+        "file_id": "id",
+        "_created": "created",
+        "_updated": "updated",
+        "_file_type": "file_type",
+        "_content": "content",
+        "_project_id": "project_id",
+    }
+
+    # Describes a mapping from Loadero resources JSON field names to custom
+    # deserialization functions.
+    __custom_deserializers = {
+        "created": parser.parse,
+        "updated": parser.parse,
+    }
+
+    file_id = None
+    _created = None
+    _updated = None
+    _file_type = None
+    _content = None
+    _project_id = None
+
+    def __init__(self, file_id: int or None = None):
+        self.file_id = file_id
+
+    @property
+    def created(self) -> datetime or None:
+        return self._created
+
+    @property
+    def updated(self) -> datetime or None:
+        return self._updated
+
+    @property
+    def file_type(self) -> str or None:  # TODO: change to classificator
+        return self._file_type
+
+    @property
+    def content(self) -> datetime or None:
+        return self._content
+
+    @property
+    def project_id(self) -> datetime or None:
+        return self._project_id
+
+    def from_json(self, json_value: dict[str, any]) -> FileParams:
+        """Serializes file resource from JSON.
+
+        Args:
+            json_value (dict[str, any]): JSON dictionary.
+
+        Returns:
+            TestParams: Serialized file resource.
+        """
+
+        from_json(
+            self.__dict__,
+            json_value,
+            self.__attribute_map,
+            self.__custom_deserializers,
+        )
+
+        return self
 
 
 class Script(LoaderoResource):
@@ -16,10 +88,15 @@ class Script(LoaderoResource):
     Script can be created from str data or loaded from file.
     """
 
-    _data = None
+    # _data = None
+    _content = None
+    _params = None
 
     def __init__(
-        self, content: str or None = None, script_file: str or None = None
+        self,
+        script_id: int or None = None,
+        content: str or None = None,
+        script_file: str or None = None,
     ) -> None:
         """Creates a new Script object.
         If no arguments are provided then a new empty Script object is
@@ -36,16 +113,40 @@ class Script(LoaderoResource):
             script_file (str or None): Defaults to None.
         """
 
+        if script_id is not None:
+            self.params = FileParams(script_id)
+
+            return
+
         if content is not None:
-            self._data = content
-        elif script_file is not None:
-            self._load_from_file(script_file)
+            self.from_content(content)
+
+            return
+
+        if script_file is not None:
+            self.from_file(script_file)
 
     def __str__(self) -> str:
-        if self._data is None:
-            return ""
+        if self._content is None:
+            return "empty script"
 
-        return self._data
+        return self._content
+
+    @property
+    def content(self) -> str:
+        """Contents of script.
+
+        Returns:
+            str: Contents of a script loaded by user or read from Loadero API.
+        """
+
+        if self._params is not None:
+            return self._params.content
+
+        if self._content is not None:
+            return self._content
+
+        return ""
 
     def from_file(self, script_file: str) -> Script:
         """Loads Loadero script from file.
@@ -57,9 +158,12 @@ class Script(LoaderoResource):
             Script: script loaded from file
         """
 
-        return self._load_from_file(script_file)
+        with open(script_file, "r") as f:
+            self._content = f.read()
 
-    def from_data(self, content: str) -> Script:
+        return self
+
+    def from_content(self, content: str) -> Script:
         """Loads Loadero script from provided str data.
 
         Args:
@@ -68,29 +172,41 @@ class Script(LoaderoResource):
         Returns:
             Script: script loaded from data
         """
-        self._data = content
+        self._content = content
 
         return self
-
-    def _load_from_file(self, script_file: str) -> Script:
-        with open(script_file, "r") as f:
-            self._data = f.read()
-
-        return self
-
-    @property
-    def script(self) -> str:
-        return self._data
 
     def to_json(self) -> str:
-        if self._data is None:
-            return ""
+        return self.content
 
-        return self._data
+    def read(self) -> Script:
+        self._params = FileAPI().read(self.params)
 
-    # does this realy need to be static
+        return self
+
+
+class FileAPI:
+    """FileAPI defines Loadero API operations for file resources."""
+
     @staticmethod
-    def from_json(json_value) -> Script:
-        s = Script(content=json_value)
+    def read(params: FileParams) -> FileParams:
+        """Read an existing file resource.
 
-        return s
+        Args:
+            params (FileParams): Describes the file resource to read.
+
+        Raises:
+            Exception: FileParams.file_id was not defined.
+
+        Returns:
+            FileParams: Read file resource.
+        """
+
+        if params.file_id is None:
+            raise Exception("FileParams.file_id must be a valid int")
+
+        return params.from_json(
+            APIClient().get(
+                f"projects/{APIClient().project_id}/files/{params.file_id}/"
+            )
+        )

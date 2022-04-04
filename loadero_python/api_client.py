@@ -25,6 +25,9 @@ class APIException(Exception):
 class APIClient:
     """API client to access Loadero API"""
 
+    # TODO: bring /project/id routes inside api client. + figure out what to do
+    # about statics routes.
+
     __pool_size = 4
     __pool_manager = None
     __headers = {"Content-Type": "application/json"}
@@ -60,11 +63,6 @@ class APIClient:
             )
 
         self.__access_token = access_token
-
-        if api_base is None:
-            raise Exception(
-                "APIClient singleton first must be initalized with api base."
-            )
 
         self.__api_base = api_base
 
@@ -114,6 +112,8 @@ class APIClient:
 
         if resp.status // 100 != 2:
             raise APIException(f"Loadero API request failed: {resp.data}")
+
+        print(resp.data)
 
         if len(resp.data) == 0:
             return None

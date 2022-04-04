@@ -1,6 +1,6 @@
 """Participant resource tests"""
 
-# pylint: disable=W0613
+# pylint: disable=unused-argument
 # pylint: disable=missing-function-docstring
 # pylint: disable=redefined-outer-name
 # pylint: disable=wildcard-import
@@ -10,14 +10,14 @@ from datetime import datetime
 import os
 import json
 import re
-import time
 import pytest
 import httpretty
+from loadero_python.api_client import APIClient
 from loadero_python.resources.script import Script
 from loadero_python.resources.test import TestParams, TestAPI
 from loadero_python.resources.group import GroupParams, GroupAPI
 from loadero_python.resources.participant import *
-from loadero_python.api_client import APIClient
+from .utils import *
 
 
 access_token = os.environ.get("ACCESS_TOKEN", default="LOADERO_ACCESS_TOKEN")
@@ -49,21 +49,6 @@ sample_participant_json = {
 }
 
 
-class IDs:
-    project_id = None
-    group_id = None
-    test_id = None
-
-
-@pytest.fixture
-def pause():
-    if mock_api:
-        return
-
-    # Avoid rate limits when running tests on real Loadero API.
-    time.sleep(0.30)
-
-
 @pytest.fixture(scope="module", autouse=True)
 def ids():
     if mock_api:
@@ -86,7 +71,6 @@ def ids():
         increment_strategy="linear",
         mos_test=False,
         script=Script(content="pytest test script"),
-        project_id=idso.project_id,
     )
 
     g = GroupParams(name="pytest_group", count=8)

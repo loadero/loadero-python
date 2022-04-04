@@ -8,6 +8,13 @@ class LoaderoResource:
     pass
 
 
+# TODO:
+# from / to json logic is likely to change in the future. Participants need
+# the ability to not specify group id, Tests do not need to clear the script
+# attribute - this would remove a call to the api. For now serialization should
+# stay as is, until more reqired features become apparent.
+
+
 def to_json(
     resource: dict[str, any],
     attribute_map: dict[str, str],

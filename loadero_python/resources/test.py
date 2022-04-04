@@ -8,6 +8,7 @@ allows to perform CRUD operations on Loadero test resources.
 """
 
 from __future__ import annotations
+from copy import deepcopy
 from datetime import datetime
 from dateutil import parser
 from ..api_client import APIClient
@@ -30,9 +31,8 @@ class TestParams(LoaderoResource):
     # JSON field names.
     __attribute_map = {
         "test_id": "id",
-        "__project_id": "project_id",
+        "_project_id": "project_id",
         "name": "name",
-        "script_file_id": "script_file_id",
         "start_interval": "start_interval",
         "participant_timeout": "participant_timeout",
         "mode": "mode",
@@ -43,16 +43,27 @@ class TestParams(LoaderoResource):
         "_updated": "updated",
         "_group_count": "group_count",
         "_participant_count": "participant_count",
+        "_script_file_id": "script_file_id",
         "_deleted": "deleted",
     }
+
+    # script is only ever written.
 
     # Describes a mapping from Loadero resources JSON field names to custom
     # deserialization functions.
     __custom_deserializers = {
-        "script": Script.from_json,
         "created": parser.parse,
         "updated": parser.parse,
     }
+
+    # write
+    # required
+    # optional
+
+    # test read should read script as well
+    # create - script shouldn't be none
+
+    # read
 
     # Describes Loadero resources JSON field names that are required for CRUD
     # operations.
@@ -78,7 +89,7 @@ class TestParams(LoaderoResource):
 
     _created = None
     _updated = None
-    _script_file_id = None
+    _script_file_id = None  # could be completely hidden from users.
     _project_id = None
     _group_count = None
     _participant_count = None
@@ -94,18 +105,15 @@ class TestParams(LoaderoResource):
         increment_strategy: str or None = None,  # classificator
         mos_test: bool or None = None,
         script: Script or None = None,
-        project_id: int or None = None,
     ) -> None:
         self.test_id = test_id
-        self._project_id_path = project_id
         self.name = name
-        self.script = script
         self.start_interval = start_interval
-        self.name = name
         self.participant_timeout = participant_timeout
         self.mode = mode
         self.increment_strategy = increment_strategy
         self.mos_test = mos_test
+        self.script = script
 
     def __str__(self) -> str:
         return to_string(self.__dict__, self.__attribute_map)
@@ -118,9 +126,10 @@ class TestParams(LoaderoResource):
     def updated(self) -> datetime:
         return self._updated
 
-    @property
-    def script_file_id(self) -> int:
-        return self._script_file_id
+    # # can be removed
+    # @property
+    # def script_file_id(self) -> int:
+    #     return self._script_file_id
 
     @property
     def group_count(self) -> int:
@@ -291,14 +300,16 @@ class Test:
 
         return self
 
-    def duplicate(self) -> Test:
+    def duplicate(self, name: str) -> Test:
         """Duplicates and existing test.
-
 
         Returns:
             Test: Duplicate test resource.
         """
-        t = Test(params=TestAPI.duplicate(self.params))
+
+        dp = TestParams(test_id=self.params.test_id, name=name)
+
+        t = Test(params=TestAPI.duplicate(dp))
 
         return t
 
@@ -317,12 +328,18 @@ class TestAPI:
             TestParams: Created participant resource.
         """
 
-        return params.from_json(
+        scp = deepcopy(params.script)
+
+        ret = params.from_json(
             APIClient().post(
                 f"projects/{APIClient().project_id}/tests/",
                 params.to_json(),
             )
         )
+
+        ret.script = scp
+
+        return ret
 
     @staticmethod
     def read(params: TestParams) -> TestParams:
@@ -341,11 +358,18 @@ class TestAPI:
         if params.test_id is None:
             raise Exception("TestParams.test_id must be a valid int")
 
-        return params.from_json(
+        ret = params.from_json(
             APIClient().get(
                 f"projects/{APIClient().project_id}/tests/{params.test_id}/"
             )
         )
+
+        # pylint: disable=protected-access
+        ret.script = Script(script_id=ret._script_file_id)
+
+        ret.script.read()
+
+        return ret
 
     @staticmethod
     def update(params: TestParams) -> TestParams:
@@ -364,12 +388,19 @@ class TestAPI:
         if params.test_id is None:
             raise Exception("TestParams.test_id must be a valid int")
 
-        return params.from_json(
+        scp = deepcopy(params.script)
+
+        ret = params.from_json(
             APIClient().put(
-                f"projects/{APIClient().project_id}/tests/{params.test_id}/",
+                f"projects/{APIClient().project_id}/"
+                f"tests/{params.test_id}/",
                 params.to_json(),
             )
         )
+
+        ret.script = scp
+
+        return ret
 
     @staticmethod
     def delete(params: TestParams) -> TestParams:
@@ -392,7 +423,7 @@ class TestAPI:
             f"projects/{APIClient().project_id}/tests/{params.test_id}/",
         )
 
-        params.__dict__["__deleted"] = True
+        params.__dict__["_deleted"] = True
 
         return params
 
@@ -416,13 +447,20 @@ class TestAPI:
 
         dupl = TestParams()
 
-        return dupl.from_json(
+        dupl = dupl.from_json(
             APIClient().post(
                 f"projects/{APIClient().project_id}"
                 f"/tests/{params.test_id}/copy/",
                 params.to_json(["name"]),
             )
         )
+
+        # pylint: disable=protected-access
+        dupl.script = Script(script_id=dupl._script_file_id)
+
+        dupl.script.read()
+
+        return dupl
 
     @staticmethod
     def read_all() -> list[TestParams]:
