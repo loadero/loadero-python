@@ -25,4 +25,4 @@ def pause():
         return
 
     # Avoid rate limits when running tests on real Loadero API.
-    time.sleep(0.35)
+    time.sleep(0.4)

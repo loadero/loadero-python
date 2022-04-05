@@ -392,8 +392,6 @@ def test_duplicate(mock, ids, pause):
         .test_id
     )
 
-    print(tid)
-
     t = Test(test_id=tid)
 
     dupl = t.duplicate("pytest duplicate test")
@@ -412,7 +410,7 @@ def test_duplicate(mock, ids, pause):
     assert dupl.params.deleted is None
 
     t.delete()
-    TestAPI().delete(TestParams(test_id=tid))
+    dupl.delete()
 
 
 def test_api_create(mock, ids, pause):
