@@ -43,8 +43,8 @@ class ParticipantParams(LoaderoResource):
 
     # TODO: make group id optional
 
-    # Describes a mapping from Loadero resources JSON field names to custom
-    # deserialization functions.
+    # Describes Loadero resources JSON field names that are required for CRUD
+    # operations.
     __body_attributes = [
         "name",
         "count",
@@ -58,8 +58,8 @@ class ParticipantParams(LoaderoResource):
         "video_feed",
     ]
 
-    # Describes Loadero resources JSON field names that are required for CRUD
-    # operations.
+    # Describes a mapping from Loadero resources JSON field names to custom
+    # deserialization functions.
     __custom_deserializers = {
         "created": parser.parse,
         "updated": parser.parse,

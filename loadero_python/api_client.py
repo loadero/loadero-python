@@ -54,20 +54,16 @@ class APIClient:
                 "APIClient singleton first must be initalized with project id."
             )
 
-        self.__project_id = project_id
-
         if access_token is None:
             raise Exception(
                 "APIClient singleton first must be "
                 "initalized with access token."
             )
 
+        self.__project_id = project_id
         self.__access_token = access_token
-
         self.__api_base = api_base
-
         self.__headers["Authorization"] = "LoaderoAuth " + self.__access_token
-
         self.__pool_manager = urllib3.PoolManager(
             num_pools=self.__pool_size,
             headers=self.__headers,
@@ -112,8 +108,6 @@ class APIClient:
 
         if resp.status // 100 != 2:
             raise APIException(f"Loadero API request failed: {resp.data}")
-
-        print(resp.data)
 
         if len(resp.data) == 0:
             return None

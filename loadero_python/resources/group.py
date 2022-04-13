@@ -33,12 +33,9 @@ class GroupParams(LoaderoResource):
         "_participant_count": "participant_count",
     }
 
-    # Describes a mapping from Loadero resources JSON field names to custom
-    # deserialization functions.
-    __body_attributes = {
-        "count": "count",
-        "name": "name",
-    }
+    # Describes Loadero resources JSON field names that are required for CRUD
+    # operations.
+    __body_attributes = ["count", "name"]
 
     # Describes a mapping from Loadero resources JSON field names to custom
     # deserialization functions.
@@ -53,7 +50,6 @@ class GroupParams(LoaderoResource):
     count = None
     name = None
 
-    _project_id = None
     _total_cu_count = None
     _participant_count = None
     _created = None
@@ -91,10 +87,6 @@ class GroupParams(LoaderoResource):
     @property
     def participant_count(self) -> int:
         return self._participant_count
-
-    @property
-    def project_id(self) -> int:
-        return self._project_id
 
     def with_id(self, group_id: int) -> GroupParams:
         self.group_id = group_id

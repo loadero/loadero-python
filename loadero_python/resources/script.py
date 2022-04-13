@@ -22,11 +22,9 @@ class FileParams(LoaderoResource):
         "_updated": "updated",
         "_file_type": "file_type",
         "_content": "content",
-        "_project_id": "project_id",
     }
 
     # Describes a mapping from Loadero resources JSON field names to custom
-    # deserialization functions.
     __custom_deserializers = {
         "created": parser.parse,
         "updated": parser.parse,
@@ -37,7 +35,6 @@ class FileParams(LoaderoResource):
     _updated = None
     _file_type = None
     _content = None
-    _project_id = None
 
     def __init__(self, file_id: int or None = None):
         self.file_id = file_id
@@ -57,10 +54,6 @@ class FileParams(LoaderoResource):
     @property
     def content(self) -> datetime or None:
         return self._content
-
-    @property
-    def project_id(self) -> datetime or None:
-        return self._project_id
 
     def from_json(self, json_value: dict[str, any]) -> FileParams:
         """Serializes file resource from JSON.
@@ -114,7 +107,7 @@ class Script(LoaderoResource):
         """
 
         if script_id is not None:
-            self.params = FileParams(script_id)
+            self._params = FileParams(script_id)
 
             return
 
@@ -180,7 +173,7 @@ class Script(LoaderoResource):
         return self.content
 
     def read(self) -> Script:
-        self._params = FileAPI().read(self.params)
+        self._params = FileAPI().read(self._params)
 
         return self
 

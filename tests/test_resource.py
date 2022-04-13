@@ -1,12 +1,8 @@
 """Resource module tests"""
 
 
-# pylint: disable=wildcard-import
-
-
 import pytest
 from loadero_python.resources.resource import to_json
-from .utils import *
 
 
 def test_to_json():

@@ -90,7 +90,6 @@ class TestParams(LoaderoResource):
     _created = None
     _updated = None
     _script_file_id = None  # could be completely hidden from users.
-    _project_id = None
     _group_count = None
     _participant_count = None
     _deleted = None
@@ -142,10 +141,6 @@ class TestParams(LoaderoResource):
     @property
     def deleted(self) -> bool:
         return self._deleted
-
-    @property
-    def project_id(self) -> bool:
-        return self._project_id
 
     # parameter builder
 

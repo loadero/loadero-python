@@ -4,76 +4,40 @@
 # pylint: disable=missing-function-docstring
 # pylint: disable=redefined-outer-name
 # pylint: disable=wildcard-import
+# pylint: disable=missing-class-docstring
 
 
-from datetime import datetime
-import os
 import json
 import re
 import pytest
 import httpretty
-from loadero_python.resources.script import Script
-from loadero_python.resources.test import TestParams, TestAPI
+from dateutil import parser
 from loadero_python.api_client import APIClient
 from loadero_python.resources.group import *
-from .utils import *
+from . import identifiers
 
 
-access_token = os.environ.get("ACCESS_TOKEN", default="LOADERO_ACCESS_TOKEN")
-api_base = os.environ.get("API_BASE", default="http://mock.loadero.api/v2/")
-mock_api = os.environ.get("MOCK_API", default="true") == "true"
-project_id = int(os.environ.get("PROJECT_ID", default="45"))
+created_time = parser.parse("2022-04-01T13:54:25.689Z")
+updated_time = parser.parse("2024-02-03T15:42:54.689Z")
 
-
-time_now = datetime.now()
 
 sample_group_json = {
     "count": 8,
     "created": "2022-04-01T13:54:25.689Z",
-    "id": 35,
+    "id": identifiers.group_id,
     "name": "pytest_group",
-    "test_id": 0,
-    "updated": "2022-04-01T13:54:25.689Z",
+    "test_id": identifiers.test_id,
+    "updated": "2024-02-03T15:42:54.689Z",
 }
-
-
-@pytest.fixture(scope="module", autouse=True)
-def test_id():
-    if mock_api:
-        httpretty.enable(allow_net_connect=False, verbose=True)
-
-    APIClient(project_id, access_token, api_base)
-
-    tid = 89
-
-    t = TestParams(
-        name="pytest test",
-        start_interval=1,
-        participant_timeout=2,
-        mode="load",
-        increment_strategy="linear",
-        mos_test=False,
-        script=Script(content="pytest test script"),
-    )
-
-    if not mock_api:
-        TestAPI.create(t)
-        tid = t.test_id
-
-    sample_group_json["test_id"] = tid
-
-    yield tid
-
-    if mock_api:
-        return
-
-    TestAPI.delete(t)
 
 
 @pytest.fixture
 def mock():
-    if not mock_api:
-        return
+    httpretty.enable(allow_net_connect=False, verbose=True)
+
+    APIClient(
+        identifiers.project_id, identifiers.access_token, identifiers.api_base
+    )
 
     # create
     httpretty.register_uri(
@@ -133,345 +97,333 @@ def mock():
     )
 
 
-def test_params_str():
-    g = GroupParams()
+class TestGroupParams:
+    def test_str(self):
+        g = GroupParams()
+        dupl = sample_group_json.copy()
+        g.from_json(dupl)
 
-    dupl = sample_group_json.copy()
-    dupl["test_id"] = 10
-
-    g.from_json(dupl)
-
-    assert (
-        str(g)
-        == """|---------|----------------------------------|
+        assert (
+            str(g)
+            == """|---------|----------------------------------|
 | count   | 8                                |
 | created | 2022-04-01 13:54:25.689000+00:00 |
-| id      | 35                               |
+| id      | 34421                            |
 | name    | pytest_group                     |
-| test_id | 10                               |
-| updated | 2022-04-01 13:54:25.689000+00:00 |"""
-    )
-
-
-def test_params_created():
-    g = GroupParams()
-    g.__dict__["_created"] = time_now
-    assert g.created == time_now
-
-
-def test_params_updated():
-    g = GroupParams()
-    g.__dict__["_updated"] = time_now
-    assert g.updated == time_now
-
-
-def test_params_participant_count():
-    g = GroupParams()
-    g.__dict__["_participant_count"] = 3
-    assert g.participant_count == 3
-
-
-def test_params_total_cu_count():
-    g = GroupParams()
-    g.__dict__["_total_cu_count"] = 4
-    assert g.total_cu_count == 4
-
-
-def test_params_project_id():
-    g = GroupParams()
-    g.__dict__["_project_id"] = 5
-    assert g.project_id == 5
-
-
-def test_params_test_id():
-    g = GroupParams()
-    g.__dict__["test_id"] = 6
-    assert g.test_id == 6
-
-
-def test_params_builder_id():
-    g = GroupParams()
-    g.with_id(5)
-    assert g.group_id == 5
-
-
-def test_params_builder_name():
-    g = GroupParams()
-    g.with_name("group")
-    assert g.name == "group"
-
-
-def test_params_builder_count():
-    g = GroupParams()
-    g.with_count(5)
-    assert g.count == 5
-
-
-def test_params_builder_test_id():
-    g = GroupParams()
-    g.in_test(5)
-    assert g.test_id == 5
-
-
-def test_create(mock, test_id, pause):
-    g = Group(params=GroupParams(name="pytest_group", count=8, test_id=test_id))
-
-    g.create()
-
-    assert g.params.name == "pytest_group"
-    assert g.params.count == 8
-    assert g.params.test_id == test_id
-    assert g.params.participant_count is None  # omit empty
-    assert g.params.total_cu_count is None  # omit empty
-    assert g.params.group_id is not None
-    assert g.params.created is not None
-    assert g.params.updated is not None
-
-    g.delete()
-
-
-def test_read(mock, test_id, pause):
-    g = Group(params=GroupParams(name="pytest_group", count=8, test_id=test_id))
-
-    g.create()
-
-    rg = Group(
-        group_id=g.params.group_id,
-        test_id=g.params.test_id,
-    )
-
-    rg.read()
-
-    assert rg.params.name == "pytest_group"
-    assert rg.params.count == 8
-    assert rg.params.test_id == test_id
-    assert rg.params.participant_count is None  # omit empty
-    assert rg.params.total_cu_count is None  # omit empty
-    assert rg.params.group_id is not None
-    assert rg.params.created is not None
-    assert rg.params.updated is not None
-
-    rg.delete()
-
-
-def test_update(mock, test_id, pause):
-    g = Group(params=GroupParams(name="pytest_group", count=8, test_id=test_id))
-
-    g.create()
-
-    gid = g.params.group_id
-
-    g.params.count = 1
-    g.params.name = "updated pytest group name"
-
-    g.update()
-
-    assert g.params.name == "updated pytest group name"
-    assert g.params.count == 1
-    assert g.params.test_id == test_id
-    assert g.params.group_id == gid
-    assert g.params.participant_count is None  # omit empty
-    assert g.params.total_cu_count is None  # omit empty
-    assert g.params.created is not None
-    assert g.params.updated is not None
-
-    g.delete()
-
-
-def test_delete(mock, test_id):
-    g = Group(params=GroupParams(name="pytest_group", count=8, test_id=test_id))
-
-    g.create()
-
-    g.delete()
-
-    assert g.params.name == "pytest_group"
-    assert g.params.count == 8
-    assert g.params.test_id == test_id
-    assert g.params.participant_count is None  # omit empty
-    assert g.params.total_cu_count is None  # omit empty
-    assert g.params.group_id is not None
-    assert g.params.created is not None
-    assert g.params.updated is not None
-
-
-def test_duplicate(mock, test_id, pause):
-    g = Group(params=GroupParams(name="pytest_group", count=8, test_id=test_id))
-
-    g.create()
-
-    gid = g.params.group_id
-
-    dupl = g.duplicate("duplicate pytest group name")
-
-    assert g.params.name == "pytest_group"
-    assert g.params.count == 8
-    assert g.params.test_id == test_id
-    assert g.params.participant_count is None  # omit empty
-    assert g.params.total_cu_count is None  # omit empty
-    assert g.params.group_id is not None
-    assert g.params.created is not None
-    assert g.params.updated is not None
-
-    assert dupl.params.name == "duplicate pytest group name"
-    assert dupl.params.count == 8
-    assert dupl.params.test_id == test_id
-    assert dupl.params.group_id > gid
-    assert dupl.params.participant_count is None  # omit empty
-    assert dupl.params.total_cu_count is None  # omit empty
-    assert dupl.params.created is not None
-    assert dupl.params.updated is not None
-
-    g.delete()
-    dupl.delete()
-
-
-def test_api_create(mock, test_id, pause):
-    ret = GroupAPI.create(
-        GroupParams(name="pytest_group", count=8, test_id=test_id)
-    )
-
-    assert ret.name == "pytest_group"
-    assert ret.count == 8
-    assert ret.test_id == test_id
-    assert ret.participant_count is None  # omit empty
-    assert ret.total_cu_count is None  # omit empty
-    assert ret.group_id is not None
-    assert ret.created is not None
-    assert ret.updated is not None
-
-    GroupAPI.delete(ret)
-
-
-def test_api_create_invalid_params():
-    with pytest.raises(Exception):
-        GroupAPI.create(GroupParams(name="pytest_group", count=8))
-
-
-def test_api_read(mock, test_id, pause):
-    gid = GroupAPI.create(
-        GroupParams(name="pytest_group", count=8, test_id=test_id)
-    ).group_id
-
-    ret = GroupAPI.read(
-        GroupParams(name="pytest_group", count=8, test_id=test_id, group_id=gid)
-    )
-
-    assert ret.name == "pytest_group"
-    assert ret.count == 8
-    assert ret.test_id == test_id
-    assert ret.group_id == gid
-    assert ret.participant_count is None  # omit empty
-    assert ret.total_cu_count is None  # omit empty
-    assert ret.created is not None
-    assert ret.updated is not None
-
-    GroupAPI.delete(ret)
-
-
-def test_api_read_invalid_params():
-    with pytest.raises(Exception):
-        GroupAPI.read(
-            GroupParams(name="pytest_group", count=8, test_id=test_id)
+| test_id | 12734                            |
+| updated | 2024-02-03 15:42:54.689000+00:00 |"""
         )
 
-    with pytest.raises(Exception):
-        GroupAPI.read(GroupParams(name="pytest_group", count=8, group_id=1))
+    def test_created(self):
+        g = GroupParams()
+        g.__dict__["_created"] = created_time
+        assert g.created == created_time
+
+    def test_updated(self):
+        g = GroupParams()
+        g.__dict__["_updated"] = updated_time
+        assert g.updated == updated_time
+
+    def test_participant_count(self):
+        g = GroupParams()
+        g.__dict__["_participant_count"] = 3
+        assert g.participant_count == 3
+
+    def test_total_cu_count(self):
+        g = GroupParams()
+        g.__dict__["_total_cu_count"] = 4
+        assert g.total_cu_count == 4
+
+    def test_builder_id(self):
+        g = GroupParams()
+        g.with_id(5)
+        assert g.group_id == 5
+
+    def test_builder_name(self):
+        g = GroupParams()
+        g.with_name("group")
+        assert g.name == "group"
+
+    def test_builder_count(self):
+        g = GroupParams()
+        g.with_count(5)
+        assert g.count == 5
+
+    def test_builder_test_id(self):
+        g = GroupParams()
+        g.in_test(5)
+        assert g.test_id == 5
 
 
-def test_api_update(mock, test_id, pause):
-    gid = GroupAPI.create(
-        GroupParams(name="pytest_group", count=8, test_id=test_id)
-    ).group_id
-
-    ret = GroupAPI.update(
-        GroupParams(
-            group_id=gid,
-            test_id=test_id,
-            name="updated pytest group name",
-            count=1,
-        )
-    )
-
-    assert ret.name == "updated pytest group name"
-    assert ret.count == 1
-    assert ret.test_id == test_id
-    assert ret.group_id == gid
-    assert ret.participant_count is None  # omit empty
-    assert ret.total_cu_count is None  # omit empty
-    assert ret.created is not None
-    assert ret.updated is not None
-
-    GroupAPI.delete(ret)
-
-
-def test_api_update_invalid_params():
-    with pytest.raises(Exception):
-        GroupAPI.update(
-            GroupParams(name="pytest_group", count=8, test_id=test_id)
-        )
-
-    with pytest.raises(Exception):
-        GroupAPI.update(GroupParams(name="pytest_group", count=8, group_id=1))
-
-
-def test_api_delete(mock, test_id, pause):
-    gid = GroupAPI.create(
-        GroupParams(name="pytest_group", count=8, test_id=test_id)
-    ).group_id
-
-    ret = GroupAPI.delete(GroupParams(test_id=test_id, group_id=gid))
-
-    assert ret is None
-
-
-def test_api_delete_invalid_params():
-    with pytest.raises(Exception):
-        GroupAPI.delete(
-            GroupParams(name="pytest_group", count=8, test_id=test_id)
+class TestGroup:
+    def test_create(self, mock):
+        g = Group(
+            params=GroupParams(
+                name="pytest_group", count=8, test_id=identifiers.test_id
+            )
         )
 
-    with pytest.raises(Exception):
-        GroupAPI.delete(GroupParams(name="pytest_group", count=8, group_id=1))
+        g.create()
 
+        assert g.params.test_id == identifiers.test_id
+        assert g.params.group_id == identifiers.group_id
+        assert g.params.created == created_time
+        assert g.params.updated == updated_time
+        assert g.params.name == "pytest_group"
+        assert g.params.count == 8
+        assert g.params.participant_count is None  # omit empty
+        assert g.params.total_cu_count is None  # omit empty
 
-def test_api_duplicate(mock, test_id, pause):
-    gid = GroupAPI.create(
-        GroupParams(name="pytest_group", count=8, test_id=test_id)
-    ).group_id
+        assert httpretty.last_request().parsed_body == {
+            "count": 8,
+            "name": "pytest_group",
+        }
 
-    ret = GroupAPI.duplicate(
-        GroupParams(
-            group_id=gid,
-            test_id=test_id,
-            name="duplicate pytest group name",
-        )
-    )
+    def test_read(self, mock):
+        g = Group(group_id=identifiers.group_id, test_id=identifiers.test_id)
 
-    assert ret.name == "duplicate pytest group name"
-    assert ret.count == 8
-    assert ret.test_id == test_id
-    assert ret.group_id > gid
-    assert ret.participant_count is None  # omit empty
-    assert ret.total_cu_count is None  # omit empty
-    assert ret.created is not None
-    assert ret.updated is not None
+        g.read()
 
-    GroupAPI.delete(GroupParams(test_id=test_id, group_id=gid))
-    GroupAPI.delete(ret)
+        assert g.params.test_id == identifiers.test_id
+        assert g.params.group_id == identifiers.group_id
+        assert g.params.created == created_time
+        assert g.params.updated == updated_time
+        assert g.params.name == "pytest_group"
+        assert g.params.count == 8
+        assert g.params.participant_count is None  # omit empty
+        assert g.params.total_cu_count is None  # omit empty
 
+        assert httpretty.last_request().parsed_body == ""
 
-def test_api_duplicate_invalid_params():
-    with pytest.raises(Exception):
-        GroupAPI.duplicate(
-            GroupParams(name="pytest_group", count=8, test_id=test_id)
-        )
-
-    with pytest.raises(Exception):
-        GroupAPI.duplicate(
-            GroupParams(name="pytest_group", count=8, group_id=1)
+    def test_update(self, mock):
+        g = Group(
+            params=GroupParams(
+                group_id=identifiers.group_id, test_id=identifiers.test_id
+            )
         )
 
+        g.params.count = 1
+        g.params.name = "updated pytest group name"
 
-def test_api_read_all():
-    GroupAPI.read_all(5)
+        g.update()
+
+        assert g.params.test_id == identifiers.test_id
+        assert g.params.group_id == identifiers.group_id
+        assert g.params.created == created_time
+        assert g.params.updated == updated_time
+        assert g.params.name == "updated pytest group name"
+        assert g.params.count == 1
+        assert g.params.participant_count is None  # omit empty
+        assert g.params.total_cu_count is None  # omit empty
+
+        assert httpretty.last_request().parsed_body == {
+            "count": 1,
+            "name": "updated pytest group name",
+        }
+
+    def test_delete(self, mock):
+        g = Group(
+            params=GroupParams(
+                group_id=identifiers.group_id, test_id=identifiers.test_id
+            )
+        )
+
+        g.delete()
+
+        assert g.params.name is None
+        assert g.params.count is None
+        assert g.params.test_id == identifiers.test_id
+        assert g.params.group_id == identifiers.group_id
+        assert g.params.participant_count is None  # omit empty
+        assert g.params.total_cu_count is None  # omit empty
+        assert g.params.created is None
+        assert g.params.updated is None
+
+        assert httpretty.last_request().parsed_body == ""
+
+    def test_duplicate(self, mock):
+        g = Group(
+            params=GroupParams(
+                group_id=identifiers.group_id, test_id=identifiers.test_id
+            )
+        )
+
+        dupl = g.duplicate("duplicate pytest group name")
+
+        assert g.params.name is None
+        assert g.params.count is None
+        assert g.params.test_id == identifiers.test_id
+        assert g.params.group_id == identifiers.group_id
+        assert g.params.participant_count is None  # omit empty
+        assert g.params.total_cu_count is None  # omit empty
+        assert g.params.created is None
+        assert g.params.updated is None
+
+        assert dupl.params.name == "duplicate pytest group name"
+        assert dupl.params.count == 8
+        assert dupl.params.test_id == identifiers.test_id
+        assert dupl.params.group_id == identifiers.group_id + 1
+        assert dupl.params.participant_count is None  # omit empty
+        assert dupl.params.total_cu_count is None  # omit empty
+        assert dupl.params.created is not None
+        assert dupl.params.updated is not None
+
+        assert httpretty.last_request().parsed_body == {
+            "name": "duplicate pytest group name"
+        }
+
+
+class TestGroupAPI:
+    def test_create(self, mock):
+        ret = GroupAPI.create(
+            GroupParams(
+                name="pytest_group", count=8, test_id=identifiers.test_id
+            )
+        )
+
+        assert ret.name == "pytest_group"
+        assert ret.count == 8
+        assert ret.test_id == identifiers.test_id
+        assert ret.group_id == identifiers.group_id
+        assert ret.participant_count is None  # omit empty
+        assert ret.total_cu_count is None  # omit empty
+        assert ret.created == created_time
+        assert ret.updated == updated_time
+
+        assert httpretty.last_request().parsed_body == {
+            "count": 8,
+            "name": "pytest_group",
+        }
+
+    def test_create_invalid_params(self):
+        with pytest.raises(Exception):
+            GroupAPI.create(GroupParams(name="pytest_group", count=8))
+
+    def test_read(self, mock):
+        ret = GroupAPI.read(
+            GroupParams(
+                test_id=identifiers.test_id,
+                group_id=identifiers.group_id,
+            )
+        )
+
+        assert ret.name == "pytest_group"
+        assert ret.count == 8
+        assert ret.test_id == identifiers.test_id
+        assert ret.group_id == identifiers.group_id
+        assert ret.participant_count is None  # omit empty
+        assert ret.total_cu_count is None  # omit empty
+        assert ret.created == created_time
+        assert ret.updated == updated_time
+
+        assert httpretty.last_request().parsed_body == ""
+
+    def test_read_invalid_params(self):
+        with pytest.raises(Exception):
+            GroupAPI.read(
+                GroupParams(
+                    name="pytest_group", count=8, test_id=identifiers.test_id
+                )
+            )
+
+        with pytest.raises(Exception):
+            GroupAPI.read(GroupParams(name="pytest_group", count=8, group_id=1))
+
+    def test_update(self, mock):
+        ret = GroupAPI.update(
+            GroupParams(
+                group_id=identifiers.group_id,
+                test_id=identifiers.test_id,
+                name="updated pytest group name",
+                count=1,
+            )
+        )
+
+        assert ret.name == "updated pytest group name"
+        assert ret.count == 1
+        assert ret.test_id == identifiers.test_id
+        assert ret.group_id == identifiers.group_id
+        assert ret.participant_count is None  # omit empty
+        assert ret.total_cu_count is None  # omit empty
+        assert ret.created == created_time
+        assert ret.updated == updated_time
+
+        assert httpretty.last_request().parsed_body == {
+            "count": 1,
+            "name": "updated pytest group name",
+        }
+
+    def test_update_invalid_params(self):
+        with pytest.raises(Exception):
+            GroupAPI.update(
+                GroupParams(
+                    name="pytest_group", count=8, test_id=identifiers.test_id
+                )
+            )
+
+        with pytest.raises(Exception):
+            GroupAPI.update(
+                GroupParams(name="pytest_group", count=8, group_id=1)
+            )
+
+    def test_delete(self, mock):
+        ret = GroupAPI.delete(
+            GroupParams(
+                test_id=identifiers.test_id, group_id=identifiers.group_id
+            )
+        )
+
+        assert ret is None
+
+        assert httpretty.last_request().parsed_body == ""
+
+    def test_delete_invalid_params(self):
+        with pytest.raises(Exception):
+            GroupAPI.delete(
+                GroupParams(
+                    name="pytest_group", count=8, test_id=identifiers.test_id
+                )
+            )
+
+        with pytest.raises(Exception):
+            GroupAPI.delete(
+                GroupParams(name="pytest_group", count=8, group_id=1)
+            )
+
+    def test_duplicate(self, mock):
+        ret = GroupAPI.duplicate(
+            GroupParams(
+                group_id=identifiers.group_id,
+                test_id=identifiers.test_id,
+                name="duplicate pytest group name",
+            )
+        )
+
+        assert ret.name == "duplicate pytest group name"
+        assert ret.count == 8
+        assert ret.test_id == identifiers.test_id
+        assert ret.group_id == identifiers.group_id + 1
+        assert ret.participant_count is None  # omit empty
+        assert ret.total_cu_count is None  # omit empty
+        assert ret.created == created_time
+        assert ret.updated == updated_time
+
+        assert httpretty.last_request().parsed_body == {
+            "name": "duplicate pytest group name"
+        }
+
+    def test_duplicate_invalid_params(self):
+        with pytest.raises(Exception):
+            GroupAPI.duplicate(
+                GroupParams(
+                    name="pytest_group", count=8, test_id=identifiers.test_id
+                )
+            )
+
+        with pytest.raises(Exception):
+            GroupAPI.duplicate(
+                GroupParams(name="pytest_group", count=8, group_id=1)
+            )
+
+    def test_read_all(self):
+        GroupAPI.read_all(5)
