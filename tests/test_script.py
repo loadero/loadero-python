@@ -6,6 +6,7 @@
 # pylint: disable=wildcard-import
 # pylint: disable=protected-access
 # pylint: disable=missing-class-docstring
+# pylint: disable=no-member
 
 
 import re
