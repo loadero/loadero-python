@@ -199,7 +199,17 @@ class FileAPI:
             raise Exception("FileParams.file_id must be a valid int")
 
         return params.from_json(
-            APIClient().get(
-                f"projects/{APIClient().project_id}/files/{params.file_id}/"
-            )
+            APIClient().get(FileAPI().route(params.file_id))
         )
+
+    @staticmethod
+    def route(file_id: int) -> str:
+        """Build file resource url route.
+
+        Args:
+            file_id (int): File resource id.
+
+        Returns:
+            str: Route to file resource.
+        """
+        return APIClient().project_url + f"files/{file_id}/"

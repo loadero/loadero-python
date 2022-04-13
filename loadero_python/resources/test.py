@@ -326,10 +326,7 @@ class TestAPI:
         scp = deepcopy(params.script)
 
         ret = params.from_json(
-            APIClient().post(
-                f"projects/{APIClient().project_id}/tests/",
-                params.to_json(),
-            )
+            APIClient().post(TestAPI().route(), params.to_json())
         )
 
         ret.script = scp
@@ -353,11 +350,7 @@ class TestAPI:
         if params.test_id is None:
             raise Exception("TestParams.test_id must be a valid int")
 
-        ret = params.from_json(
-            APIClient().get(
-                f"projects/{APIClient().project_id}/tests/{params.test_id}/"
-            )
-        )
+        ret = params.from_json(APIClient().get(TestAPI().route(params.test_id)))
 
         # pylint: disable=protected-access
         ret.script = Script(script_id=ret._script_file_id)
@@ -386,11 +379,7 @@ class TestAPI:
         scp = deepcopy(params.script)
 
         ret = params.from_json(
-            APIClient().put(
-                f"projects/{APIClient().project_id}/"
-                f"tests/{params.test_id}/",
-                params.to_json(),
-            )
+            APIClient().put(TestAPI().route(params.test_id), params.to_json())
         )
 
         ret.script = scp
@@ -414,9 +403,7 @@ class TestAPI:
         if params.test_id is None:
             raise Exception("TestParams.test_id must be a valid int")
 
-        APIClient().delete(
-            f"projects/{APIClient().project_id}/tests/{params.test_id}/",
-        )
+        APIClient().delete(TestAPI().route(params.test_id))
 
         params.__dict__["_deleted"] = True
 
@@ -444,8 +431,7 @@ class TestAPI:
 
         dupl = dupl.from_json(
             APIClient().post(
-                f"projects/{APIClient().project_id}"
-                f"/tests/{params.test_id}/copy/",
+                TestAPI().route(params.test_id) + "copy/",
                 params.to_json(["name"]),
             )
         )
@@ -461,3 +447,22 @@ class TestAPI:
     def read_all() -> list[TestParams]:
         # TODO: implement.
         pass
+
+    @staticmethod
+    def route(test_id: int or None = None) -> str:
+        """Build test resource url route.
+
+        Args:
+            test_id (int, optional): Test resource id. Defaults
+                to None. If omitted the route will point to all test
+                resources.
+
+        Returns:
+            str: Route to test resource/s.
+        """
+        r = APIClient().project_url + "tests/"
+
+        if test_id is not None:
+            r += f"{test_id}/"
+
+        return r

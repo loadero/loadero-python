@@ -249,11 +249,7 @@ class GroupAPI:
             raise Exception("GroupParams.test_id must be a valid int")
 
         return params.from_json(
-            APIClient().post(
-                f"projects/{APIClient().project_id}"
-                f"/tests/{params.test_id}/groups/",
-                params.to_json(),
-            )
+            APIClient().post(GroupAPI.route(params.test_id), params.to_json())
         )
 
     @staticmethod
@@ -278,10 +274,7 @@ class GroupAPI:
             raise Exception("GroupParams.group_id must be a valid int")
 
         return params.from_json(
-            APIClient().get(
-                f"projects/{APIClient().project_id}"
-                f"/tests/{params.test_id}/groups/{params.group_id}/",
-            )
+            APIClient().get(GroupAPI.route(params.test_id, params.group_id))
         )
 
     @staticmethod
@@ -307,8 +300,7 @@ class GroupAPI:
 
         return params.from_json(
             APIClient().put(
-                f"projects/{APIClient().project_id}"
-                f"/tests/{params.test_id}/groups/{params.group_id}/",
+                GroupAPI.route(params.test_id, params.group_id),
                 params.to_json(),
             )
         )
@@ -331,10 +323,7 @@ class GroupAPI:
         if params.group_id is None:
             raise Exception("GroupParams.group_id must be a valid int")
 
-        APIClient().delete(
-            f"projects/{APIClient().project_id}"
-            f"/tests/{params.test_id}/groups/{params.group_id}/",
-        )
+        APIClient().delete(GroupAPI.route(params.test_id, params.group_id))
 
     @staticmethod
     def duplicate(params: GroupParams) -> GroupParams:
@@ -362,8 +351,7 @@ class GroupAPI:
 
         return dupl.from_json(
             APIClient().post(
-                f"projects/{APIClient().project_id}"
-                f"/tests/{params.test_id}/groups/{params.group_id}/copy/",
+                GroupAPI.route(params.test_id, params.group_id) + "copy/",
                 params.to_json(["name"]),
             )
         )
@@ -372,3 +360,22 @@ class GroupAPI:
     def read_all(test_id: int) -> list[GroupParams]:
         # TODO: implement.
         pass
+
+    @staticmethod
+    def route(test_id: int, group_id: int or None = None) -> str:
+        """Build group resource url route.
+
+        Args:
+            test_id (int): Test resource id.
+            group_id (int, optional): Group resource id. Defaults to None. If
+                omitted the route will point to all group resources.
+
+        Returns:
+            str: Route to group resource/s.
+        """
+        r = APIClient().project_url + f"tests/{test_id}/groups/"
+
+        if group_id is not None:
+            r += f"{group_id}/"
+
+        return r

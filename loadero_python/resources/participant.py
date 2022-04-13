@@ -347,9 +347,7 @@ class ParticipantAPI:
 
         return params.from_json(
             APIClient().post(
-                f"projects/{APIClient().project_id}"
-                f"/tests/{params.test_id}"
-                "/participants/",
+                ParticipantAPI().route(params.test_id),
                 params.to_json(),
             )
         )
@@ -380,9 +378,7 @@ class ParticipantAPI:
 
         return params.from_json(
             APIClient().get(
-                f"projects/{APIClient().project_id}"
-                f"/tests/{params.test_id}"
-                f"/participants/{params.participant_id}/",
+                ParticipantAPI().route(params.test_id, params.participant_id)
             )
         )
 
@@ -412,9 +408,7 @@ class ParticipantAPI:
 
         return params.from_json(
             APIClient().put(
-                f"projects/{APIClient().project_id}"
-                f"/tests/{params.test_id}"
-                f"/participants/{params.participant_id}/",
+                ParticipantAPI().route(params.test_id, params.participant_id),
                 params.to_json(),
             )
         )
@@ -441,9 +435,7 @@ class ParticipantAPI:
             )
 
         APIClient().delete(
-            f"projects/{APIClient().project_id}"
-            f"/tests/{params.test_id}"
-            f"/participants/{params.participant_id}/",
+            ParticipantAPI().route(params.test_id, params.participant_id)
         )
 
     @staticmethod
@@ -474,9 +466,8 @@ class ParticipantAPI:
 
         return dupl.from_json(
             APIClient().post(
-                f"projects/{APIClient().project_id}/"
-                f"tests/{params.test_id}/"
-                f"participants/{params.participant_id}/copy/",
+                ParticipantAPI().route(params.test_id, params.participant_id)
+                + "copy/",
                 params.to_json(["name"]),
             )
         )
@@ -485,3 +476,23 @@ class ParticipantAPI:
     def read_all(test_id: int):
         # TODO: implement.
         pass
+
+    @staticmethod
+    def route(test_id: int, participant_id: int or None = None) -> str:
+        """Build participant resource url route.
+
+        Args:
+            test_id (int): Test resource id.
+            participant_id (int, optional): Participant resource id. Defaults
+                to None. If omitted the route will point to all participant
+                resources.
+
+        Returns:
+            str: Route to participant resource/s.
+        """
+        r = APIClient().project_url + f"tests/{test_id}/participants/"
+
+        if participant_id is not None:
+            r += f"{participant_id}/"
+
+        return r

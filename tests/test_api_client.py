@@ -46,6 +46,27 @@ class TestAPIClient:
 
         APIClient()
 
+    def test_repeated_init(self):
+        APIClient(
+            project_id=432532334,
+            access_token="changed_token",
+            api_base="changer_api_base",
+        )
+
+        assert APIClient().api_base == "changer_api_base"
+        assert APIClient().access_token == "changed_token"
+        assert APIClient().project_id == 432532334
+
+        APIClient(
+            project_id=identifiers.project_id,
+            access_token=identifiers.access_token,
+            api_base=identifiers.api_base,
+        )
+
+        assert APIClient().api_base == identifiers.api_base
+        assert APIClient().access_token == identifiers.access_token
+        assert APIClient().project_id == identifiers.project_id
+
     def test_api_client_api_base(self, api):
         assert APIClient().api_base == identifiers.api_base
 

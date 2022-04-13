@@ -46,7 +46,7 @@ class APIClient:
         access_token: str or None = None,
         api_base: str = "https://api.loadero.com/v2/",
     ) -> None:
-        if self.__initalized:
+        if self.__initalized and project_id is None and access_token is None:
             return
 
         if project_id is None:
@@ -212,6 +212,10 @@ class APIClient:
     @property
     def api_base(self) -> str:
         return self.__api_base
+
+    @property
+    def project_url(self) -> str:
+        return self.__api_base + f"projects/{self.project_id}/"
 
     @property
     def access_token(self) -> str:
