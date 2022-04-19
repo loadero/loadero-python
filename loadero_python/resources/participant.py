@@ -206,7 +206,7 @@ class ParticipantParams(LoaderoResource):
         """Serializes participant resource to JSON.
 
         Args:
-            body_attributes (list[str]orNone, optional): String list of JSON
+            body_attributes (list[str] or None, optional): String list of JSON
                 field names that will be serialized. Defaults to None, then
                 the default body attributed for participant resource are used.
 
