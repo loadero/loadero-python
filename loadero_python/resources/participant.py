@@ -80,7 +80,6 @@ class ParticipantParams(LoaderoResource):
     network = None
     video_feed = None
 
-    _project_id = None
     _created = None
     _updated = None
 
@@ -88,7 +87,6 @@ class ParticipantParams(LoaderoResource):
         self,
         participant_id: int or None = None,
         test_id: int or None = None,
-        project_id: int or None = None,
         name: str or None = None,
         count: int or None = None,
         compute_unit: str or None = None,  # classificator
@@ -102,7 +100,6 @@ class ParticipantParams(LoaderoResource):
     ) -> None:
         self.participant_id = participant_id
         self.test_id = test_id
-        self._project_id = project_id
         self.name = name
         self.count = count
         self.compute_unit = compute_unit
@@ -125,10 +122,6 @@ class ParticipantParams(LoaderoResource):
     def updated(self) -> datetime:
         return self._updated
 
-    @property
-    def project_id(self) -> int:
-        return self._project_id
-
     def with_id(self, pid: int) -> ParticipantParams:
         self.participant_id = pid
 
@@ -136,11 +129,6 @@ class ParticipantParams(LoaderoResource):
 
     def in_test(self, tid: int) -> ParticipantParams:
         self.test_id = tid
-
-        return self
-
-    def in_project(self, pid: int) -> ParticipantParams:
-        self._project_id = pid
 
         return self
 
@@ -286,9 +274,7 @@ class Participant:
 
         return self
 
-    def update(
-        self,
-    ) -> Participant:
+    def update(self) -> Participant:
         """Updates particpant with given parameters.
 
         Returns:
@@ -306,6 +292,9 @@ class Participant:
 
     def duplicate(self, name: str) -> Participant:
         """Duplicates and existing participant.
+
+        Args:
+            name (str): New name for the duplicate participant.
 
         Returns:
             Participant: Duplicate instance of participant.

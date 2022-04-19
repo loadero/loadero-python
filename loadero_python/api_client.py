@@ -30,7 +30,8 @@ class APIClient:
 
     __pool_size = 4
     __pool_manager = None
-    __headers = {"Content-Type": "application/json"}
+    # __headers = {}
+    __auth_header = {}
 
     __initalized = False
     __project_id = None
@@ -63,11 +64,14 @@ class APIClient:
         self.__project_id = project_id
         self.__access_token = access_token
         self.__api_base = api_base
-        self.__headers["Authorization"] = "LoaderoAuth " + self.__access_token
-        self.__pool_manager = urllib3.PoolManager(
-            num_pools=self.__pool_size,
-            headers=self.__headers,
+
+        self.__auth_header["Authorization"] = (
+            "LoaderoAuth " + self.__access_token
         )
+
+        # self.__headers["Authorization"] = "LoaderoAuth " + self.__access_token
+        self.__pool_manager = urllib3.PoolManager(num_pools=self.__pool_size)
+        # headers=self.__headers,
 
         self.__initalized = True
 
@@ -97,7 +101,9 @@ class APIClient:
         """
 
         resp = self.__pool_manager.request(
-            method="GET", url=urljoin(self.api_base, route)
+            method="GET",
+            url=urljoin(self.api_base, route),
+            headers=self._build_headers(),
         )
 
         if "application/json" not in resp.headers["Content-Type"]:
@@ -134,7 +140,10 @@ class APIClient:
         encoded_body = json.dumps(body)
 
         resp = self.__pool_manager.request(
-            method="POST", url=urljoin(self.api_base, route), body=encoded_body
+            method="POST",
+            url=urljoin(self.api_base, route),
+            body=encoded_body,
+            headers=self._build_headers({"Content-Type": "application/json"}),
         )
 
         if "application/json" not in resp.headers["Content-Type"]:
@@ -172,7 +181,10 @@ class APIClient:
         encoded_body = json.dumps(body)
 
         resp = self.__pool_manager.request(
-            method="PUT", url=urljoin(self.api_base, route), body=encoded_body
+            method="PUT",
+            url=urljoin(self.api_base, route),
+            body=encoded_body,
+            headers=self._build_headers({"Content-Type": "application/json"}),
         )
 
         if "application/json" not in resp.headers["Content-Type"]:
@@ -203,11 +215,40 @@ class APIClient:
         """
 
         resp = self.__pool_manager.request(
-            method="DELETE", url=urljoin(self.api_base, route)
+            method="DELETE",
+            url=urljoin(self.api_base, route),
+            headers=self._build_headers(),
         )
 
         if resp.status // 100 != 2:
             raise APIException(f"Loadero API request failed: {resp.data}")
+
+    def _build_headers(
+        self, headers: dict[str, str] or None = None
+    ) -> dict[str, str]:
+        """Adds authentication headers common for all requests to request
+        specifc headers.
+
+        Args:
+            headers (dict[str, str] optional): Request specific headers.
+                Defaults to None. If omitted only auth headers are added.
+
+        Returns:
+            dict[str, str]: Combination of auth and request specific headers.
+        """
+
+        h = {}
+
+        for k, v in self.__auth_header.items():
+            h[k] = v
+
+        if headers is None:
+            return h
+
+        for k, v in headers.items():
+            h[k] = v
+
+        return h
 
     @property
     def api_base(self) -> str:
@@ -226,5 +267,5 @@ class APIClient:
         return self.__project_id
 
     @property
-    def headers(self) -> dict[str, str]:
-        return self.__headers
+    def auth_header(self) -> dict[str, str]:
+        return self.__auth_header

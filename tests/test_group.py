@@ -1,8 +1,6 @@
 """Group resource tests"""
 
-# pylint: disable=unused-argument
 # pylint: disable=missing-function-docstring
-# pylint: disable=redefined-outer-name
 # pylint: disable=wildcard-import
 # pylint: disable=missing-class-docstring
 # pylint: disable=no-member
@@ -32,7 +30,7 @@ sample_group_json = {
 }
 
 
-@pytest.fixture
+@pytest.fixture(scope="module")
 def mock():
     httpretty.enable(allow_net_connect=False, verbose=True)
 
@@ -97,6 +95,10 @@ def mock():
         forcing_headers={"Content-Type": "application/json"},
     )
 
+    yield
+
+    httpretty.disable()
+
 
 class TestGroupParams:
     def test_str(self):
@@ -156,8 +158,9 @@ class TestGroupParams:
         assert g.test_id == 5
 
 
+@pytest.mark.usefixtures("mock")
 class TestGroup:
-    def test_create(self, mock):
+    def test_create(self):
         g = Group(
             params=GroupParams(
                 name="pytest_group", count=8, test_id=identifiers.test_id
@@ -180,7 +183,7 @@ class TestGroup:
             "name": "pytest_group",
         }
 
-    def test_read(self, mock):
+    def test_read(self):
         g = Group(group_id=identifiers.group_id, test_id=identifiers.test_id)
 
         g.read()
@@ -196,7 +199,7 @@ class TestGroup:
 
         assert httpretty.last_request().parsed_body == ""
 
-    def test_update(self, mock):
+    def test_update(self):
         g = Group(
             params=GroupParams(
                 group_id=identifiers.group_id, test_id=identifiers.test_id
@@ -222,7 +225,7 @@ class TestGroup:
             "name": "updated pytest group name",
         }
 
-    def test_delete(self, mock):
+    def test_delete(self):
         g = Group(
             params=GroupParams(
                 group_id=identifiers.group_id, test_id=identifiers.test_id
@@ -242,7 +245,7 @@ class TestGroup:
 
         assert httpretty.last_request().parsed_body == ""
 
-    def test_duplicate(self, mock):
+    def test_duplicate(self):
         g = Group(
             params=GroupParams(
                 group_id=identifiers.group_id, test_id=identifiers.test_id
@@ -274,8 +277,9 @@ class TestGroup:
         }
 
 
+@pytest.mark.usefixtures("mock")
 class TestGroupAPI:
-    def test_create(self, mock):
+    def test_create(self):
         ret = GroupAPI.create(
             GroupParams(
                 name="pytest_group", count=8, test_id=identifiers.test_id
@@ -300,7 +304,7 @@ class TestGroupAPI:
         with pytest.raises(Exception):
             GroupAPI.create(GroupParams(name="pytest_group", count=8))
 
-    def test_read(self, mock):
+    def test_read(self):
         ret = GroupAPI.read(
             GroupParams(
                 test_id=identifiers.test_id,
@@ -330,7 +334,7 @@ class TestGroupAPI:
         with pytest.raises(Exception):
             GroupAPI.read(GroupParams(name="pytest_group", count=8, group_id=1))
 
-    def test_update(self, mock):
+    def test_update(self):
         ret = GroupAPI.update(
             GroupParams(
                 group_id=identifiers.group_id,
@@ -367,7 +371,7 @@ class TestGroupAPI:
                 GroupParams(name="pytest_group", count=8, group_id=1)
             )
 
-    def test_delete(self, mock):
+    def test_delete(self):
         ret = GroupAPI.delete(
             GroupParams(
                 test_id=identifiers.test_id, group_id=identifiers.group_id
@@ -391,7 +395,7 @@ class TestGroupAPI:
                 GroupParams(name="pytest_group", count=8, group_id=1)
             )
 
-    def test_duplicate(self, mock):
+    def test_duplicate(self):
         ret = GroupAPI.duplicate(
             GroupParams(
                 group_id=identifiers.group_id,

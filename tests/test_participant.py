@@ -1,8 +1,6 @@
 """Participant resource tests"""
 
-# pylint: disable=unused-argument
 # pylint: disable=missing-function-docstring
-# pylint: disable=redefined-outer-name
 # pylint: disable=wildcard-import
 # pylint: disable=missing-class-docstring
 # pylint: disable=no-member
@@ -41,7 +39,7 @@ sample_participant_json = {
 }
 
 
-@pytest.fixture
+@pytest.fixture(scope="module")
 def mock():
     httpretty.enable(allow_net_connect=False, verbose=True)
 
@@ -117,6 +115,10 @@ def mock():
         forcing_headers={"Content-Type": "application/json"},
     )
 
+    yield
+
+    httpretty.disable()
+
 
 class TestParticipantsParams:
     def test_string(self):
@@ -153,16 +155,6 @@ class TestParticipantsParams:
         p.__dict__["_updated"] = updated_time
         assert p.updated == updated_time
 
-    def test_project_id(self):
-        p = ParticipantParams()
-        p.__dict__["_project_id"] = 5
-        assert p.project_id == 5
-
-    def test_test_id(self):
-        p = ParticipantParams()
-        p.__dict__["test_id"] = 5
-        assert p.test_id == 5
-
     def test_builder_id(self):
         p = ParticipantParams()
         p.with_id(5)
@@ -172,11 +164,6 @@ class TestParticipantsParams:
         p = ParticipantParams()
         p.in_test(5)
         assert p.test_id == 5
-
-    def test_builder_project_id(self):
-        p = ParticipantParams()
-        p.in_project(5)
-        assert p.project_id == 5
 
     def test_builder_name(self):
         p = ParticipantParams()
@@ -229,8 +216,9 @@ class TestParticipantsParams:
         assert p.video_feed == "1080p"
 
 
+@pytest.mark.usefixtures("mock")
 class TestParticipant:
-    def test_create(self, mock):
+    def test_create(self):
         p = Participant(
             params=ParticipantParams(
                 group_id=identifiers.group_id,
@@ -277,7 +265,7 @@ class TestParticipant:
             "video_feed": "480p-15fps",
         }
 
-    def test_read(self, mock):
+    def test_read(self):
         p = Participant(
             participant_id=identifiers.participant_id,
             test_id=identifiers.test_id,
@@ -302,7 +290,7 @@ class TestParticipant:
 
         assert httpretty.last_request().parsed_body == ""
 
-    def test_update(self, mock):
+    def test_update(self):
         p = Participant(
             params=ParticipantParams(
                 participant_id=identifiers.participant_id,
@@ -350,7 +338,7 @@ class TestParticipant:
             "video_feed": "360p-15fps",
         }
 
-    def test_delete(self, mock):
+    def test_delete(self):
         p = Participant(
             params=ParticipantParams(
                 participant_id=identifiers.participant_id,
@@ -365,7 +353,7 @@ class TestParticipant:
 
         assert httpretty.last_request().parsed_body == ""
 
-    def test_duplicate(self, mock):
+    def test_duplicate(self):
         p = Participant(
             params=ParticipantParams(
                 participant_id=identifiers.participant_id,
@@ -411,8 +399,9 @@ class TestParticipant:
         }
 
 
+@pytest.mark.usefixtures("mock")
 class TestParticipantAPI:
-    def test_api_create(self, mock):
+    def test_api_create(self):
         ret = ParticipantAPI.create(
             ParticipantParams(
                 name="pytest participant",
@@ -461,7 +450,7 @@ class TestParticipantAPI:
         with pytest.raises(Exception):
             ParticipantAPI.create(ParticipantParams())
 
-    def test_api_read(self, mock):
+    def test_api_read(self):
         p = ParticipantParams(
             test_id=identifiers.test_id,
             participant_id=identifiers.participant_id,
@@ -495,7 +484,7 @@ class TestParticipantAPI:
                 ParticipantParams(participant_id=identifiers.participant_id)
             )
 
-    def test_api_update(self, mock):
+    def test_api_update(self):
         ret = ParticipantAPI.update(
             ParticipantParams(
                 participant_id=identifiers.participant_id,
@@ -552,7 +541,7 @@ class TestParticipantAPI:
                 ParticipantParams(participant_id=identifiers.participant_id)
             )
 
-    def test_api_delete(self, mock):
+    def test_api_delete(self):
         ret = ParticipantAPI.delete(
             ParticipantParams(
                 participant_id=identifiers.participant_id,
@@ -571,7 +560,7 @@ class TestParticipantAPI:
         with pytest.raises(Exception):
             ParticipantAPI.delete(ParticipantParams(participant_id=1))
 
-    def test_api_duplicate(self, mock):
+    def test_api_duplicate(self):
         ret = ParticipantAPI.duplicate(
             ParticipantParams(
                 participant_id=identifiers.participant_id,

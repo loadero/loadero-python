@@ -13,8 +13,7 @@ class LoaderoResource:
 # the ability to not specify group id, Tests do not need to clear the script
 # attribute - this would remove a call to the api. For now serialization should
 # stay as is, until more reqired features become apparent.
-
-
+# TODO: Add support for optional body attributes.
 def to_json(
     resource: dict[str, any],
     attribute_map: dict[str, str],

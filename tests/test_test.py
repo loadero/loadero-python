@@ -1,9 +1,7 @@
 """Test resource tests"""
 
 
-# pylint: disable=unused-argument
 # pylint: disable=missing-function-docstring
-# pylint: disable=redefined-outer-name
 # pylint: disable=wildcard-import
 # pylint: disable=missing-class-docstring
 # pylint: disable=no-member
@@ -42,7 +40,7 @@ sample_json = {
 }
 
 
-@pytest.fixture
+@pytest.fixture(scope="module")
 def mock():
     httpretty.enable(allow_net_connect=False, verbose=True)
 
@@ -85,9 +83,7 @@ def mock():
     # delete
     httpretty.register_uri(
         httpretty.DELETE,
-        re.compile(
-            r"^http://mock\.loadero\.api/v2/" r"projects/\d*/tests/\d*/$"
-        ),
+        re.compile(r"^http://mock\.loadero\.api/v2/projects/\d*/tests/\d*/$"),
     )
 
     dupl = sample_json.copy()
@@ -112,6 +108,10 @@ def mock():
         forcing_headers={"Content-Type": "application/json"},
     )
 
+    yield
+
+    httpretty.disable()
+
 
 class TestTestParams:
     def test_string(self):
@@ -133,7 +133,6 @@ class TestTestParams:
 | name                | pytest test                      |
 | participant_count   | 9355                             |
 | participant_timeout | 13                               |
-| project_id          | 81                               |
 | script              |                                  |
 | script_file_id      | 65                               |
 | start_interval      | 12                               |
@@ -207,8 +206,9 @@ class TestTestParams:
         assert t.script.content == "hello"
 
 
+@pytest.mark.usefixtures("mock")
 class TestTest:
-    def test_create(self, mock):
+    def test_create(self):
         t = Test(
             params=TestParams(
                 name="pytest test",
@@ -246,7 +246,7 @@ class TestTest:
             "start_interval": 12,
         }
 
-    def test_read(self, mock):
+    def test_read(self):
         t = Test(test_id=identifiers.test_id)
 
         t.read()
@@ -266,7 +266,7 @@ class TestTest:
 
         assert httpretty.last_request().parsed_body == ""
 
-    def test_update(self, mock):
+    def test_update(self):
         t = Test(
             params=TestParams(
                 test_id=identifiers.test_id,
@@ -305,7 +305,7 @@ class TestTest:
             "start_interval": 45,
         }
 
-    def test_delete(self, mock):
+    def test_delete(self):
         t = Test(test_id=identifiers.test_id)
 
         t.delete()
@@ -315,7 +315,7 @@ class TestTest:
 
         assert httpretty.last_request().parsed_body == ""
 
-    def test_duplicate(self, mock):
+    def test_duplicate(self):
         t = Test(test_id=identifiers.test_id)
 
         dupl = t.duplicate("pytest duplicate test")
@@ -355,8 +355,9 @@ class TestTest:
         assert httpretty.latest_requests()[-1].parsed_body == ""
 
 
+@pytest.mark.usefixtures("mock")
 class TestTestAPI:
-    def test_api_create(self, mock):
+    def test_api_create(self):
         ret = TestAPI().create(
             TestParams(
                 name="pytest test",
@@ -392,7 +393,7 @@ class TestTestAPI:
             "start_interval": 12,
         }
 
-    def test_api_read(self, mock):
+    def test_api_read(self):
         ret = TestAPI().read(TestParams(test_id=identifiers.test_id))
 
         assert ret.test_id == identifiers.test_id
@@ -414,7 +415,7 @@ class TestTestAPI:
         with pytest.raises(Exception):
             TestAPI.read(TestParams())
 
-    def test_api_update(self, mock):
+    def test_api_update(self):
         ret = TestAPI().update(
             TestParams(
                 test_id=identifiers.test_id,
@@ -455,7 +456,7 @@ class TestTestAPI:
         with pytest.raises(Exception):
             TestAPI.update(TestParams())
 
-    def test_api_delete(self, mock):
+    def test_api_delete(self):
         ret = TestAPI().delete(TestParams(test_id=identifiers.test_id))
 
         assert ret.test_id == identifiers.test_id
@@ -467,7 +468,7 @@ class TestTestAPI:
         with pytest.raises(Exception):
             TestAPI.delete(TestParams())
 
-    def test_api_duplicate(self, mock):
+    def test_api_duplicate(self):
         ret = TestAPI().duplicate(
             TestParams(
                 test_id=identifiers.test_id, name="pytest duplicate test"

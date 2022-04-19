@@ -12,6 +12,11 @@ from . import identifiers
 # pylint: disable=missing-class-docstring
 
 
+def dict_includes(want: dict, got: dict) -> None:
+    for k, v in want.items():
+        assert v == got[k]
+
+
 @pytest.fixture
 def api():
     httpretty.enable(allow_net_connect=False, verbose=True)
@@ -22,6 +27,8 @@ def api():
     )
 
     yield
+
+    httpretty.disable()
 
 
 class TestAPIClient:
@@ -76,11 +83,11 @@ class TestAPIClient:
     def test_api_client_project_id(self, api):
         assert APIClient().project_id == identifiers.project_id
 
-    def test_api_client_headers(self, api):
-        assert APIClient().headers == {
-            "Authorization": "LoaderoAuth " + identifiers.access_token,
-            "Content-Type": "application/json",
-        }
+    def test_api_client_auth_header(self, api):
+        dict_includes(
+            {"Authorization": "LoaderoAuth " + identifiers.access_token},
+            APIClient().auth_header,
+        )
 
 
 class TestAPIClientGet:
@@ -94,13 +101,14 @@ class TestAPIClientGet:
 
         assert APIClient().get("route/") == {"hello": "world"}
 
-        assert dict(httpretty.last_request().headers) == {
-            "Accept-Encoding": "identity",
-            "Authorization": "LoaderoAuth LOADERO_PROJECT_ACCESS_TOKEN",
-            "Content-Type": "application/json",
-            "Host": "mock.loadero.api",
-            "User-Agent": "python-urllib3/1.26.9",
-        }
+        dict_includes(
+            {
+                "Accept-Encoding": "identity",
+                "Authorization": "LoaderoAuth LOADERO_PROJECT_ACCESS_TOKEN",
+                "Host": "mock.loadero.api",
+            },
+            dict(httpretty.last_request().headers),
+        )
 
     def test_invalid_headers(self, api):
         httpretty.register_uri(
@@ -144,14 +152,15 @@ class TestAPIClientPost:
 
         assert APIClient().post("route/", {"hello": "world"}) == {"api": "resp"}
 
-        assert dict(httpretty.last_request().headers) == {
-            "Accept-Encoding": "identity",
-            "Authorization": "LoaderoAuth LOADERO_PROJECT_ACCESS_TOKEN",
-            "Content-Type": "application/json",
-            "Host": "mock.loadero.api",
-            "User-Agent": "python-urllib3/1.26.9",
-            "Content-Length": "18",
-        }
+        dict_includes(
+            {
+                "Accept-Encoding": "identity",
+                "Authorization": "LoaderoAuth LOADERO_PROJECT_ACCESS_TOKEN",
+                "Content-Type": "application/json",
+                "Host": "mock.loadero.api",
+            },
+            dict(httpretty.last_request().headers),
+        )
 
         assert httpretty.last_request().body == b'{"hello": "world"}'
 
@@ -197,18 +206,19 @@ class TestAPIPut:
 
         assert APIClient().put("route/", {"hello": "world"}) == {"api": "resp"}
 
-        assert dict(httpretty.last_request().headers) == {
-            "Accept-Encoding": "identity",
-            "Authorization": "LoaderoAuth LOADERO_PROJECT_ACCESS_TOKEN",
-            "Content-Type": "application/json",
-            "Host": "mock.loadero.api",
-            "User-Agent": "python-urllib3/1.26.9",
-            "Content-Length": "18",
-        }
+        dict_includes(
+            {
+                "Accept-Encoding": "identity",
+                "Authorization": "LoaderoAuth LOADERO_PROJECT_ACCESS_TOKEN",
+                "Content-Type": "application/json",
+                "Host": "mock.loadero.api",
+            },
+            dict(httpretty.last_request().headers),
+        )
 
         assert httpretty.last_request().body == b'{"hello": "world"}'
 
-    def test_invalid_uri(self, api):
+    def test_invalid_headers(self, api):
         httpretty.register_uri(
             httpretty.PUT,
             identifiers.api_base + "route/",
@@ -249,13 +259,14 @@ class TestAPIDelete:
 
         assert APIClient().delete("route/") is None
 
-        assert dict(httpretty.last_request().headers) == {
-            "Accept-Encoding": "identity",
-            "Authorization": "LoaderoAuth LOADERO_PROJECT_ACCESS_TOKEN",
-            "Content-Type": "application/json",
-            "Host": "mock.loadero.api",
-            "User-Agent": "python-urllib3/1.26.9",
-        }
+        dict_includes(
+            {
+                "Accept-Encoding": "identity",
+                "Authorization": "LoaderoAuth LOADERO_PROJECT_ACCESS_TOKEN",
+                "Host": "mock.loadero.api",
+            },
+            dict(httpretty.last_request().headers),
+        )
 
     def test_non_success_resp(self, api):
         httpretty.register_uri(

@@ -1,8 +1,6 @@
 """Script file resource tests"""
 
-# pylint: disable=W0613
 # pylint: disable=missing-function-docstring
-# pylint: disable=redefined-outer-name
 # pylint: disable=wildcard-import
 # pylint: disable=protected-access
 # pylint: disable=missing-class-docstring
@@ -39,7 +37,7 @@ sample_json = {
 }
 
 
-@pytest.fixture
+@pytest.fixture(scope="module")
 def mock():
     httpretty.enable(allow_net_connect=False, verbose=True)
 
@@ -54,6 +52,10 @@ def mock():
         body=json.dumps(sample_json),
         forcing_headers={"Content-Type": "application/json"},
     )
+
+    yield
+
+    httpretty.disable()
 
 
 class TestFileParams:
@@ -102,6 +104,7 @@ class TestFileParams:
         assert fp.content == "pytest test script"
 
 
+@pytest.mark.usefixtures("mock")
 class TestScript:
     def test_init_from_id(self):
         s = Script(script_id=2)
@@ -121,7 +124,7 @@ class TestScript:
     def test_string(self):
         s = Script()
 
-        assert str(s) == "empty script"
+        assert str(s) == "<empty script>"
 
         s.from_content("script content")
 
@@ -167,7 +170,7 @@ class TestScript:
 
         assert s.to_json() == "script content"
 
-    def test_read(self, mock):
+    def test_read(self):
         s = Script(script_id=2)
 
         s.read()
@@ -177,8 +180,9 @@ class TestScript:
         assert httpretty.last_request().parsed_body == ""
 
 
+@pytest.mark.usefixtures("mock")
 class TestFileAPI:
-    def test_api_read(self, mock):
+    def test_api_read(self):
         fp = FileParams(file_id=identifiers.script_file_id)
 
         FileAPI().read(fp)

@@ -31,7 +31,6 @@ class TestParams(LoaderoResource):
     # JSON field names.
     __attribute_map = {
         "test_id": "id",
-        "_project_id": "project_id",
         "name": "name",
         "start_interval": "start_interval",
         "participant_timeout": "participant_timeout",
@@ -47,8 +46,6 @@ class TestParams(LoaderoResource):
         "_deleted": "deleted",
     }
 
-    # script is only ever written.
-
     # Describes a mapping from Loadero resources JSON field names to custom
     # deserialization functions.
     __custom_deserializers = {
@@ -56,14 +53,7 @@ class TestParams(LoaderoResource):
         "updated": parser.parse,
     }
 
-    # write
-    # required
-    # optional
-
-    # test read should read script as well
     # create - script shouldn't be none
-
-    # read
 
     # Describes Loadero resources JSON field names that are required for CRUD
     # operations.
@@ -124,11 +114,6 @@ class TestParams(LoaderoResource):
     @property
     def updated(self) -> datetime:
         return self._updated
-
-    # # can be removed
-    # @property
-    # def script_file_id(self) -> int:
-    #     return self._script_file_id
 
     @property
     def group_count(self) -> int:
@@ -298,6 +283,9 @@ class Test:
     def duplicate(self, name: str) -> Test:
         """Duplicates and existing test.
 
+        Args:
+            name (str): New name for the duplicate test.
+
         Returns:
             Test: Duplicate test resource.
         """
@@ -311,6 +299,10 @@ class Test:
 
 class TestAPI:
     """TestAPI defines Loadero API operations for test resources."""
+
+    # TestAPI has a Test prefix and pytest thinks it is a class with tests.
+    # This disables that.
+    __test__ = False
 
     @staticmethod
     def create(params: TestParams) -> TestParams:

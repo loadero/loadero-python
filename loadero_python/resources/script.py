@@ -76,12 +76,8 @@ class FileParams(LoaderoResource):
 
 
 class Script(LoaderoResource):
-    """
-    Script describes a single Loadero test Script.
-    Script can be created from str data or loaded from file.
-    """
+    """Script describes a single Loadero test script."""
 
-    # _data = None
     _content = None
     _params = None
 
@@ -91,19 +87,18 @@ class Script(LoaderoResource):
         content: str or None = None,
         script_file: str or None = None,
     ) -> None:
-        """Creates a new Script object.
-        If no arguments are provided then a new empty Script object is
-        created.
-        If content is provided then a new Script object is initalized with the
-        provided content.
-        If script_file is provided then a new Script object is initalized with
-        script content loaded from file specified by script_file.
-        If both arguments are provided then script_file argument is ignored and
-        a new Script object is created with the provided content.
+        """Creates a new script or loads an existing script.
 
         Args:
-            content (str or None): Defaults to None.
-            script_file (str or None): Defaults to None.
+            script_id (int, optional): File id of the script Loadero resource.
+                Defaults to None.
+            content (str, optional): Script file contents. Defaults to None.
+            script_file (str, optional): File path to a script. Defaults to
+                None.
+
+        If more than one script content source is specified, then the loading
+        priorities are: script_id - first, content - second,
+        script_file - third.
         """
 
         if script_id is not None:

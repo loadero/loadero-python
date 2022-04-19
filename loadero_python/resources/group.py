@@ -61,13 +61,11 @@ class GroupParams(LoaderoResource):
         name: str or None = None,
         count: int or None = None,
         test_id: int or None = None,
-        project_id: int or None = None,
     ) -> None:
         self.group_id = group_id
         self.name = name
         self.count = count
         self.test_id = test_id
-        self.project_id_path = project_id
 
     def __str__(self) -> str:
         return to_string(self.__dict__, self.__attribute_map)
@@ -212,6 +210,9 @@ class Group:
 
     def duplicate(self, name: str) -> Group:
         """Duplicates and existing group.
+
+        Args:
+            name (str): New name for the duplicate group.
 
         Returns:
             Group: Duplicate instance of group.
