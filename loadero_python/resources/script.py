@@ -121,7 +121,7 @@ class Script(LoaderoResource):
 
     def __str__(self) -> str:
         if self._content is None:
-            return "empty script"
+            return "<empty script>"
 
         return self._content
 
