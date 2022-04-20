@@ -68,9 +68,7 @@ class APIClient:
             "LoaderoAuth " + self.__access_token
         )
 
-        # self.__headers["Authorization"] = "LoaderoAuth " + self.__access_token
         self.__pool_manager = urllib3.PoolManager(num_pools=self.__pool_size)
-        # headers=self.__headers,
 
         self.__initalized = True
 
