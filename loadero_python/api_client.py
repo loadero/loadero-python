@@ -30,7 +30,6 @@ class APIClient:
 
     __pool_size = 4
     __pool_manager = None
-    # __headers = {}
     __auth_header = {}
 
     __initalized = False
