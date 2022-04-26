@@ -13,6 +13,14 @@ from datetime import datetime
 from dateutil import parser
 from ..api_client import APIClient
 from .resource import LoaderoResource, to_json, from_json, to_string
+from .classificator import (
+    ComputeUnit,
+    AudioFeed,
+    Browser,
+    Location,
+    Network,
+    VideoFeed,
+)
 
 
 class ParticipantParams(LoaderoResource):
@@ -63,6 +71,12 @@ class ParticipantParams(LoaderoResource):
     __custom_deserializers = {
         "created": parser.parse,
         "updated": parser.parse,
+        "compute_unit": ComputeUnit.from_json,
+        "audio_feed": AudioFeed.from_json,
+        "browser": Browser.from_json,
+        "location": Location.from_json,
+        "network": Network.from_json,
+        "video_feed": VideoFeed.from_json,
     }
 
     participant_id = None
@@ -70,7 +84,7 @@ class ParticipantParams(LoaderoResource):
 
     name = None
     count = None
-    compute_unit = None  # classificator
+    compute_unit = None
     group_id = None
     record_audio = None
 
@@ -89,14 +103,14 @@ class ParticipantParams(LoaderoResource):
         test_id: int or None = None,
         name: str or None = None,
         count: int or None = None,
-        compute_unit: str or None = None,  # classificator
+        compute_unit: ComputeUnit or None = None,
         group_id: int or None = None,
         record_audio: bool or None = None,
-        audio_feed: str or None = None,  # classificator
-        browser: str or None = None,  # classificator
-        location: str or None = None,  # classificator
-        network: str or None = None,  # classificator
-        video_feed: str or None = None,  # classificator
+        audio_feed: AudioFeed or None = None,
+        browser: Browser or None = None,
+        location: Location or None = None,
+        network: Network or None = None,
+        video_feed: VideoFeed or None = None,
     ) -> None:
         self.participant_id = participant_id
         self.test_id = test_id
@@ -142,8 +156,7 @@ class ParticipantParams(LoaderoResource):
 
         return self
 
-    # TODO: change to classificator
-    def with_compute_unit(self, cu: str) -> ParticipantParams:
+    def with_compute_unit(self, cu: ComputeUnit) -> ParticipantParams:
         self.compute_unit = cu
 
         return self
@@ -158,32 +171,27 @@ class ParticipantParams(LoaderoResource):
 
         return self
 
-    # TODO: change to classificator
-    def with_audio_feed(self, af: str) -> ParticipantParams:
+    def with_audio_feed(self, af: AudioFeed) -> ParticipantParams:
         self.audio_feed = af
 
         return self
 
-    # TODO: change to classificator
-    def with_browser(self, browser: str) -> ParticipantParams:
+    def with_browser(self, browser: Browser) -> ParticipantParams:
         self.browser = browser
 
         return self
 
-    # TODO: change to classificator
-    def with_location(self, loc: str) -> ParticipantParams:
+    def with_location(self, loc: Location) -> ParticipantParams:
         self.location = loc
 
         return self
 
-    # TODO: change to classificator
-    def with_network(self, nt: str) -> ParticipantParams:
+    def with_network(self, nt: Network) -> ParticipantParams:
         self.network = nt
 
         return self
 
-    # TODO: change to classificator
-    def with_video_feed(self, vf: str) -> ParticipantParams:
+    def with_video_feed(self, vf: VideoFeed) -> ParticipantParams:
         self.video_feed = vf
 
         return self

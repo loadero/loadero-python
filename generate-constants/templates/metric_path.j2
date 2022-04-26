@@ -1,0 +1,23 @@
+"""Loadero metric path constants."""
+
+
+from __future__ import annotations
+from enum import Enum
+from loadero_python.resources.resource import LoaderoResource
+
+
+class MetricPath(LoaderoResource, Enum):
+    """MetricPath enumerates Loadero metric path constants."""
+{% for mp in metric_paths %}
+    {{ mp["name"] }} = "{{ mp["value"] }}"
+{% endfor %}
+    def __str__(self):
+        return self.value
+
+    @staticmethod
+    def from_json(jv: str) -> MetricPath:
+        return MetricPath(jv)
+
+    @staticmethod
+    def to_json(mp: MetricPath) -> str:
+        return mp.value

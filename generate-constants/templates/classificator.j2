@@ -1,0 +1,27 @@
+"""Loadero classificator constants."""
+
+
+from __future__ import annotations
+from enum import Enum
+from loadero_python.resources.resource import LoaderoResource
+{% for c in classificators %}
+
+class {{ c["class_name"] }}(LoaderoResource, Enum):
+    """
+    {{ c["class_name"] }} enumerates Loadero classificator constants for
+    {{ c["type"] }} classificator type.
+    """
+{% for m in c["members"] %}
+    {{ m["name"] }} = "{{ m["value"] }}"
+{% endfor %}
+    def __str__(self):
+        return self.value
+
+    @staticmethod
+    def from_json(jv: str) -> {{ c["class_name"] }}:
+        return {{ c["class_name"] }}(jv)
+
+    @staticmethod
+    def to_json(c: {{ c["class_name"] }}) -> str:
+        return c.value
+{% endfor %}

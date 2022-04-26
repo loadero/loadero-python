@@ -31,20 +31,20 @@ def api():
     httpretty.disable()
 
 
-class TestAPIClient:
-    def test_init_no_args(self):
+class UTestAPIClient:
+    def utest_init_no_args(self):
         with pytest.raises(Exception):
             APIClient()
 
-    def test_init_no_access_token(self):
+    def utest_init_no_access_token(self):
         with pytest.raises(Exception):
             APIClient(project_id=identifiers.project_id)
 
-    def test_init_no_project_id(self):
+    def utest_init_no_project_id(self):
         with pytest.raises(Exception):
             APIClient(access_token=identifiers.access_token)
 
-    def test_init_valid(self):
+    def utest_init_valid(self):
         APIClient(
             project_id=identifiers.project_id,
             access_token=identifiers.access_token,
@@ -53,7 +53,7 @@ class TestAPIClient:
 
         APIClient()
 
-    def test_repeated_init(self):
+    def utest_repeated_init(self):
         APIClient(
             project_id=432532334,
             access_token="changed_token",
@@ -74,24 +74,24 @@ class TestAPIClient:
         assert APIClient().access_token == identifiers.access_token
         assert APIClient().project_id == identifiers.project_id
 
-    def test_api_client_api_base(self, api):
+    def utest_api_client_api_base(self, api):
         assert APIClient().api_base == identifiers.api_base
 
-    def test_api_client_access_token(self, api):
+    def utest_api_client_access_token(self, api):
         assert APIClient().access_token == identifiers.access_token
 
-    def test_api_client_project_id(self, api):
+    def utest_api_client_project_id(self, api):
         assert APIClient().project_id == identifiers.project_id
 
-    def test_api_client_auth_header(self, api):
+    def utest_api_client_auth_header(self, api):
         dict_includes(
             {"Authorization": "LoaderoAuth " + identifiers.access_token},
             APIClient().auth_header,
         )
 
 
-class TestAPIClientGet:
-    def test_valid(self, api):
+class UTestAPIClientGet:
+    def utest_valid(self, api):
         httpretty.register_uri(
             httpretty.GET,
             identifiers.api_base + "route/",
@@ -110,7 +110,7 @@ class TestAPIClientGet:
             dict(httpretty.last_request().headers),
         )
 
-    def test_invalid_headers(self, api):
+    def utest_invalid_headers(self, api):
         httpretty.register_uri(
             httpretty.GET,
             identifiers.api_base + "route/",
@@ -119,7 +119,7 @@ class TestAPIClientGet:
         with pytest.raises(Exception):
             APIClient().get("route/")
 
-    def test_non_success_resp(self, api):
+    def utest_non_success_resp(self, api):
         httpretty.register_uri(
             httpretty.GET,
             identifiers.api_base + "route/",
@@ -130,7 +130,7 @@ class TestAPIClientGet:
         with pytest.raises(Exception):
             APIClient().get("route/")
 
-    def test_empty_response(self, api):
+    def utest_empty_response(self, api):
         httpretty.register_uri(
             httpretty.GET,
             identifiers.api_base + "route/",
@@ -141,8 +141,8 @@ class TestAPIClientGet:
         assert APIClient().get("route/") is None
 
 
-class TestAPIClientPost:
-    def test_valid(self, api):
+class UTestAPIClientPost:
+    def utest_valid(self, api):
         httpretty.register_uri(
             httpretty.POST,
             identifiers.api_base + "route/",
@@ -164,7 +164,7 @@ class TestAPIClientPost:
 
         assert httpretty.last_request().body == b'{"hello": "world"}'
 
-    def test_invalid_headers(self, api):
+    def utest_invalid_headers(self, api):
         httpretty.register_uri(
             httpretty.POST,
             identifiers.api_base + "route/",
@@ -173,7 +173,7 @@ class TestAPIClientPost:
         with pytest.raises(Exception):
             APIClient().post("route/", {"hello": "world"})
 
-    def test_non_success_resp(self, api):
+    def utest_non_success_resp(self, api):
         httpretty.register_uri(
             httpretty.POST,
             identifiers.api_base + "route/",
@@ -184,7 +184,7 @@ class TestAPIClientPost:
         with pytest.raises(Exception):
             APIClient().post("route/", {"hello": "world"})
 
-    def test_empty_response(self, api):
+    def utest_empty_response(self, api):
         httpretty.register_uri(
             httpretty.POST,
             identifiers.api_base + "route/",
@@ -195,8 +195,8 @@ class TestAPIClientPost:
         assert APIClient().post("route/", {"hello": "world"}) is None
 
 
-class TestAPIPut:
-    def test_valid(self, api):
+class UTestAPIPut:
+    def utest_valid(self, api):
         httpretty.register_uri(
             httpretty.PUT,
             identifiers.api_base + "route/",
@@ -218,7 +218,7 @@ class TestAPIPut:
 
         assert httpretty.last_request().body == b'{"hello": "world"}'
 
-    def test_invalid_headers(self, api):
+    def utest_invalid_headers(self, api):
         httpretty.register_uri(
             httpretty.PUT,
             identifiers.api_base + "route/",
@@ -227,7 +227,7 @@ class TestAPIPut:
         with pytest.raises(Exception):
             APIClient().put("route/", {"hello": "world"})
 
-    def test_non_success_resp(self, api):
+    def utest_non_success_resp(self, api):
         httpretty.register_uri(
             httpretty.PUT,
             identifiers.api_base + "route/",
@@ -238,7 +238,7 @@ class TestAPIPut:
         with pytest.raises(Exception):
             APIClient().put("route/", {"hello": "world"})
 
-    def test_empty_response(self, api):
+    def utest_empty_response(self, api):
         httpretty.register_uri(
             httpretty.PUT,
             identifiers.api_base + "route/",
@@ -249,8 +249,8 @@ class TestAPIPut:
         assert APIClient().put("route/", {"hello": "world"}) is None
 
 
-class TestAPIDelete:
-    def test_valid(self, api):
+class UTestAPIDelete:
+    def utest_valid(self, api):
         httpretty.register_uri(
             httpretty.DELETE,
             identifiers.api_base + "route/",
@@ -268,7 +268,7 @@ class TestAPIDelete:
             dict(httpretty.last_request().headers),
         )
 
-    def test_non_success_resp(self, api):
+    def utest_non_success_resp(self, api):
         httpretty.register_uri(
             httpretty.DELETE,
             identifiers.api_base + "route/",

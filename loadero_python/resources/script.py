@@ -11,6 +11,7 @@ from datetime import datetime
 from dateutil import parser
 from ..api_client import APIClient
 from .resource import LoaderoResource, from_json
+from .classificator import FileType
 
 
 class FileParams(LoaderoResource):
@@ -28,6 +29,7 @@ class FileParams(LoaderoResource):
     __custom_deserializers = {
         "created": parser.parse,
         "updated": parser.parse,
+        "file_type": FileType.from_json,
     }
 
     file_id = None
@@ -48,7 +50,7 @@ class FileParams(LoaderoResource):
         return self._updated
 
     @property
-    def file_type(self) -> str or None:  # TODO: change to classificator
+    def file_type(self) -> FileType or None:
         return self._file_type
 
     @property

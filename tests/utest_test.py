@@ -14,8 +14,9 @@ import httpretty
 from loadero_python.api_client import APIClient
 from loadero_python.resources.script import Script
 from loadero_python.resources.test import *
+from loadero_python.resources.classificator import TestMode, IncrementStrategy
 from . import identifiers
-from .test_script import sample_json as sample_file_json
+from .utest_script import sample_json as sample_file_json
 
 
 created_time = parser.parse("2022-04-01T13:54:25.689Z")
@@ -113,8 +114,8 @@ def mock():
     httpretty.disable()
 
 
-class TestTestParams:
-    def test_string(self):
+class UTestTestParams:
+    def utest_string(self):
         dupl = sample_json.copy()
         dupl["project_id"] = 81
 
@@ -139,76 +140,76 @@ class TestTestParams:
 | updated             | 2024-02-03 15:42:54.689000+00:00 |"""
         )
 
-    def test_created(self):
+    def utest_created(self):
         t = TestParams()
         t.__dict__["_created"] = created_time
         assert t.created == created_time
 
-    def test_updated(self):
+    def utest_updated(self):
         t = TestParams()
         t.__dict__["_updated"] = updated_time
         assert t.updated == updated_time
 
-    def test_group_count(self):
+    def utest_group_count(self):
         t = TestParams()
         t.__dict__["_group_count"] = 5
         assert t.group_count == 5
 
-    def test_participant_count(self):
+    def utest_participant_count(self):
         t = TestParams()
         t.__dict__["_participant_count"] = 5
         assert t.participant_count == 5
 
-    def test_deleted(self):
+    def utest_deleted(self):
         t = TestParams()
         t.__dict__["_deleted"] = True
 
         assert t.deleted is True
 
-    def test_builder_id(self):
+    def utest_builder_id(self):
         t = TestParams()
         t.with_id(5)
         assert t.test_id == 5
 
-    def test_builder_name(self):
+    def utest_builder_name(self):
         t = TestParams()
         t.with_name("test")
         assert t.name == "test"
 
-    def test_builder_start_interval(self):
+    def utest_builder_start_interval(self):
         t = TestParams()
         t.with_start_interval(5)
         assert t.start_interval == 5
 
-    def test_builder_participant_timeout(self):
+    def utest_builder_participant_timeout(self):
         t = TestParams()
         t.with_participant_timeout(5)
         assert t.participant_timeout == 5
 
-    def test_builder_mode(self):
+    def utest_builder_mode(self):
         t = TestParams()
         t.with_mode("load")
         assert t.mode == "load"
 
-    def test_builder_increment_strategy(self):
+    def utest_builder_increment_strategy(self):
         t = TestParams()
         t.with_increment_strategy("linear")
         assert t.increment_strategy == "linear"
 
-    def test_builder_mos_test(self):
+    def utest_builder_mos_test(self):
         t = TestParams()
         t.with_mos_test(True)
         assert t.mos_test is True
 
-    def test_builder_script(self):
+    def utest_builder_script(self):
         t = TestParams()
         t.with_script(Script(content="hello"))
         assert t.script.content == "hello"
 
 
 @pytest.mark.usefixtures("mock")
-class TestTest:
-    def test_create(self):
+class UTestTest:
+    def utest_create(self):
         t = Test(
             params=TestParams(
                 name="pytest test",
@@ -229,8 +230,8 @@ class TestTest:
         assert t.params.name == "pytest test"
         assert t.params.start_interval == 12
         assert t.params.participant_timeout == 13
-        assert t.params.mode == "load"
-        assert t.params.increment_strategy == "linear"
+        assert t.params.mode is TestMode.TM_LOAD
+        assert t.params.increment_strategy is IncrementStrategy.IS_LINEAR
         assert t.params.script.content == "pytest test script"
         assert t.params.group_count == 52
         assert t.params.participant_count == 9355
@@ -246,7 +247,7 @@ class TestTest:
             "start_interval": 12,
         }
 
-    def test_read(self):
+    def utest_read(self):
         t = Test(test_id=identifiers.test_id)
 
         t.read()
@@ -257,8 +258,8 @@ class TestTest:
         assert t.params.name == "pytest test"
         assert t.params.start_interval == 12
         assert t.params.participant_timeout == 13
-        assert t.params.mode == "load"
-        assert t.params.increment_strategy == "linear"
+        assert t.params.mode is TestMode.TM_LOAD
+        assert t.params.increment_strategy is IncrementStrategy.IS_LINEAR
         assert t.params.script.content == "pytest test script"
         assert t.params.group_count == 52
         assert t.params.participant_count == 9355
@@ -266,7 +267,7 @@ class TestTest:
 
         assert httpretty.last_request().parsed_body == ""
 
-    def test_update(self):
+    def utest_update(self):
         t = Test(
             params=TestParams(
                 test_id=identifiers.test_id,
@@ -288,8 +289,8 @@ class TestTest:
         assert t.params.name == "updated pytest name"
         assert t.params.start_interval == 45
         assert t.params.participant_timeout == 94
-        assert t.params.mode == "performance"
-        assert t.params.increment_strategy == "random"
+        assert t.params.mode is TestMode.TM_PERFORMANCE
+        assert t.params.increment_strategy is IncrementStrategy.IS_RANDOM
         assert t.params.script.content == "updated test script"
         assert t.params.group_count == 52
         assert t.params.participant_count == 9355
@@ -305,7 +306,7 @@ class TestTest:
             "start_interval": 45,
         }
 
-    def test_delete(self):
+    def utest_delete(self):
         t = Test(test_id=identifiers.test_id)
 
         t.delete()
@@ -315,7 +316,7 @@ class TestTest:
 
         assert httpretty.last_request().parsed_body == ""
 
-    def test_duplicate(self):
+    def utest_duplicate(self):
         t = Test(test_id=identifiers.test_id)
 
         dupl = t.duplicate("pytest duplicate test")
@@ -339,8 +340,8 @@ class TestTest:
         assert dupl.params.name == "pytest duplicate test"
         assert dupl.params.start_interval == 12
         assert dupl.params.participant_timeout == 13
-        assert dupl.params.mode == "load"
-        assert dupl.params.increment_strategy == "linear"
+        assert dupl.params.mode is TestMode.TM_LOAD
+        assert dupl.params.increment_strategy is IncrementStrategy.IS_LINEAR
         assert dupl.params.script.content == "pytest test script"
         assert dupl.params.group_count == 52
         assert dupl.params.participant_count == 9355
@@ -356,8 +357,8 @@ class TestTest:
 
 
 @pytest.mark.usefixtures("mock")
-class TestTestAPI:
-    def test_api_create(self):
+class UTestTestAPI:
+    def utest_api_create(self):
         ret = TestAPI().create(
             TestParams(
                 name="pytest test",
@@ -376,8 +377,8 @@ class TestTestAPI:
         assert ret.name == "pytest test"
         assert ret.start_interval == 12
         assert ret.participant_timeout == 13
-        assert ret.mode == "load"
-        assert ret.increment_strategy == "linear"
+        assert ret.mode is TestMode.TM_LOAD
+        assert ret.increment_strategy is IncrementStrategy.IS_LINEAR
         assert ret.script.content == "pytest test script"
         assert ret.group_count == 52
         assert ret.participant_count == 9355
@@ -393,7 +394,7 @@ class TestTestAPI:
             "start_interval": 12,
         }
 
-    def test_api_read(self):
+    def utest_api_read(self):
         ret = TestAPI().read(TestParams(test_id=identifiers.test_id))
 
         assert ret.test_id == identifiers.test_id
@@ -402,8 +403,8 @@ class TestTestAPI:
         assert ret.name == "pytest test"
         assert ret.start_interval == 12
         assert ret.participant_timeout == 13
-        assert ret.mode == "load"
-        assert ret.increment_strategy == "linear"
+        assert ret.mode is TestMode.TM_LOAD
+        assert ret.increment_strategy is IncrementStrategy.IS_LINEAR
         assert ret.script.content == "pytest test script"
         assert ret.group_count == 52
         assert ret.participant_count == 9355
@@ -411,11 +412,11 @@ class TestTestAPI:
 
         assert httpretty.last_request().parsed_body == ""
 
-    def test_api_read_invalid_params(self):
+    def utest_api_read_invalid_params(self):
         with pytest.raises(Exception):
             TestAPI.read(TestParams())
 
-    def test_api_update(self):
+    def utest_api_update(self):
         ret = TestAPI().update(
             TestParams(
                 test_id=identifiers.test_id,
@@ -435,8 +436,8 @@ class TestTestAPI:
         assert ret.name == "updated pytest name"
         assert ret.start_interval == 45
         assert ret.participant_timeout == 94
-        assert ret.mode == "performance"
-        assert ret.increment_strategy == "random"
+        assert ret.mode is TestMode.TM_PERFORMANCE
+        assert ret.increment_strategy is IncrementStrategy.IS_RANDOM
         assert ret.script.content == "updated test script"
         assert ret.group_count == 52
         assert ret.participant_count == 9355
@@ -452,11 +453,11 @@ class TestTestAPI:
             "start_interval": 45,
         }
 
-    def test_api_update_invalid_params(self):
+    def utest_api_update_invalid_params(self):
         with pytest.raises(Exception):
             TestAPI.update(TestParams())
 
-    def test_api_delete(self):
+    def utest_api_delete(self):
         ret = TestAPI().delete(TestParams(test_id=identifiers.test_id))
 
         assert ret.test_id == identifiers.test_id
@@ -464,11 +465,11 @@ class TestTestAPI:
 
         assert httpretty.last_request().parsed_body == ""
 
-    def test_api_delete_invalid_params(self):
+    def utest_api_delete_invalid_params(self):
         with pytest.raises(Exception):
             TestAPI.delete(TestParams())
 
-    def test_api_duplicate(self):
+    def utest_api_duplicate(self):
         ret = TestAPI().duplicate(
             TestParams(
                 test_id=identifiers.test_id, name="pytest duplicate test"
@@ -481,8 +482,8 @@ class TestTestAPI:
         assert ret.name == "pytest duplicate test"
         assert ret.start_interval == 12
         assert ret.participant_timeout == 13
-        assert ret.mode == "load"
-        assert ret.increment_strategy == "linear"
+        assert ret.mode is TestMode.TM_LOAD
+        assert ret.increment_strategy is IncrementStrategy.IS_LINEAR
         assert ret.script.content == "pytest test script"
         assert ret.group_count == 52
         assert ret.participant_count == 9355
@@ -496,9 +497,9 @@ class TestTestAPI:
         # read script
         assert httpretty.latest_requests()[-1].parsed_body == ""
 
-    def test_api_duplicate_invalid_params(self):
+    def utest_api_duplicate_invalid_params(self):
         with pytest.raises(Exception):
             TestAPI.duplicate(TestParams())
 
-    def test_api_read_all(self):
+    def utest_api_read_all(self):
         TestAPI().read_all()
