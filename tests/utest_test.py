@@ -188,13 +188,13 @@ class UTestTestParams:
 
     def utest_builder_mode(self):
         t = TestParams()
-        t.with_mode("load")
-        assert t.mode == "load"
+        t.with_mode(TestMode.TM_LOAD)
+        assert t.mode is TestMode.TM_LOAD
 
     def utest_builder_increment_strategy(self):
         t = TestParams()
-        t.with_increment_strategy("linear")
-        assert t.increment_strategy == "linear"
+        t.with_increment_strategy(IncrementStrategy.IS_LINEAR)
+        assert t.increment_strategy is IncrementStrategy.IS_LINEAR
 
     def utest_builder_mos_test(self):
         t = TestParams()

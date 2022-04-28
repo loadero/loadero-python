@@ -1,9 +1,10 @@
 """Loadero classificator constants."""
 
-
 from __future__ import annotations
 from enum import Enum
 from loadero_python.resources.resource import LoaderoResource
+
+# This file is generated automatically by generate-constants/generate.py script.
 
 
 class Artifact(LoaderoResource, Enum):
@@ -370,9 +371,13 @@ class MetricKey(LoaderoResource, Enum):
     metric_key classificator type.
     """
 
+    MK_1ST = "1st"
+
     MK_25TH = "25th"
 
     MK_50TH = "50th"
+
+    MK_5TH = "5th"
 
     MK_75TH = "75th"
 

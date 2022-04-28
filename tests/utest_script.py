@@ -83,10 +83,9 @@ class UTestFileParams:
 
     def utest_file_type(self):
         fp = FileParams()
-        # TODO: change to classificator
-        fp.__dict__["_file_type"] = "script file type"
+        fp.__dict__["_file_type"] = FileType.FT_TEST_SCRIPT
 
-        assert fp.file_type == "script file type"
+        assert fp.file_type is FileType.FT_TEST_SCRIPT
 
     def utest_content(self):
         fp = FileParams()

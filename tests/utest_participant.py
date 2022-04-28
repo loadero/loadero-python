@@ -185,8 +185,8 @@ class UTestParticipantsParams:
 
     def utest_builder_comute_unit(self):
         p = ParticipantParams()
-        p.with_compute_unit("g6")
-        assert p.compute_unit == "g6"
+        p.with_compute_unit(ComputeUnit.CU_G6)
+        assert p.compute_unit is ComputeUnit.CU_G6
 
     def utest_builder_group_id(self):
         p = ParticipantParams()
@@ -200,28 +200,28 @@ class UTestParticipantsParams:
 
     def utest_builder_audio_feed(self):
         p = ParticipantParams()
-        p.with_audio_feed("silence")
-        assert p.audio_feed == "silence"
+        p.with_audio_feed(AudioFeed.AF_SILENCE)
+        assert p.audio_feed is AudioFeed.AF_SILENCE
 
     def utest_builder_browser(self):
         p = ParticipantParams()
-        p.with_browser("chrome")
-        assert p.browser == "chrome"
+        p.with_browser(Browser.B_CHROMELATEST)
+        assert p.browser is Browser.B_CHROMELATEST
 
     def utest_builder_location(self):
         p = ParticipantParams()
-        p.with_location("us-west-2")
-        assert p.location == "us-west-2"
+        p.with_location(Location.L_US_WEST_2)
+        assert p.location is Location.L_US_WEST_2
 
     def utest_builder_network(self):
         p = ParticipantParams()
-        p.with_network("100perc")
-        assert p.network == "100perc"
+        p.with_network(Network.N_100PACKET)
+        assert p.network is Network.N_100PACKET
 
     def utest_builder_video_feed(self):
         p = ParticipantParams()
-        p.with_video_feed("1080p")
-        assert p.video_feed == "1080p"
+        p.with_video_feed(VideoFeed.VF_1080P)
+        assert p.video_feed is VideoFeed.VF_1080P
 
 
 @pytest.mark.usefixtures("mock")

@@ -1,9 +1,10 @@
 """Loadero classificator constants."""
 
-
 from __future__ import annotations
 from enum import Enum
 from loadero_python.resources.resource import LoaderoResource
+
+# This file is generated automatically by generate-constants/generate.py script.
 {% for c in classificators %}
 
 class {{ c["class_name"] }}(LoaderoResource, Enum):

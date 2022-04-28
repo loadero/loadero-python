@@ -37,7 +37,7 @@ def parse_args():
     parser.add_argument(
         "--api",
         type=str,
-        help="project token",
+        help="api url",
         required=True,
     )
 
