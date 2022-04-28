@@ -12,6 +12,7 @@ then
 else
     pip install -r requirements.txt -q
     pylint --rcfile=.pylintrc loadero_python tests/*.py
-    black --check --verbose --config pyproject.toml loadero_python tests
-    pytest -vv --cov=loadero_python --cov-report term tests
+    black --diff --check --config pyproject.toml loadero_python tests
+    # pytest -vv --cov=loadero_python --cov-report term tests
+    pytest --cov=loadero_python --cov-report term tests
 fi

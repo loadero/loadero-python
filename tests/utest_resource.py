@@ -2,21 +2,21 @@
 
 
 # pylint: disable=missing-class-docstring
-
+# pylint: disable=missing-function-docstring
 
 import pytest
 from loadero_python.resources.resource import to_json, from_json, to_string
 
 
-class TestToJSON:
-    def test_valid(self):
+class UTestToJSON:
+    def utest_valid(self):
         r = {"_created": "yesterday", "resource_id": 5, "ignored": "hello"}
         am = {"_created": "created", "resource_id": "id"}
         ba = {"id"}
 
         assert to_json(r, am, ba) == {"id": 5}
 
-    def test_required_param_none(self):
+    def utest_required_param_none(self):
         r = {"resource_id": None}
         am = {"_created": "created", "resource_id": "id"}
         ba = {"id"}
@@ -25,8 +25,8 @@ class TestToJSON:
             to_json(r, am, ba)
 
 
-class TestFromJSON:
-    def test_valid(self):
+class UTestFromJSON:
+    def utest_valid(self):
         r = {"_created": "yesterday", "resource_id": 5, "ignored": "hello"}
         jv = {"created": "tomorrow", "id": 4, "unused": "field"}
         am = {"_created": "created", "resource_id": "id"}
@@ -41,7 +41,7 @@ class TestFromJSON:
         }
 
 
-def test_to_string():
+def utest_to_string():
     r = {"_created": "yesterday", "resource_id": 5, "ignored": "hello"}
     am = {"_created": "created", "resource_id": "id"}
 

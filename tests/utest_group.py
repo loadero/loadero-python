@@ -100,8 +100,8 @@ def mock():
     httpretty.disable()
 
 
-class TestGroupParams:
-    def test_str(self):
+class UTestGroupParams:
+    def utest_str(self):
         g = GroupParams()
         dupl = sample_group_json.copy()
         g.from_json(dupl)
@@ -117,50 +117,50 @@ class TestGroupParams:
 | updated | 2024-02-03 15:42:54.689000+00:00 |"""
         )
 
-    def test_created(self):
+    def utest_created(self):
         g = GroupParams()
         g.__dict__["_created"] = created_time
         assert g.created == created_time
 
-    def test_updated(self):
+    def utest_updated(self):
         g = GroupParams()
         g.__dict__["_updated"] = updated_time
         assert g.updated == updated_time
 
-    def test_participant_count(self):
+    def utest_participant_count(self):
         g = GroupParams()
         g.__dict__["_participant_count"] = 3
         assert g.participant_count == 3
 
-    def test_total_cu_count(self):
+    def utest_total_cu_count(self):
         g = GroupParams()
         g.__dict__["_total_cu_count"] = 4
         assert g.total_cu_count == 4
 
-    def test_builder_id(self):
+    def utest_builder_id(self):
         g = GroupParams()
         g.with_id(5)
         assert g.group_id == 5
 
-    def test_builder_name(self):
+    def utest_builder_name(self):
         g = GroupParams()
         g.with_name("group")
         assert g.name == "group"
 
-    def test_builder_count(self):
+    def utest_builder_count(self):
         g = GroupParams()
         g.with_count(5)
         assert g.count == 5
 
-    def test_builder_test_id(self):
+    def utest_builder_test_id(self):
         g = GroupParams()
         g.in_test(5)
         assert g.test_id == 5
 
 
 @pytest.mark.usefixtures("mock")
-class TestGroup:
-    def test_create(self):
+class UTestGroup:
+    def utest_create(self):
         g = Group(
             params=GroupParams(
                 name="pytest_group", count=8, test_id=identifiers.test_id
@@ -183,7 +183,7 @@ class TestGroup:
             "name": "pytest_group",
         }
 
-    def test_read(self):
+    def utest_read(self):
         g = Group(group_id=identifiers.group_id, test_id=identifiers.test_id)
 
         g.read()
@@ -199,7 +199,7 @@ class TestGroup:
 
         assert httpretty.last_request().parsed_body == ""
 
-    def test_update(self):
+    def utest_update(self):
         g = Group(
             params=GroupParams(
                 group_id=identifiers.group_id, test_id=identifiers.test_id
@@ -225,7 +225,7 @@ class TestGroup:
             "name": "updated pytest group name",
         }
 
-    def test_delete(self):
+    def utest_delete(self):
         g = Group(
             params=GroupParams(
                 group_id=identifiers.group_id, test_id=identifiers.test_id
@@ -245,7 +245,7 @@ class TestGroup:
 
         assert httpretty.last_request().parsed_body == ""
 
-    def test_duplicate(self):
+    def utest_duplicate(self):
         g = Group(
             params=GroupParams(
                 group_id=identifiers.group_id, test_id=identifiers.test_id
@@ -278,8 +278,8 @@ class TestGroup:
 
 
 @pytest.mark.usefixtures("mock")
-class TestGroupAPI:
-    def test_create(self):
+class UTestGroupAPI:
+    def utest_create(self):
         ret = GroupAPI.create(
             GroupParams(
                 name="pytest_group", count=8, test_id=identifiers.test_id
@@ -300,11 +300,11 @@ class TestGroupAPI:
             "name": "pytest_group",
         }
 
-    def test_create_invalid_params(self):
+    def utest_create_invalid_params(self):
         with pytest.raises(Exception):
             GroupAPI.create(GroupParams(name="pytest_group", count=8))
 
-    def test_read(self):
+    def utest_read(self):
         ret = GroupAPI.read(
             GroupParams(
                 test_id=identifiers.test_id,
@@ -323,7 +323,7 @@ class TestGroupAPI:
 
         assert httpretty.last_request().parsed_body == ""
 
-    def test_read_invalid_params(self):
+    def utest_read_invalid_params(self):
         with pytest.raises(Exception):
             GroupAPI.read(
                 GroupParams(
@@ -334,7 +334,7 @@ class TestGroupAPI:
         with pytest.raises(Exception):
             GroupAPI.read(GroupParams(name="pytest_group", count=8, group_id=1))
 
-    def test_update(self):
+    def utest_update(self):
         ret = GroupAPI.update(
             GroupParams(
                 group_id=identifiers.group_id,
@@ -358,7 +358,7 @@ class TestGroupAPI:
             "name": "updated pytest group name",
         }
 
-    def test_update_invalid_params(self):
+    def utest_update_invalid_params(self):
         with pytest.raises(Exception):
             GroupAPI.update(
                 GroupParams(
@@ -371,7 +371,7 @@ class TestGroupAPI:
                 GroupParams(name="pytest_group", count=8, group_id=1)
             )
 
-    def test_delete(self):
+    def utest_delete(self):
         ret = GroupAPI.delete(
             GroupParams(
                 test_id=identifiers.test_id, group_id=identifiers.group_id
@@ -382,7 +382,7 @@ class TestGroupAPI:
 
         assert httpretty.last_request().parsed_body == ""
 
-    def test_delete_invalid_params(self):
+    def utest_delete_invalid_params(self):
         with pytest.raises(Exception):
             GroupAPI.delete(
                 GroupParams(
@@ -395,7 +395,7 @@ class TestGroupAPI:
                 GroupParams(name="pytest_group", count=8, group_id=1)
             )
 
-    def test_duplicate(self):
+    def utest_duplicate(self):
         ret = GroupAPI.duplicate(
             GroupParams(
                 group_id=identifiers.group_id,
@@ -417,7 +417,7 @@ class TestGroupAPI:
             "name": "duplicate pytest group name"
         }
 
-    def test_duplicate_invalid_params(self):
+    def utest_duplicate_invalid_params(self):
         with pytest.raises(Exception):
             GroupAPI.duplicate(
                 GroupParams(
@@ -430,5 +430,5 @@ class TestGroupAPI:
                 GroupParams(name="pytest_group", count=8, group_id=1)
             )
 
-    def test_read_all(self):
+    def utest_read_all(self):
         GroupAPI.read_all(5)

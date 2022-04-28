@@ -14,6 +14,7 @@ from dateutil import parser
 from ..api_client import APIClient
 from .script import Script
 from .resource import LoaderoResource, to_json, from_json, to_string
+from .classificator import TestMode, IncrementStrategy
 
 
 class TestParams(LoaderoResource):
@@ -51,6 +52,8 @@ class TestParams(LoaderoResource):
     __custom_deserializers = {
         "created": parser.parse,
         "updated": parser.parse,
+        "mode": TestMode.from_json,
+        "increment_strategy": IncrementStrategy.from_json,
     }
 
     # create - script shouldn't be none
@@ -72,14 +75,14 @@ class TestParams(LoaderoResource):
     name = None
     start_interval = None
     participant_timeout = None
-    mode = None  # classificator
-    increment_strategy = None  # classificator
+    mode = None
+    increment_strategy = None
     script = None
     mos_test = None
 
     _created = None
     _updated = None
-    _script_file_id = None  # could be completely hidden from users.
+    _script_file_id = None
     _group_count = None
     _participant_count = None
     _deleted = None
@@ -90,8 +93,8 @@ class TestParams(LoaderoResource):
         name: str or None = None,
         start_interval: int or None = None,
         participant_timeout: int or None = None,
-        mode: str or None = None,  # classificator
-        increment_strategy: str or None = None,  # classificator
+        mode: TestMode or None = None,
+        increment_strategy: IncrementStrategy or None = None,
         mos_test: bool or None = None,
         script: Script or None = None,
     ) -> None:
@@ -149,14 +152,12 @@ class TestParams(LoaderoResource):
 
         return self
 
-    # TODO: change to classificator.
-    def with_mode(self, m: str) -> TestParams:
+    def with_mode(self, m: TestMode) -> TestParams:
         self.mode = m
 
         return self
 
-    # TODO: change to classificator.
-    def with_increment_strategy(self, inc: str) -> TestParams:
+    def with_increment_strategy(self, inc: IncrementStrategy) -> TestParams:
         self.increment_strategy = inc
 
         return self

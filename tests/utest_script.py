@@ -13,6 +13,7 @@ import pytest
 import httpretty
 from dateutil import parser
 from loadero_python.resources.script import *
+from loadero_python.resources.classificator import FileType
 from . import identifiers
 
 
@@ -58,8 +59,8 @@ def mock():
     httpretty.disable()
 
 
-class TestFileParams:
-    def test_init(self):
+class UTestFileParams:
+    def utest_init(self):
         fp = FileParams(file_id=4)
 
         assert fp.file_id == 4
@@ -68,60 +69,59 @@ class TestFileParams:
 
         assert fp.file_id is None
 
-    def test_created(self):
+    def utest_created(self):
         fp = FileParams()
         fp.__dict__["_created"] = created_time
 
         assert fp.created == created_time
 
-    def test_updated(self):
+    def utest_updated(self):
         fp = FileParams()
         fp.__dict__["_updated"] = updated_time
 
         assert fp.updated == updated_time
 
-    def test_file_type(self):
+    def utest_file_type(self):
         fp = FileParams()
-        # TODO: change to classificator
-        fp.__dict__["_file_type"] = "script file type"
+        fp.__dict__["_file_type"] = FileType.FT_TEST_SCRIPT
 
-        assert fp.file_type == "script file type"
+        assert fp.file_type is FileType.FT_TEST_SCRIPT
 
-    def test_content(self):
+    def utest_content(self):
         fp = FileParams()
         fp.__dict__["_content"] = "test script"
 
         assert fp.content == "test script"
 
-    def test_from_json(self):
+    def utest_from_json(self):
         fp = FileParams()
         fp.from_json(sample_json)
 
         assert fp.file_id == identifiers.script_file_id
         assert fp.created == created_time
         assert fp.updated == updated_time
-        assert fp.file_type == "test_script"
+        assert fp.file_type is FileType.FT_TEST_SCRIPT
         assert fp.content == "pytest test script"
 
 
 @pytest.mark.usefixtures("mock")
-class TestScript:
-    def test_init_from_id(self):
+class UTestScript:
+    def utest_init_from_id(self):
         s = Script(script_id=2)
 
         assert s._params.file_id == 2
 
-    def test_init_from_content(self):
+    def utest_init_from_content(self):
         s = Script(content="script content")
 
         assert s.content == "script content"
 
-    def test_init_from_file(self):
+    def utest_init_from_file(self):
         s = Script(script_file=sample_test_script_py_path)
 
         assert s.content == sample_test_script_py_data
 
-    def test_string(self):
+    def utest_string(self):
         s = Script()
 
         assert str(s) == "<empty script>"
@@ -130,7 +130,7 @@ class TestScript:
 
         assert str(s) == "script content"
 
-    def test_content(self):
+    def utest_content(self):
         s = Script()
 
         assert s.content == ""
@@ -145,7 +145,7 @@ class TestScript:
 
         assert s.content == "file content"
 
-    def test_from_file(self):
+    def utest_from_file(self):
         s1 = Script(script_file=sample_test_script_py_path)
 
         assert s1.content == sample_test_script_py_data
@@ -155,7 +155,7 @@ class TestScript:
 
         assert s2.content == sample_test_script_py_data
 
-    def test_from_content(self):
+    def utest_from_content(self):
         s1 = Script(content=sample_test_script_py_data)
 
         assert s1.content == sample_test_script_py_data
@@ -165,12 +165,12 @@ class TestScript:
 
         assert s2.content == sample_test_script_py_data
 
-    def test_to_json(self):
+    def utest_to_json(self):
         s = Script(content="script content")
 
         assert s.to_json() == "script content"
 
-    def test_read(self):
+    def utest_read(self):
         s = Script(script_id=2)
 
         s.read()
@@ -181,8 +181,8 @@ class TestScript:
 
 
 @pytest.mark.usefixtures("mock")
-class TestFileAPI:
-    def test_api_read(self):
+class UTestFileAPI:
+    def utest_api_read(self):
         fp = FileParams(file_id=identifiers.script_file_id)
 
         FileAPI().read(fp)
@@ -190,11 +190,11 @@ class TestFileAPI:
         assert fp.file_id == identifiers.script_file_id
         assert fp.created == created_time
         assert fp.updated == updated_time
-        assert fp.file_type == "test_script"
+        assert fp.file_type is FileType.FT_TEST_SCRIPT
         assert fp.content == "pytest test script"
 
         assert httpretty.last_request().parsed_body == ""
 
-    def test_api_read_invalid_params(self):
+    def utest_api_read_invalid_params(self):
         with pytest.raises(Exception):
             FileAPI.read(FileParams())
