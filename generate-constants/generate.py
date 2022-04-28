@@ -110,12 +110,6 @@ def generate_classificators(env: Environment):
             )
         )
 
-    # APIClient(
-    #     51,
-    #     "e39462286ebc351cefd4e0dfd55c735f24c5446a441e0957",
-    #     "https://api.stage.loadero.com/v2/",
-    # )
-
 
 def generate_metric_paths(env: Environment):
     metric_paths = []
