@@ -687,6 +687,5 @@ class MetricPath(LoaderoResource, Enum):
     def from_json(jv: str) -> MetricPath:
         return MetricPath(jv)
 
-    @staticmethod
-    def to_json(mp: MetricPath) -> str:
-        return mp.value
+    def to_json(self) -> str:
+        return self.value

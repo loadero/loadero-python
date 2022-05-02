@@ -28,9 +28,8 @@ class Artifact(LoaderoResource, Enum):
     def from_json(jv: str) -> Artifact:
         return Artifact(jv)
 
-    @staticmethod
-    def to_json(c: Artifact) -> str:
-        return c.value
+    def to_json(self) -> str:
+        return self.value
 
 
 class AssertStatus(LoaderoResource, Enum):
@@ -52,9 +51,8 @@ class AssertStatus(LoaderoResource, Enum):
     def from_json(jv: str) -> AssertStatus:
         return AssertStatus(jv)
 
-    @staticmethod
-    def to_json(c: AssertStatus) -> str:
-        return c.value
+    def to_json(self) -> str:
+        return self.value
 
 
 class AudioFeed(LoaderoResource, Enum):
@@ -86,9 +84,8 @@ class AudioFeed(LoaderoResource, Enum):
     def from_json(jv: str) -> AudioFeed:
         return AudioFeed(jv)
 
-    @staticmethod
-    def to_json(c: AudioFeed) -> str:
-        return c.value
+    def to_json(self) -> str:
+        return self.value
 
 
 class AwsStatus(LoaderoResource, Enum):
@@ -116,9 +113,8 @@ class AwsStatus(LoaderoResource, Enum):
     def from_json(jv: str) -> AwsStatus:
         return AwsStatus(jv)
 
-    @staticmethod
-    def to_json(c: AwsStatus) -> str:
-        return c.value
+    def to_json(self) -> str:
+        return self.value
 
 
 class Browser(LoaderoResource, Enum):
@@ -138,9 +134,8 @@ class Browser(LoaderoResource, Enum):
     def from_json(jv: str) -> Browser:
         return Browser(jv)
 
-    @staticmethod
-    def to_json(c: Browser) -> str:
-        return c.value
+    def to_json(self) -> str:
+        return self.value
 
 
 class ComputeUnit(LoaderoResource, Enum):
@@ -166,9 +161,8 @@ class ComputeUnit(LoaderoResource, Enum):
     def from_json(jv: str) -> ComputeUnit:
         return ComputeUnit(jv)
 
-    @staticmethod
-    def to_json(c: ComputeUnit) -> str:
-        return c.value
+    def to_json(self) -> str:
+        return self.value
 
 
 class FileType(LoaderoResource, Enum):
@@ -196,9 +190,8 @@ class FileType(LoaderoResource, Enum):
     def from_json(jv: str) -> FileType:
         return FileType(jv)
 
-    @staticmethod
-    def to_json(c: FileType) -> str:
-        return c.value
+    def to_json(self) -> str:
+        return self.value
 
 
 class IncrementStrategy(LoaderoResource, Enum):
@@ -222,9 +215,8 @@ class IncrementStrategy(LoaderoResource, Enum):
     def from_json(jv: str) -> IncrementStrategy:
         return IncrementStrategy(jv)
 
-    @staticmethod
-    def to_json(c: IncrementStrategy) -> str:
-        return c.value
+    def to_json(self) -> str:
+        return self.value
 
 
 class Language(LoaderoResource, Enum):
@@ -246,9 +238,8 @@ class Language(LoaderoResource, Enum):
     def from_json(jv: str) -> Language:
         return Language(jv)
 
-    @staticmethod
-    def to_json(c: Language) -> str:
-        return c.value
+    def to_json(self) -> str:
+        return self.value
 
 
 class Location(LoaderoResource, Enum):
@@ -288,9 +279,8 @@ class Location(LoaderoResource, Enum):
     def from_json(jv: str) -> Location:
         return Location(jv)
 
-    @staticmethod
-    def to_json(c: Location) -> str:
-        return c.value
+    def to_json(self) -> str:
+        return self.value
 
 
 class MediaType(LoaderoResource, Enum):
@@ -336,9 +326,8 @@ class MediaType(LoaderoResource, Enum):
     def from_json(jv: str) -> MediaType:
         return MediaType(jv)
 
-    @staticmethod
-    def to_json(c: MediaType) -> str:
-        return c.value
+    def to_json(self) -> str:
+        return self.value
 
 
 class MemberRole(LoaderoResource, Enum):
@@ -360,9 +349,8 @@ class MemberRole(LoaderoResource, Enum):
     def from_json(jv: str) -> MemberRole:
         return MemberRole(jv)
 
-    @staticmethod
-    def to_json(c: MemberRole) -> str:
-        return c.value
+    def to_json(self) -> str:
+        return self.value
 
 
 class MetricKey(LoaderoResource, Enum):
@@ -456,9 +444,8 @@ class MetricKey(LoaderoResource, Enum):
     def from_json(jv: str) -> MetricKey:
         return MetricKey(jv)
 
-    @staticmethod
-    def to_json(c: MetricKey) -> str:
-        return c.value
+    def to_json(self) -> str:
+        return self.value
 
 
 class MetricStatus(LoaderoResource, Enum):
@@ -486,9 +473,8 @@ class MetricStatus(LoaderoResource, Enum):
     def from_json(jv: str) -> MetricStatus:
         return MetricStatus(jv)
 
-    @staticmethod
-    def to_json(c: MetricStatus) -> str:
-        return c.value
+    def to_json(self) -> str:
+        return self.value
 
 
 class MosAlgorithm(LoaderoResource, Enum):
@@ -506,9 +492,8 @@ class MosAlgorithm(LoaderoResource, Enum):
     def from_json(jv: str) -> MosAlgorithm:
         return MosAlgorithm(jv)
 
-    @staticmethod
-    def to_json(c: MosAlgorithm) -> str:
-        return c.value
+    def to_json(self) -> str:
+        return self.value
 
 
 class Network(LoaderoResource, Enum):
@@ -554,9 +539,8 @@ class Network(LoaderoResource, Enum):
     def from_json(jv: str) -> Network:
         return Network(jv)
 
-    @staticmethod
-    def to_json(c: Network) -> str:
-        return c.value
+    def to_json(self) -> str:
+        return self.value
 
 
 class NodeStatus(LoaderoResource, Enum):
@@ -582,9 +566,8 @@ class NodeStatus(LoaderoResource, Enum):
     def from_json(jv: str) -> NodeStatus:
         return NodeStatus(jv)
 
-    @staticmethod
-    def to_json(c: NodeStatus) -> str:
-        return c.value
+    def to_json(self) -> str:
+        return self.value
 
 
 class Operator(LoaderoResource, Enum):
@@ -614,9 +597,8 @@ class Operator(LoaderoResource, Enum):
     def from_json(jv: str) -> Operator:
         return Operator(jv)
 
-    @staticmethod
-    def to_json(c: Operator) -> str:
-        return c.value
+    def to_json(self) -> str:
+        return self.value
 
 
 class PaymentPlan(LoaderoResource, Enum):
@@ -642,9 +624,8 @@ class PaymentPlan(LoaderoResource, Enum):
     def from_json(jv: str) -> PaymentPlan:
         return PaymentPlan(jv)
 
-    @staticmethod
-    def to_json(c: PaymentPlan) -> str:
-        return c.value
+    def to_json(self) -> str:
+        return self.value
 
 
 class PaymentStatus(LoaderoResource, Enum):
@@ -674,9 +655,8 @@ class PaymentStatus(LoaderoResource, Enum):
     def from_json(jv: str) -> PaymentStatus:
         return PaymentStatus(jv)
 
-    @staticmethod
-    def to_json(c: PaymentStatus) -> str:
-        return c.value
+    def to_json(self) -> str:
+        return self.value
 
 
 class Property(LoaderoResource, Enum):
@@ -714,9 +694,8 @@ class Property(LoaderoResource, Enum):
     def from_json(jv: str) -> Property:
         return Property(jv)
 
-    @staticmethod
-    def to_json(c: Property) -> str:
-        return c.value
+    def to_json(self) -> str:
+        return self.value
 
 
 class ResultStatus(LoaderoResource, Enum):
@@ -740,9 +719,8 @@ class ResultStatus(LoaderoResource, Enum):
     def from_json(jv: str) -> ResultStatus:
         return ResultStatus(jv)
 
-    @staticmethod
-    def to_json(c: ResultStatus) -> str:
-        return c.value
+    def to_json(self) -> str:
+        return self.value
 
 
 class RunStatus(LoaderoResource, Enum):
@@ -786,9 +764,8 @@ class RunStatus(LoaderoResource, Enum):
     def from_json(jv: str) -> RunStatus:
         return RunStatus(jv)
 
-    @staticmethod
-    def to_json(c: RunStatus) -> str:
-        return c.value
+    def to_json(self) -> str:
+        return self.value
 
 
 class TestDuration(LoaderoResource, Enum):
@@ -818,9 +795,8 @@ class TestDuration(LoaderoResource, Enum):
     def from_json(jv: str) -> TestDuration:
         return TestDuration(jv)
 
-    @staticmethod
-    def to_json(c: TestDuration) -> str:
-        return c.value
+    def to_json(self) -> str:
+        return self.value
 
 
 class TestMode(LoaderoResource, Enum):
@@ -842,9 +818,8 @@ class TestMode(LoaderoResource, Enum):
     def from_json(jv: str) -> TestMode:
         return TestMode(jv)
 
-    @staticmethod
-    def to_json(c: TestMode) -> str:
-        return c.value
+    def to_json(self) -> str:
+        return self.value
 
 
 class VideoFeed(LoaderoResource, Enum):
@@ -926,6 +901,5 @@ class VideoFeed(LoaderoResource, Enum):
     def from_json(jv: str) -> VideoFeed:
         return VideoFeed(jv)
 
-    @staticmethod
-    def to_json(c: VideoFeed) -> str:
-        return c.value
+    def to_json(self) -> str:
+        return self.value
