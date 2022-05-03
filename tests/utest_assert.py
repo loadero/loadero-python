@@ -148,7 +148,7 @@ class UTestAssertParams:
         a.in_test(5)
         assert a.test_id == 5
 
-    def utest_with_pats(self):
+    def utest_with_path(self):
         a = AssertParams()
         a.with_path(MetricPath.MACHINE_CPU_PERCENT_25TH)
         assert a.path is MetricPath.MACHINE_CPU_PERCENT_25TH
