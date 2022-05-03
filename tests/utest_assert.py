@@ -211,7 +211,6 @@ class UTestAssert:
         assert httpretty.last_request().parsed_body == ""
 
     def utest_update(self):
-
         a = Assert(
             params=AssertParams(
                 assert_id=identifiers.assert_id,
