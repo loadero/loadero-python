@@ -19,7 +19,7 @@ from .classificator import Operator
 class AssertParams(LoaderoResource):
     """
     AssertParams represents Loadero assert resource attributes.
-    AssertParams has a builder patter for assert resources read and write
+    AssertParams has a builder pattern for assert resources read and write
     attributes.
     """
 

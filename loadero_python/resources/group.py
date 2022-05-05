@@ -17,7 +17,7 @@ from .resource import LoaderoResource, to_json, from_json, to_string
 class GroupParams(LoaderoResource):
     """
     GroupParams represents Loadero group resource attributes.
-    GroupParams has a builder patter for group resources read and write
+    GroupParams has a builder patten for group resources read and write
     attributes.
     """
 

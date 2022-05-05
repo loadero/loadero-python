@@ -1,7 +1,6 @@
 """Participant resource tests"""
 
 # pylint: disable=missing-function-docstring
-# pylint: disable=wildcard-import
 # pylint: disable=missing-class-docstring
 # pylint: disable=no-member
 
@@ -10,8 +9,13 @@ import json
 import re
 import pytest
 import httpretty
+from dateutil import parser
 from loadero_python.api_client import APIClient
-from loadero_python.resources.participant import *
+from loadero_python.resources.participant import (
+    Participant,
+    ParticipantParams,
+    ParticipantAPI,
+)
 from loadero_python.resources.classificator import (
     ComputeUnit,
     AudioFeed,

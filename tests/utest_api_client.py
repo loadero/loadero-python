@@ -1,15 +1,16 @@
 """API client tests"""
 
-import pytest
-import httpretty
-from loadero_python.api_client import APIClient
-from . import identifiers
-
 
 # pylint: disable=unused-argument
 # pylint: disable=missing-function-docstring
 # pylint: disable=redefined-outer-name
 # pylint: disable=missing-class-docstring
+
+
+import pytest
+import httpretty
+from loadero_python.api_client import APIClient
+from . import identifiers
 
 
 def dict_includes(want: dict, got: dict) -> None:

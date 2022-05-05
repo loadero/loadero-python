@@ -2,7 +2,6 @@
 
 
 # pylint: disable=missing-function-docstring
-# pylint: disable=wildcard-import
 # pylint: disable=missing-class-docstring
 # pylint: disable=no-member
 
@@ -11,9 +10,10 @@ import json
 import re
 import pytest
 import httpretty
+from dateutil import parser
 from loadero_python.api_client import APIClient
 from loadero_python.resources.script import Script
-from loadero_python.resources.test import *
+from loadero_python.resources.test import Test, TestParams, TestAPI
 from loadero_python.resources.classificator import TestMode, IncrementStrategy
 from . import identifiers
 from .utest_script import sample_json as sample_file_json
