@@ -1,7 +1,6 @@
 """Script file resource tests"""
 
 # pylint: disable=missing-function-docstring
-# pylint: disable=wildcard-import
 # pylint: disable=protected-access
 # pylint: disable=missing-class-docstring
 # pylint: disable=no-member
@@ -12,7 +11,8 @@ import json
 import pytest
 import httpretty
 from dateutil import parser
-from loadero_python.resources.script import *
+from loadero_python.resources.script import Script, FileParams, FileAPI
+from loadero_python.api_client import APIClient
 from loadero_python.resources.classificator import FileType
 from . import identifiers
 

@@ -1,7 +1,6 @@
 """Group resource tests"""
 
 # pylint: disable=missing-function-docstring
-# pylint: disable=wildcard-import
 # pylint: disable=missing-class-docstring
 # pylint: disable=no-member
 
@@ -12,7 +11,7 @@ import pytest
 import httpretty
 from dateutil import parser
 from loadero_python.api_client import APIClient
-from loadero_python.resources.group import *
+from loadero_python.resources.group import Group, GroupParams, GroupAPI
 from . import identifiers
 
 

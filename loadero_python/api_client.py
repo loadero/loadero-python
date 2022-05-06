@@ -9,26 +9,18 @@ import urllib3
 
 
 class APIException(Exception):
-    """_summary_
-
-    Args:
-        Exception (_type_): _description_
-
-    Raises:
-        ValueError: _description_
-
-    Returns:
-        _type_: _description_
+    """
+    APIException indicates that Loadero API returned an error. This can
+    indicate that an invalid request was made or that an internal error
+    occurred in the Loadero servers.
     """
 
 
 class APIClient:
     """API client to access Loadero API"""
 
-    # TODO: bring /project/id routes inside api client. + figure out what to do
-    # about statics routes.
-
     __pool_size = 4
+    __timeout = urllib3.Timeout(total=30.0)
     __pool_manager = None
     __auth_header = {}
 
@@ -68,7 +60,10 @@ class APIClient:
             "LoaderoAuth " + self.__access_token
         )
 
-        self.__pool_manager = urllib3.PoolManager(num_pools=self.__pool_size)
+        self.__pool_manager = urllib3.PoolManager(
+            num_pools=self.__pool_size,
+            timeout=self.__timeout,
+        )
 
         self.__initalized = True
 

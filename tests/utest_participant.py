@@ -1,7 +1,6 @@
 """Participant resource tests"""
 
 # pylint: disable=missing-function-docstring
-# pylint: disable=wildcard-import
 # pylint: disable=missing-class-docstring
 # pylint: disable=no-member
 
@@ -10,8 +9,13 @@ import json
 import re
 import pytest
 import httpretty
+from dateutil import parser
 from loadero_python.api_client import APIClient
-from loadero_python.resources.participant import *
+from loadero_python.resources.participant import (
+    Participant,
+    ParticipantParams,
+    ParticipantAPI,
+)
 from loadero_python.resources.classificator import (
     ComputeUnit,
     AudioFeed,
@@ -234,12 +238,12 @@ class UTestParticipant:
                 count=3,
                 record_audio=False,
                 name="pytest participant",
-                compute_unit="g4",
-                audio_feed="silence",
-                browser="chromeLatest",
-                network="4g",
-                location="eu-central-1",
-                video_feed="480p-15fps",
+                compute_unit=ComputeUnit.CU_G4,
+                audio_feed=AudioFeed.AF_SILENCE,
+                browser=Browser.B_CHROMELATEST,
+                network=Network.N_4G,
+                location=Location.L_EU_CENTRAL_1,
+                video_feed=VideoFeed.VF_480P_15FPS,
             )
         )
 
@@ -306,13 +310,13 @@ class UTestParticipant:
                 group_id=identifiers.group_id,
                 name="pytest updated participant",
                 count=4,
-                compute_unit="g6",
                 record_audio=True,
-                audio_feed="visqol-speech",
-                browser="firefoxLatest",
-                location="ap-northeast-2",
-                network="3g",
-                video_feed="360p-15fps",
+                compute_unit=ComputeUnit.CU_G6,
+                audio_feed=AudioFeed.AF_VISQOL_SPEECH,
+                browser=Browser.B_FIREFOXLATEST,
+                location=Location.L_AP_NORTHEAST_2,
+                network=Network.N_3G,
+                video_feed=VideoFeed.VF_360P_15FPS,
             )
         )
 
@@ -414,15 +418,15 @@ class UTestParticipantAPI:
             ParticipantParams(
                 name="pytest participant",
                 count=3,
-                compute_unit="g4",
                 test_id=identifiers.test_id,
                 group_id=identifiers.group_id,
                 record_audio=False,
-                audio_feed="silence",
-                browser="chromeLatest",
-                location="eu-central-1",
-                network="4g",
-                video_feed="480p-15fps",
+                compute_unit=ComputeUnit.CU_G4,
+                audio_feed=AudioFeed.AF_SILENCE,
+                browser=Browser.B_CHROMELATEST,
+                network=Network.N_4G,
+                location=Location.L_EU_CENTRAL_1,
+                video_feed=VideoFeed.VF_480P_15FPS,
             )
         )
 
@@ -500,13 +504,13 @@ class UTestParticipantAPI:
                 group_id=identifiers.group_id,
                 name="pytest updated participant",
                 count=4,
-                compute_unit="g6",
                 record_audio=True,
-                audio_feed="visqol-speech",
-                browser="firefoxLatest",
-                location="ap-northeast-2",
-                network="3g",
-                video_feed="360p-15fps",
+                compute_unit=ComputeUnit.CU_G6,
+                audio_feed=AudioFeed.AF_VISQOL_SPEECH,
+                browser=Browser.B_FIREFOXLATEST,
+                location=Location.L_AP_NORTHEAST_2,
+                network=Network.N_3G,
+                video_feed=VideoFeed.VF_360P_15FPS,
             )
         )
 

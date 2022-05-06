@@ -22,7 +22,6 @@ class {{ c["class_name"] }}(LoaderoResource, Enum):
     def from_json(jv: str) -> {{ c["class_name"] }}:
         return {{ c["class_name"] }}(jv)
 
-    @staticmethod
-    def to_json(c: {{ c["class_name"] }}) -> str:
-        return c.value
+    def to_json(self) -> str:
+        return self.value
 {% endfor %}

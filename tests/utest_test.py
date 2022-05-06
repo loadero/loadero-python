@@ -2,7 +2,6 @@
 
 
 # pylint: disable=missing-function-docstring
-# pylint: disable=wildcard-import
 # pylint: disable=missing-class-docstring
 # pylint: disable=no-member
 
@@ -11,9 +10,10 @@ import json
 import re
 import pytest
 import httpretty
+from dateutil import parser
 from loadero_python.api_client import APIClient
 from loadero_python.resources.script import Script
-from loadero_python.resources.test import *
+from loadero_python.resources.test import Test, TestParams, TestAPI
 from loadero_python.resources.classificator import TestMode, IncrementStrategy
 from . import identifiers
 from .utest_script import sample_json as sample_file_json
@@ -215,8 +215,8 @@ class UTestTest:
                 name="pytest test",
                 start_interval=12,
                 participant_timeout=13,
-                mode="load",
-                increment_strategy="linear",
+                mode=TestMode.TM_LOAD,
+                increment_strategy=IncrementStrategy.IS_LINEAR,
                 mos_test=False,
                 script=sample_script,
             )
@@ -274,8 +274,8 @@ class UTestTest:
                 name="updated pytest name",
                 start_interval=45,
                 participant_timeout=94,
-                mode="performance",
-                increment_strategy="random",
+                mode=TestMode.TM_PERFORMANCE,
+                increment_strategy=IncrementStrategy.IS_RANDOM,
                 script=Script(content="updated test script"),
                 mos_test=True,
             )
@@ -364,8 +364,8 @@ class UTestTestAPI:
                 name="pytest test",
                 start_interval=12,
                 participant_timeout=13,
-                mode="load",
-                increment_strategy="linear",
+                mode=TestMode.TM_LOAD,
+                increment_strategy=IncrementStrategy.IS_LINEAR,
                 mos_test=False,
                 script=sample_script,
             )
@@ -423,8 +423,8 @@ class UTestTestAPI:
                 name="updated pytest name",
                 start_interval=45,
                 participant_timeout=94,
-                mode="performance",
-                increment_strategy="random",
+                mode=TestMode.TM_PERFORMANCE,
+                increment_strategy=IncrementStrategy.IS_RANDOM,
                 script=Script(content="updated test script"),
                 mos_test=True,
             )

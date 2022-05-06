@@ -8,6 +8,7 @@ APIClient allows to perform CRUD operations on Loadero group resources.
 """
 
 from __future__ import annotations
+from datetime import datetime
 from dateutil import parser
 from ..api_client import APIClient
 from .resource import LoaderoResource, to_json, from_json, to_string
@@ -16,7 +17,7 @@ from .resource import LoaderoResource, to_json, from_json, to_string
 class GroupParams(LoaderoResource):
     """
     GroupParams represents Loadero group resource attributes.
-    GroupParams has a builder patter for group resources read and write
+    GroupParams has a builder pattern for group resources read and write
     attributes.
     """
 
@@ -71,11 +72,11 @@ class GroupParams(LoaderoResource):
         return to_string(self.__dict__, self.__attribute_map)
 
     @property
-    def created(self):  # date time
+    def created(self) -> datetime:
         return self._created
 
     @property
-    def updated(self):  # date time
+    def updated(self) -> datetime:
         return self._updated
 
     @property
@@ -114,7 +115,7 @@ class GroupParams(LoaderoResource):
         Args:
             body_attributes (list[str] or None, optional): String list of JSON
                 field names that will be serialized. Defaults to None, then
-                the default body attributed for group resource are used.
+                the default body attributes for group resource are used.
 
         Returns:
             dict[str, any]: JSON dictionary.
