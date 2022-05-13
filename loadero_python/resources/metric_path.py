@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 from enum import Enum
-from loadero_python.resources.resource import LoaderoResource
+from .resource import LoaderoResource
 
 # This file is generated automatically by generate-constants/generate.py script.
 
