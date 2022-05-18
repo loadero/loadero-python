@@ -9,7 +9,6 @@ import json
 import re
 import pytest
 import httpretty
-from dateutil import parser
 from loadero_python.api_client import APIClient
 from loadero_python.resources.participant import (
     Participant,
@@ -24,40 +23,15 @@ from loadero_python.resources.classificator import (
     Network,
     VideoFeed,
 )
-from . import identifiers
-
-
-created_time = parser.parse("2022-04-01T13:54:25.689Z")
-updated_time = parser.parse("2024-02-03T15:42:54.689Z")
-
-
-sample_participant_json = {
-    "id": identifiers.participant_id,
-    "group_id": identifiers.group_id,
-    "test_id": identifiers.test_id,
-    "created": "2022-04-01T13:54:25.689Z",
-    "updated": "2024-02-03T15:42:54.689Z",
-    "profile_id": 87,
-    "count": 3,
-    "record_audio": False,
-    "name": "pytest participant",
-    "compute_unit": "g4",
-    "audio_feed": "silence",
-    "browser": "chromeLatest",
-    "location": "eu-central-1",
-    "media_type": "custom",
-    "network": "4g",
-    "video_feed": "480p-15fps",
-}
+from . import common
 
 
 @pytest.fixture(scope="module")
 def mock():
     httpretty.enable(allow_net_connect=False, verbose=True)
+    httpretty.reset()
 
-    APIClient(
-        identifiers.project_id, identifiers.access_token, identifiers.api_base
-    )
+    APIClient(common.project_id, common.access_token, common.api_base)
 
     # create
     httpretty.register_uri(
@@ -66,7 +40,7 @@ def mock():
             r"^http://mock\.loadero\.api/v2/"
             r"projects/\d*/tests/\d*/participants/$"
         ),
-        body=json.dumps(sample_participant_json),
+        body=json.dumps(common.participant_json),
         forcing_headers={"Content-Type": "application/json"},
     )
 
@@ -77,11 +51,12 @@ def mock():
             r"^http://mock\.loadero\.api/v2/"
             r"projects/\d*/tests/\d*/participants/\d*/$"
         ),
-        body=json.dumps(sample_participant_json),
+        body=json.dumps(common.participant_json),
         forcing_headers={"Content-Type": "application/json"},
     )
 
-    upd = sample_participant_json.copy()
+    # update
+    upd = common.participant_json.copy()
     upd["count"] = 4
     upd["name"] = "pytest updated participant"
     upd["compute_unit"] = "g6"
@@ -92,7 +67,6 @@ def mock():
     upd["network"] = "3g"
     upd["video_feed"] = "360p-15fps"
 
-    # update
     httpretty.register_uri(
         httpretty.PUT,
         re.compile(
@@ -112,11 +86,11 @@ def mock():
         ),
     )
 
-    dupl = sample_participant_json.copy()
+    # duplicate
+    dupl = common.participant_json.copy()
     dupl["id"] += 1
     dupl["name"] = "pytest duplicate participant"
 
-    # duplicate
     httpretty.register_uri(
         httpretty.POST,
         re.compile(
@@ -124,6 +98,37 @@ def mock():
             r"projects/\d*/tests/\d*/participants/\d*/copy/$"
         ),
         body=json.dumps(dupl),
+        forcing_headers={"Content-Type": "application/json"},
+    )
+
+    # read all participants in test
+    pg = common.paged_response.copy()
+    p1 = common.participant_json.copy()
+    p1["id"] += 1
+
+    p2 = common.participant_json.copy()
+    p2["id"] += 2
+
+    pg["results"] = [p1, p2]
+
+    httpretty.register_uri(
+        httpretty.GET,
+        re.compile(
+            r"^http://mock\.loadero\.api/v2/"
+            r"projects/\d*/tests/\d*/participants/$"
+        ),
+        body=json.dumps(pg),
+        forcing_headers={"Content-Type": "application/json"},
+    )
+
+    # read all participants in group
+    httpretty.register_uri(
+        httpretty.GET,
+        re.compile(
+            r"^http://mock\.loadero\.api/v2/"
+            r"projects/\d*/tests/\d*/groups/\d*/participants/$"
+        ),
+        body=json.dumps(pg),
         forcing_headers={"Content-Type": "application/json"},
     )
 
@@ -135,7 +140,7 @@ def mock():
 class UTestParticipantsParams:
     def utest_string(self):
         p = ParticipantParams()
-        dupl = sample_participant_json.copy()
+        dupl = common.participant_json.copy()
         p.from_json(dupl)
 
         assert (
@@ -159,13 +164,13 @@ class UTestParticipantsParams:
 
     def utest_created(self):
         p = ParticipantParams()
-        p.__dict__["_created"] = created_time
-        assert p.created == created_time
+        p.__dict__["_created"] = common.created_time
+        assert p.created == common.created_time
 
     def utest_updated(self):
         p = ParticipantParams()
-        p.__dict__["_updated"] = updated_time
-        assert p.updated == updated_time
+        p.__dict__["_updated"] = common.updated_time
+        assert p.updated == common.updated_time
 
     def utest_builder_id(self):
         p = ParticipantParams()
@@ -233,8 +238,8 @@ class UTestParticipant:
     def utest_create(self):
         p = Participant(
             params=ParticipantParams(
-                group_id=identifiers.group_id,
-                test_id=identifiers.test_id,
+                group_id=common.group_id,
+                test_id=common.test_id,
                 count=3,
                 record_audio=False,
                 name="pytest participant",
@@ -249,11 +254,11 @@ class UTestParticipant:
 
         p.create()
 
-        assert p.params.participant_id == identifiers.participant_id
-        assert p.params.group_id == identifiers.group_id
-        assert p.params.test_id == identifiers.test_id
-        assert p.params.created == created_time
-        assert p.params.updated == updated_time
+        assert p.params.participant_id == common.participant_id
+        assert p.params.group_id == common.group_id
+        assert p.params.test_id == common.test_id
+        assert p.params.created == common.created_time
+        assert p.params.updated == common.updated_time
         assert p.params.count == 3
         assert p.params.record_audio is False
         assert p.params.name == "pytest participant"
@@ -279,17 +284,17 @@ class UTestParticipant:
 
     def utest_read(self):
         p = Participant(
-            participant_id=identifiers.participant_id,
-            test_id=identifiers.test_id,
+            participant_id=common.participant_id,
+            test_id=common.test_id,
         )
 
         p.read()
 
-        assert p.params.participant_id == identifiers.participant_id
-        assert p.params.group_id == identifiers.group_id
-        assert p.params.test_id == identifiers.test_id
-        assert p.params.created == created_time
-        assert p.params.updated == updated_time
+        assert p.params.participant_id == common.participant_id
+        assert p.params.group_id == common.group_id
+        assert p.params.test_id == common.test_id
+        assert p.params.created == common.created_time
+        assert p.params.updated == common.updated_time
         assert p.params.count == 3
         assert p.params.record_audio is False
         assert p.params.name == "pytest participant"
@@ -305,9 +310,9 @@ class UTestParticipant:
     def utest_update(self):
         p = Participant(
             params=ParticipantParams(
-                participant_id=identifiers.participant_id,
-                test_id=identifiers.test_id,
-                group_id=identifiers.group_id,
+                participant_id=common.participant_id,
+                test_id=common.test_id,
+                group_id=common.group_id,
                 name="pytest updated participant",
                 count=4,
                 record_audio=True,
@@ -322,11 +327,11 @@ class UTestParticipant:
 
         p.update()
 
-        assert p.params.participant_id == identifiers.participant_id
-        assert p.params.group_id == identifiers.group_id
-        assert p.params.test_id == identifiers.test_id
-        assert p.params.created == created_time
-        assert p.params.updated == updated_time
+        assert p.params.participant_id == common.participant_id
+        assert p.params.group_id == common.group_id
+        assert p.params.test_id == common.test_id
+        assert p.params.created == common.created_time
+        assert p.params.updated == common.updated_time
         assert p.params.count == 4
         assert p.params.record_audio is True
         assert p.params.name == "pytest updated participant"
@@ -353,32 +358,32 @@ class UTestParticipant:
     def utest_delete(self):
         p = Participant(
             params=ParticipantParams(
-                participant_id=identifiers.participant_id,
-                test_id=identifiers.test_id,
+                participant_id=common.participant_id,
+                test_id=common.test_id,
             )
         )
 
         p.delete()
 
-        assert p.params.test_id == identifiers.test_id
-        assert p.params.participant_id == identifiers.participant_id
+        assert p.params.test_id == common.test_id
+        assert p.params.participant_id == common.participant_id
 
         assert httpretty.last_request().parsed_body == ""
 
     def utest_duplicate(self):
         p = Participant(
             params=ParticipantParams(
-                participant_id=identifiers.participant_id,
-                test_id=identifiers.test_id,
-                group_id=identifiers.group_id,
+                participant_id=common.participant_id,
+                test_id=common.test_id,
+                group_id=common.group_id,
             )
         )
 
         dupl = p.duplicate("pytest duplicate participant")
 
-        assert p.params.participant_id == identifiers.participant_id
-        assert p.params.group_id == identifiers.group_id
-        assert p.params.test_id == identifiers.test_id
+        assert p.params.participant_id == common.participant_id
+        assert p.params.group_id == common.group_id
+        assert p.params.test_id == common.test_id
         assert p.params.created is None
         assert p.params.updated is None
         assert p.params.count is None
@@ -391,11 +396,11 @@ class UTestParticipant:
         assert p.params.network is None
         assert p.params.video_feed is None
 
-        assert dupl.params.participant_id == identifiers.participant_id + 1
-        assert dupl.params.group_id == identifiers.group_id
-        assert dupl.params.test_id == identifiers.test_id
-        assert dupl.params.created == created_time
-        assert dupl.params.updated == updated_time
+        assert dupl.params.participant_id == common.participant_id + 1
+        assert dupl.params.group_id == common.group_id
+        assert dupl.params.test_id == common.test_id
+        assert dupl.params.created == common.created_time
+        assert dupl.params.updated == common.updated_time
         assert dupl.params.count == 3
         assert dupl.params.record_audio is False
         assert dupl.params.name == "pytest duplicate participant"
@@ -418,8 +423,8 @@ class UTestParticipantAPI:
             ParticipantParams(
                 name="pytest participant",
                 count=3,
-                test_id=identifiers.test_id,
-                group_id=identifiers.group_id,
+                test_id=common.test_id,
+                group_id=common.group_id,
                 record_audio=False,
                 compute_unit=ComputeUnit.CU_G4,
                 audio_feed=AudioFeed.AF_SILENCE,
@@ -430,11 +435,11 @@ class UTestParticipantAPI:
             )
         )
 
-        assert ret.participant_id == identifiers.participant_id
-        assert ret.group_id == identifiers.group_id
-        assert ret.test_id == identifiers.test_id
-        assert ret.created == created_time
-        assert ret.updated == updated_time
+        assert ret.participant_id == common.participant_id
+        assert ret.group_id == common.group_id
+        assert ret.test_id == common.test_id
+        assert ret.created == common.created_time
+        assert ret.updated == common.updated_time
         assert ret.count == 3
         assert ret.record_audio is False
         assert ret.name == "pytest participant"
@@ -464,17 +469,17 @@ class UTestParticipantAPI:
 
     def utest_api_read(self):
         p = ParticipantParams(
-            test_id=identifiers.test_id,
-            participant_id=identifiers.participant_id,
+            test_id=common.test_id,
+            participant_id=common.participant_id,
         )
 
         ret = ParticipantAPI.read(p)
 
-        assert ret.participant_id == identifiers.participant_id
-        assert ret.group_id == identifiers.group_id
-        assert ret.test_id == identifiers.test_id
-        assert ret.created == created_time
-        assert ret.updated == updated_time
+        assert ret.participant_id == common.participant_id
+        assert ret.group_id == common.group_id
+        assert ret.test_id == common.test_id
+        assert ret.created == common.created_time
+        assert ret.updated == common.updated_time
         assert ret.count == 3
         assert ret.record_audio is False
         assert ret.name == "pytest participant"
@@ -489,19 +494,19 @@ class UTestParticipantAPI:
 
     def utest_api_read_invalid_params(self):
         with pytest.raises(Exception):
-            ParticipantAPI.read(ParticipantParams(test_id=identifiers.test_id))
+            ParticipantAPI.read(ParticipantParams(test_id=common.test_id))
 
         with pytest.raises(Exception):
             ParticipantAPI.read(
-                ParticipantParams(participant_id=identifiers.participant_id)
+                ParticipantParams(participant_id=common.participant_id)
             )
 
     def utest_api_update(self):
         ret = ParticipantAPI.update(
             ParticipantParams(
-                participant_id=identifiers.participant_id,
-                test_id=identifiers.test_id,
-                group_id=identifiers.group_id,
+                participant_id=common.participant_id,
+                test_id=common.test_id,
+                group_id=common.group_id,
                 name="pytest updated participant",
                 count=4,
                 record_audio=True,
@@ -514,11 +519,11 @@ class UTestParticipantAPI:
             )
         )
 
-        assert ret.participant_id == identifiers.participant_id
-        assert ret.group_id == identifiers.group_id
-        assert ret.test_id == identifiers.test_id
-        assert ret.created == created_time
-        assert ret.updated == updated_time
+        assert ret.participant_id == common.participant_id
+        assert ret.group_id == common.group_id
+        assert ret.test_id == common.test_id
+        assert ret.created == common.created_time
+        assert ret.updated == common.updated_time
         assert ret.count == 4
         assert ret.record_audio is True
         assert ret.name == "pytest updated participant"
@@ -544,20 +549,18 @@ class UTestParticipantAPI:
 
     def utest_api_update_invalid_params(self):
         with pytest.raises(Exception):
-            ParticipantAPI.update(
-                ParticipantParams(test_id=identifiers.test_id)
-            )
+            ParticipantAPI.update(ParticipantParams(test_id=common.test_id))
 
         with pytest.raises(Exception):
             ParticipantAPI.update(
-                ParticipantParams(participant_id=identifiers.participant_id)
+                ParticipantParams(participant_id=common.participant_id)
             )
 
     def utest_api_delete(self):
         ret = ParticipantAPI.delete(
             ParticipantParams(
-                participant_id=identifiers.participant_id,
-                test_id=identifiers.test_id,
+                participant_id=common.participant_id,
+                test_id=common.test_id,
             )
         )
 
@@ -575,17 +578,17 @@ class UTestParticipantAPI:
     def utest_api_duplicate(self):
         ret = ParticipantAPI.duplicate(
             ParticipantParams(
-                participant_id=identifiers.participant_id,
-                test_id=identifiers.test_id,
+                participant_id=common.participant_id,
+                test_id=common.test_id,
                 name="pytest duplicate participant",
             )
         )
 
-        assert ret.participant_id == identifiers.participant_id + 1
-        assert ret.group_id == identifiers.group_id
-        assert ret.test_id == identifiers.test_id
-        assert ret.created == created_time
-        assert ret.updated == updated_time
+        assert ret.participant_id == common.participant_id + 1
+        assert ret.group_id == common.group_id
+        assert ret.test_id == common.test_id
+        assert ret.created == common.created_time
+        assert ret.updated == common.updated_time
         assert ret.count == 3
         assert ret.record_audio is False
         assert ret.name == "pytest duplicate participant"
@@ -607,5 +610,65 @@ class UTestParticipantAPI:
         with pytest.raises(Exception):
             ParticipantAPI.duplicate(ParticipantParams(participant_id=1))
 
-    def utest_api_read_all(self):
-        ParticipantAPI.read_all(5)
+    def utest_api_read_all_in_test(self):
+        resp = ParticipantAPI.read_all(common.test_id)
+
+        assert len(resp) == 2
+
+        for i, ret in enumerate(resp):
+            assert ret.participant_id == common.participant_id + i + 1
+            assert ret.group_id == common.group_id
+            assert ret.test_id == common.test_id
+            assert ret.created == common.created_time
+            assert ret.updated == common.updated_time
+            assert ret.count == 3
+            assert ret.record_audio is False
+            assert ret.name == "pytest participant"
+            assert ret.compute_unit is ComputeUnit.CU_G4
+            assert ret.audio_feed is AudioFeed.AF_SILENCE
+            assert ret.browser is Browser.B_CHROMELATEST
+            assert ret.location is Location.L_EU_CENTRAL_1
+            assert ret.network is Network.N_4G
+            assert ret.video_feed is VideoFeed.VF_480P_15FPS
+
+    def utest_api_read_all_in_group(self):
+        resp = ParticipantAPI.read_all(common.test_id, common.group_id)
+
+        assert len(resp) == 2
+
+        for i, ret in enumerate(resp):
+            assert ret.participant_id == common.participant_id + i + 1
+            assert ret.group_id == common.group_id
+            assert ret.test_id == common.test_id
+            assert ret.created == common.created_time
+            assert ret.updated == common.updated_time
+            assert ret.count == 3
+            assert ret.record_audio is False
+            assert ret.name == "pytest participant"
+            assert ret.compute_unit is ComputeUnit.CU_G4
+            assert ret.audio_feed is AudioFeed.AF_SILENCE
+            assert ret.browser is Browser.B_CHROMELATEST
+            assert ret.location is Location.L_EU_CENTRAL_1
+            assert ret.network is Network.N_4G
+            assert ret.video_feed is VideoFeed.VF_480P_15FPS
+
+        assert httpretty.last_request().parsed_body == ""
+
+    def utest_api_read_no_results(self):
+        pg = common.paged_response.copy()
+        pg["results"] = None
+
+        httpretty.register_uri(
+            httpretty.GET,
+            re.compile(
+                r"^http://mock\.loadero\.api/v2/"
+                r"projects/\d*/tests/\d*/participants/$"
+            ),
+            body=json.dumps(pg),
+            forcing_headers={"Content-Type": "application/json"},
+        )
+
+        resp = ParticipantAPI.read_all(common.test_id)
+
+        assert len(resp) == 0
+        assert httpretty.last_request().parsed_body == ""

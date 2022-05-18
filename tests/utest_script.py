@@ -10,11 +10,10 @@ import re
 import json
 import pytest
 import httpretty
-from dateutil import parser
 from loadero_python.resources.script import Script, FileParams, FileAPI
 from loadero_python.api_client import APIClient
 from loadero_python.resources.classificator import FileType
-from . import identifiers
+from . import common
 
 
 # Relative to repo root dir.
@@ -24,33 +23,36 @@ sample_test_script_py_data = """def test_on_loadero(driver: TestUIDriver):
 """
 
 
-created_time = parser.parse("2022-04-01T13:54:25.689Z")
-updated_time = parser.parse("2024-02-03T15:42:54.689Z")
-
-
-sample_json = {
-    "content": "pytest test script",
-    "created": "2022-04-01T13:54:25.689Z",
-    "file_type": "test_script",
-    "id": identifiers.script_file_id,
-    "project_id": identifiers.project_id,
-    "updated": "2024-02-03T15:42:54.689Z",
-}
-
-
 @pytest.fixture(scope="module")
 def mock():
     httpretty.enable(allow_net_connect=False, verbose=True)
+    httpretty.reset()
 
-    APIClient(
-        identifiers.project_id, identifiers.access_token, identifiers.api_base
-    )
+    APIClient(common.project_id, common.access_token, common.api_base)
 
     # read
     httpretty.register_uri(
         httpretty.GET,
         re.compile(r"^http://mock\.loadero\.api/v2/projects/\d*/files/\d*/$"),
-        body=json.dumps(sample_json),
+        body=json.dumps(common.file_json),
+        forcing_headers={"Content-Type": "application/json"},
+    )
+
+    # read all
+    pg = common.paged_response.copy()
+
+    f1 = common.file_json.copy()
+    f1["id"] += 1
+
+    f2 = common.file_json.copy()
+    f2["id"] += 2
+
+    pg["results"] = [f1, f2]
+
+    httpretty.register_uri(
+        httpretty.GET,
+        re.compile(r"^http://mock\.loadero\.api/v2/projects/\d*/files/"),
+        body=json.dumps(pg),
         forcing_headers={"Content-Type": "application/json"},
     )
 
@@ -71,15 +73,15 @@ class UTestFileParams:
 
     def utest_created(self):
         fp = FileParams()
-        fp.__dict__["_created"] = created_time
+        fp.__dict__["_created"] = common.created_time
 
-        assert fp.created == created_time
+        assert fp.created == common.created_time
 
     def utest_updated(self):
         fp = FileParams()
-        fp.__dict__["_updated"] = updated_time
+        fp.__dict__["_updated"] = common.updated_time
 
-        assert fp.updated == updated_time
+        assert fp.updated == common.updated_time
 
     def utest_file_type(self):
         fp = FileParams()
@@ -95,11 +97,11 @@ class UTestFileParams:
 
     def utest_from_json(self):
         fp = FileParams()
-        fp.from_json(sample_json)
+        fp.from_json(common.file_json)
 
-        assert fp.file_id == identifiers.script_file_id
-        assert fp.created == created_time
-        assert fp.updated == updated_time
+        assert fp.file_id == common.file_id
+        assert fp.created == common.created_time
+        assert fp.updated == common.updated_time
         assert fp.file_type is FileType.FT_TEST_SCRIPT
         assert fp.content == "pytest test script"
 
@@ -183,13 +185,13 @@ class UTestScript:
 @pytest.mark.usefixtures("mock")
 class UTestFileAPI:
     def utest_api_read(self):
-        fp = FileParams(file_id=identifiers.script_file_id)
+        fp = FileParams(file_id=common.file_id)
 
         FileAPI().read(fp)
 
-        assert fp.file_id == identifiers.script_file_id
-        assert fp.created == created_time
-        assert fp.updated == updated_time
+        assert fp.file_id == common.file_id
+        assert fp.created == common.created_time
+        assert fp.updated == common.updated_time
         assert fp.file_type is FileType.FT_TEST_SCRIPT
         assert fp.content == "pytest test script"
 
@@ -198,3 +200,33 @@ class UTestFileAPI:
     def utest_api_read_invalid_params(self):
         with pytest.raises(Exception):
             FileAPI.read(FileParams())
+
+    def utest_api_read_all(self):
+        resp = FileAPI.read_all()
+
+        assert len(resp) == 2
+
+        for i, ret in enumerate(resp):
+            assert ret.file_id == common.file_id + i + 1
+            assert ret.created == common.created_time
+            assert ret.updated == common.updated_time
+            assert ret.file_type is FileType.FT_TEST_SCRIPT
+            assert ret.content == "pytest test script"
+
+        assert httpretty.last_request().parsed_body == ""
+
+    def utest_api_read_no_results(self):
+        pg = common.paged_response.copy()
+        pg["results"] = None
+
+        httpretty.register_uri(
+            httpretty.GET,
+            re.compile(r"^http://mock\.loadero\.api/v2/projects/\d*/files/"),
+            body=json.dumps(pg),
+            forcing_headers={"Content-Type": "application/json"},
+        )
+
+        resp = FileAPI.read_all()
+
+        assert len(resp) == 0
+        assert httpretty.last_request().parsed_body == ""

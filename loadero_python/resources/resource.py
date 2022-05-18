@@ -5,7 +5,7 @@ from tabulate import tabulate
 
 
 class LoaderoResource:
-    pass
+    """Base class for Loadero resources."""
 
 
 # TODO:

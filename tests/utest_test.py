@@ -10,50 +10,35 @@ import json
 import re
 import pytest
 import httpretty
-from dateutil import parser
 from loadero_python.api_client import APIClient
 from loadero_python.resources.script import Script
 from loadero_python.resources.test import Test, TestParams, TestAPI
 from loadero_python.resources.classificator import TestMode, IncrementStrategy
-from . import identifiers
-from .utest_script import sample_json as sample_file_json
-
-
-created_time = parser.parse("2022-04-01T13:54:25.689Z")
-updated_time = parser.parse("2024-02-03T15:42:54.689Z")
-
-
-sample_script = Script(content="pytest test script")
-
-sample_json = {
-    "id": identifiers.test_id,
-    "created": "2022-04-01T13:54:25.689Z",
-    "updated": "2024-02-03T15:42:54.689Z",
-    "increment_strategy": "linear",
-    "mode": "load",
-    "name": "pytest test",
-    "participant_timeout": 13,
-    "project_id": identifiers.project_id,
-    "script_file_id": 65,
-    "start_interval": 12,
-    "group_count": 52,
-    "participant_count": 9355,
-}
+from loadero_python.resources.classificator import (
+    ComputeUnit,
+    AudioFeed,
+    Browser,
+    Location,
+    Network,
+    VideoFeed,
+    Operator,
+)
+from loadero_python.resources.metric_path import MetricPath
+from . import common
 
 
 @pytest.fixture(scope="module")
 def mock():
     httpretty.enable(allow_net_connect=False, verbose=True)
+    httpretty.reset()
 
-    APIClient(
-        identifiers.project_id, identifiers.access_token, identifiers.api_base
-    )
+    APIClient(common.project_id, common.access_token, common.api_base)
 
     # create
     httpretty.register_uri(
         httpretty.POST,
         re.compile(r"^http://mock\.loadero\.api/v2/projects/\d*/tests/$"),
-        body=json.dumps(sample_json),
+        body=json.dumps(common.test_json),
         forcing_headers={"Content-Type": "application/json"},
     )
 
@@ -61,11 +46,12 @@ def mock():
     httpretty.register_uri(
         httpretty.GET,
         re.compile(r"^http://mock\.loadero\.api/v2/projects/\d*/tests/\d*/$"),
-        body=json.dumps(sample_json),
+        body=json.dumps(common.test_json),
         forcing_headers={"Content-Type": "application/json"},
     )
 
-    upd = sample_json.copy()
+    # update
+    upd = common.test_json.copy()
     upd["name"] = "updated pytest name"
     upd["start_interval"] = 45
     upd["participant_timeout"] = 94
@@ -73,7 +59,6 @@ def mock():
     upd["increment_strategy"] = "random"
     upd["mos_test"] = True
 
-    # update
     httpretty.register_uri(
         httpretty.PUT,
         re.compile(r"^http://mock\.loadero\.api/v2/projects/\d*/tests/\d*/$"),
@@ -87,7 +72,7 @@ def mock():
         re.compile(r"^http://mock\.loadero\.api/v2/projects/\d*/tests/\d*/$"),
     )
 
-    dupl = sample_json.copy()
+    dupl = common.test_json.copy()
     dupl["id"] += 1
     dupl["name"] = "pytest duplicate test"
 
@@ -105,7 +90,83 @@ def mock():
     httpretty.register_uri(
         httpretty.GET,
         re.compile(r"^http://mock\.loadero\.api/v2/projects/\d*/files/\d*/$"),
-        body=json.dumps(sample_file_json),
+        body=json.dumps(common.file_json),
+        forcing_headers={"Content-Type": "application/json"},
+    )
+
+    # read all tests
+    pg = common.paged_response.copy()
+    t1 = common.test_json.copy()
+    t1["id"] += 1
+
+    t2 = common.test_json.copy()
+    t2["id"] += 2
+
+    pg["results"] = [t1, t2]
+
+    httpretty.register_uri(
+        httpretty.GET,
+        re.compile(r"^http://mock\.loadero\.api/v2/projects/\d*/tests/$"),
+        body=json.dumps(pg),
+        forcing_headers={"Content-Type": "application/json"},
+    )
+
+    # read all groups
+    gpg = common.paged_response.copy()
+    g1 = common.group_json.copy()
+    g1["id"] += 1
+
+    g2 = common.group_json.copy()
+    g2["id"] += 2
+
+    gpg["results"] = [g1, g2]
+
+    httpretty.register_uri(
+        httpretty.GET,
+        re.compile(
+            r"^http://mock\.loadero\.api/v2/" r"projects/\d*/tests/\d*/groups/$"
+        ),
+        body=json.dumps(gpg),
+        forcing_headers={"Content-Type": "application/json"},
+    )
+
+    # read all participants
+    ppg = common.paged_response.copy()
+    p1 = common.participant_json.copy()
+    p1["id"] += 1
+
+    p2 = common.participant_json.copy()
+    p2["id"] += 2
+
+    ppg["results"] = [p1, p2]
+
+    httpretty.register_uri(
+        httpretty.GET,
+        re.compile(
+            r"^http://mock\.loadero\.api/v2/"
+            r"projects/\d*/tests/\d*/participants/$"
+        ),
+        body=json.dumps(ppg),
+        forcing_headers={"Content-Type": "application/json"},
+    )
+
+    # read all asserts
+    apg = common.paged_response.copy()
+    a1 = common.assert_json.copy()
+    a1["id"] += 1
+
+    a2 = common.assert_json.copy()
+    a2["id"] += 2
+
+    apg["results"] = [a1, a2]
+
+    httpretty.register_uri(
+        httpretty.GET,
+        re.compile(
+            r"^http://mock\.loadero\.api/v2/"
+            r"projects/\d*/tests/\d*/asserts/$"
+        ),
+        body=json.dumps(apg),
         forcing_headers={"Content-Type": "application/json"},
     )
 
@@ -116,7 +177,7 @@ def mock():
 
 class UTestTestParams:
     def utest_string(self):
-        dupl = sample_json.copy()
+        dupl = common.test_json.copy()
         dupl["project_id"] = 81
 
         t = TestParams()
@@ -142,13 +203,13 @@ class UTestTestParams:
 
     def utest_created(self):
         t = TestParams()
-        t.__dict__["_created"] = created_time
-        assert t.created == created_time
+        t.__dict__["_created"] = common.created_time
+        assert t.created == common.created_time
 
     def utest_updated(self):
         t = TestParams()
-        t.__dict__["_updated"] = updated_time
-        assert t.updated == updated_time
+        t.__dict__["_updated"] = common.updated_time
+        assert t.updated == common.updated_time
 
     def utest_group_count(self):
         t = TestParams()
@@ -218,15 +279,15 @@ class UTestTest:
                 mode=TestMode.TM_LOAD,
                 increment_strategy=IncrementStrategy.IS_LINEAR,
                 mos_test=False,
-                script=sample_script,
+                script=common.script,
             )
         )
 
         t.create()
 
-        assert t.params.test_id == identifiers.test_id
-        assert t.params.created == created_time
-        assert t.params.updated == updated_time
+        assert t.params.test_id == common.test_id
+        assert t.params.created == common.created_time
+        assert t.params.updated == common.updated_time
         assert t.params.name == "pytest test"
         assert t.params.start_interval == 12
         assert t.params.participant_timeout == 13
@@ -248,13 +309,13 @@ class UTestTest:
         }
 
     def utest_read(self):
-        t = Test(test_id=identifiers.test_id)
+        t = Test(test_id=common.test_id)
 
         t.read()
 
-        assert t.params.test_id == identifiers.test_id
-        assert t.params.created == created_time
-        assert t.params.updated == updated_time
+        assert t.params.test_id == common.test_id
+        assert t.params.created == common.created_time
+        assert t.params.updated == common.updated_time
         assert t.params.name == "pytest test"
         assert t.params.start_interval == 12
         assert t.params.participant_timeout == 13
@@ -270,7 +331,7 @@ class UTestTest:
     def utest_update(self):
         t = Test(
             params=TestParams(
-                test_id=identifiers.test_id,
+                test_id=common.test_id,
                 name="updated pytest name",
                 start_interval=45,
                 participant_timeout=94,
@@ -283,9 +344,9 @@ class UTestTest:
 
         t.update()
 
-        assert t.params.test_id == identifiers.test_id
-        assert t.params.created == created_time
-        assert t.params.updated == updated_time
+        assert t.params.test_id == common.test_id
+        assert t.params.created == common.created_time
+        assert t.params.updated == common.updated_time
         assert t.params.name == "updated pytest name"
         assert t.params.start_interval == 45
         assert t.params.participant_timeout == 94
@@ -307,21 +368,21 @@ class UTestTest:
         }
 
     def utest_delete(self):
-        t = Test(test_id=identifiers.test_id)
+        t = Test(test_id=common.test_id)
 
         t.delete()
 
-        assert t.params.test_id == identifiers.test_id
+        assert t.params.test_id == common.test_id
         assert t.params.deleted is True
 
         assert httpretty.last_request().parsed_body == ""
 
     def utest_duplicate(self):
-        t = Test(test_id=identifiers.test_id)
+        t = Test(test_id=common.test_id)
 
         dupl = t.duplicate("pytest duplicate test")
 
-        assert t.params.test_id == identifiers.test_id
+        assert t.params.test_id == common.test_id
         assert t.params.created is None
         assert t.params.updated is None
         assert t.params.name is None
@@ -334,9 +395,9 @@ class UTestTest:
         assert t.params.participant_count is None
         assert t.params.deleted is None
 
-        assert dupl.params.test_id == identifiers.test_id + 1
-        assert dupl.params.created == created_time
-        assert dupl.params.updated == updated_time
+        assert dupl.params.test_id == common.test_id + 1
+        assert dupl.params.created == common.created_time
+        assert dupl.params.updated == common.updated_time
         assert dupl.params.name == "pytest duplicate test"
         assert dupl.params.start_interval == 12
         assert dupl.params.participant_timeout == 13
@@ -355,6 +416,68 @@ class UTestTest:
         # read script
         assert httpretty.latest_requests()[-1].parsed_body == ""
 
+    def utest_groups(self):
+        t = Test(test_id=common.test_id)
+
+        resp = t.groups()
+
+        assert len(resp) == 2
+
+        for i, ret in enumerate(resp):
+            assert ret.params.group_id == common.group_id + i + 1
+            assert ret.params.name == "pytest_group"
+            assert ret.params.count == 8
+            assert ret.params.test_id == common.test_id
+            assert ret.params.participant_count is None  # omit empty
+            assert ret.params.total_cu_count is None  # omit empty
+            assert ret.params.created == common.created_time
+            assert ret.params.updated == common.updated_time
+
+        assert httpretty.last_request().parsed_body == ""
+
+    def utest_participants(self):
+        t = Test(test_id=common.test_id)
+
+        resp = t.participants()
+
+        assert len(resp) == 2
+
+        for i, ret in enumerate(resp):
+            assert ret.params.participant_id == common.participant_id + i + 1
+            assert ret.params.group_id == common.group_id
+            assert ret.params.test_id == common.test_id
+            assert ret.params.created == common.created_time
+            assert ret.params.updated == common.updated_time
+            assert ret.params.count == 3
+            assert ret.params.record_audio is False
+            assert ret.params.name == "pytest participant"
+            assert ret.params.compute_unit is ComputeUnit.CU_G4
+            assert ret.params.audio_feed is AudioFeed.AF_SILENCE
+            assert ret.params.browser is Browser.B_CHROMELATEST
+            assert ret.params.location is Location.L_EU_CENTRAL_1
+            assert ret.params.network is Network.N_4G
+            assert ret.params.video_feed is VideoFeed.VF_480P_15FPS
+
+        assert httpretty.last_request().parsed_body == ""
+
+    def utest_asserts(self):
+        t = Test(test_id=common.test_id)
+
+        resp = t.asserts()
+
+        assert len(resp) == 2
+
+        for i, ret in enumerate(resp):
+            assert ret.params.assert_id == common.assert_id + i + 1
+            assert ret.params.test_id == common.test_id
+            assert ret.params.created == common.created_time
+            assert ret.params.updated == common.updated_time
+            assert ret.params.expected == "892"
+            assert ret.params.operator is Operator.O_GT
+            assert ret.params.path is MetricPath.MACHINE_NETWORK_BITRATE_IN_AVG
+
+        assert httpretty.last_request().parsed_body == ""
+
 
 @pytest.mark.usefixtures("mock")
 class UTestTestAPI:
@@ -367,13 +490,13 @@ class UTestTestAPI:
                 mode=TestMode.TM_LOAD,
                 increment_strategy=IncrementStrategy.IS_LINEAR,
                 mos_test=False,
-                script=sample_script,
+                script=common.script,
             )
         )
 
-        assert ret.test_id == identifiers.test_id
-        assert ret.created == created_time
-        assert ret.updated == updated_time
+        assert ret.test_id == common.test_id
+        assert ret.created == common.created_time
+        assert ret.updated == common.updated_time
         assert ret.name == "pytest test"
         assert ret.start_interval == 12
         assert ret.participant_timeout == 13
@@ -395,11 +518,11 @@ class UTestTestAPI:
         }
 
     def utest_api_read(self):
-        ret = TestAPI().read(TestParams(test_id=identifiers.test_id))
+        ret = TestAPI().read(TestParams(test_id=common.test_id))
 
-        assert ret.test_id == identifiers.test_id
-        assert ret.created == created_time
-        assert ret.updated == updated_time
+        assert ret.test_id == common.test_id
+        assert ret.created == common.created_time
+        assert ret.updated == common.updated_time
         assert ret.name == "pytest test"
         assert ret.start_interval == 12
         assert ret.participant_timeout == 13
@@ -419,7 +542,7 @@ class UTestTestAPI:
     def utest_api_update(self):
         ret = TestAPI().update(
             TestParams(
-                test_id=identifiers.test_id,
+                test_id=common.test_id,
                 name="updated pytest name",
                 start_interval=45,
                 participant_timeout=94,
@@ -430,9 +553,9 @@ class UTestTestAPI:
             )
         )
 
-        assert ret.test_id == identifiers.test_id
-        assert ret.created == created_time
-        assert ret.updated == updated_time
+        assert ret.test_id == common.test_id
+        assert ret.created == common.created_time
+        assert ret.updated == common.updated_time
         assert ret.name == "updated pytest name"
         assert ret.start_interval == 45
         assert ret.participant_timeout == 94
@@ -458,9 +581,9 @@ class UTestTestAPI:
             TestAPI.update(TestParams())
 
     def utest_api_delete(self):
-        ret = TestAPI().delete(TestParams(test_id=identifiers.test_id))
+        ret = TestAPI().delete(TestParams(test_id=common.test_id))
 
-        assert ret.test_id == identifiers.test_id
+        assert ret.test_id == common.test_id
         assert ret.deleted is True
 
         assert httpretty.last_request().parsed_body == ""
@@ -471,14 +594,12 @@ class UTestTestAPI:
 
     def utest_api_duplicate(self):
         ret = TestAPI().duplicate(
-            TestParams(
-                test_id=identifiers.test_id, name="pytest duplicate test"
-            )
+            TestParams(test_id=common.test_id, name="pytest duplicate test")
         )
 
-        assert ret.test_id == identifiers.test_id + 1
-        assert ret.created == created_time
-        assert ret.updated == updated_time
+        assert ret.test_id == common.test_id + 1
+        assert ret.created == common.created_time
+        assert ret.updated == common.updated_time
         assert ret.name == "pytest duplicate test"
         assert ret.start_interval == 12
         assert ret.participant_timeout == 13
@@ -502,4 +623,39 @@ class UTestTestAPI:
             TestAPI.duplicate(TestParams())
 
     def utest_api_read_all(self):
-        TestAPI().read_all()
+        resp = TestAPI().read_all()
+
+        assert len(resp) == 2
+
+        for i, ret in enumerate(resp):
+            assert ret.test_id == common.test_id + i + 1
+            assert ret.created == common.created_time
+            assert ret.updated == common.updated_time
+            assert ret.name == "pytest test"
+            assert ret.start_interval == 12
+            assert ret.participant_timeout == 13
+            assert ret.mode is TestMode.TM_LOAD
+            assert ret.increment_strategy is IncrementStrategy.IS_LINEAR
+            assert ret.script is None
+            assert ret.group_count == 52
+            assert ret.participant_count == 9355
+            assert ret.deleted is None
+
+        assert httpretty.last_request().parsed_body == ""
+
+    def utest_api_read_all_no_results(self):
+        pg = common.paged_response.copy()
+        pg["results"] = None
+
+        httpretty.register_uri(
+            httpretty.GET,
+            re.compile(r"^http://mock\.loadero\.api/v2/projects/\d*/tests/$"),
+            body=json.dumps(pg),
+            forcing_headers={"Content-Type": "application/json"},
+        )
+
+        resp = TestAPI().read_all()
+
+        assert len(resp) == 0
+
+        assert httpretty.last_request().parsed_body == ""

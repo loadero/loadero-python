@@ -10,7 +10,6 @@ import json
 import re
 import pytest
 import httpretty
-from dateutil import parser
 from loadero_python.api_client import APIClient
 from loadero_python.resources.assert_resource import (
     AssertParams,
@@ -19,31 +18,15 @@ from loadero_python.resources.assert_resource import (
 )
 from loadero_python.resources.classificator import Operator
 from loadero_python.resources.metric_path import MetricPath
-from . import identifiers
-
-
-created_time = parser.parse("2022-04-01T13:54:25.689Z")
-updated_time = parser.parse("2024-02-03T15:42:54.689Z")
-
-
-sample_assert_json = {
-    "id": identifiers.assert_id,
-    "test_id": identifiers.test_id,
-    "created": "2022-04-01T13:54:25.689Z",
-    "updated": "2024-02-03T15:42:54.689Z",
-    "expected": "892",
-    "operator": "gt",
-    "path": "machine/network/bitrate/in/avg",
-}
+from . import common
 
 
 @pytest.fixture(scope="module")
 def mock():
     httpretty.enable(allow_net_connect=False, verbose=True)
+    httpretty.reset()
 
-    APIClient(
-        identifiers.project_id, identifiers.access_token, identifiers.api_base
-    )
+    APIClient(common.project_id, common.access_token, common.api_base)
 
     # create
     httpretty.register_uri(
@@ -51,7 +34,7 @@ def mock():
         re.compile(
             r"^http://mock\.loadero\.api/v2/projects/\d*/tests/\d*/asserts/$"
         ),
-        body=json.dumps(sample_assert_json),
+        body=json.dumps(common.assert_json),
         forcing_headers={"Content-Type": "application/json"},
     )
 
@@ -62,16 +45,16 @@ def mock():
             r"^http://mock\.loadero\.api/v2/"
             r"projects/\d*/tests/\d*/asserts/\d*/$"
         ),
-        body=json.dumps(sample_assert_json),
+        body=json.dumps(common.assert_json),
         forcing_headers={"Content-Type": "application/json"},
     )
 
-    upd = sample_assert_json.copy()
+    # update
+    upd = common.assert_json.copy()
     upd["expected"] = "532"
     upd["operator"] = "lt"
     upd["path"] = "machine/cpu/used/avg"
 
-    # update
     httpretty.register_uri(
         httpretty.PUT,
         re.compile(
@@ -91,10 +74,10 @@ def mock():
         ),
     )
 
-    dupl = sample_assert_json.copy()
+    # duplicate
+    dupl = common.assert_json.copy()
     dupl["id"] += 1
 
-    # duplicate
     httpretty.register_uri(
         httpretty.POST,
         re.compile(
@@ -102,6 +85,26 @@ def mock():
             r"projects/\d*/tests/\d*/asserts/\d*/copy/$"
         ),
         body=json.dumps(dupl),
+        forcing_headers={"Content-Type": "application/json"},
+    )
+
+    # read all
+    pg = common.paged_response.copy()
+    a1 = common.assert_json.copy()
+    a1["id"] += 1
+
+    a2 = common.assert_json.copy()
+    a2["id"] += 2
+
+    pg["results"] = [a1, a2]
+
+    httpretty.register_uri(
+        httpretty.GET,
+        re.compile(
+            r"^http://mock\.loadero\.api/v2/"
+            r"projects/\d*/tests/\d*/asserts/$"
+        ),
+        body=json.dumps(pg),
         forcing_headers={"Content-Type": "application/json"},
     )
 
@@ -113,7 +116,7 @@ def mock():
 class UTestAssertParams:
     def utest_str(self):
         a = AssertParams()
-        dupl = sample_assert_json.copy()
+        dupl = common.assert_json.copy()
         a.from_json(dupl)
 
         assert (
@@ -130,13 +133,13 @@ class UTestAssertParams:
 
     def utest_created(self):
         a = AssertParams()
-        a.__dict__["_created"] = created_time
-        assert a.created == created_time
+        a.__dict__["_created"] = common.created_time
+        assert a.created == common.created_time
 
     def utest_updated(self):
         a = AssertParams()
-        a.__dict__["_updated"] = updated_time
-        assert a.updated == updated_time
+        a.__dict__["_updated"] = common.updated_time
+        assert a.updated == common.updated_time
 
     def utest_with_id(self):
         a = AssertParams()
@@ -169,7 +172,7 @@ class UTestAssert:
     def utest_create(self):
         a = Assert(
             params=AssertParams(
-                test_id=identifiers.test_id,
+                test_id=common.test_id,
                 path=MetricPath.MACHINE_NETWORK_BITRATE_IN_AVG,
                 operator=Operator.O_GT,
                 expected="892",
@@ -178,10 +181,10 @@ class UTestAssert:
 
         a.create()
 
-        assert a.params.assert_id == identifiers.assert_id
-        assert a.params.test_id == identifiers.test_id
-        assert a.params.created == created_time
-        assert a.params.updated == updated_time
+        assert a.params.assert_id == common.assert_id
+        assert a.params.test_id == common.test_id
+        assert a.params.created == common.created_time
+        assert a.params.updated == common.updated_time
         assert a.params.expected == "892"
         assert a.params.operator is Operator.O_GT
         assert a.params.path is MetricPath.MACHINE_NETWORK_BITRATE_IN_AVG
@@ -194,16 +197,16 @@ class UTestAssert:
 
     def utest_read(self):
         a = Assert(
-            assert_id=identifiers.assert_id,
-            test_id=identifiers.test_id,
+            assert_id=common.assert_id,
+            test_id=common.test_id,
         )
 
         a.read()
 
-        assert a.params.assert_id == identifiers.assert_id
-        assert a.params.test_id == identifiers.test_id
-        assert a.params.created == created_time
-        assert a.params.updated == updated_time
+        assert a.params.assert_id == common.assert_id
+        assert a.params.test_id == common.test_id
+        assert a.params.created == common.created_time
+        assert a.params.updated == common.updated_time
         assert a.params.expected == "892"
         assert a.params.operator is Operator.O_GT
         assert a.params.path is MetricPath.MACHINE_NETWORK_BITRATE_IN_AVG
@@ -213,8 +216,8 @@ class UTestAssert:
     def utest_update(self):
         a = Assert(
             params=AssertParams(
-                assert_id=identifiers.assert_id,
-                test_id=identifiers.test_id,
+                assert_id=common.assert_id,
+                test_id=common.test_id,
                 path=MetricPath.MACHINE_CPU_USED_AVG,
                 operator=Operator.O_LT,
                 expected="532",
@@ -223,10 +226,10 @@ class UTestAssert:
 
         a.update()
 
-        assert a.params.assert_id == identifiers.assert_id
-        assert a.params.test_id == identifiers.test_id
-        assert a.params.created == created_time
-        assert a.params.updated == updated_time
+        assert a.params.assert_id == common.assert_id
+        assert a.params.test_id == common.test_id
+        assert a.params.created == common.created_time
+        assert a.params.updated == common.updated_time
         assert a.params.expected == "532"
         assert a.params.operator is Operator.O_LT
         assert a.params.path is MetricPath.MACHINE_CPU_USED_AVG
@@ -240,14 +243,14 @@ class UTestAssert:
     def utest_delete(self):
         a = Assert(
             params=AssertParams(
-                assert_id=identifiers.assert_id, test_id=identifiers.test_id
+                assert_id=common.assert_id, test_id=common.test_id
             )
         )
 
         a.delete()
 
-        assert a.params.assert_id == identifiers.assert_id
-        assert a.params.test_id == identifiers.test_id
+        assert a.params.assert_id == common.assert_id
+        assert a.params.test_id == common.test_id
         assert a.params.created is None
         assert a.params.updated is None
         assert a.params.expected is None
@@ -259,22 +262,22 @@ class UTestAssert:
     def utest_duplicate(self):
         a = Assert(
             params=AssertParams(
-                assert_id=identifiers.assert_id, test_id=identifiers.test_id
+                assert_id=common.assert_id, test_id=common.test_id
             )
         )
 
         dupl = a.duplicate()
 
-        assert dupl.params.assert_id == identifiers.assert_id + 1
-        assert dupl.params.test_id == identifiers.test_id
-        assert dupl.params.created == created_time
-        assert dupl.params.updated == updated_time
+        assert dupl.params.assert_id == common.assert_id + 1
+        assert dupl.params.test_id == common.test_id
+        assert dupl.params.created == common.created_time
+        assert dupl.params.updated == common.updated_time
         assert dupl.params.expected == "892"
         assert dupl.params.operator is Operator.O_GT
         assert dupl.params.path is MetricPath.MACHINE_NETWORK_BITRATE_IN_AVG
 
-        assert a.params.assert_id == identifiers.assert_id
-        assert a.params.test_id == identifiers.test_id
+        assert a.params.assert_id == common.assert_id
+        assert a.params.test_id == common.test_id
         assert a.params.created is None
         assert a.params.updated is None
         assert a.params.expected is None
@@ -289,17 +292,17 @@ class UTestAssertAPI:
     def utest_create(self):
         ret = AssertAPI.create(
             AssertParams(
-                test_id=identifiers.test_id,
+                test_id=common.test_id,
                 path=MetricPath.MACHINE_NETWORK_BITRATE_IN_AVG,
                 operator=Operator.O_GT,
                 expected="892",
             )
         )
 
-        assert ret.assert_id == identifiers.assert_id
-        assert ret.test_id == identifiers.test_id
-        assert ret.created == created_time
-        assert ret.updated == updated_time
+        assert ret.assert_id == common.assert_id
+        assert ret.test_id == common.test_id
+        assert ret.created == common.created_time
+        assert ret.updated == common.updated_time
         assert ret.expected == "892"
         assert ret.operator is Operator.O_GT
         assert ret.path is MetricPath.MACHINE_NETWORK_BITRATE_IN_AVG
@@ -317,15 +320,15 @@ class UTestAssertAPI:
     def utest_read(self):
         ret = AssertAPI.read(
             AssertParams(
-                assert_id=identifiers.assert_id,
-                test_id=identifiers.test_id,
+                assert_id=common.assert_id,
+                test_id=common.test_id,
             )
         )
 
-        assert ret.assert_id == identifiers.assert_id
-        assert ret.test_id == identifiers.test_id
-        assert ret.created == created_time
-        assert ret.updated == updated_time
+        assert ret.assert_id == common.assert_id
+        assert ret.test_id == common.test_id
+        assert ret.created == common.created_time
+        assert ret.updated == common.updated_time
         assert ret.expected == "892"
         assert ret.operator is Operator.O_GT
         assert ret.path is MetricPath.MACHINE_NETWORK_BITRATE_IN_AVG
@@ -334,10 +337,10 @@ class UTestAssertAPI:
 
     def utest_read_invalid_params(self):
         with pytest.raises(Exception):
-            AssertAPI.read(AssertParams(assert_id=identifiers.assert_id))
+            AssertAPI.read(AssertParams(assert_id=common.assert_id))
 
         with pytest.raises(Exception):
-            AssertAPI.read(AssertParams(test_id=identifiers.test_id))
+            AssertAPI.read(AssertParams(test_id=common.test_id))
 
         with pytest.raises(Exception):
             AssertAPI.read(AssertParams())
@@ -345,18 +348,18 @@ class UTestAssertAPI:
     def utest_update(self):
         ret = AssertAPI.update(
             AssertParams(
-                assert_id=identifiers.assert_id,
-                test_id=identifiers.test_id,
+                assert_id=common.assert_id,
+                test_id=common.test_id,
                 path=MetricPath.MACHINE_CPU_USED_AVG,
                 operator=Operator.O_LT,
                 expected="532",
             )
         )
 
-        assert ret.assert_id == identifiers.assert_id
-        assert ret.test_id == identifiers.test_id
-        assert ret.created == created_time
-        assert ret.updated == updated_time
+        assert ret.assert_id == common.assert_id
+        assert ret.test_id == common.test_id
+        assert ret.created == common.created_time
+        assert ret.updated == common.updated_time
         assert ret.expected == "532"
         assert ret.operator is Operator.O_LT
         assert ret.path is MetricPath.MACHINE_CPU_USED_AVG
@@ -369,19 +372,17 @@ class UTestAssertAPI:
 
     def utest_update_invalid_params(self):
         with pytest.raises(Exception):
-            AssertAPI.update(AssertParams(assert_id=identifiers.assert_id))
+            AssertAPI.update(AssertParams(assert_id=common.assert_id))
 
         with pytest.raises(Exception):
-            AssertAPI.update(AssertParams(test_id=identifiers.test_id))
+            AssertAPI.update(AssertParams(test_id=common.test_id))
 
         with pytest.raises(Exception):
             AssertAPI.update(AssertParams())
 
     def utest_delete(self):
         ret = AssertAPI.delete(
-            AssertParams(
-                assert_id=identifiers.assert_id, test_id=identifiers.test_id
-            )
+            AssertParams(assert_id=common.assert_id, test_id=common.test_id)
         )
 
         assert ret is None
@@ -390,25 +391,23 @@ class UTestAssertAPI:
 
     def utest_delete_invalid_params(self):
         with pytest.raises(Exception):
-            AssertAPI.delete(AssertParams(assert_id=identifiers.assert_id))
+            AssertAPI.delete(AssertParams(assert_id=common.assert_id))
 
         with pytest.raises(Exception):
-            AssertAPI.delete(AssertParams(test_id=identifiers.test_id))
+            AssertAPI.delete(AssertParams(test_id=common.test_id))
 
         with pytest.raises(Exception):
             AssertAPI.delete(AssertParams())
 
     def utest_duplicate(self):
         ret = AssertAPI.duplicate(
-            AssertParams(
-                assert_id=identifiers.assert_id, test_id=identifiers.test_id
-            )
+            AssertParams(assert_id=common.assert_id, test_id=common.test_id)
         )
 
-        assert ret.assert_id == identifiers.assert_id + 1
-        assert ret.test_id == identifiers.test_id
-        assert ret.created == created_time
-        assert ret.updated == updated_time
+        assert ret.assert_id == common.assert_id + 1
+        assert ret.test_id == common.test_id
+        assert ret.created == common.created_time
+        assert ret.updated == common.updated_time
         assert ret.expected == "892"
         assert ret.operator is Operator.O_GT
         assert ret.path is MetricPath.MACHINE_NETWORK_BITRATE_IN_AVG
@@ -417,13 +416,45 @@ class UTestAssertAPI:
 
     def utest_duplicate_invalid_params(self):
         with pytest.raises(Exception):
-            AssertAPI.duplicate(AssertParams(assert_id=identifiers.assert_id))
+            AssertAPI.duplicate(AssertParams(assert_id=common.assert_id))
 
         with pytest.raises(Exception):
-            AssertAPI.duplicate(AssertParams(test_id=identifiers.test_id))
+            AssertAPI.duplicate(AssertParams(test_id=common.test_id))
 
         with pytest.raises(Exception):
             AssertAPI.duplicate(AssertParams())
 
     def utest_read_all(self):
-        AssertAPI.read_all(5)
+        resp = AssertAPI.read_all(common.test_id)
+
+        assert len(resp) == 2
+
+        for i, ret in enumerate(resp):
+            assert ret.assert_id == common.assert_id + i + 1
+            assert ret.test_id == common.test_id
+            assert ret.created == common.created_time
+            assert ret.updated == common.updated_time
+            assert ret.expected == "892"
+            assert ret.operator is Operator.O_GT
+            assert ret.path is MetricPath.MACHINE_NETWORK_BITRATE_IN_AVG
+
+        assert httpretty.last_request().parsed_body == ""
+
+    def utest_read_all_no_results(self):
+        pg = common.paged_response.copy()
+        pg["results"] = None
+
+        httpretty.register_uri(
+            httpretty.GET,
+            re.compile(
+                r"^http://mock\.loadero\.api/v2/"
+                r"projects/\d*/tests/\d*/asserts/$"
+            ),
+            body=json.dumps(pg),
+            forcing_headers={"Content-Type": "application/json"},
+        )
+
+        resp = AssertAPI.read_all(common.test_id)
+
+        assert len(resp) == 0
+        assert httpretty.last_request().parsed_body == ""

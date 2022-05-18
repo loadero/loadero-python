@@ -357,8 +357,25 @@ class AssertAPI:
 
     @staticmethod
     def read_all(test_id: int) -> list[AssertParams]:
-        # TODO: implement.
-        pass
+        """Read all assert requests.
+
+        Args:
+            test_id (int): Parent test resource id.
+
+        Returns:
+            list[AssertParams]: List of all assert resources in test.
+        """
+        resp = APIClient().get(AssertAPI.route(test_id))
+
+        if "results" not in resp or resp["results"] is None:
+            return []
+
+        resources = []
+        for r in resp["results"]:
+            resource = AssertParams()
+            resources.append(resource.from_json(r))
+
+        return resources
 
     @staticmethod
     def route(test_id: int, assert_id: int or None = None) -> str:
