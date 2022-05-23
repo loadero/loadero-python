@@ -124,7 +124,7 @@ def mock():
     httpretty.register_uri(
         httpretty.GET,
         re.compile(
-            r"^http://mock\.loadero\.api/v2/" r"projects/\d*/tests/\d*/groups/$"
+            r"^http://mock\.loadero\.api/v2/projects/\d*/tests/\d*/groups/$"
         ),
         body=json.dumps(gpg),
         forcing_headers={"Content-Type": "application/json"},
