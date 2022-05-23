@@ -240,7 +240,7 @@ class Group:
             map(
                 lambda x: Participant(params=x),
                 ParticipantAPI.read_all(
-                    self.params.test_id, self.params.group_id
+                    self.params.test_id, group_id=self.params.group_id
                 ),
             )
         )

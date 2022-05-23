@@ -357,7 +357,7 @@ class AssertAPI:
 
     @staticmethod
     def read_all(test_id: int) -> list[AssertParams]:
-        """Read all assert requests.
+        """Read all assert resources.
 
         Args:
             test_id (int): Parent test resource id.

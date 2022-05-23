@@ -484,13 +484,7 @@ class ParticipantAPI:
             list[ParticipantParams]: List of all participant resources in test
                 or group.
         """
-        r = ParticipantAPI.route(test_id)
-
-        if group_id is not None:
-            r = (
-                APIClient().project_url
-                + f"tests/{test_id}/groups/{group_id}/participants/"
-            )
+        r = ParticipantAPI.route(test_id, group_id=group_id)
 
         resp = APIClient().get(r)
 
@@ -505,7 +499,11 @@ class ParticipantAPI:
         return resources
 
     @staticmethod
-    def route(test_id: int, participant_id: int or None = None) -> str:
+    def route(
+        test_id: int,
+        participant_id: int or None = None,
+        group_id: int or None = None,
+    ) -> str:
         """Build participant resource url route.
 
         Args:
@@ -518,6 +516,12 @@ class ParticipantAPI:
             str: Route to participant resource/s.
         """
         r = APIClient().project_url + f"tests/{test_id}/participants/"
+
+        if group_id is not None:
+            r = (
+                APIClient().project_url
+                + f"tests/{test_id}/groups/{group_id}/participants/"
+            )
 
         if participant_id is not None:
             r += f"{participant_id}/"
