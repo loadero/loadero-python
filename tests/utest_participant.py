@@ -418,7 +418,7 @@ class UTestParticipant:
 
 @pytest.mark.usefixtures("mock")
 class UTestParticipantAPI:
-    def utest_api_create(self):
+    def utest_create(self):
         ret = ParticipantAPI.create(
             ParticipantParams(
                 name="pytest participant",
@@ -463,11 +463,11 @@ class UTestParticipantAPI:
             "video_feed": "480p-15fps",
         }
 
-    def utest_api_create_invalid_params(self):
+    def utest_create_invalid_params(self):
         with pytest.raises(Exception):
             ParticipantAPI.create(ParticipantParams())
 
-    def utest_api_read(self):
+    def utest_read(self):
         p = ParticipantParams(
             test_id=common.test_id,
             participant_id=common.participant_id,
@@ -492,7 +492,7 @@ class UTestParticipantAPI:
 
         assert httpretty.last_request().parsed_body == ""
 
-    def utest_api_read_invalid_params(self):
+    def utest_read_invalid_params(self):
         with pytest.raises(Exception):
             ParticipantAPI.read(ParticipantParams(test_id=common.test_id))
 
@@ -501,7 +501,7 @@ class UTestParticipantAPI:
                 ParticipantParams(participant_id=common.participant_id)
             )
 
-    def utest_api_update(self):
+    def utest_update(self):
         ret = ParticipantAPI.update(
             ParticipantParams(
                 participant_id=common.participant_id,
@@ -547,7 +547,7 @@ class UTestParticipantAPI:
             "video_feed": "360p-15fps",
         }
 
-    def utest_api_update_invalid_params(self):
+    def utest_update_invalid_params(self):
         with pytest.raises(Exception):
             ParticipantAPI.update(ParticipantParams(test_id=common.test_id))
 
@@ -556,7 +556,7 @@ class UTestParticipantAPI:
                 ParticipantParams(participant_id=common.participant_id)
             )
 
-    def utest_api_delete(self):
+    def utest_delete(self):
         ret = ParticipantAPI.delete(
             ParticipantParams(
                 participant_id=common.participant_id,
@@ -568,14 +568,14 @@ class UTestParticipantAPI:
 
         assert httpretty.last_request().parsed_body == ""
 
-    def utest_api_delete_invalid_params(self):
+    def utest_delete_invalid_params(self):
         with pytest.raises(Exception):
             ParticipantAPI.delete(ParticipantParams(test_id=1))
 
         with pytest.raises(Exception):
             ParticipantAPI.delete(ParticipantParams(participant_id=1))
 
-    def utest_api_duplicate(self):
+    def utest_duplicate(self):
         ret = ParticipantAPI.duplicate(
             ParticipantParams(
                 participant_id=common.participant_id,
@@ -603,14 +603,14 @@ class UTestParticipantAPI:
             "name": "pytest duplicate participant"
         }
 
-    def utest_api_duplicate_invalid_params(self):
+    def utest_duplicate_invalid_params(self):
         with pytest.raises(Exception):
             ParticipantAPI.duplicate(ParticipantParams(test_id=1))
 
         with pytest.raises(Exception):
             ParticipantAPI.duplicate(ParticipantParams(participant_id=1))
 
-    def utest_api_read_all_in_test(self):
+    def utest_read_all_in_test(self):
         resp = ParticipantAPI.read_all(common.test_id)
 
         assert len(resp) == 2
@@ -631,7 +631,7 @@ class UTestParticipantAPI:
             assert ret.network is Network.N_4G
             assert ret.video_feed is VideoFeed.VF_480P_15FPS
 
-    def utest_api_read_all_in_group(self):
+    def utest_read_all_in_group(self):
         resp = ParticipantAPI.read_all(common.test_id, common.group_id)
 
         assert len(resp) == 2
@@ -654,7 +654,7 @@ class UTestParticipantAPI:
 
         assert httpretty.last_request().parsed_body == ""
 
-    def utest_api_read_no_results(self):
+    def utest_read_no_results(self):
         pg = common.paged_response.copy()
         pg["results"] = None
 
@@ -672,3 +672,27 @@ class UTestParticipantAPI:
 
         assert len(resp) == 0
         assert httpretty.last_request().parsed_body == ""
+
+    def utest_route(self):
+        assert (
+            ParticipantAPI.route(common.test_id)
+            == "http://mock.loadero.api"
+            + "/v2/projects/538591/tests/12734/participants/"
+        )
+        assert (
+            ParticipantAPI.route(common.test_id, group_id=common.group_id)
+            == "http://mock.loadero.api"
+            + "/v2/projects/538591/tests/12734/groups/34421/participants/"
+        )
+        assert (
+            ParticipantAPI.route(common.test_id, common.participant_id)
+            == "http://mock.loadero.api"
+            + "/v2/projects/538591/tests/12734/participants/92559/"
+        )
+        assert (
+            ParticipantAPI.route(
+                common.test_id, common.group_id, common.participant_id
+            )
+            == "http://mock.loadero.api"
+            + "/v2/projects/538591/tests/12734/groups/92559/participants/34421/"
+        )

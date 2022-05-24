@@ -11,7 +11,13 @@ from __future__ import annotations
 from datetime import datetime
 from dateutil import parser
 from ..api_client import APIClient
-from .resource import LoaderoResource, to_json, from_json, to_string
+from .resource import (
+    LoaderoResource,
+    to_json,
+    from_json,
+    to_string,
+    convert_params_list,
+)
 from .participant import Participant, ParticipantAPI
 
 
@@ -236,13 +242,12 @@ class Group:
         Returns:
             list[Participant]: List of participants in group.
         """
-        return list(
-            map(
-                lambda x: Participant(params=x),
-                ParticipantAPI.read_all(
-                    self.params.test_id, group_id=self.params.group_id
-                ),
-            )
+
+        return convert_params_list(
+            Participant,
+            ParticipantAPI.read_all(
+                self.params.test_id, group_id=self.params.group_id
+            ),
         )
 
 

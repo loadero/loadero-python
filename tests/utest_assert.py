@@ -458,3 +458,14 @@ class UTestAssertAPI:
 
         assert len(resp) == 0
         assert httpretty.last_request().parsed_body == ""
+
+    def utest_route(self):
+        assert (
+            AssertAPI.route(common.test_id)
+            == "http://mock.loadero.api/v2/projects/538591/tests/12734/asserts/"
+        )
+        assert (
+            AssertAPI.route(common.test_id, common.assert_id)
+            == "http://mock.loadero.api"
+            "/v2/projects/538591/tests/12734/asserts/29643/"
+        )

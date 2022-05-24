@@ -13,8 +13,9 @@ import httpretty
 from loadero_python.api_client import APIClient
 from loadero_python.resources.script import Script
 from loadero_python.resources.test import Test, TestParams, TestAPI
-from loadero_python.resources.classificator import TestMode, IncrementStrategy
 from loadero_python.resources.classificator import (
+    TestMode,
+    IncrementStrategy,
     ComputeUnit,
     AudioFeed,
     Browser,
@@ -481,7 +482,7 @@ class UTestTest:
 
 @pytest.mark.usefixtures("mock")
 class UTestTestAPI:
-    def utest_api_create(self):
+    def utest_create(self):
         ret = TestAPI().create(
             TestParams(
                 name="pytest test",
@@ -517,7 +518,7 @@ class UTestTestAPI:
             "start_interval": 12,
         }
 
-    def utest_api_read(self):
+    def utest_read(self):
         ret = TestAPI().read(TestParams(test_id=common.test_id))
 
         assert ret.test_id == common.test_id
@@ -535,11 +536,11 @@ class UTestTestAPI:
 
         assert httpretty.last_request().parsed_body == ""
 
-    def utest_api_read_invalid_params(self):
+    def utest_read_invalid_params(self):
         with pytest.raises(Exception):
             TestAPI.read(TestParams())
 
-    def utest_api_update(self):
+    def utest_update(self):
         ret = TestAPI().update(
             TestParams(
                 test_id=common.test_id,
@@ -576,11 +577,11 @@ class UTestTestAPI:
             "start_interval": 45,
         }
 
-    def utest_api_update_invalid_params(self):
+    def utest_update_invalid_params(self):
         with pytest.raises(Exception):
             TestAPI.update(TestParams())
 
-    def utest_api_delete(self):
+    def utest_delete(self):
         ret = TestAPI().delete(TestParams(test_id=common.test_id))
 
         assert ret.test_id == common.test_id
@@ -588,11 +589,11 @@ class UTestTestAPI:
 
         assert httpretty.last_request().parsed_body == ""
 
-    def utest_api_delete_invalid_params(self):
+    def utest_delete_invalid_params(self):
         with pytest.raises(Exception):
             TestAPI.delete(TestParams())
 
-    def utest_api_duplicate(self):
+    def utest_duplicate(self):
         ret = TestAPI().duplicate(
             TestParams(test_id=common.test_id, name="pytest duplicate test")
         )
@@ -618,11 +619,11 @@ class UTestTestAPI:
         # read script
         assert httpretty.latest_requests()[-1].parsed_body == ""
 
-    def utest_api_duplicate_invalid_params(self):
+    def utest_duplicate_invalid_params(self):
         with pytest.raises(Exception):
             TestAPI.duplicate(TestParams())
 
-    def utest_api_read_all(self):
+    def utest_read_all(self):
         resp = TestAPI().read_all()
 
         assert len(resp) == 2
@@ -643,7 +644,7 @@ class UTestTestAPI:
 
         assert httpretty.last_request().parsed_body == ""
 
-    def utest_api_read_all_no_results(self):
+    def utest_read_all_no_results(self):
         pg = common.paged_response.copy()
         pg["results"] = None
 
@@ -659,3 +660,13 @@ class UTestTestAPI:
         assert len(resp) == 0
 
         assert httpretty.last_request().parsed_body == ""
+
+    def utest_route(self):
+        assert (
+            TestAPI().route()
+            == "http://mock.loadero.api/v2/projects/538591/tests/"
+        )
+        assert (
+            TestAPI().route(common.test_id)
+            == "http://mock.loadero.api/v2/projects/538591/tests/12734/"
+        )

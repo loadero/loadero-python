@@ -509,3 +509,14 @@ class UTestGroupAPI:
 
         assert len(resp) == 0
         assert httpretty.last_request().parsed_body == ""
+
+    def utest_route(self):
+        assert (
+            GroupAPI.route(common.test_id, common.group_id)
+            == "http://mock.loadero.api"
+            "/v2/projects/538591/tests/12734/groups/34421/"
+        )
+        assert (
+            GroupAPI.route(common.test_id)
+            == "http://mock.loadero.api/v2/projects/538591/tests/12734/groups/"
+        )

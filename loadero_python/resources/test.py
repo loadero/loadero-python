@@ -13,7 +13,13 @@ from datetime import datetime
 from dateutil import parser
 from ..api_client import APIClient
 from .script import Script
-from .resource import LoaderoResource, to_json, from_json, to_string
+from .resource import (
+    LoaderoResource,
+    to_json,
+    from_json,
+    to_string,
+    convert_params_list,
+)
 from .classificator import TestMode, IncrementStrategy
 from .group import Group, GroupAPI
 from .participant import Participant, ParticipantAPI
@@ -296,11 +302,9 @@ class Test:
         Returns:
             list[Group]: List of groups in test.
         """
-        return list(
-            map(
-                lambda x: Group(params=x),
-                GroupAPI.read_all(self.params.test_id),
-            )
+
+        return convert_params_list(
+            Group, GroupAPI.read_all(self.params.test_id)
         )
 
     def participants(self) -> list[Participant]:
@@ -309,11 +313,10 @@ class Test:
         Returns:
             list[Participant]: List of participants in test.
         """
-        return list(
-            map(
-                lambda x: Participant(params=x),
-                ParticipantAPI.read_all(self.params.test_id),
-            )
+
+        return convert_params_list(
+            Participant,
+            ParticipantAPI.read_all(self.params.test_id),
         )
 
     def asserts(self) -> list[Assert]:
@@ -322,11 +325,10 @@ class Test:
         Returns:
             list[Assert]: List of asserts in test.
         """
-        return list(
-            map(
-                lambda x: Assert(params=x),
-                AssertAPI.read_all(self.params.test_id),
-            )
+
+        return convert_params_list(
+            Assert,
+            AssertAPI.read_all(self.params.test_id),
         )
 
 

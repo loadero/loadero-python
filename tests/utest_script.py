@@ -184,7 +184,7 @@ class UTestScript:
 
 @pytest.mark.usefixtures("mock")
 class UTestFileAPI:
-    def utest_api_read(self):
+    def utest_read(self):
         fp = FileParams(file_id=common.file_id)
 
         FileAPI().read(fp)
@@ -197,11 +197,11 @@ class UTestFileAPI:
 
         assert httpretty.last_request().parsed_body == ""
 
-    def utest_api_read_invalid_params(self):
+    def utest_read_invalid_params(self):
         with pytest.raises(Exception):
             FileAPI.read(FileParams())
 
-    def utest_api_read_all(self):
+    def utest_read_all(self):
         resp = FileAPI.read_all()
 
         assert len(resp) == 2
@@ -215,7 +215,7 @@ class UTestFileAPI:
 
         assert httpretty.last_request().parsed_body == ""
 
-    def utest_api_read_no_results(self):
+    def utest_read_no_results(self):
         pg = common.paged_response.copy()
         pg["results"] = None
 
@@ -230,3 +230,13 @@ class UTestFileAPI:
 
         assert len(resp) == 0
         assert httpretty.last_request().parsed_body == ""
+
+    def utest_route(self):
+        assert (
+            FileAPI.route()
+            == "http://mock.loadero.api/v2/projects/538591/files/"
+        )
+        assert (
+            FileAPI.route(common.file_id)
+            == "http://mock.loadero.api/v2/projects/538591/files/294325/"
+        )
