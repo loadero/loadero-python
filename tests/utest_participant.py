@@ -691,8 +691,10 @@ class UTestParticipantAPI:
         )
         assert (
             ParticipantAPI.route(
-                common.test_id, common.group_id, common.participant_id
+                common.test_id,
+                common.participant_id,
+                common.group_id,
             )
             == "http://mock.loadero.api"
-            + "/v2/projects/538591/tests/12734/groups/92559/participants/34421/"
+            + "/v2/projects/538591/tests/12734/groups/34421/participants/92559/"
         )
