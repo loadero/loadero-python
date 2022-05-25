@@ -5,7 +5,7 @@ from tabulate import tabulate
 
 
 class LoaderoResource:
-    pass
+    """Base class for Loadero resources."""
 
 
 # TODO:
@@ -117,3 +117,25 @@ def to_string(resource: dict[str, any], attribute_map: dict[str, str]) -> str:
     table.sort()
 
     return tabulate(table, tablefmt="github")
+
+
+def convert_params_list(
+    resource_class: type, params: list[LoaderoResource]
+) -> list:  # TODO: type annotate return in LOAD-2145
+    """
+    Converts a list of resource params to a list of resource objects.
+    User of this function is responsible for matching the type of params and
+    resource, otherwise the function will produce invalid resource instances.
+
+    Args:
+        resource_class (type): Class name of the target resource object type.
+        params (list[LoaderoResource]): List of resource params.
+
+    Returns:
+        List[LoaderoResource]: List of resource objects.
+    """
+    resources = []
+    for p in params:
+        resources.append(resource_class(params=p))
+
+    return resources

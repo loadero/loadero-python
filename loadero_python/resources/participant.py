@@ -57,7 +57,7 @@ class ParticipantParams(LoaderoResource):
         "name",
         "count",
         "compute_unit",
-        "group_id",
+        "group_id",  # optional
         "record_audio",
         "audio_feed",
         "browser",
@@ -470,12 +470,40 @@ class ParticipantAPI:
         )
 
     @staticmethod
-    def read_all(test_id: int):
-        # TODO: implement.
-        pass
+    def read_all(
+        test_id: int, group_id: int or None = None
+    ) -> list[ParticipantParams]:
+        """Real all participant resources.
+
+        Args:
+            test_id (int): Parent test resource id.
+            group_id (int, optional): Parent group resource id. Defaults to
+                None. If omitted all participants in parent test will be read.
+
+        Returns:
+            list[ParticipantParams]: List of all participant resources in test
+                or group.
+        """
+        r = ParticipantAPI.route(test_id, group_id=group_id)
+
+        resp = APIClient().get(r)
+
+        if "results" not in resp or resp["results"] is None:
+            return []
+
+        resources = []
+        for r in resp["results"]:
+            resource = ParticipantParams()
+            resources.append(resource.from_json(r))
+
+        return resources
 
     @staticmethod
-    def route(test_id: int, participant_id: int or None = None) -> str:
+    def route(
+        test_id: int,
+        participant_id: int or None = None,
+        group_id: int or None = None,
+    ) -> str:
         """Build participant resource url route.
 
         Args:
@@ -488,6 +516,12 @@ class ParticipantAPI:
             str: Route to participant resource/s.
         """
         r = APIClient().project_url + f"tests/{test_id}/participants/"
+
+        if group_id is not None:
+            r = (
+                APIClient().project_url
+                + f"tests/{test_id}/groups/{group_id}/participants/"
+            )
 
         if participant_id is not None:
             r += f"{participant_id}/"

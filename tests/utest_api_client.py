@@ -10,7 +10,7 @@
 import pytest
 import httpretty
 from loadero_python.api_client import APIClient
-from . import identifiers
+from . import common
 
 
 def dict_includes(want: dict, got: dict) -> None:
@@ -21,10 +21,11 @@ def dict_includes(want: dict, got: dict) -> None:
 @pytest.fixture
 def api():
     httpretty.enable(allow_net_connect=False, verbose=True)
+
     APIClient(
-        project_id=identifiers.project_id,
-        access_token=identifiers.access_token,
-        api_base=identifiers.api_base,
+        project_id=common.project_id,
+        access_token=common.access_token,
+        api_base=common.api_base,
     )
 
     yield
@@ -39,17 +40,17 @@ class UTestAPIClient:
 
     def utest_init_no_access_token(self):
         with pytest.raises(Exception):
-            APIClient(project_id=identifiers.project_id)
+            APIClient(project_id=common.project_id)
 
     def utest_init_no_project_id(self):
         with pytest.raises(Exception):
-            APIClient(access_token=identifiers.access_token)
+            APIClient(access_token=common.access_token)
 
     def utest_init_valid(self):
         APIClient(
-            project_id=identifiers.project_id,
-            access_token=identifiers.access_token,
-            api_base=identifiers.api_base,
+            project_id=common.project_id,
+            access_token=common.access_token,
+            api_base=common.api_base,
         )
 
         APIClient()
@@ -66,27 +67,27 @@ class UTestAPIClient:
         assert APIClient().project_id == 432532334
 
         APIClient(
-            project_id=identifiers.project_id,
-            access_token=identifiers.access_token,
-            api_base=identifiers.api_base,
+            project_id=common.project_id,
+            access_token=common.access_token,
+            api_base=common.api_base,
         )
 
-        assert APIClient().api_base == identifiers.api_base
-        assert APIClient().access_token == identifiers.access_token
-        assert APIClient().project_id == identifiers.project_id
+        assert APIClient().api_base == common.api_base
+        assert APIClient().access_token == common.access_token
+        assert APIClient().project_id == common.project_id
 
     def utest_api_client_api_base(self, api):
-        assert APIClient().api_base == identifiers.api_base
+        assert APIClient().api_base == common.api_base
 
     def utest_api_client_access_token(self, api):
-        assert APIClient().access_token == identifiers.access_token
+        assert APIClient().access_token == common.access_token
 
     def utest_api_client_project_id(self, api):
-        assert APIClient().project_id == identifiers.project_id
+        assert APIClient().project_id == common.project_id
 
     def utest_api_client_auth_header(self, api):
         dict_includes(
-            {"Authorization": "LoaderoAuth " + identifiers.access_token},
+            {"Authorization": "LoaderoAuth " + common.access_token},
             APIClient().auth_header,
         )
 
@@ -95,7 +96,7 @@ class UTestAPIClientGet:
     def utest_valid(self, api):
         httpretty.register_uri(
             httpretty.GET,
-            identifiers.api_base + "route/",
+            common.api_base + "route/",
             forcing_headers={"Content-Type": "application/json"},
             body='{"hello":"world"}',
         )
@@ -114,7 +115,7 @@ class UTestAPIClientGet:
     def utest_invalid_headers(self, api):
         httpretty.register_uri(
             httpretty.GET,
-            identifiers.api_base + "route/",
+            common.api_base + "route/",
         )
 
         with pytest.raises(Exception):
@@ -123,7 +124,7 @@ class UTestAPIClientGet:
     def utest_non_success_resp(self, api):
         httpretty.register_uri(
             httpretty.GET,
-            identifiers.api_base + "route/",
+            common.api_base + "route/",
             forcing_headers={"Content-Type": "application/json"},
             status=500,
         )
@@ -134,7 +135,7 @@ class UTestAPIClientGet:
     def utest_empty_response(self, api):
         httpretty.register_uri(
             httpretty.GET,
-            identifiers.api_base + "route/",
+            common.api_base + "route/",
             forcing_headers={"Content-Type": "application/json"},
             body="",
         )
@@ -146,7 +147,7 @@ class UTestAPIClientPost:
     def utest_valid(self, api):
         httpretty.register_uri(
             httpretty.POST,
-            identifiers.api_base + "route/",
+            common.api_base + "route/",
             forcing_headers={"Content-Type": "application/json"},
             body='{"api":"resp"}',
         )
@@ -168,7 +169,7 @@ class UTestAPIClientPost:
     def utest_invalid_headers(self, api):
         httpretty.register_uri(
             httpretty.POST,
-            identifiers.api_base + "route/",
+            common.api_base + "route/",
         )
 
         with pytest.raises(Exception):
@@ -177,7 +178,7 @@ class UTestAPIClientPost:
     def utest_non_success_resp(self, api):
         httpretty.register_uri(
             httpretty.POST,
-            identifiers.api_base + "route/",
+            common.api_base + "route/",
             forcing_headers={"Content-Type": "application/json"},
             status=500,
         )
@@ -188,7 +189,7 @@ class UTestAPIClientPost:
     def utest_empty_response(self, api):
         httpretty.register_uri(
             httpretty.POST,
-            identifiers.api_base + "route/",
+            common.api_base + "route/",
             forcing_headers={"Content-Type": "application/json"},
             body="",
         )
@@ -200,7 +201,7 @@ class UTestAPIPut:
     def utest_valid(self, api):
         httpretty.register_uri(
             httpretty.PUT,
-            identifiers.api_base + "route/",
+            common.api_base + "route/",
             forcing_headers={"Content-Type": "application/json"},
             body='{"api":"resp"}',
         )
@@ -222,7 +223,7 @@ class UTestAPIPut:
     def utest_invalid_headers(self, api):
         httpretty.register_uri(
             httpretty.PUT,
-            identifiers.api_base + "route/",
+            common.api_base + "route/",
         )
 
         with pytest.raises(Exception):
@@ -231,7 +232,7 @@ class UTestAPIPut:
     def utest_non_success_resp(self, api):
         httpretty.register_uri(
             httpretty.PUT,
-            identifiers.api_base + "route/",
+            common.api_base + "route/",
             forcing_headers={"Content-Type": "application/json"},
             status=500,
         )
@@ -242,7 +243,7 @@ class UTestAPIPut:
     def utest_empty_response(self, api):
         httpretty.register_uri(
             httpretty.PUT,
-            identifiers.api_base + "route/",
+            common.api_base + "route/",
             forcing_headers={"Content-Type": "application/json"},
             body="",
         )
@@ -254,7 +255,7 @@ class UTestAPIDelete:
     def utest_valid(self, api):
         httpretty.register_uri(
             httpretty.DELETE,
-            identifiers.api_base + "route/",
+            common.api_base + "route/",
             forcing_headers={"Content-Type": "application/json"},
         )
 
@@ -272,7 +273,7 @@ class UTestAPIDelete:
     def utest_non_success_resp(self, api):
         httpretty.register_uri(
             httpretty.DELETE,
-            identifiers.api_base + "route/",
+            common.api_base + "route/",
             forcing_headers={"Content-Type": "application/json"},
             status=500,
         )

@@ -54,7 +54,7 @@ class FileParams(LoaderoResource):
         return self._file_type
 
     @property
-    def content(self) -> datetime or None:
+    def content(self) -> str or None:
         return self._content
 
     def from_json(self, json_value: dict[str, any]) -> FileParams:
@@ -200,13 +200,40 @@ class FileAPI:
         )
 
     @staticmethod
-    def route(file_id: int) -> str:
+    def read_all() -> list[FileParams]:
+        """Read all files.
+
+        Returns:
+            list[FileParams]: List of file resources in project.
+        """
+
+        resp = APIClient().get(FileAPI.route())
+
+        if "results" not in resp or resp["results"] is None:
+            return []
+
+        resources = []
+        for r in resp["results"]:
+            resource = FileParams()
+            resources.append(resource.from_json(r))
+
+        return resources
+
+    @staticmethod
+    def route(file_id: int or None = None) -> str:
         """Build file resource url route.
 
         Args:
-            file_id (int): File resource id.
+            file_id (int, optional): File resource id. Defaults to None. If
+                omitted the route will point to all file resources
 
         Returns:
             str: Route to file resource.
         """
-        return APIClient().project_url + f"files/{file_id}/"
+
+        r = APIClient().project_url + "files/"
+
+        if file_id is not None:
+            r += f"{file_id}/"
+
+        return r

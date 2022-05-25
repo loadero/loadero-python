@@ -13,8 +13,17 @@ from datetime import datetime
 from dateutil import parser
 from ..api_client import APIClient
 from .script import Script
-from .resource import LoaderoResource, to_json, from_json, to_string
+from .resource import (
+    LoaderoResource,
+    to_json,
+    from_json,
+    to_string,
+    convert_params_list,
+)
 from .classificator import TestMode, IncrementStrategy
+from .group import Group, GroupAPI
+from .participant import Participant, ParticipantAPI
+from .assert_resource import Assert, AssertAPI
 
 
 class TestParams(LoaderoResource):
@@ -23,10 +32,6 @@ class TestParams(LoaderoResource):
     TestParams has a builder method pattern for test resources read and write
     attributes.
     """
-
-    # TestParams has a Test prefix and pytest thinks it is a class with tests.
-    # This disables that.
-    __test__ = False
 
     # Describes python object attribute name mapping to Loadero resources
     # JSON field names.
@@ -56,8 +61,6 @@ class TestParams(LoaderoResource):
         "increment_strategy": IncrementStrategy.from_json,
     }
 
-    # create - script shouldn't be none
-
     # Describes Loadero resources JSON field names that are required for CRUD
     # operations.
     __body_attributes = [
@@ -66,8 +69,8 @@ class TestParams(LoaderoResource):
         "participant_timeout",
         "mode",
         "increment_strategy",
-        "mos_test",
-        "script",
+        "mos_test",  # optional
+        "script",  # optional
     ]
 
     test_id = None
@@ -220,10 +223,6 @@ class Test:
     The target Loadero test resource is determined by TestParams.
     """
 
-    # TestParams has a Test prefix and pytest thinks it is a class with tests.
-    # This disables that.
-    __test__ = False
-
     params = None
 
     def __init__(
@@ -297,13 +296,44 @@ class Test:
 
         return t
 
+    def groups(self) -> list[Group]:
+        """Read all groups in test.
+
+        Returns:
+            list[Group]: List of groups in test.
+        """
+
+        return convert_params_list(
+            Group, GroupAPI.read_all(self.params.test_id)
+        )
+
+    def participants(self) -> list[Participant]:
+        """Read all participants in test.
+
+        Returns:
+            list[Participant]: List of participants in test.
+        """
+
+        return convert_params_list(
+            Participant,
+            ParticipantAPI.read_all(self.params.test_id),
+        )
+
+    def asserts(self) -> list[Assert]:
+        """Read all asserts in test.
+
+        Returns:
+            list[Assert]: List of asserts in test.
+        """
+
+        return convert_params_list(
+            Assert,
+            AssertAPI.read_all(self.params.test_id),
+        )
+
 
 class TestAPI:
     """TestAPI defines Loadero API operations for test resources."""
-
-    # TestAPI has a Test prefix and pytest thinks it is a class with tests.
-    # This disables that.
-    __test__ = False
 
     @staticmethod
     def create(params: TestParams) -> TestParams:
@@ -438,17 +468,31 @@ class TestAPI:
 
     @staticmethod
     def read_all() -> list[TestParams]:
-        # TODO: implement.
-        pass
+        """Read all test resources.
+
+        Returns:
+            list[TestParams]: List of all test resources in project.
+        """
+
+        resp = APIClient().get(TestAPI.route())
+
+        if "results" not in resp or resp["results"] is None:
+            return []
+
+        resources = []
+        for r in resp["results"]:
+            resource = TestParams()
+            resources.append(resource.from_json(r))
+
+        return resources
 
     @staticmethod
     def route(test_id: int or None = None) -> str:
         """Build test resource url route.
 
         Args:
-            test_id (int, optional): Test resource id. Defaults
-                to None. If omitted the route will point to all test
-                resources.
+            test_id (int, optional): Test resource id. Defaults to None. If
+                omitted the route will point to all test resources.
 
         Returns:
             str: Route to test resource/s.

@@ -11,7 +11,14 @@ from __future__ import annotations
 from datetime import datetime
 from dateutil import parser
 from ..api_client import APIClient
-from .resource import LoaderoResource, to_json, from_json, to_string
+from .resource import (
+    LoaderoResource,
+    to_json,
+    from_json,
+    to_string,
+    convert_params_list,
+)
+from .participant import Participant, ParticipantAPI
 
 
 class GroupParams(LoaderoResource):
@@ -229,6 +236,20 @@ class Group:
 
         return dupl
 
+    def participants(self) -> list[Participant]:
+        """Read all participants in group.
+
+        Returns:
+            list[Participant]: List of participants in group.
+        """
+
+        return convert_params_list(
+            Participant,
+            ParticipantAPI.read_all(
+                self.params.test_id, group_id=self.params.group_id
+            ),
+        )
+
 
 class GroupAPI:
     """GroupAPI defines Loadero API operations for group resources."""
@@ -360,8 +381,25 @@ class GroupAPI:
 
     @staticmethod
     def read_all(test_id: int) -> list[GroupParams]:
-        # TODO: implement.
-        pass
+        """Read all group resources.
+
+        Args:
+            test_id (int): Parent test resource id.
+
+        Returns:
+            list[GroupParams]: List of all group resources in test.
+        """
+        resp = APIClient().get(GroupAPI.route(test_id))
+
+        if "results" not in resp or resp["results"] is None:
+            return []
+
+        resources = []
+        for r in resp["results"]:
+            resource = GroupParams()
+            resources.append(resource.from_json(r))
+
+        return resources
 
     @staticmethod
     def route(test_id: int, group_id: int or None = None) -> str:
