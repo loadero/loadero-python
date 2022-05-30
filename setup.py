@@ -3,7 +3,7 @@ from setuptools import find_packages, setup
 
 NAME = "loadero_python"
 VERSION = "0.0.1"
-REQUIRES = ["urllib3==1.26.9", "tabulate==0.8.9", "python-dateutil==2.8.2"]
+REQUIRES = ["urllib3==1.26.9", "python-dateutil==2.8.2"]
 
 
 setup(

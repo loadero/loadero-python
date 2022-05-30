@@ -2,23 +2,40 @@
 
 from __future__ import annotations
 from enum import Enum
-from .resource import LoaderoResource
+from .resource import Serializable
 
 
 # This file is generated automatically by generate-constants/generate.py script.
 
 
-class MetricPath(LoaderoResource, Enum):
+class MetricPath(Serializable, Enum):
     """MetricPath enumerates Loadero metric path constants."""
 {% for mp in metric_paths %}
     {{ mp["name"] }} = "{{ mp["value"] }}"
 {% endfor %}
-    def __str__(self):
-        return self.value
-
+    # pylint: disable=arguments-differ
     @staticmethod
-    def from_json(jv: str) -> MetricPath:
+    def from_dict(jv: str) -> MetricPath:
         return MetricPath(jv)
 
-    def to_json(self) -> str:
+    def to_dict(self) -> str:
         return self.value
+
+    def to_dict_full(self) -> str:
+        return self.to_dict()
+
+class MetricBasePath(Serializable, Enum):
+    """MetricBasePath enumerates Loadero metric path base constants."""
+{% for mp in metric_base_paths %}
+    {{ mp["name"] }} = "{{ mp["value"] }}"
+{% endfor %}
+    # pylint: disable=arguments-differ
+    @staticmethod
+    def from_dict(jv: str) -> MetricPath:
+        return MetricBasePath(jv)
+
+    def to_dict(self) -> str:
+        return self.value
+
+    def to_dict_full(self) -> str:
+        return self.to_dict()

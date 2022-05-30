@@ -11,42 +11,17 @@ from __future__ import annotations
 from datetime import datetime
 from dateutil import parser
 from ..api_client import APIClient
-from .resource import LoaderoResource, to_json, from_json, to_string
+from .resource import LoaderoResourceParams, from_dict_as_list
 from .metric_path import MetricPath
 from .classificator import Operator
 
 
-class AssertParams(LoaderoResource):
+class AssertParams(LoaderoResourceParams):
     """
     AssertParams represents Loadero assert resource attributes.
     AssertParams has a builder pattern for assert resources read and write
     attributes.
     """
-
-    # Describes python object attribute name mapping to Loadero resources
-    # JSON field names.
-    __attribute_map = {
-        "assert_id": "id",
-        "test_id": "test_id",
-        "_created": "created",
-        "_updated": "updated",
-        "expected": "expected",
-        "operator": "operator",
-        "path": "path",
-    }
-
-    # Describes Loadero resources JSON field names that are required for CRUD
-    # operations.
-    __body_attributes = ["expected", "operator", "path"]
-
-    # Describes a mapping from Loadero resources JSON field names to custom
-    # deserialization functions.
-    __custom_deserializers = {
-        "created": parser.parse,
-        "updated": parser.parse,
-        "operator": Operator.from_json,
-        "path": MetricPath.from_json,
-    }
 
     assert_id = None
     test_id = None
@@ -66,14 +41,32 @@ class AssertParams(LoaderoResource):
         operator: Operator or None = None,
         expected: str or None = None,
     ) -> None:
+
+        super().__init__(
+            attribute_map={
+                "id": "assert_id",
+                "test_id": "test_id",
+                "created": "_created",
+                "updated": "_updated",
+                "expected": "expected",
+                "operator": "operator",
+                "path": "path",
+            },
+            custom_deserializers={
+                "created": parser.parse,
+                "updated": parser.parse,
+                "operator": Operator.from_dict,
+                "path": MetricPath.from_dict,
+            },
+            body_attributes=["expected", "operator", "path"],
+            required_body_attributes=["expected", "operator", "path"],
+        )
+
         self.assert_id = assert_id
         self.test_id = test_id
         self.path = path
         self.operator = operator
         self.expected = expected
-
-    def __str__(self) -> str:
-        return to_string(self.__dict__, self.__attribute_map)
 
     @property
     def created(self) -> datetime:
@@ -105,43 +98,6 @@ class AssertParams(LoaderoResource):
 
     def with_expected(self, expected: str) -> AssertParams:
         self.expected = expected
-
-        return self
-
-    def to_json(
-        self, body_attributes: list[str] or None = None
-    ) -> dict[str, any]:
-        """Serializes assert resource to JSON.
-
-        Args:
-            body_attributes (list[str] or None, optional): String list of JSON
-                field names that will be serialized. Defaults to None, then
-                the default body attributes for assert resource are used.
-
-        Returns:
-            dict[str, any]: JSON dictionary.
-        """
-        if body_attributes is None:
-            body_attributes = self.__body_attributes
-
-        return to_json(self.__dict__, self.__attribute_map, body_attributes)
-
-    def from_json(self, json_value: dict[str, any]) -> AssertParams:
-        """Serializes assert resource from JSON.
-
-        Args:
-            json_value (dict[str, any]): JSON dictionary.
-
-        Returns:
-            AssertParams: Serialized assert resource.
-        """
-
-        from_json(
-            self.__dict__,
-            json_value,
-            self.__attribute_map,
-            self.__custom_deserializers,
-        )
 
         return self
 
@@ -247,8 +203,8 @@ class AssertAPI:
         if params.test_id is None:
             raise Exception("AssertParams.test_id must be a valid int")
 
-        return params.from_json(
-            APIClient().post(AssertAPI.route(params.test_id), params.to_json())
+        return params.from_dict(
+            APIClient().post(AssertAPI.route(params.test_id), params.to_dict())
         )
 
     @staticmethod
@@ -272,7 +228,7 @@ class AssertAPI:
         if params.assert_id is None:
             raise Exception("AssertParams.assert_id must be a valid int")
 
-        return params.from_json(
+        return params.from_dict(
             APIClient().get(AssertAPI.route(params.test_id, params.assert_id))
         )
 
@@ -297,10 +253,10 @@ class AssertAPI:
         if params.assert_id is None:
             raise Exception("AssertParams.assert_id must be a valid int")
 
-        return params.from_json(
+        return params.from_dict(
             APIClient().put(
                 AssertAPI.route(params.test_id, params.assert_id),
-                params.to_json(),
+                params.to_dict(),
             )
         )
 
@@ -348,7 +304,7 @@ class AssertAPI:
 
         dupl = AssertParams()
 
-        return dupl.from_json(
+        return dupl.from_dict(
             APIClient().post(
                 AssertAPI.route(params.test_id, params.assert_id) + "copy/",
                 None,
@@ -370,12 +326,7 @@ class AssertAPI:
         if "results" not in resp or resp["results"] is None:
             return []
 
-        resources = []
-        for r in resp["results"]:
-            resource = AssertParams()
-            resources.append(resource.from_json(r))
-
-        return resources
+        return from_dict_as_list(AssertParams)(resp["results"])
 
     @staticmethod
     def route(test_id: int, assert_id: int or None = None) -> str:

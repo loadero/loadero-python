@@ -10,27 +10,16 @@ from __future__ import annotations
 from datetime import datetime
 from dateutil import parser
 from ..api_client import APIClient
-from .resource import LoaderoResource, from_json
+from .resource import (
+    LoaderoResourceParams,
+    Serializable,
+    from_dict_as_list,
+)
 from .classificator import FileType
 
 
-class FileParams(LoaderoResource):
+class FileParams(LoaderoResourceParams):
     """FileParams represents Loadero file parameters."""
-
-    __attribute_map = {
-        "file_id": "id",
-        "_created": "created",
-        "_updated": "updated",
-        "_file_type": "file_type",
-        "_content": "content",
-    }
-
-    # Describes a mapping from Loadero resources JSON field names to custom
-    __custom_deserializers = {
-        "created": parser.parse,
-        "updated": parser.parse,
-        "file_type": FileType.from_json,
-    }
 
     file_id = None
     _created = None
@@ -39,6 +28,29 @@ class FileParams(LoaderoResource):
     _content = None
 
     def __init__(self, file_id: int or None = None):
+        super().__init__(
+            attribute_map={
+                "id": "file_id",
+                "created": "_created",
+                "updated": "_updated",
+                "file_type": "_file_type",
+                "content": "_content",
+            },
+            custom_deserializers={
+                "created": parser.parse,
+                "updated": parser.parse,
+                "file_type": FileType.from_dict,
+            },
+            body_attributes=[
+                "count",
+                "name",
+            ],
+            required_body_attributes=[
+                "count",
+                "name",
+            ],
+        )
+
         self.file_id = file_id
 
     @property
@@ -57,27 +69,8 @@ class FileParams(LoaderoResource):
     def content(self) -> str or None:
         return self._content
 
-    def from_json(self, json_value: dict[str, any]) -> FileParams:
-        """Serializes file resource from JSON.
 
-        Args:
-            json_value (dict[str, any]): JSON dictionary.
-
-        Returns:
-            TestParams: Serialized file resource.
-        """
-
-        from_json(
-            self.__dict__,
-            json_value,
-            self.__attribute_map,
-            self.__custom_deserializers,
-        )
-
-        return self
-
-
-class Script(LoaderoResource):
+class Script(Serializable):
     """Script describes a single Loadero test script."""
 
     _content = None
@@ -166,8 +159,14 @@ class Script(LoaderoResource):
 
         return self
 
-    def to_json(self) -> str:
+    def to_dict(self) -> str:
         return self.content
+
+    def to_dict_full(self) -> str:
+        return self.to_dict()
+
+    def from_dict(self, json_dict: dict[str, any]) -> Script:
+        return self
 
     def read(self) -> Script:
         self._params = FileAPI().read(self._params)
@@ -195,7 +194,7 @@ class FileAPI:
         if params.file_id is None:
             raise Exception("FileParams.file_id must be a valid int")
 
-        return params.from_json(
+        return params.from_dict(
             APIClient().get(FileAPI().route(params.file_id))
         )
 
@@ -212,12 +211,7 @@ class FileAPI:
         if "results" not in resp or resp["results"] is None:
             return []
 
-        resources = []
-        for r in resp["results"]:
-            resource = FileParams()
-            resources.append(resource.from_json(r))
-
-        return resources
+        return from_dict_as_list(FileParams)(resp["results"])
 
     @staticmethod
     def route(file_id: int or None = None) -> str:

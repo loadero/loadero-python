@@ -60,6 +60,10 @@ def metric_path_member_name(value: str) -> str:
     return value.replace("/", "_").upper()
 
 
+def metric_base_path_value(value: str) -> str:
+    return "/".join(value.split("/")[:-1])
+
+
 def classificator_class_name(value: str) -> str:
     return value.title().replace("_", "")
 
@@ -113,6 +117,7 @@ def generate_classificators(env: Environment):
 
 def generate_metric_paths(env: Environment):
     metric_paths = []
+    metric_base_path_values = set()
     for mp in APIClient().get("statics/metric_path/"):
         metric_paths.append(
             {
@@ -120,6 +125,19 @@ def generate_metric_paths(env: Environment):
                 "value": mp,
             }
         )
+
+        metric_base_path_values.add(metric_base_path_value(mp))
+
+    metric_base_paths = []
+    for mbp in metric_base_path_values:
+        metric_base_paths.append(
+            {
+                "name": metric_path_member_name(mbp),
+                "value": mbp,
+            }
+        )
+
+    metric_base_paths.sort(key=lambda x: x["name"])
 
     metric_paths.sort(key=lambda x: x["name"])
 
@@ -129,7 +147,9 @@ def generate_metric_paths(env: Environment):
         "w",
     ) as f:
         f.write(
-            env.get_template("metric_path.j2").render(metric_paths=metric_paths)
+            env.get_template("metric_path.j2").render(
+                metric_paths=metric_paths, metric_base_paths=metric_base_paths
+            )
         )
 
 

@@ -140,26 +140,26 @@ def mock():
 class UTestParticipantsParams:
     def utest_string(self):
         p = ParticipantParams()
-        dupl = common.participant_json.copy()
-        p.from_json(dupl)
+        p.from_dict(common.participant_json)
 
         assert (
             str(p)
-            == """|--------------|----------------------------------|
-| audio_feed   | silence                          |
-| browser      | chromeLatest                     |
-| compute_unit | g4                               |
-| count        | 3                                |
-| created      | 2022-04-01 13:54:25.689000+00:00 |
-| group_id     | 34421                            |
-| id           | 92559                            |
-| location     | eu-central-1                     |
-| name         | pytest participant               |
-| network      | 4g                               |
-| record_audio | False                            |
-| test_id      | 12734                            |
-| updated      | 2024-02-03 15:42:54.689000+00:00 |
-| video_feed   | 480p-15fps                       |"""
+            == """{
+    "id": 92559,
+    "test_id": 12734,
+    "name": "pytest participant",
+    "count": 3,
+    "compute_unit": "g4",
+    "group_id": 34421,
+    "record_audio": false,
+    "audio_feed": "silence",
+    "browser": "chromeLatest",
+    "location": "eu-central-1",
+    "network": "4g",
+    "video_feed": "480p-15fps",
+    "created": "2022-04-01 13:54:25.689000+00:00",
+    "updated": "2024-02-03 15:42:54.689000+00:00"
+}"""
         )
 
     def utest_created(self):

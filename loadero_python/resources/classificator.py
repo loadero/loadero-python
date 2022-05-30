@@ -2,13 +2,13 @@
 
 from __future__ import annotations
 from enum import Enum
-from .resource import LoaderoResource
+from .resource import Serializable
 
 
 # This file is generated automatically by generate-constants/generate.py script.
 
 
-class Artifact(LoaderoResource, Enum):
+class Artifact(Serializable, Enum):
     """
     Artifact enumerates Loadero classificator constants for
     artifact classificator type.
@@ -22,18 +22,19 @@ class Artifact(LoaderoResource, Enum):
 
     A_VIDEO = "video"
 
-    def __str__(self):
-        return self.value
-
+    # pylint: disable=arguments-differ
     @staticmethod
-    def from_json(jv: str) -> Artifact:
+    def from_dict(jv: str) -> Artifact:
         return Artifact(jv)
 
-    def to_json(self) -> str:
+    def to_dict(self) -> str:
         return self.value
 
+    def to_dict_full(self) -> str:
+        return self.to_dict()
 
-class AssertStatus(LoaderoResource, Enum):
+
+class AssertStatus(Serializable, Enum):
     """
     AssertStatus enumerates Loadero classificator constants for
     assert_status classificator type.
@@ -45,18 +46,19 @@ class AssertStatus(LoaderoResource, Enum):
 
     AS_SKIPPED = "skipped"
 
-    def __str__(self):
-        return self.value
-
+    # pylint: disable=arguments-differ
     @staticmethod
-    def from_json(jv: str) -> AssertStatus:
+    def from_dict(jv: str) -> AssertStatus:
         return AssertStatus(jv)
 
-    def to_json(self) -> str:
+    def to_dict(self) -> str:
         return self.value
 
+    def to_dict_full(self) -> str:
+        return self.to_dict()
 
-class AudioFeed(LoaderoResource, Enum):
+
+class AudioFeed(Serializable, Enum):
     """
     AudioFeed enumerates Loadero classificator constants for
     audio_feed classificator type.
@@ -78,18 +80,19 @@ class AudioFeed(LoaderoResource, Enum):
 
     AF_VISQOL_SPEECH = "visqol-speech"
 
-    def __str__(self):
-        return self.value
-
+    # pylint: disable=arguments-differ
     @staticmethod
-    def from_json(jv: str) -> AudioFeed:
+    def from_dict(jv: str) -> AudioFeed:
         return AudioFeed(jv)
 
-    def to_json(self) -> str:
+    def to_dict(self) -> str:
         return self.value
 
+    def to_dict_full(self) -> str:
+        return self.to_dict()
 
-class AwsStatus(LoaderoResource, Enum):
+
+class AwsStatus(Serializable, Enum):
     """
     AwsStatus enumerates Loadero classificator constants for
     aws_status classificator type.
@@ -107,18 +110,19 @@ class AwsStatus(LoaderoResource, Enum):
 
     AS_READY = "ready"
 
-    def __str__(self):
-        return self.value
-
+    # pylint: disable=arguments-differ
     @staticmethod
-    def from_json(jv: str) -> AwsStatus:
+    def from_dict(jv: str) -> AwsStatus:
         return AwsStatus(jv)
 
-    def to_json(self) -> str:
+    def to_dict(self) -> str:
         return self.value
 
+    def to_dict_full(self) -> str:
+        return self.to_dict()
 
-class Browser(LoaderoResource, Enum):
+
+class Browser(Serializable, Enum):
     """
     Browser enumerates Loadero classificator constants for
     browser classificator type.
@@ -128,18 +132,19 @@ class Browser(LoaderoResource, Enum):
 
     B_FIREFOXLATEST = "firefoxLatest"
 
-    def __str__(self):
-        return self.value
-
+    # pylint: disable=arguments-differ
     @staticmethod
-    def from_json(jv: str) -> Browser:
+    def from_dict(jv: str) -> Browser:
         return Browser(jv)
 
-    def to_json(self) -> str:
+    def to_dict(self) -> str:
         return self.value
 
+    def to_dict_full(self) -> str:
+        return self.to_dict()
 
-class ComputeUnit(LoaderoResource, Enum):
+
+class ComputeUnit(Serializable, Enum):
     """
     ComputeUnit enumerates Loadero classificator constants for
     compute_unit classificator type.
@@ -155,18 +160,19 @@ class ComputeUnit(LoaderoResource, Enum):
 
     CU_G6 = "g6"
 
-    def __str__(self):
-        return self.value
-
+    # pylint: disable=arguments-differ
     @staticmethod
-    def from_json(jv: str) -> ComputeUnit:
+    def from_dict(jv: str) -> ComputeUnit:
         return ComputeUnit(jv)
 
-    def to_json(self) -> str:
+    def to_dict(self) -> str:
         return self.value
 
+    def to_dict_full(self) -> str:
+        return self.to_dict()
 
-class FileType(LoaderoResource, Enum):
+
+class FileType(Serializable, Enum):
     """
     FileType enumerates Loadero classificator constants for
     file_type classificator type.
@@ -184,18 +190,19 @@ class FileType(LoaderoResource, Enum):
 
     FT_TEST_SCRIPT = "test_script"
 
-    def __str__(self):
-        return self.value
-
+    # pylint: disable=arguments-differ
     @staticmethod
-    def from_json(jv: str) -> FileType:
+    def from_dict(jv: str) -> FileType:
         return FileType(jv)
 
-    def to_json(self) -> str:
+    def to_dict(self) -> str:
         return self.value
 
+    def to_dict_full(self) -> str:
+        return self.to_dict()
 
-class IncrementStrategy(LoaderoResource, Enum):
+
+class IncrementStrategy(Serializable, Enum):
     """
     IncrementStrategy enumerates Loadero classificator constants for
     increment_strategy classificator type.
@@ -209,18 +216,19 @@ class IncrementStrategy(LoaderoResource, Enum):
 
     IS_RANDOM_GROUP = "random_group"
 
-    def __str__(self):
-        return self.value
-
+    # pylint: disable=arguments-differ
     @staticmethod
-    def from_json(jv: str) -> IncrementStrategy:
+    def from_dict(jv: str) -> IncrementStrategy:
         return IncrementStrategy(jv)
 
-    def to_json(self) -> str:
+    def to_dict(self) -> str:
         return self.value
 
+    def to_dict_full(self) -> str:
+        return self.to_dict()
 
-class Language(LoaderoResource, Enum):
+
+class Language(Serializable, Enum):
     """
     Language enumerates Loadero classificator constants for
     language classificator type.
@@ -232,18 +240,19 @@ class Language(LoaderoResource, Enum):
 
     L_PYTHON = "python"
 
-    def __str__(self):
-        return self.value
-
+    # pylint: disable=arguments-differ
     @staticmethod
-    def from_json(jv: str) -> Language:
+    def from_dict(jv: str) -> Language:
         return Language(jv)
 
-    def to_json(self) -> str:
+    def to_dict(self) -> str:
         return self.value
 
+    def to_dict_full(self) -> str:
+        return self.to_dict()
 
-class Location(LoaderoResource, Enum):
+
+class Location(Serializable, Enum):
     """
     Location enumerates Loadero classificator constants for
     location classificator type.
@@ -273,18 +282,19 @@ class Location(LoaderoResource, Enum):
 
     L_US_WEST_2 = "us-west-2"
 
-    def __str__(self):
-        return self.value
-
+    # pylint: disable=arguments-differ
     @staticmethod
-    def from_json(jv: str) -> Location:
+    def from_dict(jv: str) -> Location:
         return Location(jv)
 
-    def to_json(self) -> str:
+    def to_dict(self) -> str:
         return self.value
 
+    def to_dict_full(self) -> str:
+        return self.to_dict()
 
-class MediaType(LoaderoResource, Enum):
+
+class MediaType(Serializable, Enum):
     """
     MediaType enumerates Loadero classificator constants for
     media_type classificator type.
@@ -320,18 +330,19 @@ class MediaType(LoaderoResource, Enum):
 
     MT_DEFAULT = "default"
 
-    def __str__(self):
-        return self.value
-
+    # pylint: disable=arguments-differ
     @staticmethod
-    def from_json(jv: str) -> MediaType:
+    def from_dict(jv: str) -> MediaType:
         return MediaType(jv)
 
-    def to_json(self) -> str:
+    def to_dict(self) -> str:
         return self.value
 
+    def to_dict_full(self) -> str:
+        return self.to_dict()
 
-class MemberRole(LoaderoResource, Enum):
+
+class MemberRole(Serializable, Enum):
     """
     MemberRole enumerates Loadero classificator constants for
     member_role classificator type.
@@ -343,18 +354,19 @@ class MemberRole(LoaderoResource, Enum):
 
     MR_VISITOR = "visitor"
 
-    def __str__(self):
-        return self.value
-
+    # pylint: disable=arguments-differ
     @staticmethod
-    def from_json(jv: str) -> MemberRole:
+    def from_dict(jv: str) -> MemberRole:
         return MemberRole(jv)
 
-    def to_json(self) -> str:
+    def to_dict(self) -> str:
         return self.value
 
+    def to_dict_full(self) -> str:
+        return self.to_dict()
 
-class MetricKey(LoaderoResource, Enum):
+
+class MetricKey(Serializable, Enum):
     """
     MetricKey enumerates Loadero classificator constants for
     metric_key classificator type.
@@ -438,18 +450,19 @@ class MetricKey(LoaderoResource, Enum):
 
     MK_WEBRTC = "webrtc"
 
-    def __str__(self):
-        return self.value
-
+    # pylint: disable=arguments-differ
     @staticmethod
-    def from_json(jv: str) -> MetricKey:
+    def from_dict(jv: str) -> MetricKey:
         return MetricKey(jv)
 
-    def to_json(self) -> str:
+    def to_dict(self) -> str:
         return self.value
 
+    def to_dict_full(self) -> str:
+        return self.to_dict()
 
-class MetricStatus(LoaderoResource, Enum):
+
+class MetricStatus(Serializable, Enum):
     """
     MetricStatus enumerates Loadero classificator constants for
     metric_status classificator type.
@@ -467,18 +480,19 @@ class MetricStatus(LoaderoResource, Enum):
 
     MS_REQUESTED = "requested"
 
-    def __str__(self):
-        return self.value
-
+    # pylint: disable=arguments-differ
     @staticmethod
-    def from_json(jv: str) -> MetricStatus:
+    def from_dict(jv: str) -> MetricStatus:
         return MetricStatus(jv)
 
-    def to_json(self) -> str:
+    def to_dict(self) -> str:
         return self.value
 
+    def to_dict_full(self) -> str:
+        return self.to_dict()
 
-class MosAlgorithm(LoaderoResource, Enum):
+
+class MosAlgorithm(Serializable, Enum):
     """
     MosAlgorithm enumerates Loadero classificator constants for
     mos_algorithm classificator type.
@@ -486,18 +500,19 @@ class MosAlgorithm(LoaderoResource, Enum):
 
     MA_VISQOL = "visqol"
 
-    def __str__(self):
-        return self.value
-
+    # pylint: disable=arguments-differ
     @staticmethod
-    def from_json(jv: str) -> MosAlgorithm:
+    def from_dict(jv: str) -> MosAlgorithm:
         return MosAlgorithm(jv)
 
-    def to_json(self) -> str:
+    def to_dict(self) -> str:
         return self.value
 
+    def to_dict_full(self) -> str:
+        return self.to_dict()
 
-class Network(LoaderoResource, Enum):
+
+class Network(Serializable, Enum):
     """
     Network enumerates Loadero classificator constants for
     network classificator type.
@@ -533,18 +548,19 @@ class Network(LoaderoResource, Enum):
 
     N_SATELLITE = "satellite"
 
-    def __str__(self):
-        return self.value
-
+    # pylint: disable=arguments-differ
     @staticmethod
-    def from_json(jv: str) -> Network:
+    def from_dict(jv: str) -> Network:
         return Network(jv)
 
-    def to_json(self) -> str:
+    def to_dict(self) -> str:
         return self.value
 
+    def to_dict_full(self) -> str:
+        return self.to_dict()
 
-class NodeStatus(LoaderoResource, Enum):
+
+class NodeStatus(Serializable, Enum):
     """
     NodeStatus enumerates Loadero classificator constants for
     node_status classificator type.
@@ -560,18 +576,19 @@ class NodeStatus(LoaderoResource, Enum):
 
     NS_TERMINATING = "terminating"
 
-    def __str__(self):
-        return self.value
-
+    # pylint: disable=arguments-differ
     @staticmethod
-    def from_json(jv: str) -> NodeStatus:
+    def from_dict(jv: str) -> NodeStatus:
         return NodeStatus(jv)
 
-    def to_json(self) -> str:
+    def to_dict(self) -> str:
         return self.value
 
+    def to_dict_full(self) -> str:
+        return self.to_dict()
 
-class Operator(LoaderoResource, Enum):
+
+class Operator(Serializable, Enum):
     """
     Operator enumerates Loadero classificator constants for
     operator classificator type.
@@ -591,18 +608,19 @@ class Operator(LoaderoResource, Enum):
 
     O_REGEX = "regex"
 
-    def __str__(self):
-        return self.value
-
+    # pylint: disable=arguments-differ
     @staticmethod
-    def from_json(jv: str) -> Operator:
+    def from_dict(jv: str) -> Operator:
         return Operator(jv)
 
-    def to_json(self) -> str:
+    def to_dict(self) -> str:
         return self.value
 
+    def to_dict_full(self) -> str:
+        return self.to_dict()
 
-class PaymentPlan(LoaderoResource, Enum):
+
+class PaymentPlan(Serializable, Enum):
     """
     PaymentPlan enumerates Loadero classificator constants for
     payment_plan classificator type.
@@ -618,18 +636,19 @@ class PaymentPlan(LoaderoResource, Enum):
 
     PP_YEARLY = "yearly"
 
-    def __str__(self):
-        return self.value
-
+    # pylint: disable=arguments-differ
     @staticmethod
-    def from_json(jv: str) -> PaymentPlan:
+    def from_dict(jv: str) -> PaymentPlan:
         return PaymentPlan(jv)
 
-    def to_json(self) -> str:
+    def to_dict(self) -> str:
         return self.value
 
+    def to_dict_full(self) -> str:
+        return self.to_dict()
 
-class PaymentStatus(LoaderoResource, Enum):
+
+class PaymentStatus(Serializable, Enum):
     """
     PaymentStatus enumerates Loadero classificator constants for
     payment_status classificator type.
@@ -649,18 +668,19 @@ class PaymentStatus(LoaderoResource, Enum):
 
     PS_VAT_INVALID = "vat_invalid"
 
-    def __str__(self):
-        return self.value
-
+    # pylint: disable=arguments-differ
     @staticmethod
-    def from_json(jv: str) -> PaymentStatus:
+    def from_dict(jv: str) -> PaymentStatus:
         return PaymentStatus(jv)
 
-    def to_json(self) -> str:
+    def to_dict(self) -> str:
         return self.value
 
+    def to_dict_full(self) -> str:
+        return self.to_dict()
 
-class Property(LoaderoResource, Enum):
+
+class Property(Serializable, Enum):
     """
     Property enumerates Loadero classificator constants for
     property classificator type.
@@ -688,18 +708,19 @@ class Property(LoaderoResource, Enum):
 
     P_VIDEO_FEED = "video_feed"
 
-    def __str__(self):
-        return self.value
-
+    # pylint: disable=arguments-differ
     @staticmethod
-    def from_json(jv: str) -> Property:
+    def from_dict(jv: str) -> Property:
         return Property(jv)
 
-    def to_json(self) -> str:
+    def to_dict(self) -> str:
         return self.value
 
+    def to_dict_full(self) -> str:
+        return self.to_dict()
 
-class ResultStatus(LoaderoResource, Enum):
+
+class ResultStatus(Serializable, Enum):
     """
     ResultStatus enumerates Loadero classificator constants for
     result_status classificator type.
@@ -713,18 +734,19 @@ class ResultStatus(LoaderoResource, Enum):
 
     RS_TIMEOUT = "timeout"
 
-    def __str__(self):
-        return self.value
-
+    # pylint: disable=arguments-differ
     @staticmethod
-    def from_json(jv: str) -> ResultStatus:
+    def from_dict(jv: str) -> ResultStatus:
         return ResultStatus(jv)
 
-    def to_json(self) -> str:
+    def to_dict(self) -> str:
         return self.value
 
+    def to_dict_full(self) -> str:
+        return self.to_dict()
 
-class RunStatus(LoaderoResource, Enum):
+
+class RunStatus(Serializable, Enum):
     """
     RunStatus enumerates Loadero classificator constants for
     run_status classificator type.
@@ -758,18 +780,19 @@ class RunStatus(LoaderoResource, Enum):
 
     RS_WAITING_RESULTS = "waiting-results"
 
-    def __str__(self):
-        return self.value
-
+    # pylint: disable=arguments-differ
     @staticmethod
-    def from_json(jv: str) -> RunStatus:
+    def from_dict(jv: str) -> RunStatus:
         return RunStatus(jv)
 
-    def to_json(self) -> str:
+    def to_dict(self) -> str:
         return self.value
 
+    def to_dict_full(self) -> str:
+        return self.to_dict()
 
-class TestDuration(LoaderoResource, Enum):
+
+class TestDuration(Serializable, Enum):
     """
     TestDuration enumerates Loadero classificator constants for
     test_duration classificator type.
@@ -789,18 +812,19 @@ class TestDuration(LoaderoResource, Enum):
 
     TD_8H = "8h"
 
-    def __str__(self):
-        return self.value
-
+    # pylint: disable=arguments-differ
     @staticmethod
-    def from_json(jv: str) -> TestDuration:
+    def from_dict(jv: str) -> TestDuration:
         return TestDuration(jv)
 
-    def to_json(self) -> str:
+    def to_dict(self) -> str:
         return self.value
 
+    def to_dict_full(self) -> str:
+        return self.to_dict()
 
-class TestMode(LoaderoResource, Enum):
+
+class TestMode(Serializable, Enum):
     """
     TestMode enumerates Loadero classificator constants for
     test_mode classificator type.
@@ -812,18 +836,19 @@ class TestMode(LoaderoResource, Enum):
 
     TM_SESSION_RECORD = "session-record"
 
-    def __str__(self):
-        return self.value
-
+    # pylint: disable=arguments-differ
     @staticmethod
-    def from_json(jv: str) -> TestMode:
+    def from_dict(jv: str) -> TestMode:
         return TestMode(jv)
 
-    def to_json(self) -> str:
+    def to_dict(self) -> str:
         return self.value
 
+    def to_dict_full(self) -> str:
+        return self.to_dict()
 
-class VideoFeed(LoaderoResource, Enum):
+
+class VideoFeed(Serializable, Enum):
     """
     VideoFeed enumerates Loadero classificator constants for
     video_feed classificator type.
@@ -895,12 +920,13 @@ class VideoFeed(LoaderoResource, Enum):
 
     VF_DEFAULT = "default"
 
-    def __str__(self):
-        return self.value
-
+    # pylint: disable=arguments-differ
     @staticmethod
-    def from_json(jv: str) -> VideoFeed:
+    def from_dict(jv: str) -> VideoFeed:
         return VideoFeed(jv)
 
-    def to_json(self) -> str:
+    def to_dict(self) -> str:
         return self.value
+
+    def to_dict_full(self) -> str:
+        return self.to_dict()

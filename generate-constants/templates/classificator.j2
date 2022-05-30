@@ -2,13 +2,13 @@
 
 from __future__ import annotations
 from enum import Enum
-from .resource import LoaderoResource
+from .resource import Serializable
 
 
 # This file is generated automatically by generate-constants/generate.py script.
 {% for c in classificators %}
 
-class {{ c["class_name"] }}(LoaderoResource, Enum):
+class {{ c["class_name"] }}(Serializable, Enum):
     """
     {{ c["class_name"] }} enumerates Loadero classificator constants for
     {{ c["type"] }} classificator type.
@@ -16,13 +16,15 @@ class {{ c["class_name"] }}(LoaderoResource, Enum):
 {% for m in c["members"] %}
     {{ m["name"] }} = "{{ m["value"] }}"
 {% endfor %}
-    def __str__(self):
-        return self.value
 
+    # pylint: disable=arguments-differ
     @staticmethod
-    def from_json(jv: str) -> {{ c["class_name"] }}:
+    def from_dict(jv: str) -> {{ c["class_name"] }}:
         return {{ c["class_name"] }}(jv)
 
-    def to_json(self) -> str:
+    def to_dict(self) -> str:
         return self.value
+
+    def to_dict_full(self) -> str:
+        return self.to_dict()
 {% endfor %}
