@@ -83,13 +83,6 @@ def generate_classificators(env: Environment):
         members = []
 
         for m in cs:
-            # if (
-            #     t == "browser"
-            #     and m["value"] != "chromeLatest"
-            #     and m["value"] != "firefoxLatest"
-            # ):
-            #     continue
-
             members.append(
                 {
                     "name": classificator_member_name(t, m["value"]),
