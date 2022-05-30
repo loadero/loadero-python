@@ -441,6 +441,11 @@ class UTestTest:
 
         assert len(resp) == 2
 
+        b = Browser.B_CHROMELATEST
+
+        print(resp[0].params.browser.to_dict())
+        print(b, b.to_dict())
+
         for i, ret in enumerate(resp):
             assert ret.params.participant_id == common.participant_id + i + 1
             assert ret.params.group_id == common.group_id

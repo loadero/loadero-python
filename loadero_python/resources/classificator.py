@@ -8,6 +8,62 @@ from .resource import Serializable
 # This file is generated automatically by generate-constants/generate.py script.
 
 
+class VersionedBrowser(Serializable):
+    """
+    VersionedBrowser describes Loadero classificator constants for
+    browser classificator with specific version type.
+    """
+
+    __value = None
+
+    def __init__(self, value):
+        self.__value = value
+
+    # pylint: disable=arguments-differ
+    @staticmethod
+    def from_dict(jv: str) -> VersionedBrowser:
+        if jv == "":
+            return None
+
+        return VersionedBrowser(jv)
+
+    def to_dict(self) -> str:
+        return self.__value
+
+    def to_dict_full(self) -> str:
+        return self.to_dict()
+
+
+class Browser(Serializable, Enum):
+    """
+    Browser enumerates Loadero classificator constants for
+    browser classificator type.
+    """
+
+    B_CHROMELATEST = "chromeLatest"
+
+    B_FIREFOXLATEST = "firefoxLatest"
+
+    # pylint: disable=arguments-differ
+    @staticmethod
+    def from_dict(jv: str) -> Browser:
+        if jv == "":
+            return None
+
+        browsers = [Browser.B_CHROMELATEST.value, Browser.B_FIREFOXLATEST.value]
+
+        if jv not in browsers:
+            return VersionedBrowser(jv)
+
+        return Browser(jv)
+
+    def to_dict(self) -> str:
+        return self.value
+
+    def to_dict_full(self) -> str:
+        return self.to_dict()
+
+
 class Artifact(Serializable, Enum):
     """
     Artifact enumerates Loadero classificator constants for
@@ -25,6 +81,9 @@ class Artifact(Serializable, Enum):
     # pylint: disable=arguments-differ
     @staticmethod
     def from_dict(jv: str) -> Artifact:
+        if jv == "":
+            return None
+
         return Artifact(jv)
 
     def to_dict(self) -> str:
@@ -49,6 +108,9 @@ class AssertStatus(Serializable, Enum):
     # pylint: disable=arguments-differ
     @staticmethod
     def from_dict(jv: str) -> AssertStatus:
+        if jv == "":
+            return None
+
         return AssertStatus(jv)
 
     def to_dict(self) -> str:
@@ -83,6 +145,9 @@ class AudioFeed(Serializable, Enum):
     # pylint: disable=arguments-differ
     @staticmethod
     def from_dict(jv: str) -> AudioFeed:
+        if jv == "":
+            return None
+
         return AudioFeed(jv)
 
     def to_dict(self) -> str:
@@ -113,29 +178,10 @@ class AwsStatus(Serializable, Enum):
     # pylint: disable=arguments-differ
     @staticmethod
     def from_dict(jv: str) -> AwsStatus:
+        if jv == "":
+            return None
+
         return AwsStatus(jv)
-
-    def to_dict(self) -> str:
-        return self.value
-
-    def to_dict_full(self) -> str:
-        return self.to_dict()
-
-
-class Browser(Serializable, Enum):
-    """
-    Browser enumerates Loadero classificator constants for
-    browser classificator type.
-    """
-
-    B_CHROMELATEST = "chromeLatest"
-
-    B_FIREFOXLATEST = "firefoxLatest"
-
-    # pylint: disable=arguments-differ
-    @staticmethod
-    def from_dict(jv: str) -> Browser:
-        return Browser(jv)
 
     def to_dict(self) -> str:
         return self.value
@@ -163,6 +209,9 @@ class ComputeUnit(Serializable, Enum):
     # pylint: disable=arguments-differ
     @staticmethod
     def from_dict(jv: str) -> ComputeUnit:
+        if jv == "":
+            return None
+
         return ComputeUnit(jv)
 
     def to_dict(self) -> str:
@@ -193,6 +242,9 @@ class FileType(Serializable, Enum):
     # pylint: disable=arguments-differ
     @staticmethod
     def from_dict(jv: str) -> FileType:
+        if jv == "":
+            return None
+
         return FileType(jv)
 
     def to_dict(self) -> str:
@@ -219,6 +271,9 @@ class IncrementStrategy(Serializable, Enum):
     # pylint: disable=arguments-differ
     @staticmethod
     def from_dict(jv: str) -> IncrementStrategy:
+        if jv == "":
+            return None
+
         return IncrementStrategy(jv)
 
     def to_dict(self) -> str:
@@ -243,6 +298,9 @@ class Language(Serializable, Enum):
     # pylint: disable=arguments-differ
     @staticmethod
     def from_dict(jv: str) -> Language:
+        if jv == "":
+            return None
+
         return Language(jv)
 
     def to_dict(self) -> str:
@@ -285,6 +343,9 @@ class Location(Serializable, Enum):
     # pylint: disable=arguments-differ
     @staticmethod
     def from_dict(jv: str) -> Location:
+        if jv == "":
+            return None
+
         return Location(jv)
 
     def to_dict(self) -> str:
@@ -333,6 +394,9 @@ class MediaType(Serializable, Enum):
     # pylint: disable=arguments-differ
     @staticmethod
     def from_dict(jv: str) -> MediaType:
+        if jv == "":
+            return None
+
         return MediaType(jv)
 
     def to_dict(self) -> str:
@@ -357,6 +421,9 @@ class MemberRole(Serializable, Enum):
     # pylint: disable=arguments-differ
     @staticmethod
     def from_dict(jv: str) -> MemberRole:
+        if jv == "":
+            return None
+
         return MemberRole(jv)
 
     def to_dict(self) -> str:
@@ -453,6 +520,9 @@ class MetricKey(Serializable, Enum):
     # pylint: disable=arguments-differ
     @staticmethod
     def from_dict(jv: str) -> MetricKey:
+        if jv == "":
+            return None
+
         return MetricKey(jv)
 
     def to_dict(self) -> str:
@@ -483,6 +553,9 @@ class MetricStatus(Serializable, Enum):
     # pylint: disable=arguments-differ
     @staticmethod
     def from_dict(jv: str) -> MetricStatus:
+        if jv == "":
+            return None
+
         return MetricStatus(jv)
 
     def to_dict(self) -> str:
@@ -503,6 +576,9 @@ class MosAlgorithm(Serializable, Enum):
     # pylint: disable=arguments-differ
     @staticmethod
     def from_dict(jv: str) -> MosAlgorithm:
+        if jv == "":
+            return None
+
         return MosAlgorithm(jv)
 
     def to_dict(self) -> str:
@@ -551,6 +627,9 @@ class Network(Serializable, Enum):
     # pylint: disable=arguments-differ
     @staticmethod
     def from_dict(jv: str) -> Network:
+        if jv == "":
+            return None
+
         return Network(jv)
 
     def to_dict(self) -> str:
@@ -579,6 +658,9 @@ class NodeStatus(Serializable, Enum):
     # pylint: disable=arguments-differ
     @staticmethod
     def from_dict(jv: str) -> NodeStatus:
+        if jv == "":
+            return None
+
         return NodeStatus(jv)
 
     def to_dict(self) -> str:
@@ -611,6 +693,9 @@ class Operator(Serializable, Enum):
     # pylint: disable=arguments-differ
     @staticmethod
     def from_dict(jv: str) -> Operator:
+        if jv == "":
+            return None
+
         return Operator(jv)
 
     def to_dict(self) -> str:
@@ -639,6 +724,9 @@ class PaymentPlan(Serializable, Enum):
     # pylint: disable=arguments-differ
     @staticmethod
     def from_dict(jv: str) -> PaymentPlan:
+        if jv == "":
+            return None
+
         return PaymentPlan(jv)
 
     def to_dict(self) -> str:
@@ -671,6 +759,9 @@ class PaymentStatus(Serializable, Enum):
     # pylint: disable=arguments-differ
     @staticmethod
     def from_dict(jv: str) -> PaymentStatus:
+        if jv == "":
+            return None
+
         return PaymentStatus(jv)
 
     def to_dict(self) -> str:
@@ -711,6 +802,9 @@ class Property(Serializable, Enum):
     # pylint: disable=arguments-differ
     @staticmethod
     def from_dict(jv: str) -> Property:
+        if jv == "":
+            return None
+
         return Property(jv)
 
     def to_dict(self) -> str:
@@ -737,6 +831,9 @@ class ResultStatus(Serializable, Enum):
     # pylint: disable=arguments-differ
     @staticmethod
     def from_dict(jv: str) -> ResultStatus:
+        if jv == "":
+            return None
+
         return ResultStatus(jv)
 
     def to_dict(self) -> str:
@@ -783,6 +880,9 @@ class RunStatus(Serializable, Enum):
     # pylint: disable=arguments-differ
     @staticmethod
     def from_dict(jv: str) -> RunStatus:
+        if jv == "":
+            return None
+
         return RunStatus(jv)
 
     def to_dict(self) -> str:
@@ -815,6 +915,9 @@ class TestDuration(Serializable, Enum):
     # pylint: disable=arguments-differ
     @staticmethod
     def from_dict(jv: str) -> TestDuration:
+        if jv == "":
+            return None
+
         return TestDuration(jv)
 
     def to_dict(self) -> str:
@@ -839,6 +942,9 @@ class TestMode(Serializable, Enum):
     # pylint: disable=arguments-differ
     @staticmethod
     def from_dict(jv: str) -> TestMode:
+        if jv == "":
+            return None
+
         return TestMode(jv)
 
     def to_dict(self) -> str:
@@ -923,6 +1029,9 @@ class VideoFeed(Serializable, Enum):
     # pylint: disable=arguments-differ
     @staticmethod
     def from_dict(jv: str) -> VideoFeed:
+        if jv == "":
+            return None
+
         return VideoFeed(jv)
 
     def to_dict(self) -> str:

@@ -866,7 +866,9 @@ class MetricBasePath(Serializable, Enum):
 
     WEBRTC_AUDIO_CODEC = "webrtc/audio/codec"
 
-    WEBRTC_AUDIO_CONNECTIONS = "webrtc/audio/connections"
+    WEBRTC_AUDIO_CONNECTIONS_IN = "webrtc/audio/connections/in"
+
+    WEBRTC_AUDIO_CONNECTIONS_OUT = "webrtc/audio/connections/out"
 
     WEBRTC_AUDIO_JITTERBUFFER = "webrtc/audio/jitterBuffer"
 
@@ -898,7 +900,9 @@ class MetricBasePath(Serializable, Enum):
 
     WEBRTC_VIDEO_CODEC = "webrtc/video/codec"
 
-    WEBRTC_VIDEO_CONNECTIONS = "webrtc/video/connections"
+    WEBRTC_VIDEO_CONNECTIONS_IN = "webrtc/video/connections/in"
+
+    WEBRTC_VIDEO_CONNECTIONS_OUT = "webrtc/video/connections/out"
 
     WEBRTC_VIDEO_FPS_IN = "webrtc/video/fps/in"
 

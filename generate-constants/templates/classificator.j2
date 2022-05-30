@@ -6,6 +6,62 @@ from .resource import Serializable
 
 
 # This file is generated automatically by generate-constants/generate.py script.
+
+
+class VersionedBrowser(Serializable):
+    """
+    VersionedBrowser describes Loadero classificator constants for
+    browser classificator with specific version type.
+    """
+
+    __value = None
+
+    def __init__(self, value):
+        self.__value = value
+
+    # pylint: disable=arguments-differ
+    @staticmethod
+    def from_dict(jv: str) -> VersionedBrowser:
+        if jv == "":
+            return None
+
+        return VersionedBrowser(jv)
+
+    def to_dict(self) -> str:
+        return self.__value
+
+    def to_dict_full(self) -> str:
+        return self.to_dict()
+
+
+class Browser(Serializable, Enum):
+    """
+    Browser enumerates Loadero classificator constants for
+    browser classificator type.
+    """
+
+    B_CHROMELATEST = "chromeLatest"
+
+    B_FIREFOXLATEST = "firefoxLatest"
+
+    # pylint: disable=arguments-differ
+    @staticmethod
+    def from_dict(jv: str) -> Browser:
+        if jv == "":
+            return None
+
+        browsers = [Browser.B_CHROMELATEST.value, Browser.B_FIREFOXLATEST.value]
+
+        if jv not in browsers:
+            return VersionedBrowser(jv)
+
+        return Browser(jv)
+
+    def to_dict(self) -> str:
+        return self.value
+
+    def to_dict_full(self) -> str:
+        return self.to_dict()
 {% for c in classificators %}
 
 class {{ c["class_name"] }}(Serializable, Enum):
@@ -20,6 +76,9 @@ class {{ c["class_name"] }}(Serializable, Enum):
     # pylint: disable=arguments-differ
     @staticmethod
     def from_dict(jv: str) -> {{ c["class_name"] }}:
+        if jv == "":
+            return None
+        
         return {{ c["class_name"] }}(jv)
 
     def to_dict(self) -> str:

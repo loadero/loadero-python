@@ -72,6 +72,8 @@ def generate_classificators(env: Environment):
     classificators = []
 
     for t, cs in APIClient().get("statics/").items():
+        if t == "browser":
+            continue
 
         c = {}
 
@@ -81,12 +83,12 @@ def generate_classificators(env: Environment):
         members = []
 
         for m in cs:
-            if (
-                t == "browser"
-                and m["value"] != "chromeLatest"
-                and m["value"] != "firefoxLatest"
-            ):
-                continue
+            # if (
+            #     t == "browser"
+            #     and m["value"] != "chromeLatest"
+            #     and m["value"] != "firefoxLatest"
+            # ):
+            #     continue
 
             members.append(
                 {
@@ -126,7 +128,17 @@ def generate_metric_paths(env: Environment):
             }
         )
 
-        metric_base_path_values.add(metric_base_path_value(mp))
+        non_aggregated = [
+            "webrtc/audio/connections/in",
+            "webrtc/audio/connections/out",
+            "webrtc/video/connections/in",
+            "webrtc/video/connections/out",
+        ]
+
+        if mp in non_aggregated:
+            metric_base_path_values.add(mp)
+        else:
+            metric_base_path_values.add(metric_base_path_value(mp))
 
     metric_base_paths = []
     for mbp in metric_base_path_values:
