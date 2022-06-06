@@ -157,7 +157,6 @@ class UTestResultAssert:
         ra = ResultAssertParams()
         ra.from_dict(common.result_assert_json)
 
-        print(ra)
         assert (
             str(ra)
             == """{
@@ -239,7 +238,6 @@ class UTestArtifactsInfoParams:
         ai = ArtifactsInfoParams()
         ai.from_dict(common.artifacts_info_json)
 
-        print(ai)
         assert (
             str(ai)
             == """{

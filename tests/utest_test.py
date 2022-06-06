@@ -181,8 +181,6 @@ class UTestTestParams:
         t = TestParams()
         t.from_dict(common.test_json)
 
-        print(t)
-
         assert (
             str(t)
             == """{
@@ -440,11 +438,6 @@ class UTestTest:
         resp = t.participants()
 
         assert len(resp) == 2
-
-        b = Browser.B_CHROMELATEST
-
-        print(resp[0].params.browser.to_dict())
-        print(b, b.to_dict())
 
         for i, ret in enumerate(resp):
             assert ret.params.participant_id == common.participant_id + i + 1

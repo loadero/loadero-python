@@ -97,7 +97,6 @@ class UTestRunParticipantParams:
         rp = RunParticipantParams()
         rp.from_dict(common.run_participant_json)
 
-        print(rp)
         assert (
             str(rp)
             == """{

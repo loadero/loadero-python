@@ -93,8 +93,6 @@ class UTestRunParams:
         r = RunParams()
         r.from_dict(common.run_json)
 
-        print(r)
-
         assert (
             str(r)
             == """{
