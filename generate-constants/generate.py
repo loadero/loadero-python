@@ -126,6 +126,10 @@ def generate_metric_paths(env: Environment):
             "webrtc/audio/connections/out",
             "webrtc/video/connections/in",
             "webrtc/video/connections/out",
+            "webrtc/audio/codec/in",
+            "webrtc/audio/codec/out",
+            "webrtc/video/codec/in",
+            "webrtc/video/codec/out",
         ]
 
         if mp in non_aggregated:

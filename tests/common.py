@@ -214,7 +214,7 @@ metrics_json = {
         "machine/ram/percent": metric_json,
     },
     "webrtc": {
-        "webrtc/audio/codec": metric_json,
+        "webrtc/audio/codec/in": metric_json,
         "webrtc/audio/rtt": metric_json,
     },
 }

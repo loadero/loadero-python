@@ -1,6 +1,7 @@
 """Describes generics and utility functions of Loadero resources."""
 
 from __future__ import annotations
+from typing import Callable
 import json
 from datetime import datetime
 
@@ -103,18 +104,29 @@ class ParamsSerializer(Serializable):
 
         return json_dict
 
-    def __get_attribute_dict(self, attribute):
+    def __get_attribute_dict(self, attribute, full=False):
         """Recursively converts the attribute to a dictionary that only
         contains the body attributes."""
 
         if isinstance(attribute, Serializable):
+            if full:
+                return attribute.to_dict_full()
+
             return attribute.to_dict()
 
         if isinstance(attribute, list):
-            return [self.__get_attribute_dict(item) for item in attribute]
+            return [self.__get_attribute_dict(item, full) for item in attribute]
 
         if isinstance(attribute, datetime):
             return str(attribute)
+
+        if isinstance(attribute, dict):
+            return {
+                self.__get_attribute_dict(k, full): self.__get_attribute_dict(
+                    v, full
+                )
+                for k, v in attribute.items()
+            }
 
         return attribute
 
@@ -127,6 +139,7 @@ class ParamsSerializer(Serializable):
         Returns:
             dict[str, any]: dictionary representation of the object.
         """
+
         json_dict = {}
 
         for (
@@ -143,35 +156,11 @@ class ParamsSerializer(Serializable):
             if python_attribute_value is None:
                 continue
 
-            json_dict[json_attribute_name] = self.__get_attribute_full_dict(
-                python_attribute_value
+            json_dict[json_attribute_name] = self.__get_attribute_dict(
+                python_attribute_value, full=True
             )
 
         return json_dict
-
-    def __get_attribute_full_dict(self, attribute):
-        """
-        Recursively converts the attribute to a dictionary with all
-        subfields.
-        """
-        if isinstance(attribute, Serializable):
-            return attribute.to_dict_full()
-
-        if isinstance(attribute, list):
-            return [self.__get_attribute_full_dict(item) for item in attribute]
-
-        if isinstance(attribute, datetime):
-            return str(attribute)
-
-        if isinstance(attribute, dict):
-            return {
-                self.__get_attribute_full_dict(
-                    k
-                ): self.__get_attribute_full_dict(v)
-                for k, v in attribute.items()
-            }
-
-        return attribute
 
     def from_dict(self, json_dict: dict[str, any]) -> ParamsSerializer:
         """Sets the attributes of the resource params object from a JSON
@@ -184,6 +173,7 @@ class ParamsSerializer(Serializable):
         Returns:
             ParamsSerializer: The resource params object.
         """
+
         for json_attribute_name, json_attribute_value in json_dict.items():
             if json_attribute_name not in self.__attribute_map:
                 continue  # skip unknown attributes
@@ -202,15 +192,21 @@ class ParamsSerializer(Serializable):
         return self
 
 
-def from_dict_as_list(resource_params_class: type):
+def from_dict_as_list(
+    resource_params_class: type,
+) -> Callable[[dict[str, any]], list[LoaderoResourceParams]]:
     """Returns a function that deserializes a dictionary to a list of new
     instances of the resource params class
 
     Args:
         resource_params_class (type): Loadero resource params class.
+
+    Returns:
+        function: Function that deserializes a json dictionary to a list of new
+            LoaderoResourceParams objects.
     """
 
-    def fj(json_value: dict[str, any]) -> list[LoaderoResourceParams]:
+    def func(json_value: dict[str, any]) -> list[LoaderoResourceParams]:
         resources = []
 
         for jv in json_value:
@@ -219,15 +215,21 @@ def from_dict_as_list(resource_params_class: type):
 
         return resources
 
-    return fj
+    return func
 
 
-def from_dict_as_new(resource_params_class: type):
+def from_dict_as_new(
+    resource_params_class: type,
+) -> Callable[[dict[str, any]], LoaderoResourceParams]:
     """Returns a function that deserializes a dictionary to a new instance of
     the resource params class.
 
     Args:
         resource_params_class (type): Loadero resource params class.
+
+    Returns:
+        function: Function that deserializes a json dictionary to a new
+            LoaderoResourceParams object.
     """
 
     def func(json_value: dict[str, any]) -> LoaderoResourceParams:
@@ -284,6 +286,7 @@ def convert_params_list(
     Returns:
         List[LoaderoResource]: List of resource objects.
     """
+
     resources = []
     for p in params:
         resources.append(resource_class(params=p))

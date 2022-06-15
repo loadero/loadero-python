@@ -393,7 +393,7 @@ class UTestMetricsParams:
     def utest_webrtc(self):
         m = MetricsParams()
         d = {
-            MetricBasePath.WEBRTC_AUDIO_CODEC: MetricParams(),
+            MetricBasePath.WEBRTC_AUDIO_CODEC_IN: MetricParams(),
         }
         m.__dict__["_webrtc"] = d
         assert m.webrtc == d
@@ -448,7 +448,7 @@ class UTestMetricsParams:
         }
     },
     "webrtc": {
-        "webrtc/audio/codec": {
+        "webrtc/audio/codec/in": {
             "id": 912388482,
             "created": "2022-04-01 13:54:25.689000+00:00",
             "data_count": 102,
@@ -895,7 +895,7 @@ class UTestResultParams:
             }
         },
         "webrtc": {
-            "webrtc/audio/codec": {
+            "webrtc/audio/codec/in": {
                 "id": 912388482,
                 "created": "2022-04-01 13:54:25.689000+00:00",
                 "data_count": 102,
