@@ -178,28 +178,24 @@ def mock():
 
 class UTestTestParams:
     def utest_string(self):
-        dupl = common.test_json.copy()
-        dupl["project_id"] = 81
-
         t = TestParams()
-        t.from_json(dupl)
+        t.from_dict(common.test_json)
 
         assert (
             str(t)
-            == """|---------------------|----------------------------------|
-| created             | 2022-04-01 13:54:25.689000+00:00 |
-| group_count         | 52                               |
-| id                  | 12734                            |
-| increment_strategy  | linear                           |
-| mode                | load                             |
-| mos_test            |                                  |
-| name                | pytest test                      |
-| participant_count   | 9355                             |
-| participant_timeout | 13                               |
-| script              |                                  |
-| script_file_id      | 65                               |
-| start_interval      | 12                               |
-| updated             | 2024-02-03 15:42:54.689000+00:00 |"""
+            == """{
+    "id": 12734,
+    "name": "pytest test",
+    "start_interval": 12,
+    "participant_timeout": 13,
+    "mode": "load",
+    "increment_strategy": "linear",
+    "created": "2022-04-01 13:54:25.689000+00:00",
+    "updated": "2024-02-03 15:42:54.689000+00:00",
+    "script_file_id": 65,
+    "group_count": 52,
+    "participant_count": 9355
+}"""
         )
 
     def utest_created(self):

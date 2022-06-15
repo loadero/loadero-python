@@ -9,6 +9,10 @@
 if [ "$1" == "t" ]
 then 
     pytest -vv --cov=loadero_python --cov-report term tests
+elif [ "$1" == "c" ]
+then
+    pytest -vv --cov=loadero_python --cov-report html tests
+    open htmlcov/index.html
 else
     pip install -r requirements.txt -q
     pylint --rcfile=.pylintrc loadero_python tests/*.py

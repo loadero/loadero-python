@@ -1,5 +1,6 @@
 """Group resource tests"""
 
+
 # pylint: disable=missing-function-docstring
 # pylint: disable=missing-class-docstring
 # pylint: disable=no-member
@@ -134,17 +135,18 @@ class UTestGroupParams:
     def utest_str(self):
         g = GroupParams()
         dupl = common.group_json.copy()
-        g.from_json(dupl)
+        g.from_dict(dupl)
 
         assert (
             str(g)
-            == """|---------|----------------------------------|
-| count   | 8                                |
-| created | 2022-04-01 13:54:25.689000+00:00 |
-| id      | 34421                            |
-| name    | pytest_group                     |
-| test_id | 12734                            |
-| updated | 2024-02-03 15:42:54.689000+00:00 |"""
+            == """{
+    "id": 34421,
+    "name": "pytest_group",
+    "count": 8,
+    "test_id": 12734,
+    "created": "2022-04-01 13:54:25.689000+00:00",
+    "updated": "2024-02-03 15:42:54.689000+00:00"
+}"""
         )
 
     def utest_created(self):

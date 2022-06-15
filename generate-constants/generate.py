@@ -60,6 +60,10 @@ def metric_path_member_name(value: str) -> str:
     return value.replace("/", "_").upper()
 
 
+def metric_base_path_value(value: str) -> str:
+    return "/".join(value.split("/")[:-1])
+
+
 def classificator_class_name(value: str) -> str:
     return value.title().replace("_", "")
 
@@ -68,6 +72,8 @@ def generate_classificators(env: Environment):
     classificators = []
 
     for t, cs in APIClient().get("statics/").items():
+        if t == "browser":
+            continue
 
         c = {}
 
@@ -77,13 +83,6 @@ def generate_classificators(env: Environment):
         members = []
 
         for m in cs:
-            if (
-                t == "browser"
-                and m["value"] != "chromeLatest"
-                and m["value"] != "firefoxLatest"
-            ):
-                continue
-
             members.append(
                 {
                     "name": classificator_member_name(t, m["value"]),
@@ -113,6 +112,7 @@ def generate_classificators(env: Environment):
 
 def generate_metric_paths(env: Environment):
     metric_paths = []
+    metric_base_path_values = set()
     for mp in APIClient().get("statics/metric_path/"):
         metric_paths.append(
             {
@@ -120,6 +120,33 @@ def generate_metric_paths(env: Environment):
                 "value": mp,
             }
         )
+
+        non_aggregated = [
+            "webrtc/audio/connections/in",
+            "webrtc/audio/connections/out",
+            "webrtc/video/connections/in",
+            "webrtc/video/connections/out",
+            "webrtc/audio/codec/in",
+            "webrtc/audio/codec/out",
+            "webrtc/video/codec/in",
+            "webrtc/video/codec/out",
+        ]
+
+        if mp in non_aggregated:
+            metric_base_path_values.add(mp)
+        else:
+            metric_base_path_values.add(metric_base_path_value(mp))
+
+    metric_base_paths = []
+    for mbp in metric_base_path_values:
+        metric_base_paths.append(
+            {
+                "name": metric_path_member_name(mbp),
+                "value": mbp,
+            }
+        )
+
+    metric_base_paths.sort(key=lambda x: x["name"])
 
     metric_paths.sort(key=lambda x: x["name"])
 
@@ -129,7 +156,9 @@ def generate_metric_paths(env: Environment):
         "w",
     ) as f:
         f.write(
-            env.get_template("metric_path.j2").render(metric_paths=metric_paths)
+            env.get_template("metric_path.j2").render(
+                metric_paths=metric_paths, metric_base_paths=metric_base_paths
+            )
         )
 
 

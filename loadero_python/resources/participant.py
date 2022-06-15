@@ -12,7 +12,11 @@ from __future__ import annotations
 from datetime import datetime
 from dateutil import parser
 from ..api_client import APIClient
-from .resource import LoaderoResource, to_json, from_json, to_string
+from .resource import (
+    LoaderoResourceParams,
+    DuplicateResourceBodyParams,
+    from_dict_as_list,
+)
 from .classificator import (
     ComputeUnit,
     AudioFeed,
@@ -23,61 +27,12 @@ from .classificator import (
 )
 
 
-class ParticipantParams(LoaderoResource):
+class ParticipantParams(LoaderoResourceParams):
     """
     ParticipantParams represents Loadero participant resources attributes.
     ParticipantParams has a builder pattern for Participant resource read and
     write attributes.
     """
-
-    # Describes python object attribute name mapping to Loadero resources
-    # JSON field names.
-    __attribute_map = {
-        "participant_id": "id",
-        "name": "name",
-        "count": "count",
-        "compute_unit": "compute_unit",
-        "group_id": "group_id",
-        "record_audio": "record_audio",
-        "audio_feed": "audio_feed",
-        "browser": "browser",
-        "location": "location",
-        "network": "network",
-        "video_feed": "video_feed",
-        "test_id": "test_id",
-        "_created": "created",
-        "_updated": "updated",
-    }
-
-    # TODO: make group id optional
-
-    # Describes Loadero resources JSON field names that are required for CRUD
-    # operations.
-    __body_attributes = [
-        "name",
-        "count",
-        "compute_unit",
-        "group_id",  # optional
-        "record_audio",
-        "audio_feed",
-        "browser",
-        "location",
-        "network",
-        "video_feed",
-    ]
-
-    # Describes a mapping from Loadero resources JSON field names to custom
-    # deserialization functions.
-    __custom_deserializers = {
-        "created": parser.parse,
-        "updated": parser.parse,
-        "compute_unit": ComputeUnit.from_json,
-        "audio_feed": AudioFeed.from_json,
-        "browser": Browser.from_json,
-        "location": Location.from_json,
-        "network": Network.from_json,
-        "video_feed": VideoFeed.from_json,
-    }
 
     participant_id = None
     test_id = None
@@ -112,6 +67,58 @@ class ParticipantParams(LoaderoResource):
         network: Network or None = None,
         video_feed: VideoFeed or None = None,
     ) -> None:
+        super().__init__(
+            attribute_map={
+                "id": "participant_id",
+                "name": "name",
+                "count": "count",
+                "compute_unit": "compute_unit",
+                "group_id": "group_id",
+                "record_audio": "record_audio",
+                "audio_feed": "audio_feed",
+                "browser": "browser",
+                "location": "location",
+                "network": "network",
+                "video_feed": "video_feed",
+                "test_id": "test_id",
+                "created": "_created",
+                "updated": "_updated",
+            },
+            custom_deserializers={
+                "created": parser.parse,
+                "updated": parser.parse,
+                "compute_unit": ComputeUnit.from_dict,
+                "audio_feed": AudioFeed.from_dict,
+                "browser": Browser.from_dict,
+                "location": Location.from_dict,
+                "network": Network.from_dict,
+                "video_feed": VideoFeed.from_dict,
+            },
+            body_attributes=[
+                "name",
+                "count",
+                "compute_unit",
+                "group_id",
+                "record_audio",
+                "audio_feed",
+                "browser",
+                "location",
+                "network",
+                "video_feed",
+            ],
+            required_body_attributes=[
+                "name",
+                "count",
+                "compute_unit",
+                "record_audio",
+                "audio_feed",
+                "browser",
+                "location",
+                "network",
+                "video_feed",
+            ],
+        )
+
         self.participant_id = participant_id
         self.test_id = test_id
         self.name = name
@@ -124,9 +131,6 @@ class ParticipantParams(LoaderoResource):
         self.location = location
         self.network = network
         self.video_feed = video_feed
-
-    def __str__(self) -> str:
-        return to_string(self.__dict__, self.__attribute_map)
 
     @property
     def created(self) -> datetime:
@@ -193,44 +197,6 @@ class ParticipantParams(LoaderoResource):
 
     def with_video_feed(self, vf: VideoFeed) -> ParticipantParams:
         self.video_feed = vf
-
-        return self
-
-    def to_json(
-        self, body_attributes: list[str] or None = None
-    ) -> dict[str, any]:
-        """Serializes participant resource to JSON.
-
-        Args:
-            body_attributes (list[str] or None, optional): String list of JSON
-                field names that will be serialized. Defaults to None, then
-                the default body attributed for participant resource are used.
-
-        Returns:
-            dict[str, any]: JSON dictionary.
-        """
-
-        if body_attributes is None:
-            body_attributes = self.__body_attributes
-
-        return to_json(self.__dict__, self.__attribute_map, body_attributes)
-
-    def from_json(self, json_value: dict[str, any]) -> ParticipantParams:
-        """Serializes participant resource from JSON.
-
-        Args:
-            json_value (dict[str, any]): JSON dictionary.
-
-        Returns:
-            ParticipantParams: Serialized participant resource.
-        """
-
-        from_json(
-            self.__dict__,
-            json_value,
-            self.__attribute_map,
-            self.__custom_deserializers,
-        )
 
         return self
 
@@ -342,10 +308,10 @@ class ParticipantAPI:
         if params.test_id is None:
             raise Exception("ParticipantParams.test_id must be a valid int")
 
-        return params.from_json(
+        return params.from_dict(
             APIClient().post(
                 ParticipantAPI().route(params.test_id),
-                params.to_json(),
+                params.to_dict(),
             )
         )
 
@@ -373,7 +339,7 @@ class ParticipantAPI:
                 "ParticipantParams.participant_id must be a valid int"
             )
 
-        return params.from_json(
+        return params.from_dict(
             APIClient().get(
                 ParticipantAPI().route(params.test_id, params.participant_id)
             )
@@ -403,10 +369,10 @@ class ParticipantAPI:
                 "ParticipantParams.participant_id must be a valid int"
             )
 
-        return params.from_json(
+        return params.from_dict(
             APIClient().put(
                 ParticipantAPI().route(params.test_id, params.participant_id),
-                params.to_json(),
+                params.to_dict(),
             )
         )
 
@@ -461,11 +427,13 @@ class ParticipantAPI:
 
         dupl = ParticipantParams()
 
-        return dupl.from_json(
+        req = DuplicateResourceBodyParams(name=params.name)
+
+        return dupl.from_dict(
             APIClient().post(
                 ParticipantAPI().route(params.test_id, params.participant_id)
                 + "copy/",
-                params.to_json(["name"]),
+                req.to_dict(),
             )
         )
 
@@ -491,12 +459,7 @@ class ParticipantAPI:
         if "results" not in resp or resp["results"] is None:
             return []
 
-        resources = []
-        for r in resp["results"]:
-            resource = ParticipantParams()
-            resources.append(resource.from_json(r))
-
-        return resources
+        return from_dict_as_list(ParticipantParams)(resp["results"])
 
     @staticmethod
     def route(

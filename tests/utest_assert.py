@@ -116,19 +116,19 @@ def mock():
 class UTestAssertParams:
     def utest_str(self):
         a = AssertParams()
-        dupl = common.assert_json.copy()
-        a.from_json(dupl)
+        a.from_dict(common.assert_json)
 
         assert (
             str(a)
-            == """|----------|----------------------------------|
-| created  | 2022-04-01 13:54:25.689000+00:00 |
-| expected | 892                              |
-| id       | 29643                            |
-| operator | gt                               |
-| path     | machine/network/bitrate/in/avg   |
-| test_id  | 12734                            |
-| updated  | 2024-02-03 15:42:54.689000+00:00 |"""
+            == """{
+    "id": 29643,
+    "test_id": 12734,
+    "path": "machine/network/bitrate/in/avg",
+    "operator": "gt",
+    "expected": "892",
+    "created": "2022-04-01 13:54:25.689000+00:00",
+    "updated": "2024-02-03 15:42:54.689000+00:00"
+}"""
         )
 
     def utest_created(self):

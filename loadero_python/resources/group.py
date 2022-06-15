@@ -12,45 +12,20 @@ from datetime import datetime
 from dateutil import parser
 from ..api_client import APIClient
 from .resource import (
-    LoaderoResource,
-    to_json,
-    from_json,
-    to_string,
+    LoaderoResourceParams,
+    DuplicateResourceBodyParams,
+    from_dict_as_list,
     convert_params_list,
 )
 from .participant import Participant, ParticipantAPI
 
 
-class GroupParams(LoaderoResource):
+class GroupParams(LoaderoResourceParams):
     """
     GroupParams represents Loadero group resource attributes.
     GroupParams has a builder pattern for group resources read and write
     attributes.
     """
-
-    # Describes python object attribute name mapping to Loadero resources
-    # JSON field names.
-    __attribute_map = {
-        "group_id": "id",
-        "count": "count",
-        "name": "name",
-        "test_id": "test_id",
-        "_created": "created",
-        "_updated": "updated",
-        "_total_cu_count": "total_cu_count",
-        "_participant_count": "participant_count",
-    }
-
-    # Describes Loadero resources JSON field names that are required for CRUD
-    # operations.
-    __body_attributes = ["count", "name"]
-
-    # Describes a mapping from Loadero resources JSON field names to custom
-    # deserialization functions.
-    __custom_deserializers = {
-        "created": parser.parse,
-        "updated": parser.parse,
-    }
 
     group_id = None
     test_id = None
@@ -70,16 +45,38 @@ class GroupParams(LoaderoResource):
         count: int or None = None,
         test_id: int or None = None,
     ) -> None:
+        super().__init__(
+            attribute_map={
+                "id": "group_id",
+                "count": "count",
+                "name": "name",
+                "test_id": "test_id",
+                "created": "_created",
+                "updated": "_updated",
+                "total_cu_count": "_total_cu_count",
+                "participant_count": "_participant_count",
+            },
+            custom_deserializers={
+                "created": parser.parse,
+                "updated": parser.parse,
+            },
+            body_attributes=[
+                "count",
+                "name",
+            ],
+            required_body_attributes=[
+                "count",
+                "name",
+            ],
+        )
+
         self.group_id = group_id
         self.name = name
         self.count = count
         self.test_id = test_id
 
-    def __str__(self) -> str:
-        return to_string(self.__dict__, self.__attribute_map)
-
     @property
-    def created(self) -> datetime:
+    def created(self) -> datetime or None:
         return self._created
 
     @property
@@ -111,43 +108,6 @@ class GroupParams(LoaderoResource):
 
     def in_test(self, tid: int) -> GroupParams:
         self.test_id = tid
-
-        return self
-
-    def to_json(
-        self, body_attributes: list[str] or None = None
-    ) -> dict[str, any]:
-        """Serializes group resource to JSON.
-
-        Args:
-            body_attributes (list[str] or None, optional): String list of JSON
-                field names that will be serialized. Defaults to None, then
-                the default body attributes for group resource are used.
-
-        Returns:
-            dict[str, any]: JSON dictionary.
-        """
-        if body_attributes is None:
-            body_attributes = self.__body_attributes
-
-        return to_json(self.__dict__, self.__attribute_map, body_attributes)
-
-    def from_json(self, json_value: dict[str, any]) -> GroupParams:
-        """Serializes group resource from JSON.
-
-        Args:
-            json_value (dict[str, any]): JSON dictionary.
-
-        Returns:
-            GroupParams: Serialized group resource.
-        """
-
-        from_json(
-            self.__dict__,
-            json_value,
-            self.__attribute_map,
-            self.__custom_deserializers,
-        )
 
         return self
 
@@ -271,8 +231,8 @@ class GroupAPI:
         if params.test_id is None:
             raise Exception("GroupParams.test_id must be a valid int")
 
-        return params.from_json(
-            APIClient().post(GroupAPI.route(params.test_id), params.to_json())
+        return params.from_dict(
+            APIClient().post(GroupAPI.route(params.test_id), params.to_dict())
         )
 
     @staticmethod
@@ -296,7 +256,7 @@ class GroupAPI:
         if params.group_id is None:
             raise Exception("GroupParams.group_id must be a valid int")
 
-        return params.from_json(
+        return params.from_dict(
             APIClient().get(GroupAPI.route(params.test_id, params.group_id))
         )
 
@@ -321,10 +281,10 @@ class GroupAPI:
         if params.group_id is None:
             raise Exception("GroupParams.group_id must be a valid int")
 
-        return params.from_json(
+        return params.from_dict(
             APIClient().put(
                 GroupAPI.route(params.test_id, params.group_id),
-                params.to_json(),
+                params.to_dict(),
             )
         )
 
@@ -372,10 +332,12 @@ class GroupAPI:
 
         dupl = GroupParams()
 
-        return dupl.from_json(
+        req = DuplicateResourceBodyParams(name=params.name)
+
+        return dupl.from_dict(
             APIClient().post(
                 GroupAPI.route(params.test_id, params.group_id) + "copy/",
-                params.to_json(["name"]),
+                req.to_dict(),
             )
         )
 
@@ -394,12 +356,7 @@ class GroupAPI:
         if "results" not in resp or resp["results"] is None:
             return []
 
-        resources = []
-        for r in resp["results"]:
-            resource = GroupParams()
-            resources.append(resource.from_json(r))
-
-        return resources
+        return from_dict_as_list(GroupParams)(resp["results"])
 
     @staticmethod
     def route(test_id: int, group_id: int or None = None) -> str:

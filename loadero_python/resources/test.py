@@ -14,10 +14,9 @@ from dateutil import parser
 from ..api_client import APIClient
 from .script import Script
 from .resource import (
-    LoaderoResource,
-    to_json,
-    from_json,
-    to_string,
+    LoaderoResourceParams,
+    DuplicateResourceBodyParams,
+    from_dict_as_list,
     convert_params_list,
 )
 from .classificator import TestMode, IncrementStrategy
@@ -26,52 +25,12 @@ from .participant import Participant, ParticipantAPI
 from .assert_resource import Assert, AssertAPI
 
 
-class TestParams(LoaderoResource):
+class TestParams(LoaderoResourceParams):
     """
     TestParams represents Loadero test parameters.
     TestParams has a builder method pattern for test resources read and write
     attributes.
     """
-
-    # Describes python object attribute name mapping to Loadero resources
-    # JSON field names.
-    __attribute_map = {
-        "test_id": "id",
-        "name": "name",
-        "start_interval": "start_interval",
-        "participant_timeout": "participant_timeout",
-        "mode": "mode",
-        "increment_strategy": "increment_strategy",
-        "mos_test": "mos_test",
-        "script": "script",
-        "_created": "created",
-        "_updated": "updated",
-        "_group_count": "group_count",
-        "_participant_count": "participant_count",
-        "_script_file_id": "script_file_id",
-        "_deleted": "deleted",
-    }
-
-    # Describes a mapping from Loadero resources JSON field names to custom
-    # deserialization functions.
-    __custom_deserializers = {
-        "created": parser.parse,
-        "updated": parser.parse,
-        "mode": TestMode.from_json,
-        "increment_strategy": IncrementStrategy.from_json,
-    }
-
-    # Describes Loadero resources JSON field names that are required for CRUD
-    # operations.
-    __body_attributes = [
-        "name",
-        "start_interval",
-        "participant_timeout",
-        "mode",
-        "increment_strategy",
-        "mos_test",  # optional
-        "script",  # optional
-    ]
 
     test_id = None
 
@@ -101,6 +60,47 @@ class TestParams(LoaderoResource):
         mos_test: bool or None = None,
         script: Script or None = None,
     ) -> None:
+        super().__init__(
+            attribute_map={
+                "id": "test_id",
+                "name": "name",
+                "start_interval": "start_interval",
+                "participant_timeout": "participant_timeout",
+                "mode": "mode",
+                "increment_strategy": "increment_strategy",
+                "mos_test": "mos_test",
+                "script": "script",
+                "created": "_created",
+                "updated": "_updated",
+                "group_count": "_group_count",
+                "participant_count": "_participant_count",
+                "script_file_id": "_script_file_id",
+                "deleted": "_deleted",
+            },
+            custom_deserializers={
+                "created": parser.parse,
+                "updated": parser.parse,
+                "mode": TestMode.from_dict,
+                "increment_strategy": IncrementStrategy.from_dict,
+            },
+            body_attributes=[
+                "name",
+                "start_interval",
+                "participant_timeout",
+                "mode",
+                "increment_strategy",
+                "mos_test",
+                "script",
+            ],
+            required_body_attributes=[
+                "name",
+                "start_interval",
+                "participant_timeout",
+                "mode",
+                "increment_strategy",
+            ],
+        )
+
         self.test_id = test_id
         self.name = name
         self.start_interval = start_interval
@@ -109,9 +109,6 @@ class TestParams(LoaderoResource):
         self.increment_strategy = increment_strategy
         self.mos_test = mos_test
         self.script = script
-
-    def __str__(self) -> str:
-        return to_string(self.__dict__, self.__attribute_map)
 
     @property
     def created(self) -> datetime:
@@ -172,46 +169,6 @@ class TestParams(LoaderoResource):
 
     def with_script(self, sc: Script) -> TestParams:
         self.script = sc
-
-        return self
-
-    # serializers
-
-    def to_json(
-        self, body_attributes: list[str] or None = None
-    ) -> dict[str, any]:
-        """Serializes test resource to JSON.
-
-        Args:
-            body_attributes (list[str] or None, optional): String list of JSON
-                field names that will be serialized. Defaults to None, then
-                the default body attributed for test resource are used.
-
-        Returns:
-            dict[str, any]: JSON dictionary.
-        """
-
-        if body_attributes is None:
-            body_attributes = self.__body_attributes
-
-        return to_json(self.__dict__, self.__attribute_map, body_attributes)
-
-    def from_json(self, json_value: dict[str, any]) -> TestParams:
-        """Serializes test resource from JSON.
-
-        Args:
-            json_value (dict[str, any]): JSON dictionary.
-
-        Returns:
-            TestParams: Serialized test resource.
-        """
-
-        from_json(
-            self.__dict__,
-            json_value,
-            self.__attribute_map,
-            self.__custom_deserializers,
-        )
 
         return self
 
@@ -348,8 +305,8 @@ class TestAPI:
 
         scp = deepcopy(params.script)
 
-        ret = params.from_json(
-            APIClient().post(TestAPI().route(), params.to_json())
+        ret = params.from_dict(
+            APIClient().post(TestAPI().route(), params.to_dict())
         )
 
         ret.script = scp
@@ -373,7 +330,7 @@ class TestAPI:
         if params.test_id is None:
             raise Exception("TestParams.test_id must be a valid int")
 
-        ret = params.from_json(APIClient().get(TestAPI().route(params.test_id)))
+        ret = params.from_dict(APIClient().get(TestAPI().route(params.test_id)))
 
         # pylint: disable=protected-access
         ret.script = Script(script_id=ret._script_file_id)
@@ -401,8 +358,8 @@ class TestAPI:
 
         scp = deepcopy(params.script)
 
-        ret = params.from_json(
-            APIClient().put(TestAPI().route(params.test_id), params.to_json())
+        ret = params.from_dict(
+            APIClient().put(TestAPI().route(params.test_id), params.to_dict())
         )
 
         ret.script = scp
@@ -452,10 +409,11 @@ class TestAPI:
 
         dupl = TestParams()
 
-        dupl = dupl.from_json(
+        req = DuplicateResourceBodyParams(name=params.name)
+
+        dupl = dupl.from_dict(
             APIClient().post(
-                TestAPI().route(params.test_id) + "copy/",
-                params.to_json(["name"]),
+                TestAPI().route(params.test_id) + "copy/", req.to_dict()
             )
         )
 
@@ -479,12 +437,7 @@ class TestAPI:
         if "results" not in resp or resp["results"] is None:
             return []
 
-        resources = []
-        for r in resp["results"]:
-            resource = TestParams()
-            resources.append(resource.from_json(r))
-
-        return resources
+        return from_dict_as_list(TestParams)(resp["results"])
 
     @staticmethod
     def route(test_id: int or None = None) -> str:

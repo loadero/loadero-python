@@ -95,9 +95,9 @@ class UTestFileParams:
 
         assert fp.content == "test script"
 
-    def utest_from_json(self):
+    def utest_from_dict(self):
         fp = FileParams()
-        fp.from_json(common.file_json)
+        fp.from_dict(common.file_json)
 
         assert fp.file_id == common.file_id
         assert fp.created == common.created_time
@@ -167,10 +167,18 @@ class UTestScript:
 
         assert s2.content == sample_test_script_py_data
 
-    def utest_to_json(self):
+    def utest_to_dict(self):
         s = Script(content="script content")
+        assert s.to_dict() == "script content"
 
-        assert s.to_json() == "script content"
+    def utest_to_dict_full(self):
+        s = Script(content="script content")
+        assert s.to_dict_full() == "script content"
+
+    def utest_from_dict(self):
+        s = Script()
+        s.from_dict(common.file_json)
+        assert s.content == ""
 
     def utest_read(self):
         s = Script(script_id=2)
