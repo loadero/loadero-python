@@ -10,8 +10,14 @@ APIClient allows to perform CRUD operations on Loadero assert resources.
 from __future__ import annotations
 from datetime import datetime
 from dateutil import parser
+
+from .assert_precondition import AssertPrecondition, AssertPreconditionAPI
 from ..api_client import APIClient
-from .resource import LoaderoResourceParams, from_dict_as_list
+from .resource import (
+    LoaderoResourceParams,
+    convert_params_list,
+    from_dict_as_list,
+)
 from .metric_path import MetricPath
 from .classificator import Operator
 
@@ -41,7 +47,6 @@ class AssertParams(LoaderoResourceParams):
         operator: Operator or None = None,
         expected: str or None = None,
     ) -> None:
-
         super().__init__(
             attribute_map={
                 "id": "assert_id",
@@ -182,6 +187,30 @@ class Assert:
 
         return dupl
 
+    def preconditions(self) -> list[AssertPrecondition]:
+        """Read all preconditions of assert.
+
+        Raises:
+            ValueError: Assert.params.test_id must be a valid int
+            ValueError: Assert.params.assert_id must be a valid int
+
+        Returns:
+            list[AssertPrecondition]: List of all preconditions of assert
+        """
+
+        if self.params.test_id is None:
+            raise ValueError("Assert.params.test_id must be a valid int")
+
+        if self.params.assert_id is None:
+            raise ValueError("Assert.params.assert_id must be a valid int")
+
+        return convert_params_list(
+            AssertPrecondition,
+            AssertPreconditionAPI.read_all(
+                self.params.test_id, self.params.assert_id
+            ),
+        )
+
 
 class AssertAPI:
     """AssertAPI defines Loadero API operations for assert resources."""
@@ -193,15 +222,11 @@ class AssertAPI:
         Args:
             params (AssertParams): Describes the assert resource to be created.
 
-        Raises:
-            Exception: AssertParams.test_id was not defined.
-
         Returns:
             AssertParams: Created assert resource.
         """
 
-        if params.test_id is None:
-            raise Exception("AssertParams.test_id must be a valid int")
+        AssertAPI.__validate_identifiers(params, False)
 
         return params.from_dict(
             APIClient().post(AssertAPI.route(params.test_id), params.to_dict())
@@ -214,19 +239,11 @@ class AssertAPI:
         Args:
             params (AssertParams): Describes the assert resource to read.
 
-        Raises:
-            Exception: AssertParams.test_id was not defined.
-            Exception: AssertParams.assert_id was not defined.
-
         Returns:
             AssertParams: Read assert resource.
         """
 
-        if params.test_id is None:
-            raise Exception("AssertParams.test_id must be a valid int")
-
-        if params.assert_id is None:
-            raise Exception("AssertParams.assert_id must be a valid int")
+        AssertAPI.__validate_identifiers(params)
 
         return params.from_dict(
             APIClient().get(AssertAPI.route(params.test_id, params.assert_id))
@@ -239,19 +256,11 @@ class AssertAPI:
         Args:
             params (AssertParams): Describes the assert resource to update.
 
-        Raises:
-            Exception: AssertParams.test_id was not defined.
-            Exception: AssertParams.assert_id was not defined.
-
         Returns:
             AssertParams: Updated assert resource.
         """
 
-        if params.test_id is None:
-            raise Exception("AssertParams.test_id must be a valid int")
-
-        if params.assert_id is None:
-            raise Exception("AssertParams.assert_id must be a valid int")
+        AssertAPI.__validate_identifiers(params)
 
         return params.from_dict(
             APIClient().put(
@@ -267,16 +276,9 @@ class AssertAPI:
         Args:
             params (AssertParams): Describes the assert resource to delete.
 
-        Raises:
-            Exception: AssertParams.test_id was not defined.
-            Exception: AssertParams.assert_id was not defined.
         """
 
-        if params.test_id is None:
-            raise Exception("AssertParams.test_id must be a valid int")
-
-        if params.assert_id is None:
-            raise Exception("AssertParams.assert_id must be a valid int")
+        AssertAPI.__validate_identifiers(params)
 
         APIClient().delete(AssertAPI.route(params.test_id, params.assert_id))
 
@@ -288,19 +290,12 @@ class AssertAPI:
             params (AssertParams): Describe the assert resource to duplicate and
             the name of duplicate assert resource.
 
-        Raises:
-            Exception: AssertParams.test_id was not defined.
-            Exception: AssertParams.assert_id was not defined.
 
         Returns:
             AssertParams: Duplicate assert resource.
         """
 
-        if params.test_id is None:
-            raise Exception("AssertParams.test_id must be a valid int")
-
-        if params.assert_id is None:
-            raise Exception("AssertParams.assert_id must be a valid int")
+        AssertAPI.__validate_identifiers(params)
 
         dupl = AssertParams()
 
@@ -321,6 +316,7 @@ class AssertAPI:
         Returns:
             list[AssertParams]: List of all assert resources in test.
         """
+
         resp = APIClient().get(AssertAPI.route(test_id))
 
         if "results" not in resp or resp["results"] is None:
@@ -340,9 +336,31 @@ class AssertAPI:
         Returns:
             str: Route to assert resource/s.
         """
+
         r = APIClient().project_url + f"tests/{test_id}/asserts/"
 
         if assert_id is not None:
             r += f"{assert_id}/"
 
         return r
+
+    @staticmethod
+    def __validate_identifiers(params: AssertParams, single: bool = True):
+        """Validate assert resource identifiers.
+
+        Args:
+            params (AssertParams): Assert resource params.
+            single (bool, optional): Indicates if the resource identifiers
+                should be validated as pointing to a single resource (True) or
+                to all assert resources belinging to test resource.
+                Defaults to True.
+        Raises:
+            Exception: AssertParams.test_id must be a valid int
+            Exception: AssertParams.assert_id must be a valid int
+        """
+
+        if params.test_id is None:
+            raise Exception("AssertParams.test_id must be a valid int")
+
+        if single and params.assert_id is None:
+            raise Exception("AssertParams.assert_id must be a valid int")
