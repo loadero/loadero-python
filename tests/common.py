@@ -351,4 +351,4 @@ def check_assert_precondition_params(params: AssertPreconditionParams):
     assert params.updated == updated_time
     assert params.expected == "10"
     assert params.operator == Operator.O_GT
-    assert params.procondition_property == Property.P_GROUP_NUM
+    assert params.precondition_property == Property.P_GROUP_NUM

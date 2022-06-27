@@ -29,7 +29,7 @@ class AssertPreconditionParams(LoaderoResourceParams):
 
     expected = None
     operator = None
-    procondition_property = None
+    precondition_property = None
 
     _created = None
     _updated = None
@@ -41,7 +41,7 @@ class AssertPreconditionParams(LoaderoResourceParams):
         test_id: int or None = None,
         expected: str or None = None,
         operator: Operator or None = None,
-        procondition_property: Property or None = None,
+        precondition_property: Property or None = None,
     ) -> None:
         super().__init__(
             attribute_map={
@@ -50,7 +50,7 @@ class AssertPreconditionParams(LoaderoResourceParams):
                 "test_id": "test_id",
                 "expected": "expected",
                 "operator": "operator",
-                "property": "procondition_property",
+                "property": "precondition_property",
                 "created": "_created",
                 "updated": "_updated",
             },
@@ -69,7 +69,7 @@ class AssertPreconditionParams(LoaderoResourceParams):
         self.test_id = test_id
         self.expected = expected
         self.operator = operator
-        self.procondition_property = procondition_property
+        self.precondition_property = precondition_property
 
     @property
     def created(self) -> datetime:
@@ -108,7 +108,7 @@ class AssertPreconditionParams(LoaderoResourceParams):
     def with_property(
         self, precondition_property: Property
     ) -> AssertPreconditionParams:
-        self.procondition_property = precondition_property
+        self.precondition_property = precondition_property
 
         return self
 

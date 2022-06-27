@@ -148,7 +148,7 @@ class UTestAssertPreconditionParams:
     def utest_with_property(self):
         ap = AssertPreconditionParams()
         ap.with_property(Property.P_LOCATION)
-        assert ap.procondition_property == Property.P_LOCATION
+        assert ap.precondition_property == Property.P_LOCATION
 
 
 @pytest.mark.usefixtures("mock")
@@ -171,7 +171,7 @@ class UTestAssertPrecondition:
                 assert_id=common.assert_id,
                 expected="10",
                 operator=Operator.O_GT,
-                procondition_property=Property.P_GROUP_NUM,
+                precondition_property=Property.P_GROUP_NUM,
             )
         )
 
@@ -209,7 +209,7 @@ class UTestAssertPrecondition:
                 assert_precondition_id=common.assert_precondition_id,
                 expected="10",
                 operator=Operator.O_GT,
-                procondition_property=Property.P_GROUP_NUM,
+                precondition_property=Property.P_GROUP_NUM,
             )
         )
 
@@ -247,7 +247,7 @@ class UTestAssertPreconditionAPI:
                 assert_id=common.assert_id,
                 expected="10",
                 operator=Operator.O_GT,
-                procondition_property=Property.P_GROUP_NUM,
+                precondition_property=Property.P_GROUP_NUM,
             )
         )
 
@@ -281,7 +281,7 @@ class UTestAssertPreconditionAPI:
                 assert_precondition_id=common.assert_precondition_id,
                 expected="10",
                 operator=Operator.O_GT,
-                procondition_property=Property.P_GROUP_NUM,
+                precondition_property=Property.P_GROUP_NUM,
             )
         )
 
