@@ -13,6 +13,9 @@ elif [ "$1" == "c" ]
 then
     pytest -vv --cov=loadero_python --cov-report html tests
     open htmlcov/index.html
+elif [ "$1" == "cu" ]
+then
+    pytest -vv --cov=loadero_python --cov-report html tests
 else
     pip install -r requirements.txt -q
     pylint --rcfile=.pylintrc loadero_python tests/*.py

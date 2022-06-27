@@ -8,6 +8,7 @@ Run resources is seperated into three parts:
 """
 
 from __future__ import annotations
+from time import sleep
 from datetime import datetime
 from dateutil import parser
 from ..api_client import APIClient
@@ -56,7 +57,9 @@ class RunParams(LoaderoResourceParams):
     _participant_count = None
     _mos_test = None
 
-    def __init__(self, run_id: int or None = None) -> None:
+    def __init__(
+        self, run_id: int or None = None, test_id: int or None = None
+    ) -> None:
         super().__init__(
             attribute_map={
                 "id": "run_id",
@@ -99,6 +102,7 @@ class RunParams(LoaderoResourceParams):
         )
 
         self.run_id = run_id
+        self.test_id = test_id
 
     @property
     def created(self) -> datetime:
@@ -209,6 +213,7 @@ class Run:
     def __init__(
         self,
         run_id: int or None = None,
+        test_id: int or None = None,
         params: RunParams or None = None,
     ) -> None:
         if params is not None:
@@ -218,6 +223,9 @@ class Run:
 
         if run_id is not None:
             self.params.run_id = run_id
+
+        if test_id is not None:
+            self.params.test_id = test_id
 
     def create(self) -> Run:
         """Creates new run with given data.
@@ -252,6 +260,51 @@ class Run:
 
         return self
 
+    def poll(
+        self, interval: float = 15.0, timeout: float = 12 * 60 * 60
+    ) -> Run:
+        """Polls run status until it is finished.
+
+        Args:
+            interval (float, optional): Poll interval in seconds.
+                Defaults to 15.0.
+            timeout (float, optional): Poll timeout in seconds. Defaults to
+                12*60*60 (12h).
+
+        Raises:
+            TimeoutError: Run poll timeout exceeded
+
+        Returns:
+            Run: Finished run resource.
+        """
+
+        t = 0
+
+        poll_stop_statuses = [
+            RunStatus.RS_ABORTED,
+            RunStatus.RS_AWS_ERROR,
+            RunStatus.RS_DB_ERROR,
+            RunStatus.RS_INSUFFICIENT_RESOURCES,
+            RunStatus.RS_NO_USERS,
+            RunStatus.RS_SERVER_ERROR,
+            RunStatus.RS_TIMEOUT_EXCEEDED,
+            RunStatus.RS_DONE,
+        ]
+
+        while t < timeout:
+            self.read()
+
+            if self.params.status in poll_stop_statuses:
+                break
+
+            sleep(interval)
+            t += interval
+
+        if t >= timeout:
+            raise TimeoutError("Run poll timeout exceeded")
+
+        return self
+
     def results(self) -> list[Result]:
         if not isinstance(self.params.run_id, int):
             raise ValueError("Run.params.run_id must be a valid int")
@@ -265,8 +318,22 @@ class RunAPI:
     """RunAPI defines Loadero API operations for run resources."""
 
     @staticmethod
-    def create(test_id: int) -> None:
-        pass
+    def create(params: RunParams) -> RunParams:
+        """Creates and launches a new test run.
+
+        Args:
+            params (RunParams): Describes the run resource to be created. Only
+                the RunParams.test_id field is required.
+
+        Returns:
+            RunParams: Created run resource.
+        """
+
+        RunAPI.__validate_identifiers(params, False, False)
+
+        return params.from_dict(
+            APIClient().post(RunAPI.route(params.test_id), None)
+        )
 
     @staticmethod
     def read(params: RunParams) -> RunParams:
@@ -275,15 +342,11 @@ class RunAPI:
         Args:
             params (RunParams): Describes the run resource to read.
 
-        Raises:
-            Exception: RunParams.run_id was not defined.
-
         Returns:
             RunParams: Read run resource.
         """
 
-        if params.run_id is None:
-            raise Exception("Params.run_id must be a valid int")
+        RunAPI.__validate_identifiers(params)
 
         return params.from_dict(
             APIClient().get(RunAPI.route(run_id=params.run_id))
@@ -310,8 +373,20 @@ class RunAPI:
         return from_dict_as_list(RunParams)(resp["results"])
 
     @staticmethod
-    def stop(run_id: int) -> None:
-        pass
+    def stop(params: RunParams) -> None:
+        """Stop an active test run.
+
+        Args:
+            params (RunParams): Describes the run resource to stop.
+        """
+
+        RunAPI.__validate_identifiers(params, True, False)
+
+        APIClient().post(
+            RunAPI.route(test_id=params.test_id, run_id=params.run_id)
+            + "stop/",
+            None,
+        )
 
     @staticmethod
     def route(test_id: int or None = None, run_id: int or None = None) -> str:
@@ -319,7 +394,7 @@ class RunAPI:
 
         Args:
             test_id (int, optional): Test resource id. Defaults to None. If
-                omitted route will point to
+                omitted route will point to all runs in project.
             run_id (int, optional): Run resource id. Defaults to None. If
                 omitted the route will point to all run resources that belong
                 to parent resource, either test or project.
@@ -339,3 +414,28 @@ class RunAPI:
             r += f"{run_id}/"
 
         return r
+
+    @staticmethod
+    def __validate_identifiers(
+        params: RunParams, single: bool = True, project_run: bool = True
+    ) -> None:
+        """Validate run resource identifiers.
+
+        Args:
+            params (RunParams): Run params.
+            single (bool, optional): Indicates if the resource identifiers
+                should be validated as pointing to a single resource.
+                Defaults to True.
+            project_run (bool, optional): Indicates if the resource identifiers
+                should include a valid test id. Defaults to True.
+
+        Raises:
+            ValueError: RunParams.run_id must be a valid int.
+            ValueError: RunParams.test_id must be a valid int.
+        """
+
+        if single and params.run_id is None:
+            raise ValueError("RunParams.run_id must be a valid int")
+
+        if not project_run and params.test_id is None:
+            raise ValueError("RunParams.test_id must be a valid int")

@@ -8,7 +8,6 @@ allows to perform CRUD operations on Loadero test resources.
 """
 
 from __future__ import annotations
-from copy import deepcopy
 from datetime import datetime
 from dateutil import parser
 from ..api_client import APIClient
@@ -23,6 +22,7 @@ from .classificator import TestMode, IncrementStrategy
 from .group import Group, GroupAPI
 from .participant import Participant, ParticipantAPI
 from .assert_resource import Assert, AssertAPI
+from .run import Run
 
 
 class TestParams(LoaderoResourceParams):
@@ -39,11 +39,11 @@ class TestParams(LoaderoResourceParams):
     participant_timeout = None
     mode = None
     increment_strategy = None
-    script = None
     mos_test = None
 
     _created = None
     _updated = None
+    _script = None
     _script_file_id = None
     _group_count = None
     _participant_count = None
@@ -69,7 +69,7 @@ class TestParams(LoaderoResourceParams):
                 "mode": "mode",
                 "increment_strategy": "increment_strategy",
                 "mos_test": "mos_test",
-                "script": "script",
+                "script": "_script",
                 "created": "_created",
                 "updated": "_updated",
                 "group_count": "_group_count",
@@ -108,7 +108,7 @@ class TestParams(LoaderoResourceParams):
         self.mode = mode
         self.increment_strategy = increment_strategy
         self.mos_test = mos_test
-        self.script = script
+        self._script = script
 
     @property
     def created(self) -> datetime:
@@ -129,6 +129,25 @@ class TestParams(LoaderoResourceParams):
     @property
     def deleted(self) -> bool:
         return self._deleted
+
+    @property
+    def script(self) -> Script:
+        """Retrive the test script.
+
+        Returns:
+            Script: Test script.
+        """
+
+        if self._script is None:
+            self._script = Script()
+
+        self._script.file_id = self._script_file_id
+
+        return self._script
+
+    @script.setter
+    def script(self, script: Script):
+        self._script = script
 
     # parameter builder
 
@@ -168,7 +187,7 @@ class TestParams(LoaderoResourceParams):
         return self
 
     def with_script(self, sc: Script) -> TestParams:
-        self.script = sc
+        self._script = sc
 
         return self
 
@@ -213,6 +232,8 @@ class Test:
 
         TestAPI.read(self.params)
 
+        self.params.script.read()
+
         return self
 
     def update(self) -> Test:
@@ -247,11 +268,22 @@ class Test:
             Test: Duplicate test resource.
         """
 
-        dp = TestParams(test_id=self.params.test_id, name=name)
+        dupl = Test(params=TestAPI.duplicate(self.params, name))
+        dupl.params.script.read()
 
-        t = Test(params=TestAPI.duplicate(dp))
+        return dupl
 
-        return t
+    def launch(self) -> Run:
+        """Launches test.
+
+        Returns:
+            Run: Launched test run.
+        """
+
+        r = Run(test_id=self.params.test_id)
+        r.create()
+
+        return r
 
     def groups(self) -> list[Group]:
         """Read all groups in test.
@@ -303,15 +335,9 @@ class TestAPI:
             TestParams: Created participant resource.
         """
 
-        scp = deepcopy(params.script)
-
-        ret = params.from_dict(
+        return params.from_dict(
             APIClient().post(TestAPI().route(), params.to_dict())
         )
-
-        ret.script = scp
-
-        return ret
 
     @staticmethod
     def read(params: TestParams) -> TestParams:
@@ -320,24 +346,17 @@ class TestAPI:
         Args:
             params (TestParams): Describes the test resource to read.
 
-        Raises:
-            Exception: TestParams.test_id was not defined.
-
         Returns:
             TestParams: Read test resource.
         """
 
-        if params.test_id is None:
-            raise Exception("TestParams.test_id must be a valid int")
+        TestAPI.__validate_identifiers(params)
 
-        ret = params.from_dict(APIClient().get(TestAPI().route(params.test_id)))
+        # ret =
 
-        # pylint: disable=protected-access
-        ret.script = Script(script_id=ret._script_file_id)
-
-        ret.script.read()
-
-        return ret
+        return params.from_dict(
+            APIClient().get(TestAPI().route(params.test_id))
+        )
 
     @staticmethod
     def update(params: TestParams) -> TestParams:
@@ -346,25 +365,21 @@ class TestAPI:
         Args:
             params (TestParams): Describe the test resource to update.
 
-        Raises:
-            Exception: TestParams.test_id was not defined.
-
         Returns:
             TestParams: Updated test resource.
         """
 
-        if params.test_id is None:
-            raise Exception("TestParams.test_id must be a valid int")
+        TestAPI.__validate_identifiers(params)
 
-        scp = deepcopy(params.script)
+        # scp = deepcopy(params.script)
 
-        ret = params.from_dict(
+        # ret =
+
+        # ret.script = scp
+
+        return params.from_dict(
             APIClient().put(TestAPI().route(params.test_id), params.to_dict())
         )
-
-        ret.script = scp
-
-        return ret
 
     @staticmethod
     def delete(params: TestParams) -> TestParams:
@@ -373,15 +388,11 @@ class TestAPI:
         Args:
             params (TestParams): Describes the test resource to delete.
 
-        Raises:
-            Exception: TestParams.test_id was not defined.
-
         Returns:
             TestParams: Deleted test resource.
         """
 
-        if params.test_id is None:
-            raise Exception("TestParams.test_id must be a valid int")
+        TestAPI.__validate_identifiers(params)
 
         APIClient().delete(TestAPI().route(params.test_id))
 
@@ -390,39 +401,25 @@ class TestAPI:
         return params
 
     @staticmethod
-    def duplicate(params: TestParams) -> TestParams:
+    def duplicate(params: TestParams, name: str) -> TestParams:
         """Created a duplicate test resource from an existing test resource.
 
         Args:
             params (TestParams): Describe the test resources to duplicate and
                 the name of the duplicate test resource.
 
-        Raises:
-            Exception: TestParams.test_id was not defined.
-
         Returns:
             TestParams: Duplicated test resource.
         """
 
-        if params.test_id is None:
-            raise Exception("TestParams.test_id must be a valid int")
+        TestAPI.__validate_identifiers(params)
 
-        dupl = TestParams()
-
-        req = DuplicateResourceBodyParams(name=params.name)
-
-        dupl = dupl.from_dict(
+        return TestParams().from_dict(
             APIClient().post(
-                TestAPI().route(params.test_id) + "copy/", req.to_dict()
+                TestAPI().route(params.test_id) + "copy/",
+                DuplicateResourceBodyParams(name=name).to_dict(),
             )
         )
-
-        # pylint: disable=protected-access
-        dupl.script = Script(script_id=dupl._script_file_id)
-
-        dupl.script.read()
-
-        return dupl
 
     @staticmethod
     def read_all() -> list[TestParams]:
@@ -456,3 +453,20 @@ class TestAPI:
             r += f"{test_id}/"
 
         return r
+
+    @staticmethod
+    def __validate_identifiers(params: TestParams, single: bool = True):
+        """Validate test resource identifiers.
+
+        Args:
+            params (TestParams): Test params.
+            single (bool, optional): Indicates if the resource identifiers
+                should be validated as pointing to a single resource.
+                Defaults to True.
+
+        Raises:
+            ValueError: TestParams.test_id must be a valid int.
+        """
+
+        if single and params.test_id is None:
+            raise ValueError("TestParams.test_id must be a valid int")

@@ -1,7 +1,6 @@
 """Script file resource tests"""
 
 # pylint: disable=missing-function-docstring
-# pylint: disable=protected-access
 # pylint: disable=missing-class-docstring
 # pylint: disable=no-member
 
@@ -109,9 +108,9 @@ class UTestFileParams:
 @pytest.mark.usefixtures("mock")
 class UTestScript:
     def utest_init_from_id(self):
-        s = Script(script_id=2)
+        s = Script(file_id=2)
 
-        assert s._params.file_id == 2
+        assert s.file_id == 2
 
     def utest_init_from_content(self):
         s = Script(content="script content")
@@ -119,36 +118,36 @@ class UTestScript:
         assert s.content == "script content"
 
     def utest_init_from_file(self):
-        s = Script(script_file=sample_test_script_py_path)
+        s = Script(filepath=sample_test_script_py_path)
 
         assert s.content == sample_test_script_py_data
 
     def utest_string(self):
         s = Script()
 
-        assert str(s) == "<empty script>"
+        assert str(s) == "<no script>"
 
-        s.from_content("script content")
+        s.content = "script content"
 
         assert str(s) == "script content"
 
-    def utest_content(self):
-        s = Script()
+    # def utest_content(self):
+    #     s = Script()
 
-        assert s.content == ""
+    #     assert s.content == ""
 
-        s.from_content("script content")
+    #     s.from_content("script content")
 
-        assert s.content == "script content"
+    #     assert s.content == "script content"
 
-        fp = FileParams()
-        fp.__dict__["_content"] = "file content"
-        s.__dict__["_params"] = fp
+    #     fp = FileParams()
+    #     fp.__dict__["_content"] = "file content"
+    #     s.__dict__["_params"] = fp
 
-        assert s.content == "file content"
+    #     assert s.content == "file content"
 
     def utest_from_file(self):
-        s1 = Script(script_file=sample_test_script_py_path)
+        s1 = Script(filepath=sample_test_script_py_path)
 
         assert s1.content == sample_test_script_py_data
 
@@ -157,15 +156,15 @@ class UTestScript:
 
         assert s2.content == sample_test_script_py_data
 
-    def utest_from_content(self):
-        s1 = Script(content=sample_test_script_py_data)
+    # def utest_from_content(self):
+    #     s1 = Script(content=sample_test_script_py_data)
 
-        assert s1.content == sample_test_script_py_data
+    #     assert s1.content == sample_test_script_py_data
 
-        s2 = Script()
-        s2.from_content(sample_test_script_py_data)
+    #     s2 = Script()
+    #     s2.from_content(sample_test_script_py_data)
 
-        assert s2.content == sample_test_script_py_data
+    #     assert s2.content == sample_test_script_py_data
 
     def utest_to_dict(self):
         s = Script(content="script content")
@@ -178,16 +177,16 @@ class UTestScript:
     def utest_from_dict(self):
         s = Script()
         s.from_dict(common.file_json)
-        assert s.content == ""
+        assert not s.content
 
     def utest_read(self):
-        s = Script(script_id=2)
+        s = Script(file_id=2)
 
         s.read()
 
         assert s.content == "pytest test script"
 
-        assert httpretty.last_request().parsed_body == ""
+        assert not httpretty.last_request().parsed_body
 
 
 @pytest.mark.usefixtures("mock")

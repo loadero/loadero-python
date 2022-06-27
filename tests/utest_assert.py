@@ -257,7 +257,7 @@ class UTestAssert:
         assert a.params.operator is None
         assert a.params.path is None
 
-        assert httpretty.last_request().parsed_body == ""
+        assert not httpretty.last_request().parsed_body
 
     def utest_duplicate(self):
         a = Assert(
@@ -284,7 +284,7 @@ class UTestAssert:
         assert a.params.operator is None
         assert a.params.path is None
 
-        assert httpretty.last_request().parsed_body is None
+        assert not httpretty.last_request().parsed_body
 
 
 @pytest.mark.usefixtures("mock")
@@ -333,7 +333,7 @@ class UTestAssertAPI:
         assert ret.operator is Operator.O_GT
         assert ret.path is MetricPath.MACHINE_NETWORK_BITRATE_IN_AVG
 
-        assert httpretty.last_request().parsed_body == ""
+        assert not httpretty.last_request().parsed_body
 
     def utest_read_invalid_params(self):
         with pytest.raises(Exception):
@@ -387,7 +387,7 @@ class UTestAssertAPI:
 
         assert ret is None
 
-        assert httpretty.last_request().parsed_body == ""
+        assert not httpretty.last_request().parsed_body
 
     def utest_delete_invalid_params(self):
         with pytest.raises(Exception):
@@ -412,7 +412,7 @@ class UTestAssertAPI:
         assert ret.operator is Operator.O_GT
         assert ret.path is MetricPath.MACHINE_NETWORK_BITRATE_IN_AVG
 
-        assert httpretty.last_request().parsed_body is None
+        assert not httpretty.last_request().parsed_body
 
     def utest_duplicate_invalid_params(self):
         with pytest.raises(Exception):
@@ -438,7 +438,7 @@ class UTestAssertAPI:
             assert ret.operator is Operator.O_GT
             assert ret.path is MetricPath.MACHINE_NETWORK_BITRATE_IN_AVG
 
-        assert httpretty.last_request().parsed_body == ""
+        assert not httpretty.last_request().parsed_body
 
     def utest_read_all_no_results(self):
         pg = common.paged_response.copy()
@@ -457,7 +457,7 @@ class UTestAssertAPI:
         resp = AssertAPI.read_all(common.test_id)
 
         assert len(resp) == 0
-        assert httpretty.last_request().parsed_body == ""
+        assert not httpretty.last_request().parsed_body
 
     def utest_route(self):
         assert (

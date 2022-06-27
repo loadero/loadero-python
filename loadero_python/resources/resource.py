@@ -75,7 +75,6 @@ class ParamsSerializer(Serializable):
             dict[str, any]: The resource params object as a dictionary.
         """
         json_dict = {}
-
         for (
             python_attribute_name,
             python_attribute_value,
