@@ -341,7 +341,7 @@ class AssertPreconditionAPI:
             params (AssertPreconditionParams): Assert precondition params.
             single (bool, optional): Indicates if the resource identifiers
                 should be validated as pointing to a single resource (True) or
-                to all precondition resources belinging to assert resource.
+                to all precondition resources belonging to assert resource.
                 Defaults to True.
 
         Raises:
