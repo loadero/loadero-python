@@ -21,12 +21,6 @@ from .classificator import FileType
 class FileParams(LoaderoResourceParams):
     """FileParams represents Loadero file parameters."""
 
-    file_id = None
-    _created = None
-    _updated = None
-    _file_type = None
-    _content = None
-
     def __init__(self, file_id: int or None = None):
         super().__init__(
             attribute_map={
@@ -53,6 +47,11 @@ class FileParams(LoaderoResourceParams):
 
         self.file_id = file_id
 
+        self._created = None
+        self._updated = None
+        self._file_type = None
+        self._content = None
+
     @property
     def created(self) -> datetime or None:
         return self._created
@@ -73,9 +72,6 @@ class FileParams(LoaderoResourceParams):
 class Script(Serializable):
     """Script describes a single Loadero test script."""
 
-    _content = None
-    _params = None
-
     def __init__(
         self,
         script_id: int or None = None,
@@ -95,6 +91,9 @@ class Script(Serializable):
         priorities are: script_id - first, content - second,
         script_file - third.
         """
+
+        self._content = None
+        self._params = None
 
         if script_id is not None:
             self._params = FileParams(script_id)
@@ -155,6 +154,7 @@ class Script(Serializable):
         Returns:
             Script: script loaded from data
         """
+
         self._content = content
 
         return self
@@ -169,6 +169,16 @@ class Script(Serializable):
         return self
 
     def read(self) -> Script:
+        """Reads script from Loadero API.
+
+        Raises:
+            ValueError: If script id is not set.
+            APIException: If API call fails.
+
+        Returns:
+            Script: Script with its contents loaded from Loadero API.
+        """
+
         self._params = FileAPI().read(self._params)
 
         return self
@@ -186,13 +196,14 @@ class FileAPI:
 
         Raises:
             Exception: FileParams.file_id was not defined.
+            APIException: If API call fails.
 
         Returns:
             FileParams: Read file resource.
         """
 
         if params.file_id is None:
-            raise Exception("FileParams.file_id must be a valid int")
+            raise ValueError("FileParams.file_id must be a valid int")
 
         return params.from_dict(
             APIClient().get(FileAPI().route(params.file_id))
@@ -200,7 +211,10 @@ class FileAPI:
 
     @staticmethod
     def read_all() -> list[FileParams]:
-        """Read all files.
+        """Read all files in project.
+
+        Raises:
+            APIException: If API call fails.
 
         Returns:
             list[FileParams]: List of file resources in project.
@@ -231,3 +245,5 @@ class FileAPI:
             r += f"{file_id}/"
 
         return r
+
+    # TODO: create __validate_identifiers method and apply it

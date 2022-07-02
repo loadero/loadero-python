@@ -23,17 +23,6 @@ class AssertPreconditionParams(LoaderoResourceParams):
     attributes.
     """
 
-    assert_precondition_id = None
-    assert_id = None
-    test_id = None
-
-    expected = None
-    operator = None
-    precondition_property = None
-
-    _created = None
-    _updated = None
-
     def __init__(
         self,
         assert_precondition_id: int or None = None,
@@ -70,6 +59,9 @@ class AssertPreconditionParams(LoaderoResourceParams):
         self.expected = expected
         self.operator = operator
         self.precondition_property = precondition_property
+
+        self._created = None
+        self._updated = None
 
     @property
     def created(self) -> datetime:
@@ -146,6 +138,11 @@ class AssertPrecondition:
     def create(self) -> AssertPrecondition:
         """Creates new assert precondition with given data.
 
+        Raises:
+            ValueError: If resource params do not sufficiently identify parent
+                resource or resource params required attributes are None.
+            APIException: If API call fails.
+
         Returns:
             AssertPrecondition: Created assert precondition resource.
         """
@@ -156,6 +153,11 @@ class AssertPrecondition:
 
     def read(self) -> AssertPrecondition:
         """Reads information about an existing assert precondition.
+
+        Raises:
+            ValueError: If resource params do not sufficiently identify
+                resource.
+            APIException: If API call fails.
 
         Returns:
             AssertPrecondition: Read assert precondition resource.
@@ -168,6 +170,11 @@ class AssertPrecondition:
     def update(self) -> AssertPrecondition:
         """Updates assert precondition with given parameters.
 
+        Raises:
+            ValueError: If resource params do not sufficiently identify
+                resource or resource params required attributes are None.
+            APIException: If API call fails.
+
         Returns:
             AssertPrecondition: Updated assert precondition resource.
         """
@@ -177,7 +184,13 @@ class AssertPrecondition:
         return self
 
     def delete(self) -> AssertPrecondition:
-        """Deletes and existing assert precondition."""
+        """Deletes and existing assert precondition.
+
+        Raises:
+            ValueError: If resource params do not sufficiently identify
+                resource.
+            APIException: If API call fails.
+        """
 
         AssertPreconditionAPI.delete(self.params)
 
@@ -197,6 +210,11 @@ class AssertPreconditionAPI:
         Args:
             params (AssertPreconditionParams): Describes the assert
                 precondition resource to be created.
+
+        Raises:
+            ValueError: If resource params do not sufficiently identify parent
+                resource or resource params required attributes are None.
+            APIException: If API call fails.
 
         Returns:
             AssertPreconditionParams: Created assert precondition resource.
@@ -218,6 +236,11 @@ class AssertPreconditionAPI:
         Args:
             params (AssertPreconditionParams): Describes the assert
                 precondition resource to be read.
+
+        Raises:
+            ValueError: If resource params do not sufficiently identify
+                resource.
+            APIException: If API call fails.
 
         Returns:
             AssertPreconditionParams: Read assert precondition resource.
@@ -243,6 +266,11 @@ class AssertPreconditionAPI:
             params (AssertPreconditionParams): Describes the assert
                 precondition resource to update.
 
+        Raises:
+            ValueError: If resource params do not sufficiently identify
+                resource or resource params required attributes are None.
+            APIException: If API call fails.
+
         Returns:
             AssertPreconditionParams: Updated assert precondition resource.
         """
@@ -267,6 +295,11 @@ class AssertPreconditionAPI:
         Args:
             params (AssertPreconditionParams): Describes the assert
                 precondition resource to delete.
+
+        Raises:
+            ValueError: If resource params do not sufficiently identify
+                resource.
+            APIException: If API call fails.
         """
 
         AssertPreconditionAPI.__validate_identifiers(params)
@@ -286,6 +319,9 @@ class AssertPreconditionAPI:
         Args:
             test_id (int): Test resource id.
             assert_id (int): Parent assert resource id.
+
+        Raises:
+            APIException: If API call fails.
 
         Returns:
             list[AssertPreconditionParams]: List of all assert precondition
@@ -316,6 +352,7 @@ class AssertPreconditionAPI:
             assert_precondition_id (int, optional): Assert precondition
                 resource id. Defaults to None. If omitted the route will point
                 to all assert preconditions of assert.
+
 
         Returns:
             str: Route to assert precondition resource/s.

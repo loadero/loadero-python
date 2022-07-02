@@ -32,23 +32,6 @@ class TestParams(LoaderoResourceParams):
     attributes.
     """
 
-    test_id = None
-
-    name = None
-    start_interval = None
-    participant_timeout = None
-    mode = None
-    increment_strategy = None
-    script = None
-    mos_test = None
-
-    _created = None
-    _updated = None
-    _script_file_id = None
-    _group_count = None
-    _participant_count = None
-    _deleted = None
-
     def __init__(
         self,
         test_id: int or None = None,
@@ -109,6 +92,13 @@ class TestParams(LoaderoResourceParams):
         self.increment_strategy = increment_strategy
         self.mos_test = mos_test
         self.script = script
+
+        self._created = None
+        self._updated = None
+        self._script_file_id = None
+        self._group_count = None
+        self._participant_count = None
+        self._deleted = None
 
     @property
     def created(self) -> datetime:
@@ -180,8 +170,6 @@ class Test:
     The target Loadero test resource is determined by TestParams.
     """
 
-    params = None
-
     def __init__(
         self, test_id: int or None = None, params: TestParams or None = None
     ) -> None:
@@ -196,6 +184,11 @@ class Test:
     def create(self) -> Test:
         """Creates new test with given data.
 
+        Raises:
+            ValueError: If resource params do not sufficiently identify parent
+                resource or resource params required attributes are None.
+            APIException: If API call fails.
+
         Returns:
             Test: Created test resource.
         """
@@ -206,6 +199,11 @@ class Test:
 
     def read(self) -> Test:
         """Reads information about an existing test.
+
+        Raises:
+            ValueError: If resource params do not sufficiently identify
+                resource.
+            APIException: If API call fails.
 
         Returns:
             Test: Read test resource.
@@ -218,6 +216,11 @@ class Test:
     def update(self) -> Test:
         """Updates test with given parameters.
 
+        Raises:
+            ValueError: If resource params do not sufficiently identify
+                resource or resource params required attributes are None.
+            APIException: If API call fails.
+
         Returns:
             Test: Updated test resource.
         """
@@ -228,6 +231,11 @@ class Test:
 
     def delete(self) -> Test:
         """Deletes and existing test.
+
+        Raises:
+            ValueError: If resource params do not sufficiently identify
+                resource.
+            APIException: If API call fails.
 
         Returns:
             Test: Deleted test resource.
@@ -243,6 +251,11 @@ class Test:
         Args:
             name (str): New name for the duplicate test.
 
+        Raises:
+            ValueError: If resource params do not sufficiently identify
+                resource.
+            APIException: If API call fails.
+
         Returns:
             Test: Duplicate test resource.
         """
@@ -256,9 +269,16 @@ class Test:
     def groups(self) -> list[Group]:
         """Read all groups in test.
 
+        Raises:
+            ValueError: Test.params.test_id must be a valid int.
+            APIException: If API call fails.
+
         Returns:
             list[Group]: List of groups in test.
         """
+
+        if not isinstance(self.params.test_id, int):
+            raise ValueError("Test.params.test_id must be a valid int")
 
         return convert_params_list(
             Group, GroupAPI.read_all(self.params.test_id)
@@ -267,9 +287,16 @@ class Test:
     def participants(self) -> list[Participant]:
         """Read all participants in test.
 
+        Raises:
+            ValueError: Test.params.test_id must be a valid int.
+            APIException: If API call fails.
+
         Returns:
             list[Participant]: List of participants in test.
         """
+
+        if not isinstance(self.params.test_id, int):
+            raise ValueError("Test.params.test_id must be a valid int")
 
         return convert_params_list(
             Participant,
@@ -279,9 +306,16 @@ class Test:
     def asserts(self) -> list[Assert]:
         """Read all asserts in test.
 
+        Raises:
+            ValueError: Test.params.test_id must be a valid int.
+            APIException: If API call fails.
+
         Returns:
             list[Assert]: List of asserts in test.
         """
+
+        if not isinstance(self.params.test_id, int):
+            raise ValueError("Test.params.test_id must be a valid int")
 
         return convert_params_list(
             Assert,
@@ -298,6 +332,7 @@ class TestAPI:
 
         Args:
             params (TestParams): Describes the test resource to be created.
+            APIException: If API call fails.
 
         Returns:
             TestParams: Created participant resource.
@@ -322,6 +357,7 @@ class TestAPI:
 
         Raises:
             Exception: TestParams.test_id was not defined.
+            APIException: If API call fails.
 
         Returns:
             TestParams: Read test resource.
@@ -348,6 +384,7 @@ class TestAPI:
 
         Raises:
             Exception: TestParams.test_id was not defined.
+            APIException: If API call fails.
 
         Returns:
             TestParams: Updated test resource.
@@ -375,6 +412,8 @@ class TestAPI:
 
         Raises:
             Exception: TestParams.test_id was not defined.
+            APIException: If API call fails.
+
 
         Returns:
             TestParams: Deleted test resource.
@@ -391,6 +430,8 @@ class TestAPI:
 
     @staticmethod
     def duplicate(params: TestParams) -> TestParams:
+        # TODO: name as separate argument
+
         """Created a duplicate test resource from an existing test resource.
 
         Args:
@@ -399,6 +440,7 @@ class TestAPI:
 
         Raises:
             Exception: TestParams.test_id was not defined.
+            APIException: If API call fails.
 
         Returns:
             TestParams: Duplicated test resource.
@@ -428,6 +470,9 @@ class TestAPI:
     def read_all() -> list[TestParams]:
         """Read all test resources.
 
+        Raises:
+            APIException: If API call fails.
+
         Returns:
             list[TestParams]: List of all test resources in project.
         """
@@ -456,3 +501,5 @@ class TestAPI:
             r += f"{test_id}/"
 
         return r
+
+    # TODO: create __validate_identifiers method and apply it

@@ -29,16 +29,6 @@ class AssertParams(LoaderoResourceParams):
     attributes.
     """
 
-    assert_id = None
-    test_id = None
-
-    path = None
-    operator = None
-    expected = None
-
-    _created = None
-    _updated = None
-
     def __init__(
         self,
         assert_id: int or None = None,
@@ -72,6 +62,9 @@ class AssertParams(LoaderoResourceParams):
         self.path = path
         self.operator = operator
         self.expected = expected
+
+        self._created = None
+        self._updated = None
 
     @property
     def created(self) -> datetime:
@@ -136,6 +129,11 @@ class Assert:
     def create(self) -> Assert:
         """Creates new assert with given data.
 
+        Raises:
+            ValueError: If resource params do not sufficiently identify parent
+                resource or resource params required attributes are None.
+            APIException: If API call fails.
+
         Returns:
             Assert: Created assert resource.
         """
@@ -146,6 +144,11 @@ class Assert:
 
     def read(self) -> Assert:
         """Reads information about an existing assert.
+
+        Raises:
+            ValueError: If resource params do not sufficiently identify
+                resource.
+            APIException: If API call fails.
 
         Returns:
             Assert: Read assert resource.
@@ -158,6 +161,11 @@ class Assert:
     def update(self) -> Assert:
         """Updates assert with given parameters.
 
+        Raises:
+            ValueError: If resource params do not sufficiently identify
+                resource or resource params required attributes are None.
+            APIException: If API call fails.
+
         Returns:
             Assert: Updated assert resource.
         """
@@ -167,12 +175,23 @@ class Assert:
         return self
 
     def delete(self) -> None:
-        """Deletes and existing assert."""
+        """Deletes and existing assert.
+
+        Raises:
+            ValueError: If resource params do not sufficiently identify
+                resource.
+            APIException: If API call fails.
+        """
 
         AssertAPI.delete(self.params)
 
     def duplicate(self) -> Assert:
         """Duplicates and existing assert.
+
+        Raises:
+            ValueError: If resource params do not sufficiently identify
+                resource.
+            APIException: If API call fails.
 
         Returns:
             Assert: Duplicate instance of assert.
@@ -193,6 +212,7 @@ class Assert:
         Raises:
             ValueError: Assert.params.test_id must be a valid int
             ValueError: Assert.params.assert_id must be a valid int
+            APIException: If API call fails.
 
         Returns:
             list[AssertPrecondition]: List of all preconditions of assert
@@ -222,6 +242,11 @@ class AssertAPI:
         Args:
             params (AssertParams): Describes the assert resource to be created.
 
+        Raises:
+            ValueError: If resource params do not sufficiently identify parent
+                resource or resource params required attributes are None.
+            APIException: If API call fails.
+
         Returns:
             AssertParams: Created assert resource.
         """
@@ -239,6 +264,11 @@ class AssertAPI:
         Args:
             params (AssertParams): Describes the assert resource to read.
 
+        Raises:
+            ValueError: If resource params do not sufficiently identify
+                resource.
+            APIException: If API call fails.
+
         Returns:
             AssertParams: Read assert resource.
         """
@@ -255,6 +285,11 @@ class AssertAPI:
 
         Args:
             params (AssertParams): Describes the assert resource to update.
+
+        Raises:
+            ValueError: If resource params do not sufficiently identify
+                resource or resource params required attributes are None.
+            APIException: If API call fails.
 
         Returns:
             AssertParams: Updated assert resource.
@@ -276,6 +311,10 @@ class AssertAPI:
         Args:
             params (AssertParams): Describes the assert resource to delete.
 
+        Raises:
+            ValueError: If resource params do not sufficiently identify
+                resource.
+            APIException: If API call fails.
         """
 
         AssertAPI.__validate_identifiers(params)
@@ -290,6 +329,10 @@ class AssertAPI:
             params (AssertParams): Describe the assert resource to duplicate and
             the name of duplicate assert resource.
 
+        Raises:
+            ValueError: If resource params do not sufficiently identify
+                resource.
+            APIException: If API call fails.
 
         Returns:
             AssertParams: Duplicate assert resource.
@@ -312,6 +355,9 @@ class AssertAPI:
 
         Args:
             test_id (int): Parent test resource id.
+
+        Raises:
+            APIException: If API call fails.
 
         Returns:
             list[AssertParams]: List of all assert resources in test.
@@ -354,6 +400,7 @@ class AssertAPI:
                 should be validated as pointing to a single resource (True) or
                 to all assert resources belinging to test resource.
                 Defaults to True.
+
         Raises:
             Exception: AssertParams.test_id must be a valid int
             Exception: AssertParams.assert_id must be a valid int
