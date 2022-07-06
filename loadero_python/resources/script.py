@@ -73,12 +73,6 @@ class FileParams(LoaderoResourceParams):
 class Script(Serializable):
     """Script describes a single Loadero test script."""
 
-    # _content = None
-    # _params = FileParams()
-
-    # content = ""
-    # file_id = None
-
     def __init__(
         self,
         file_id: int or None = None,
@@ -105,48 +99,11 @@ class Script(Serializable):
         if filepath is not None:
             self.from_file(filepath)
 
-        # if script_id is not None:
-        #     self._params.file_id = script_id
-
-        #     return
-
-        # if content is not None:
-        #     self.from_content(content)
-
-        #     return
-
-        # if script_file is not None:
-        #     self.from_file(script_file)
-
     def __str__(self) -> str:
         if self.content is None:
             return "<no script>"
 
         return self.content
-
-    # @property
-    # def file_id(self) -> int:
-    #     return self._params.file_id
-
-    # @file_id.setter
-    # def file_id(self, file_id: int) -> None:
-    #     self._params.file_id = file_id
-
-    # @property
-    # def content(self) -> str:
-    #     """Contents of script.
-
-    #     Returns:
-    #         str: Contents of a script loaded by user or read from Loadero API.
-    #     """
-
-    #     if self._params.content is not None:
-    #         return self._params.content
-
-    #     if self._content is not None:
-    #         return self._content
-
-    #     return ""
 
     def from_file(self, filepath: str) -> Script:
         """Loads Loadero script from file.
@@ -162,19 +119,6 @@ class Script(Serializable):
             self.content = f.read()
 
         return self
-
-    # def from_content(self, content: str) -> Script:
-    #     """Loads Loadero script from provided str data.
-
-    #     Args:
-    #         content (str): script
-
-    #     Returns:
-    #         Script: script loaded from data
-    #     """
-    #     self._content = content
-
-    #     return self
 
     def to_dict(self) -> str:
         return self.content

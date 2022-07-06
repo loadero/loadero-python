@@ -229,7 +229,7 @@ class UTestGroup:
         assert g.params.participant_count is None  # omit empty
         assert g.params.total_cu_count is None  # omit empty
 
-        assert httpretty.last_request().parsed_body == ""
+        assert not httpretty.last_request().parsed_body
 
     def utest_update(self):
         g = Group(
@@ -271,7 +271,7 @@ class UTestGroup:
         assert g.params.created is None
         assert g.params.updated is None
 
-        assert httpretty.last_request().parsed_body == ""
+        assert not httpretty.last_request().parsed_body
 
     def utest_duplicate(self):
         g = Group(
@@ -370,7 +370,7 @@ class UTestGroupAPI:
         assert ret.created == common.created_time
         assert ret.updated == common.updated_time
 
-        assert httpretty.last_request().parsed_body == ""
+        assert not httpretty.last_request().parsed_body
 
     def utest_read_invalid_params(self):
         with pytest.raises(Exception):
@@ -427,7 +427,7 @@ class UTestGroupAPI:
 
         assert ret is None
 
-        assert httpretty.last_request().parsed_body == ""
+        assert not httpretty.last_request().parsed_body
 
     def utest_delete_invalid_params(self):
         with pytest.raises(Exception):
@@ -492,7 +492,7 @@ class UTestGroupAPI:
             assert ret.created == common.created_time
             assert ret.updated == common.updated_time
 
-        assert httpretty.last_request().parsed_body == ""
+        assert not httpretty.last_request().parsed_body
 
     def utest_read_all_no_results(self):
         pg = common.paged_response.copy()
@@ -510,7 +510,7 @@ class UTestGroupAPI:
         resp = GroupAPI.read_all(common.test_id)
 
         assert len(resp) == 0
-        assert httpretty.last_request().parsed_body == ""
+        assert not httpretty.last_request().parsed_body
 
     def utest_route(self):
         assert (

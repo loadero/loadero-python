@@ -187,19 +187,16 @@ class UTestTestParams:
     def utest_deleted(self):
         t = TestParams()
         t.__dict__["_deleted"] = True
-
         assert t.deleted is True
 
     def utest_script(self):
         t = TestParams()
         t.__dict__["_script"] = common.script
-
         assert t.script.content == common.script.content
 
     def utest_set_script(self):
         t = TestParams()
         t.script = common.script
-
         assert t.script.content == common.script.content
 
     def utest_builder_id(self):
@@ -240,8 +237,6 @@ class UTestTestParams:
     def utest_builder_script(self):
         t = TestParams()
         t.with_script(Script(content="hello"))
-
-        print(Script().content)
         assert t.script.content == "hello"
 
 
@@ -340,7 +335,7 @@ class UTestTest:
 
         # read script
         assert httpretty.latest_requests()[-1].method == httpretty.GET
-        assert httpretty.latest_requests()[-1].parsed_body == ""
+        assert not httpretty.latest_requests()[-1].parsed_body
 
     def utest_launch(self):
         common.check_run_params(Test(test_id=common.test_id).launch().params)

@@ -194,6 +194,7 @@ class UTestAssert:
             "operator": "gt",
             "path": "machine/network/bitrate/in/avg",
         }
+        assert httpretty.last_request().method == httpretty.POST
 
     def utest_read(self):
         a = Assert(
@@ -211,7 +212,8 @@ class UTestAssert:
         assert a.params.operator is Operator.O_GT
         assert a.params.path is MetricPath.MACHINE_NETWORK_BITRATE_IN_AVG
 
-        assert httpretty.last_request().parsed_body == ""
+        assert not httpretty.last_request().parsed_body
+        assert httpretty.last_request().method == httpretty.GET
 
     def utest_update(self):
         a = Assert(
@@ -239,6 +241,7 @@ class UTestAssert:
             "operator": "lt",
             "path": "machine/cpu/used/avg",
         }
+        assert httpretty.last_request().method == httpretty.PUT
 
     def utest_delete(self):
         a = Assert(
@@ -258,6 +261,7 @@ class UTestAssert:
         assert a.params.path is None
 
         assert not httpretty.last_request().parsed_body
+        assert httpretty.last_request().method == httpretty.DELETE
 
     def utest_duplicate(self):
         a = Assert(
@@ -285,6 +289,7 @@ class UTestAssert:
         assert a.params.path is None
 
         assert not httpretty.last_request().parsed_body
+        assert httpretty.last_request().method == httpretty.POST
 
 
 @pytest.mark.usefixtures("mock")
@@ -312,6 +317,7 @@ class UTestAssertAPI:
             "operator": "gt",
             "path": "machine/network/bitrate/in/avg",
         }
+        assert httpretty.last_request().method == httpretty.POST
 
     def utest_create_invalid_params(self):
         with pytest.raises(Exception):
@@ -334,6 +340,7 @@ class UTestAssertAPI:
         assert ret.path is MetricPath.MACHINE_NETWORK_BITRATE_IN_AVG
 
         assert not httpretty.last_request().parsed_body
+        assert httpretty.last_request().method == httpretty.GET
 
     def utest_read_invalid_params(self):
         with pytest.raises(Exception):
@@ -369,6 +376,7 @@ class UTestAssertAPI:
             "operator": "lt",
             "path": "machine/cpu/used/avg",
         }
+        assert httpretty.last_request().method == httpretty.PUT
 
     def utest_update_invalid_params(self):
         with pytest.raises(Exception):
@@ -388,6 +396,7 @@ class UTestAssertAPI:
         assert ret is None
 
         assert not httpretty.last_request().parsed_body
+        assert httpretty.last_request().method == httpretty.DELETE
 
     def utest_delete_invalid_params(self):
         with pytest.raises(Exception):
@@ -413,6 +422,7 @@ class UTestAssertAPI:
         assert ret.path is MetricPath.MACHINE_NETWORK_BITRATE_IN_AVG
 
         assert not httpretty.last_request().parsed_body
+        assert httpretty.last_request().method == httpretty.POST
 
     def utest_duplicate_invalid_params(self):
         with pytest.raises(Exception):
@@ -439,6 +449,7 @@ class UTestAssertAPI:
             assert ret.path is MetricPath.MACHINE_NETWORK_BITRATE_IN_AVG
 
         assert not httpretty.last_request().parsed_body
+        assert httpretty.last_request().method == httpretty.GET
 
     def utest_read_all_no_results(self):
         pg = common.paged_response.copy()

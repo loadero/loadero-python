@@ -202,7 +202,7 @@ class UTestFileAPI:
         assert fp.file_type is FileType.FT_TEST_SCRIPT
         assert fp.content == "pytest test script"
 
-        assert httpretty.last_request().parsed_body == ""
+        assert not httpretty.last_request().parsed_body
 
     def utest_read_invalid_params(self):
         with pytest.raises(Exception):
@@ -220,7 +220,7 @@ class UTestFileAPI:
             assert ret.file_type is FileType.FT_TEST_SCRIPT
             assert ret.content == "pytest test script"
 
-        assert httpretty.last_request().parsed_body == ""
+        assert not httpretty.last_request().parsed_body
 
     def utest_read_no_results(self):
         pg = common.paged_response.copy()
@@ -236,7 +236,7 @@ class UTestFileAPI:
         resp = FileAPI.read_all()
 
         assert len(resp) == 0
-        assert httpretty.last_request().parsed_body == ""
+        assert not httpretty.last_request().parsed_body
 
     def utest_route(self):
         assert (

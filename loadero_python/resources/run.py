@@ -230,6 +230,11 @@ class Run:
     def create(self) -> Run:
         """Creates new run with given data.
 
+        Raises:
+            ValueError: If resource params do not sufficiently identify parent
+                resource.
+            APIException: If API call fails.
+
         Returns:
             Run: Created run resource.
         """
@@ -241,6 +246,11 @@ class Run:
     def read(self) -> Run:
         """Read an existing run resource.
 
+        Raises:
+            ValueError: If resource params do not sufficiently identify
+                resource.
+            APIException: If API call fails.
+
         Returns:
             Run: Read run resource.
         """
@@ -250,7 +260,13 @@ class Run:
         return self
 
     def stop(self) -> Run:
-        """Stop an active run.
+        """Stop an active run. To stop a run need only to specify the test_id
+        and run_id in resource params.
+
+        Raises:
+            ValueError: If resource params do not sufficiently identify
+                resource.
+            APIException: If API call fails.
 
         Returns:
             Run: Stopped run resource.
@@ -272,6 +288,9 @@ class Run:
                 12*60*60 (12h).
 
         Raises:
+            ValueError: If resource params do not sufficiently identify
+                resource.
+            APIException: If API call fails.l
             TimeoutError: Run poll timeout exceeded
 
         Returns:
@@ -325,6 +344,11 @@ class RunAPI:
             params (RunParams): Describes the run resource to be created. Only
                 the RunParams.test_id field is required.
 
+        Raises:
+            ValueError: If resource params do not sufficiently identify parent
+                resource.
+            APIException: If API call fails.
+
         Returns:
             RunParams: Created run resource.
         """
@@ -341,6 +365,11 @@ class RunAPI:
 
         Args:
             params (RunParams): Describes the run resource to read.
+
+        Raises:
+            ValueError: If resource params do not sufficiently identify
+                resource.
+            APIException: If API call fails.
 
         Returns:
             RunParams: Read run resource.
@@ -360,6 +389,11 @@ class RunAPI:
             test_id (int, optional): Parent test resource id. Defaults to None.
                 If omitted all runs in project will be read.
 
+        Raises:
+            ValueError: If resource params do not sufficiently identify parent
+                resource.
+            APIException: If API call fails.
+
         Returns:
             list[RunParams]: List of all runs resource params in test or
                 project.
@@ -378,6 +412,11 @@ class RunAPI:
 
         Args:
             params (RunParams): Describes the run resource to stop.
+
+        Raises:
+            ValueError: If resource params do not sufficiently identify
+                resource.
+            APIException: If API call fails.
         """
 
         RunAPI.__validate_identifiers(params, True, False)

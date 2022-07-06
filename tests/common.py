@@ -214,7 +214,7 @@ run_json = {
     "created": created_time_string,
     "updated": updated_time_string,
     "test_id": test_id,
-    "status": "server-error",
+    "status": "done",
     "metric_status": "calculating",
     "mos_status": "available",
     "test_mode": "load",
@@ -224,7 +224,7 @@ run_json = {
     "execution_started": execution_started_string,
     "execution_finished": execution_finished_string,
     "script_file_id": file_id,
-    "test_name": "py test test",
+    "test_name": "pytest test",
     "start_interval": 98,
     "participant_timeout": 92,
     "launching_account_id": 12,
@@ -241,7 +241,7 @@ def check_run_params(params: RunParams):
     assert params.test_id == test_id
     assert params.created == created_time
     assert params.updated == updated_time
-    assert params.status == RunStatus.RS_SERVER_ERROR
+    assert params.status == RunStatus.RS_DONE
     assert params.metric_status == MetricStatus.MS_CALCULATING
     assert params.mos_status == MetricStatus.MS_AVAILABLE
     assert params.test_mode == TestMode.TM_LOAD
@@ -251,7 +251,7 @@ def check_run_params(params: RunParams):
     assert params.execution_started == execution_started
     assert params.execution_finished == execution_finished
     assert params.script_file_id == file_id
-    assert params.test_name == "py test test"
+    assert params.test_name == "pytest test"
     assert params.start_interval == 98
     assert params.participant_timeout == 92
     assert params.launching_account_id == 12
@@ -556,17 +556,6 @@ extended_result_json.update(
         "data_sync": data_sync_json,
     }
 )
-
-#  = {
-#     "id": result_id,
-#     "created": created_time_string,
-#     "updated": updated_time_string,
-#     "start": start_time_string,
-#     "end": end_time_string,
-#     "status": "timeout",
-#     "selenium_result": "aborted",
-#     "mos_status": "calculating",
-#     "participant_details": run_participant_json,
 
 
 def check_extended_result_params(params: ResultParams):

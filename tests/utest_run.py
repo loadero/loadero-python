@@ -21,7 +21,7 @@ from loadero_python.resources.classificator import (
 from . import common
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture
 def mock():
     httpretty.enable(allow_net_connect=False, verbose=True)
     httpretty.reset()
@@ -99,9 +99,6 @@ class UTestRunParams:
     def utest_str(self):
         r = RunParams()
         r.from_dict(common.run_json)
-
-        print(r)
-
         assert (
             str(r)
             == """{
@@ -109,7 +106,7 @@ class UTestRunParams:
     "test_id": 12734,
     "created": "2022-04-01 13:54:25.689000+00:00",
     "updated": "2024-02-03 15:42:54.689000+00:00",
-    "status": "server-error",
+    "status": "done",
     "metric_status": "calculating",
     "mos_status": "available",
     "test_mode": "load",
@@ -119,7 +116,7 @@ class UTestRunParams:
     "execution_started": "2021-02-26 14:53:24.228000+00:00",
     "execution_finished": "2023-06-26 19:38:25.268000+00:00",
     "script_file_id": 294325,
-    "test_name": "py test test",
+    "test_name": "pytest test",
     "start_interval": 98,
     "participant_timeout": 92,
     "launching_account_id": 12,
@@ -287,13 +284,47 @@ class UTestRun:
         assert not httpretty.last_request().parsed_body
 
     def utest_poll(self):
-        common.check_run_params(Run(run_id=common.run_id).poll(0.1, 0.1).params)
+        httpretty.reset()
 
-        assert httpretty.last_request().method == httpretty.GET
-        assert not httpretty.last_request().parsed_body
+        running_resp = common.run_json.copy()
+        running_resp["status"] = "running"
+
+        class Handler:
+            responses = [
+                running_resp,
+                running_resp,
+                running_resp,
+                running_resp,
+                common.run_json,
+            ]
+            response_counter = 0
+
+            def handle(self, _, __, ___):
+                self.response_counter += 1
+                return (
+                    200,
+                    {"Content-Type": "application/json"},
+                    json.dumps(self.responses[self.response_counter - 1]),
+                )
+
+        h = Handler()
+
+        httpretty.register_uri(
+            httpretty.GET,
+            re.compile(
+                r"^http://mock\.loadero\.api/v2/projects/\d*/runs/\d*/$"
+            ),
+            body=h.handle,
+            forcing_headers={"Content-Type": "application/json"},
+        )
+
+        common.check_run_params(Run(run_id=common.run_id).poll(0.1, 1).params)
+
+        assert h.response_counter == len(h.responses)
 
     def utest_poll_timeout(self):
-        # create
+        httpretty.reset()
+
         ret = common.run_json.copy()
         ret["status"] = "running"
 
@@ -332,17 +363,15 @@ class UTestRun:
 @pytest.mark.usefixtures("mock")
 class UTestRunAPI:
     def utest_create(self):
-        ret = RunAPI.create(RunParams(test_id=common.test_id))
-
-        common.check_run_params(ret)
+        common.check_run_params(
+            RunAPI.create(RunParams(test_id=common.test_id))
+        )
 
         assert httpretty.last_request().method == httpretty.POST
         assert not httpretty.last_request().parsed_body
 
     def utest_read(self):
-        ret = RunAPI.read(RunParams(run_id=common.run_id))
-
-        common.check_run_params(ret)
+        common.check_run_params(RunAPI.read(RunParams(run_id=common.run_id)))
 
         assert httpretty.last_request().method == httpretty.GET
         assert not httpretty.last_request().parsed_body

@@ -352,8 +352,6 @@ class TestAPI:
 
         TestAPI.__validate_identifiers(params)
 
-        # ret =
-
         return params.from_dict(
             APIClient().get(TestAPI().route(params.test_id))
         )
@@ -370,12 +368,6 @@ class TestAPI:
         """
 
         TestAPI.__validate_identifiers(params)
-
-        # scp = deepcopy(params.script)
-
-        # ret =
-
-        # ret.script = scp
 
         return params.from_dict(
             APIClient().put(TestAPI().route(params.test_id), params.to_dict())
