@@ -26,24 +26,6 @@ class RunParticipantParams(LoaderoResourceParams):
     RunParticipantParams represents Loadero RunParticipant resource attributes.
     """
 
-    run_participant_id = None
-    _created = None
-    _updated = None
-    _participant_num = None
-    _participant_name = None
-    _group_num = None
-    _group_name = None
-    _compute_unit = None
-
-    _audio_feed = None
-    _browser = None
-    _location = None
-    _network = None
-    _video_feed = None
-
-    _run_id = None
-    _record_audio = None
-
     def __init__(self, run_participant_id: int or None = None) -> None:
         super().__init__(
             attribute_map={
@@ -76,6 +58,22 @@ class RunParticipantParams(LoaderoResourceParams):
         )
 
         self.run_participant_id = run_participant_id
+        self._created = None
+        self._updated = None
+        self._participant_num = None
+        self._participant_name = None
+        self._group_num = None
+        self._group_name = None
+        self._compute_unit = None
+
+        self._audio_feed = None
+        self._browser = None
+        self._location = None
+        self._network = None
+        self._video_feed = None
+
+        self._run_id = None
+        self._record_audio = None
 
     @property
     def created(self) -> datetime:
@@ -142,8 +140,8 @@ class RunParticipantParams(LoaderoResourceParams):
 
 
 class RunParticipant:
-    pass
+    """Not implemented."""
 
 
 class RunParticipantAPI:
-    pass
+    """Not implemented."""

@@ -93,18 +93,20 @@ class UTestRunParams:
         r = RunParams()
         r.from_dict(common.run_json)
 
+        print(r)
+
         assert (
             str(r)
             == """{
     "id": 937561,
+    "test_id": 12734,
     "created": "2022-04-01 13:54:25.689000+00:00",
     "updated": "2024-02-03 15:42:54.689000+00:00",
-    "test_id": 12734,
     "status": "running",
     "metric_status": "calculating",
-    "mos_status": "available",
     "test_mode": "load",
     "increment_strategy": "linear",
+    "mos_status": "available",
     "processing_started": "2025-07-29 19:31:29.468000+00:00",
     "processing_finished": "2019-07-09 18:39:30.488000+00:00",
     "execution_started": "2021-02-26 14:53:24.228000+00:00",

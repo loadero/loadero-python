@@ -30,15 +30,6 @@ class ResultLogParams(LoaderoResourceParams):
     ResultLogParams represents Loadero result log resource attributes.
     """
 
-    _result_log_id = None
-    _created = None
-    _result_id = None
-    _webrtc = None
-    _selenium = None
-    _browser = None
-    _rru = None
-    _allure_report = None
-
     def __init__(self):
         super().__init__(
             attribute_map={
@@ -55,6 +46,15 @@ class ResultLogParams(LoaderoResourceParams):
                 "created": parser.parse,
             },
         )
+
+        self._result_log_id = None
+        self._created = None
+        self._result_id = None
+        self._webrtc = None
+        self._selenium = None
+        self._browser = None
+        self._rru = None
+        self._allure_report = None
 
     @property
     def result_log_id(self) -> int:
@@ -94,17 +94,6 @@ class ResultAssertParams(LoaderoResourceParams):
     ResultAssert represents Loadero result assert resource attributes.
     """
 
-    _result_assert_id = None
-    _created = None
-    _path = None
-    _operator = None
-    _expected = None
-    _result_id = None
-    _run_assert_id = None
-    _message = None
-    _actual = None
-    _status = None
-
     def __init__(self):
         super().__init__(
             attribute_map={
@@ -126,6 +115,17 @@ class ResultAssertParams(LoaderoResourceParams):
                 "status": AssertStatus.from_dict,
             },
         )
+
+        self._result_assert_id = None
+        self._created = None
+        self._path = None
+        self._operator = None
+        self._expected = None
+        self._result_id = None
+        self._run_assert_id = None
+        self._message = None
+        self._actual = None
+        self._status = None
 
     @property
     def result_assert_id(self) -> int:
@@ -173,9 +173,6 @@ class ArtifactInfoParams(LoaderoResourceParams):
     ArtifactInfoParams describes Loadero artifact resources.
     """
 
-    _error = None
-    _paths = None
-
     def __init__(self):
         super().__init__(
             attribute_map={
@@ -183,6 +180,9 @@ class ArtifactInfoParams(LoaderoResourceParams):
                 "paths": "_paths",
             },
         )
+
+        self._error = None
+        self._paths = None
 
     @property
     def error(self) -> str:
@@ -197,11 +197,6 @@ class ArtifactsInfoParams(LoaderoResourceParams):
     """
     ArtifactsInfoParams describes Loadero artifacts of a single test run.
     """
-
-    _audio = None
-    _downloads = None
-    _screenshots = None
-    _video = None
 
     def __init__(self):
         super().__init__(
@@ -218,6 +213,11 @@ class ArtifactsInfoParams(LoaderoResourceParams):
                 "video": from_dict_as_new(ArtifactInfoParams),
             },
         )
+
+        self._audio = None
+        self._downloads = None
+        self._screenshots = None
+        self._video = None
 
     @property
     def audio(self) -> ArtifactInfoParams:
@@ -240,25 +240,6 @@ class MetricParams(LoaderoResourceParams):
     """
     MetricParams describes single result metric of a Loadero test run.
     """
-
-    _metric_id = None
-    _created = None
-    _data_count = None
-    _metric_path = None
-    _value = None
-    _total = None
-    _minimum = None
-    _maximum = None
-    _average = None
-    _stddev = None
-    _rstddev = None
-    _perc_1st = None
-    _perc_5th = None
-    _perc_25th = None
-    _perc_50th = None
-    _perc_75th = None
-    _perc_95th = None
-    _perc_99th = None
 
     def __init__(self):
         super().__init__(
@@ -287,6 +268,25 @@ class MetricParams(LoaderoResourceParams):
                 "metric_path": MetricBasePath.from_dict,
             },
         )
+
+        self._metric_id = None
+        self._created = None
+        self._data_count = None
+        self._metric_path = None
+        self._value = None
+        self._total = None
+        self._minimum = None
+        self._maximum = None
+        self._average = None
+        self._stddev = None
+        self._rstddev = None
+        self._perc_1st = None
+        self._perc_5th = None
+        self._perc_25th = None
+        self._perc_50th = None
+        self._perc_75th = None
+        self._perc_95th = None
+        self._perc_99th = None
 
     @property
     def metric_id(self) -> int:
@@ -366,9 +366,6 @@ class MetricsParams(LoaderoResourceParams):
     MetricsParams groups all result metrics of a Loadero test run.
     """
 
-    _machine = None
-    _webrtc = None
-
     def __init__(self):
         super().__init__(
             attribute_map={
@@ -380,6 +377,9 @@ class MetricsParams(LoaderoResourceParams):
                 "webrtc": self.__from_dict_metric_list,
             },
         )
+
+        self._machine = None
+        self._webrtc = None
 
     @property
     def machine(self) -> dict[MetricBasePath, MetricParams]:
@@ -415,14 +415,6 @@ class ResultMOSParams(LoaderoResourceParams):
     ResultMOSParams describes a single MOS result.
     """
 
-    _result_mos_id = None
-    _created = None
-    _result_id = None
-    _algorithm = None
-    _score = None
-    _start = None
-    _end = None
-
     def __init__(self):
         super().__init__(
             attribute_map={
@@ -441,6 +433,14 @@ class ResultMOSParams(LoaderoResourceParams):
                 "end": parser.parse,
             },
         )
+
+        self._result_mos_id = None
+        self._created = None
+        self._result_id = None
+        self._algorithm = None
+        self._score = None
+        self._start = None
+        self._end = None
 
     @property
     def result_mos_id(self) -> int:
@@ -476,8 +476,6 @@ class MeanOpinionScoresParams(LoaderoResourceParams):
     MeanOpinionScoresParams groups all MOS evaluations results.
     """
 
-    _visqol = None
-
     def __init__(self):
         super().__init__(
             attribute_map={
@@ -488,6 +486,8 @@ class MeanOpinionScoresParams(LoaderoResourceParams):
             },
         )
 
+        self._visqol = None
+
     @property
     def visqol(self) -> list[ResultMOSParams]:
         return self._visqol
@@ -497,13 +497,6 @@ class ResultTimecardParams(LoaderoResourceParams):
     """
     ResultTimecardParams describes a single timecard result.
     """
-
-    _result_timecard_id = None
-    _created = None
-    _result_id = None
-    _name = None
-    _start = None
-    _end = None
 
     def __init__(self):
         super().__init__(
@@ -519,6 +512,13 @@ class ResultTimecardParams(LoaderoResourceParams):
                 "created": parser.parse,
             },
         )
+
+        self._result_timecard_id = None
+        self._created = None
+        self._result_id = None
+        self._name = None
+        self._start = None
+        self._end = None
 
     @property
     def result_timecard_id(self) -> int:
@@ -550,8 +550,6 @@ class DataSyncParams(LoaderoResourceParams):
     DataSyncParams groups all datasync results result.
     """
 
-    _result_timecards = None
-
     def __init__(self):
         super().__init__(
             attribute_map={
@@ -562,6 +560,8 @@ class DataSyncParams(LoaderoResourceParams):
             },
         )
 
+        self._result_timecards = None
+
     @property
     def result_timecards(self) -> list[ResultTimecardParams]:
         return self._result_timecards
@@ -571,22 +571,6 @@ class ResultParams(LoaderoResourceParams):
     """
     ResultParams represents Loadero result resource attributes.
     """
-
-    result_id = None
-    _created = None
-    _updated = None
-    _start = None
-    _end = None
-    _status = None
-    _selenium_result = None
-    _mos_status = None
-    _participant_details = None
-    _log_paths = None
-    _asserts = None
-    _artifacts = None
-    _metrics = None
-    _mos = None
-    _data_sync = None
 
     def __init__(self, result_id: int or None = None):
         super().__init__(
@@ -626,6 +610,20 @@ class ResultParams(LoaderoResourceParams):
         )
 
         self.result_id = result_id
+        self._created = None
+        self._updated = None
+        self._start = None
+        self._end = None
+        self._status = None
+        self._selenium_result = None
+        self._mos_status = None
+        self._participant_details = None
+        self._log_paths = None
+        self._asserts = None
+        self._artifacts = None
+        self._metrics = None
+        self._mos = None
+        self._data_sync = None
 
     @property
     def created(self) -> datetime:
@@ -692,7 +690,7 @@ class Result:
     """
 
     params = None
-    run_id = None
+    run_id = None  # TODO: move this field to ResultParams
 
     def __init__(
         self,
@@ -735,6 +733,7 @@ class Result:
 class ResultAPI:
     """ResultAPI defines Loadero API operations for result resources."""
 
+    # TODO: convert function signature to take ResultParams as argument
     @staticmethod
     def read(run_id: int, result_id: int) -> ResultParams:
         """Read an existing result resource.
@@ -742,6 +741,9 @@ class ResultAPI:
         Args:
             run_id (int): Run resource id that the result belongs to.
             result_id (int): Result resource id.
+
+        Raises:
+            APIException: If API call fails.
 
         Returns:
             ResultParams: Read Result resource params.
@@ -758,6 +760,9 @@ class ResultAPI:
         Args:
             run_id (int): Parent run resource id.
 
+        Raises:
+            APIException: If API call fails.
+
         Returns:
             list[ResultParams]: List of all result resources in run.
         """
@@ -770,8 +775,8 @@ class ResultAPI:
         return from_dict_as_list(ResultParams)(resp["results"])
 
     @staticmethod
-    def request_mos(run_id: int, result_id: int):
-        pass
+    def request_mos(run_id: int, result_id: int):  # TODO: implement
+        raise Exception("not implemented")
 
     @staticmethod
     def route(run_id: int, result_id: int or None = None) -> str:

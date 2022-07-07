@@ -1,7 +1,15 @@
 """Common data shared between tests"""
 
+# pylint: disable=missing-function-docstring
+
 from dateutil import parser
+from loadero_python.resources.assert_resource import AssertParams
 from loadero_python.resources.script import Script
+from loadero_python.resources.assert_precondition import (
+    AssertPreconditionParams,
+)
+from loadero_python.resources.classificator import Property, Operator
+from loadero_python.resources.metric_path import MetricPath
 
 
 api_base = "http://mock.loadero.api/v2/"
@@ -23,6 +31,7 @@ result_mos_id = 99283476
 result_timecard_id = 88277471
 run_participant_id = 233992
 profile_id = 87
+assert_precondition_id = 9862123
 
 
 script = Script(content="pytest test script")
@@ -71,6 +80,7 @@ group_json = {
     "updated": updated_time_string,
 }
 
+# assert
 
 assert_json = {
     "id": assert_id,
@@ -81,6 +91,22 @@ assert_json = {
     "operator": "gt",
     "path": "machine/network/bitrate/in/avg",
 }
+
+assert_request_json = {
+    "expected": "892",
+    "operator": "gt",
+    "path": "machine/network/bitrate/in/avg",
+}
+
+
+def check_assert_params(params: AssertParams):
+    assert params.assert_id == assert_id
+    assert params.test_id == test_id
+    assert params.created == created_time
+    assert params.updated == updated_time
+    assert params.expected == "892"
+    assert params.operator is Operator.O_GT
+    assert params.path is MetricPath.MACHINE_NETWORK_BITRATE_IN_AVG
 
 
 test_json = {
@@ -297,3 +323,32 @@ result_json = {
     "mos": mean_opinion_scores_json,
     "data_sync": data_sync_json,
 }
+
+# assert precondition
+
+assert_precondition_json = {
+    "assert_id": assert_id,
+    "created": created_time_string,
+    "updated": updated_time_string,
+    "expected": "10",
+    "id": assert_precondition_id,
+    "operator": "gt",
+    "property": "group_num",
+}
+
+assert_precondition_request_json = {
+    "expected": "10",
+    "operator": "gt",
+    "property": "group_num",
+}
+
+
+def check_assert_precondition_params(params: AssertPreconditionParams):
+    assert params.assert_precondition_id == assert_precondition_id
+    assert params.assert_id == assert_id
+    assert params.test_id == test_id
+    assert params.created == created_time
+    assert params.updated == updated_time
+    assert params.expected == "10"
+    assert params.operator == Operator.O_GT
+    assert params.precondition_property == Property.P_GROUP_NUM

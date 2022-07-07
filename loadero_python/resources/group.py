@@ -27,17 +27,6 @@ class GroupParams(LoaderoResourceParams):
     attributes.
     """
 
-    group_id = None
-    test_id = None
-
-    count = None
-    name = None
-
-    _total_cu_count = None
-    _participant_count = None
-    _created = None
-    _updated = None
-
     def __init__(
         self,
         group_id: int or None = None,
@@ -74,6 +63,11 @@ class GroupParams(LoaderoResourceParams):
         self.name = name
         self.count = count
         self.test_id = test_id
+
+        self._total_cu_count = None
+        self._participant_count = None
+        self._created = None
+        self._updated = None
 
     @property
     def created(self) -> datetime or None:
@@ -376,3 +370,5 @@ class GroupAPI:
             r += f"{group_id}/"
 
         return r
+
+    # TODO: create __validate_identifiers method and apply it.

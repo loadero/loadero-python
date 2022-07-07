@@ -30,33 +30,9 @@ class RunParams(LoaderoResourceParams):
     RunParams represents Loadero run resource attributes.
     """
 
-    run_id = None
-    test_id = None
-
-    _created = None
-    _updated = None
-
-    _status = None
-    _metric_status = None
-    _test_mode = None
-    _increment_strategy = None
-    _mos_status = None
-    _processing_started = None
-    _processing_finished = None
-    _execution_started = None
-    _execution_finished = None
-    _script_file_id = None
-    _test_name = None
-    _start_interval = None
-    _participant_timeout = None
-    _launching_account_id = None
-    _success_rate = None
-    _total_cu_count = None
-    _group_count = None
-    _participant_count = None
-    _mos_test = None
-
-    def __init__(self, run_id: int or None = None) -> None:
+    def __init__(
+        self, run_id: int or None = None, test_id: int or None = None
+    ) -> None:
         super().__init__(
             attribute_map={
                 "id": "run_id",
@@ -99,6 +75,30 @@ class RunParams(LoaderoResourceParams):
         )
 
         self.run_id = run_id
+        self.test_id = test_id
+
+        self._created = None
+        self._updated = None
+
+        self._status = None
+        self._metric_status = None
+        self._test_mode = None
+        self._increment_strategy = None
+        self._mos_status = None
+        self._processing_started = None
+        self._processing_finished = None
+        self._execution_started = None
+        self._execution_finished = None
+        self._script_file_id = None
+        self._test_name = None
+        self._start_interval = None
+        self._participant_timeout = None
+        self._launching_account_id = None
+        self._success_rate = None
+        self._total_cu_count = None
+        self._group_count = None
+        self._participant_count = None
+        self._mos_test = None
 
     @property
     def created(self) -> datetime:
@@ -339,3 +339,5 @@ class RunAPI:
             r += f"{run_id}/"
 
         return r
+
+    # TODO: create __validate_identifiers method and apply it.

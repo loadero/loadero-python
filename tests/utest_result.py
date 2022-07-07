@@ -160,16 +160,16 @@ class UTestResultAssert:
         assert (
             str(ra)
             == """{
+    "id": 9876231,
+    "created": "2022-04-01 13:54:25.689000+00:00",
     "path": "machine/cpu/available/total",
     "operator": "gt",
     "expected": "value",
-    "id": 9876231,
-    "created": "2022-04-01 13:54:25.689000+00:00",
     "result_id": 992341,
     "run_assert_id": 871342,
+    "message": "message",
     "actual": "actual",
-    "status": "fail",
-    "message": "message"
+    "status": "fail"
 }"""
         )
 
@@ -192,11 +192,11 @@ class UTestArtifactInfoParams:
         assert (
             str(ai)
             == """{
+    "error": "artifact error",
     "paths": [
         "artifact_path1",
         "artifact_path2"
-    ],
-    "error": "artifact error"
+    ]
 }"""
         )
 
@@ -242,19 +242,19 @@ class UTestArtifactsInfoParams:
             str(ai)
             == """{
     "audio": {
+        "error": "artifact error",
         "paths": [
             "artifact_path1",
             "artifact_path2"
-        ],
-        "error": "artifact error"
+        ]
     },
     "downloads": {},
     "screenshots": {
+        "error": "artifact error",
         "paths": [
             "artifact_path1",
             "artifact_path2"
-        ],
-        "error": "artifact error"
+        ]
     },
     "video": {}
 }"""
@@ -769,6 +769,8 @@ class UTestResultParams:
         m = ResultParams()
         m.from_dict(common.result_json)
 
+        print(m)
+
         assert (
             str(m)
             == """{
@@ -782,20 +784,20 @@ class UTestResultParams:
     "mos_status": "calculating",
     "participant_details": {
         "id": 233992,
-        "updated": "2024-02-03 15:42:54.689000+00:00",
         "created": "2022-04-01 13:54:25.689000+00:00",
-        "run_id": 937561,
-        "group_name": "group name",
-        "group_num": 23,
-        "participant_name": "participant name",
+        "updated": "2024-02-03 15:42:54.689000+00:00",
         "participant_num": 123,
-        "record_audio": true,
+        "participant_name": "participant name",
+        "group_num": 23,
+        "group_name": "group name",
         "compute_unit": "g4",
         "audio_feed": "silence",
         "browser": "chromeLatest",
         "location": "eu-central-1",
         "network": "4g",
-        "video_feed": "480p-15fps"
+        "video_feed": "480p-15fps",
+        "run_id": 937561,
+        "record_audio": true
     },
     "log_paths": {
         "id": 552648,
@@ -809,45 +811,45 @@ class UTestResultParams:
     },
     "asserts": [
         {
+            "id": 9876231,
+            "created": "2022-04-01 13:54:25.689000+00:00",
             "path": "machine/cpu/available/total",
             "operator": "gt",
             "expected": "value",
-            "id": 9876231,
-            "created": "2022-04-01 13:54:25.689000+00:00",
             "result_id": 992341,
             "run_assert_id": 871342,
+            "message": "message",
             "actual": "actual",
-            "status": "fail",
-            "message": "message"
+            "status": "fail"
         },
         {
+            "id": 9876231,
+            "created": "2022-04-01 13:54:25.689000+00:00",
             "path": "machine/cpu/available/total",
             "operator": "gt",
             "expected": "value",
-            "id": 9876231,
-            "created": "2022-04-01 13:54:25.689000+00:00",
             "result_id": 992341,
             "run_assert_id": 871342,
+            "message": "message",
             "actual": "actual",
-            "status": "fail",
-            "message": "message"
+            "status": "fail"
         }
     ],
     "artifacts": {
         "audio": {
+            "error": "artifact error",
             "paths": [
                 "artifact_path1",
                 "artifact_path2"
-            ],
-            "error": "artifact error"
+            ]
         },
         "downloads": {},
         "screenshots": {
+            "error": "artifact error",
             "paths": [
                 "artifact_path1",
                 "artifact_path2"
-            ],
-            "error": "artifact error"
+            ]
         },
         "video": {}
     },
@@ -1194,7 +1196,8 @@ class UTestResultAPI:
         assert not ResultAPI.read_all(common.run_id)
 
     def utest_request_mos(self):
-        ResultAPI.request_mos(common.run_id, common.result_id)
+        with pytest.raises(Exception):
+            ResultAPI.request_mos(common.run_id, common.result_id)
 
     def utest_route(self):
 

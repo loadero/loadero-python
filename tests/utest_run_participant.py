@@ -1,7 +1,6 @@
 """Run participant resource tests"""
 
 
-# pylint: disable=missing-function-docstring
 # pylint: disable=missing-class-docstring
 
 
@@ -101,19 +100,19 @@ class UTestRunParticipantParams:
             str(rp)
             == """{
     "id": 233992,
-    "updated": "2024-02-03 15:42:54.689000+00:00",
     "created": "2022-04-01 13:54:25.689000+00:00",
-    "run_id": 937561,
-    "group_name": "group name",
-    "group_num": 23,
-    "participant_name": "participant name",
+    "updated": "2024-02-03 15:42:54.689000+00:00",
     "participant_num": 123,
-    "record_audio": true,
+    "participant_name": "participant name",
+    "group_num": 23,
+    "group_name": "group name",
     "compute_unit": "g4",
     "audio_feed": "silence",
     "browser": "chromeLatest",
     "location": "eu-central-1",
     "network": "4g",
-    "video_feed": "480p-15fps"
+    "video_feed": "480p-15fps",
+    "run_id": 937561,
+    "record_audio": true
 }"""
         )

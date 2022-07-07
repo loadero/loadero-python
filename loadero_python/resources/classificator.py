@@ -14,8 +14,6 @@ class VersionedBrowser(Serializable):
     browser classificator with specific version type.
     """
 
-    __value = None
-
     def __init__(self, value):
         self.__value = value
 
