@@ -21,12 +21,6 @@ from .classificator import FileType
 class FileParams(LoaderoResourceParams):
     """FileParams represents Loadero file parameters."""
 
-    file_id = None
-    _created = None
-    _updated = None
-    _file_type = None
-    _content = None
-
     def __init__(self, file_id: int or None = None):
         super().__init__(
             attribute_map={
@@ -52,6 +46,11 @@ class FileParams(LoaderoResourceParams):
         )
 
         self.file_id = file_id
+
+        self._created = None
+        self._updated = None
+        self._file_type = None
+        self._content = None
 
     @property
     def created(self) -> datetime or None:
@@ -145,6 +144,9 @@ class FileAPI:
         Args:
             params (FileParams): Describes the file resource to read.
 
+        Raises:
+            Exception: FileParams.file_id was not defined.
+            APIException: If API call fails.
 
         Returns:
             FileParams: Read file resource.
@@ -158,7 +160,10 @@ class FileAPI:
 
     @staticmethod
     def read_all() -> list[FileParams]:
-        """Read all files.
+        """Read all files in project.
+
+        Raises:
+            APIException: If API call fails.
 
         Returns:
             list[FileParams]: List of file resources in project.

@@ -34,24 +34,6 @@ class ParticipantParams(LoaderoResourceParams):
     write attributes.
     """
 
-    participant_id = None
-    test_id = None
-
-    name = None
-    count = None
-    compute_unit = None
-    group_id = None
-    record_audio = None
-
-    audio_feed = None
-    browser = None
-    location = None
-    network = None
-    video_feed = None
-
-    _created = None
-    _updated = None
-
     def __init__(
         self,
         participant_id: int or None = None,
@@ -131,6 +113,9 @@ class ParticipantParams(LoaderoResourceParams):
         self.location = location
         self.network = network
         self.video_feed = video_feed
+
+        self._created = None
+        self._updated = None
 
     @property
     def created(self) -> datetime:
@@ -490,3 +475,5 @@ class ParticipantAPI:
             r += f"{participant_id}/"
 
         return r
+
+    # TODO: create and apply __validate_identifiers method
