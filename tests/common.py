@@ -8,10 +8,8 @@ from loadero_python.resources.script import Script
 from loadero_python.resources.assert_precondition import (
     AssertPreconditionParams,
 )
-from loadero_python.resources.classificator import Property, Operator
-from loadero_python.resources.metric_path import MetricPath
+from loadero_python.resources.metric_path import MetricPath, MetricBasePath
 
-from dateutil import parser
 from loadero_python.resources.participant import ParticipantParams
 from loadero_python.resources.run import RunParams
 from loadero_python.resources.result import (
@@ -27,8 +25,6 @@ from loadero_python.resources.result import (
     DataSyncParams,
 )
 from loadero_python.resources.run_participant import RunParticipantParams
-from loadero_python.resources.script import Script
-from loadero_python.resources.metric_path import MetricPath, MetricBasePath
 from loadero_python.resources.classificator import (
     MosAlgorithm,
     RunStatus,
@@ -42,12 +38,12 @@ from loadero_python.resources.classificator import (
     Location,
     Network,
     VideoFeed,
+    Property,
     Operator,
     AssertStatus,
 )
 from loadero_python.resources.test import TestParams
 from loadero_python.resources.group import GroupParams
-from loadero_python.resources.assert_resource import AssertParams
 
 api_base = "http://mock.loadero.api/v2/"
 access_token = "LOADERO_PROJECT_ACCESS_TOKEN"
@@ -136,6 +132,7 @@ group_json = {
 
 # assert
 
+
 def check_group_params(params: GroupParams):
     assert params.group_id == group_id
     assert params.created == created_time
@@ -170,16 +167,6 @@ def check_assert_params(params: AssertParams):
     assert params.expected == "892"
     assert params.operator is Operator.O_GT
     assert params.path is MetricPath.MACHINE_NETWORK_BITRATE_IN_AVG
-
-
-def check_assert_params(params: AssertParams):
-    assert params.assert_id == assert_id
-    assert params.test_id == test_id
-    assert params.created == created_time
-    assert params.updated == updated_time
-    assert params.expected == "892"
-    assert params.operator == Operator.O_GT
-    assert params.path == MetricPath.MACHINE_NETWORK_BITRATE_IN_AVG
 
 
 test_json = {
@@ -601,6 +588,8 @@ def check_extended_result_params(params: ResultParams):
     check_mean_opinion_scores_params(params.mos)
 
     check_result_data_sync_params(params.data_sync)
+
+
 # assert precondition
 
 assert_precondition_json = {

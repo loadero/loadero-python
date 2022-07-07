@@ -344,9 +344,7 @@ class UTestTest:
         assert not httpretty.last_request().parsed_body
 
     def utest_groups(self):
-        t = Test(test_id=common.test_id)
-
-        resp = t.groups()
+        resp = Test(test_id=common.test_id).groups()
 
         assert len(resp) == 2
 
@@ -356,10 +354,12 @@ class UTestTest:
         assert httpretty.last_request().method == httpretty.GET
         assert not httpretty.last_request().parsed_body
 
-    def utest_participants(self):
-        t = Test(test_id=common.test_id)
+    def utest_groups_invalid_params(self):
+        with pytest.raises(ValueError):
+            Test().groups()
 
-        resp = t.participants()
+    def utest_participants(self):
+        resp = Test(test_id=common.test_id).participants()
 
         assert len(resp) == 2
 
@@ -369,10 +369,12 @@ class UTestTest:
         assert httpretty.last_request().method == httpretty.GET
         assert not httpretty.last_request().parsed_body
 
-    def utest_asserts(self):
-        t = Test(test_id=common.test_id)
+    def utest_participants_invalid_params(self):
+        with pytest.raises(ValueError):
+            Test().participants()
 
-        resp = t.asserts()
+    def utest_asserts(self):
+        resp = Test(test_id=common.test_id).asserts()
 
         assert len(resp) == 2
 
@@ -381,6 +383,10 @@ class UTestTest:
 
         assert httpretty.last_request().method == httpretty.GET
         assert not httpretty.last_request().parsed_body
+
+    def utest_asserts_invalid_params(self):
+        with pytest.raises(ValueError):
+            Test().asserts()
 
 
 @pytest.mark.usefixtures("mock")
