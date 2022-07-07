@@ -3,6 +3,7 @@
 
 # pylint: disable=missing-function-docstring
 # pylint: disable=missing-class-docstring
+# pylint: disable=no-member
 
 import json
 import re
@@ -31,12 +32,6 @@ from loadero_python.resources.classificator import (
     AssertStatus,
     ResultStatus,
     MetricStatus,
-    ComputeUnit,
-    AudioFeed,
-    Browser,
-    Location,
-    Network,
-    VideoFeed,
 )
 from loadero_python.resources.run_participant import RunParticipantParams
 from . import common
@@ -767,7 +762,7 @@ class UTestResultParams:
 
     def utest_str(self):
         m = ResultParams()
-        m.from_dict(common.result_json)
+        m.from_dict(common.extended_result_json)
 
         print(m)
 
@@ -998,26 +993,20 @@ def mock():
         re.compile(
             r"^http://mock\.loadero\.api/v2/projects/\d*/runs/\d*/results/\d*/$"
         ),
-        body=json.dumps(common.result_json),
+        body=json.dumps(common.extended_result_json),
         forcing_headers={"Content-Type": "application/json"},
     )
 
     # read all
-    rpg = common.paged_response.copy()
-    r1 = common.result_json.copy()
-    r1["id"] += 1
-
-    r2 = common.result_json.copy()
-    r2["id"] += 2
-
-    rpg["results"] = [r1, r2]
+    pg = common.paged_response.copy()
+    pg["results"] = [common.result_json, common.result_json]
 
     httpretty.register_uri(
         httpretty.GET,
         re.compile(
             r"^http://mock\.loadero\.api/v2/projects/\d*/runs/\d*/results/$"
         ),
-        body=json.dumps(rpg),
+        body=json.dumps(pg),
         forcing_headers={"Content-Type": "application/json"},
     )
 
@@ -1047,17 +1036,14 @@ class UTestResult:
         assert r.params.result_id == 4
 
     def utest_read(self):
-        r = Result(run_id=common.run_id, result_id=common.result_id)
-        r.read()
+        common.check_result_params(
+            Result(run_id=common.run_id, result_id=common.result_id)
+            .read()
+            .params
+        )
 
-        assert r.params.result_id == common.result_id
-        assert r.params.created == common.created_time
-        assert r.params.updated == common.updated_time
-        assert r.params.start == common.start_time
-        assert r.params.end == common.end_time
-        assert r.params.status == ResultStatus.RS_TIMEOUT
-        assert r.params.selenium_result == ResultStatus.RS_ABORTED
-        assert r.params.mos_status == MetricStatus.MS_CALCULATING
+        assert httpretty.last_request().method == httpretty.GET
+        assert not httpretty.last_request().parsed_body
 
     def utest_read_invalid_run_id(self):
         r = Result(result_id=common.result_id)
@@ -1072,113 +1058,22 @@ class UTestResult:
 
 @pytest.mark.usefixtures("mock")
 class UTestResultAPI:
-    # pylint: disable=too-many-statements
     def utest_read(self):
-        resp = ResultAPI.read(common.run_id, common.result_id)
-
-        assert resp.result_id == common.result_id
-        assert resp.created == common.created_time
-        assert resp.updated == common.updated_time
-        assert resp.start == common.start_time
-        assert resp.end == common.end_time
-        assert resp.status == ResultStatus.RS_TIMEOUT
-        assert resp.selenium_result == ResultStatus.RS_ABORTED
-        assert resp.mos_status == MetricStatus.MS_CALCULATING
-
-        assert (
-            resp.participant_details.run_participant_id
-            == common.run_participant_id
+        common.check_extended_result_params(
+            ResultAPI.read(common.run_id, common.result_id)
         )
-        assert resp.participant_details.run_id == common.run_id
-        assert resp.participant_details.created == common.created_time
-        assert resp.participant_details.updated == common.updated_time
-        assert resp.participant_details.participant_num == 123
-        assert resp.participant_details.participant_name == "participant name"
-        assert resp.participant_details.group_num == 23
-        assert resp.participant_details.group_name == "group name"
-        assert resp.participant_details.compute_unit == ComputeUnit.CU_G4
-        assert resp.participant_details.audio_feed == AudioFeed.AF_SILENCE
-        assert resp.participant_details.browser == Browser.B_CHROMELATEST
-        assert resp.participant_details.location == Location.L_EU_CENTRAL_1
-        assert resp.participant_details.network == Network.N_4G
-        assert resp.participant_details.video_feed == VideoFeed.VF_480P_15FPS
 
-        assert resp.log_paths.result_log_id == common.result_log_id
-        assert resp.log_paths.created == common.created_time
-        assert resp.log_paths.result_id == common.result_id
-        assert resp.log_paths.webrtc == "webrtc_log.txt"
-        assert resp.log_paths.selenium == "selenium_log.txt"
-        assert resp.log_paths.browser == "browser_log.txt"
-        assert resp.log_paths.rru == "rru_log.txt"
-        assert resp.log_paths.allure_report == "allure_report_log.txt"
-
-        assert len(resp.asserts) == 2
-        assert resp.asserts[0].result_assert_id == common.result_assert_id
-        assert resp.asserts[0].path == MetricPath.MACHINE_CPU_AVAILABLE_TOTAL
-        assert resp.asserts[0].operator == Operator.O_GT
-        assert resp.asserts[0].expected == "value"
-        assert resp.asserts[0].created == common.created_time
-        assert resp.asserts[0].result_id == common.result_id
-        assert resp.asserts[0].actual == "actual"
-        assert resp.asserts[0].status == AssertStatus.AS_FAIL
-        assert resp.asserts[0].message == "message"
-
-        assert resp.artifacts.audio.paths == [
-            "artifact_path1",
-            "artifact_path2",
-        ]
-        assert resp.artifacts.audio.error == "artifact error"
-        assert resp.artifacts.downloads.paths is None
-        assert resp.artifacts.screenshots.paths == [
-            "artifact_path1",
-            "artifact_path2",
-        ]
-        assert resp.artifacts.screenshots.error == "artifact error"
-        assert resp.artifacts.video.paths is None
-
-        assert (
-            resp.metrics.machine[MetricBasePath.MACHINE_CPU_AVAILABLE].metric_id
-            == common.metric_id
-        )
-        assert (
-            resp.metrics.machine[MetricBasePath.MACHINE_CPU_AVAILABLE].maximum
-            == 5.3
-        )
-        assert len(resp.metrics.machine) == 2
-        assert len(resp.metrics.webrtc) == 2
-
-        assert len(resp.mos.visqol) == 2
-        assert resp.mos.visqol[0].result_mos_id == common.result_mos_id
-        assert resp.mos.visqol[0].created == common.created_time
-        assert resp.mos.visqol[0].result_id == common.result_id
-        assert resp.mos.visqol[0].algorithm == MosAlgorithm.MA_VISQOL
-        assert resp.mos.visqol[0].score == 3.2
-        assert resp.mos.visqol[0].start == common.start_time
-        assert resp.mos.visqol[0].end == common.end_time
-
-        assert len(resp.data_sync.result_timecards) == 2
-        assert (
-            resp.data_sync.result_timecards[0].result_timecard_id
-            == common.result_timecard_id
-        )
-        assert resp.data_sync.result_timecards[0].created == common.created_time
-        assert resp.data_sync.result_timecards[0].result_id == common.result_id
-        assert resp.data_sync.result_timecards[0].name == "timecard name"
-        assert resp.data_sync.result_timecards[0].start == 12314
-        assert resp.data_sync.result_timecards[0].end == 4123
+        assert httpretty.last_request().method == httpretty.GET
+        assert not httpretty.last_request().parsed_body
 
     def utest_read_all(self):
         resp = ResultAPI.read_all(common.run_id)
 
-        for i, ret in enumerate(resp):
-            assert ret.result_id == common.result_id + i + 1
-            assert ret.created == common.created_time
-            assert ret.updated == common.updated_time
-            assert ret.start == common.start_time
-            assert ret.end == common.end_time
-            assert ret.status == ResultStatus.RS_TIMEOUT
-            assert ret.selenium_result == ResultStatus.RS_ABORTED
-            assert ret.mos_status == MetricStatus.MS_CALCULATING
+        for ret in resp:
+            common.check_result_params(ret)
+
+        assert httpretty.last_request().method == httpretty.GET
+        assert not httpretty.last_request().parsed_body
 
     def utest_read_all_null_results(self):
         rpg = common.paged_response.copy()
@@ -1200,11 +1095,11 @@ class UTestResultAPI:
             ResultAPI.request_mos(common.run_id, common.result_id)
 
     def utest_route(self):
-
         assert (
             ResultAPI.route(common.run_id)
             == "http://mock.loadero.api/v2/projects/538591/runs/937561/results/"
         )
+
         assert (
             ResultAPI.route(common.run_id, common.result_id)
             == "http://mock.loadero.api/v2/projects/538591/runs/937561/"

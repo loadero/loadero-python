@@ -17,17 +17,26 @@ from loadero_python.resources.classificator import (
     MetricStatus,
     TestMode,
     IncrementStrategy,
-    ResultStatus,
 )
 from . import common
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture
 def mock():
     httpretty.enable(allow_net_connect=False, verbose=True)
     httpretty.reset()
 
     APIClient(common.project_id, common.access_token, common.api_base)
+
+    # create
+    httpretty.register_uri(
+        httpretty.POST,
+        re.compile(
+            r"^http://mock\.loadero\.api/v2/projects/\d*/tests/\d*/runs/$"
+        ),
+        body=json.dumps(common.run_json),
+        forcing_headers={"Content-Type": "application/json"},
+    )
 
     # read
     httpretty.register_uri(
@@ -38,13 +47,7 @@ def mock():
     )
 
     pg = common.paged_response.copy()
-    r1 = common.run_json.copy()
-    r1["id"] += 1
-
-    r2 = common.run_json.copy()
-    r2["id"] += 2
-
-    pg["results"] = [r1, r2]
+    pg["results"] = [common.run_json, common.run_json]
 
     # read all, parent project
     httpretty.register_uri(
@@ -65,22 +68,26 @@ def mock():
     )
 
     # read all results
-    rpg = common.paged_response.copy()
-    r1 = common.result_json.copy()
-    r1["id"] += 1
-
-    r2 = common.result_json.copy()
-    r2["id"] += 2
-
-    rpg["results"] = [r1, r2]
+    pg = common.paged_response.copy()
+    pg["results"] = [common.result_json, common.result_json]
 
     httpretty.register_uri(
         httpretty.GET,
         re.compile(
             r"^http://mock\.loadero\.api/v2/projects/\d*/runs/\d*/results/$"
         ),
-        body=json.dumps(rpg),
+        body=json.dumps(pg),
         forcing_headers={"Content-Type": "application/json"},
+    )
+
+    # stop
+    httpretty.register_uri(
+        httpretty.POST,
+        re.compile(
+            r"^http://mock\.loadero\.api"
+            r"/v2/projects/\d*/tests/\d*/runs/\d*/stop/$"
+        ),
+        body="",
     )
 
     yield
@@ -92,9 +99,6 @@ class UTestRunParams:
     def utest_str(self):
         r = RunParams()
         r.from_dict(common.run_json)
-
-        print(r)
-
         assert (
             str(r)
             == """{
@@ -102,7 +106,7 @@ class UTestRunParams:
     "test_id": 12734,
     "created": "2022-04-01 13:54:25.689000+00:00",
     "updated": "2024-02-03 15:42:54.689000+00:00",
-    "status": "running",
+    "status": "done",
     "metric_status": "calculating",
     "test_mode": "load",
     "increment_strategy": "linear",
@@ -112,7 +116,7 @@ class UTestRunParams:
     "execution_started": "2021-02-26 14:53:24.228000+00:00",
     "execution_finished": "2023-06-26 19:38:25.268000+00:00",
     "script_file_id": 294325,
-    "test_name": "py test test",
+    "test_name": "pytest test",
     "start_interval": 98,
     "participant_timeout": 92,
     "launching_account_id": 12,
@@ -242,85 +246,113 @@ class UTestRunParams:
 
 @pytest.mark.usefixtures("mock")
 class UTestRun:
+    def utest_init(self):
+        r = Run()
+
+        assert not r.params.run_id
+
+        r = Run(
+            run_id=common.run_id,
+            test_id=common.test_id,
+            params=RunParams(
+                run_id=1,
+                test_id=2,
+            ),
+        )
+
+        assert r.params.run_id == common.run_id
+        assert r.params.test_id == common.test_id
+
     def utest_create(self):
-        r = Run(run_id=common.run_id)
-        r.create()
+        common.check_run_params(
+            Run(run_id=common.run_id, test_id=common.test_id).create().params
+        )
 
-    # pylint: disable=too-many-statements
+        assert httpretty.last_request().method == httpretty.POST
+        assert not httpretty.last_request().parsed_body
+
     def utest_read(self):
-        r = Run(run_id=common.run_id)
-        r.read()
+        common.check_run_params(Run(run_id=common.run_id).read().params)
 
-        assert r.params.run_id == common.run_id
-        assert r.params.test_id == common.test_id
-        assert r.params.created == common.created_time
-        assert r.params.updated == common.updated_time
-        assert r.params.status == RunStatus.RS_RUNNING
-        assert r.params.metric_status == MetricStatus.MS_CALCULATING
-        assert r.params.mos_status == MetricStatus.MS_AVAILABLE
-        assert r.params.test_mode == TestMode.TM_LOAD
-        assert r.params.increment_strategy == IncrementStrategy.IS_LINEAR
-        assert r.params.processing_started == common.processing_started
-        assert r.params.processing_finished == common.processing_finished
-        assert r.params.execution_started == common.execution_started
-        assert r.params.execution_finished == common.execution_finished
-        assert r.params.script_file_id == common.file_id
-        assert r.params.test_name == "py test test"
-        assert r.params.start_interval == 98
-        assert r.params.participant_timeout == 92
-        assert r.params.launching_account_id == 12
-        assert r.params.success_rate == 0.3
-        assert r.params.total_cu_count == 3.3
-        assert r.params.group_count == 5
-        assert r.params.participant_count == 89
-        assert r.params.mos_test is True
-
-        r = Run(params=RunParams(run_id=common.run_id))
-        r.read()
-
-        assert r.params.run_id == common.run_id
-        assert r.params.test_id == common.test_id
-        assert r.params.created == common.created_time
-        assert r.params.updated == common.updated_time
-        assert r.params.status == RunStatus.RS_RUNNING
-        assert r.params.metric_status == MetricStatus.MS_CALCULATING
-        assert r.params.mos_status == MetricStatus.MS_AVAILABLE
-        assert r.params.test_mode == TestMode.TM_LOAD
-        assert r.params.increment_strategy == IncrementStrategy.IS_LINEAR
-        assert r.params.processing_started == common.processing_started
-        assert r.params.processing_finished == common.processing_finished
-        assert r.params.execution_started == common.execution_started
-        assert r.params.execution_finished == common.execution_finished
-        assert r.params.script_file_id == common.file_id
-        assert r.params.test_name == "py test test"
-        assert r.params.start_interval == 98
-        assert r.params.participant_timeout == 92
-        assert r.params.launching_account_id == 12
-        assert r.params.success_rate == 0.3
-        assert r.params.total_cu_count == 3.3
-        assert r.params.group_count == 5
-        assert r.params.participant_count == 89
-        assert r.params.mos_test is True
+        assert httpretty.last_request().method == httpretty.GET
+        assert not httpretty.last_request().parsed_body
 
     def utest_stop(self):
-        r = Run(run_id=common.run_id)
-        r.stop()
+        Run(run_id=common.run_id, test_id=common.test_id).stop()
+
+        assert httpretty.last_request().method == httpretty.POST
+        assert not httpretty.last_request().parsed_body
+
+    def utest_poll(self):
+        httpretty.reset()
+
+        running_resp = common.run_json.copy()
+        running_resp["status"] = "running"
+
+        class Handler:
+            responses = [
+                running_resp,
+                running_resp,
+                running_resp,
+                running_resp,
+                common.run_json,
+            ]
+            response_counter = 0
+
+            def handle(self, _, __, ___):
+                self.response_counter += 1
+                return (
+                    200,
+                    {"Content-Type": "application/json"},
+                    json.dumps(self.responses[self.response_counter - 1]),
+                )
+
+        h = Handler()
+
+        httpretty.register_uri(
+            httpretty.GET,
+            re.compile(
+                r"^http://mock\.loadero\.api/v2/projects/\d*/runs/\d*/$"
+            ),
+            body=h.handle,
+            forcing_headers={"Content-Type": "application/json"},
+        )
+
+        common.check_run_params(Run(run_id=common.run_id).poll(0.1, 1).params)
+
+        assert h.response_counter == len(h.responses)
+
+    def utest_poll_timeout(self):
+        httpretty.reset()
+
+        ret = common.run_json.copy()
+        ret["status"] = "running"
+
+        httpretty.register_uri(
+            httpretty.GET,
+            re.compile(
+                r"^http://mock\.loadero\.api/v2/projects/\d*/runs/\d*/$"
+            ),
+            body=json.dumps(ret),
+            forcing_headers={"Content-Type": "application/json"},
+        )
+
+        with pytest.raises(TimeoutError):
+            Run(run_id=common.run_id).poll(0.1, 0.1)
+
+        assert httpretty.last_request().method == httpretty.GET
+        assert not httpretty.last_request().parsed_body
 
     def utest_results(self):
-        r = Run(run_id=common.run_id)
-        resp = r.results()
+        resp = Run(run_id=common.run_id).results()
 
         assert len(resp) == 2
 
-        for i, ret in enumerate(resp):
-            assert ret.params.result_id == common.result_id + i + 1
-            assert ret.params.created == common.created_time
-            assert ret.params.updated == common.updated_time
-            assert ret.params.start == common.start_time
-            assert ret.params.end == common.end_time
-            assert ret.params.status == ResultStatus.RS_TIMEOUT
-            assert ret.params.selenium_result == ResultStatus.RS_ABORTED
-            assert ret.params.mos_status == MetricStatus.MS_CALCULATING
+        for ret in resp:
+            common.check_result_params(ret.params)
+
+        assert httpretty.last_request().method == httpretty.GET
+        assert not httpretty.last_request().parsed_body
 
     def utest_results_invalid_run_id(self):
         r = Run()
@@ -331,94 +363,40 @@ class UTestRun:
 @pytest.mark.usefixtures("mock")
 class UTestRunAPI:
     def utest_create(self):
-        RunAPI.create(1)
+        common.check_run_params(
+            RunAPI.create(RunParams(test_id=common.test_id))
+        )
+
+        assert httpretty.last_request().method == httpretty.POST
+        assert not httpretty.last_request().parsed_body
 
     def utest_read(self):
-        ret = RunAPI.read(RunParams(run_id=common.run_id))
+        common.check_run_params(RunAPI.read(RunParams(run_id=common.run_id)))
 
-        assert ret.run_id == common.run_id
-        assert ret.test_id == common.test_id
-        assert ret.created == common.created_time
-        assert ret.updated == common.updated_time
-        assert ret.status == RunStatus.RS_RUNNING
-        assert ret.metric_status == MetricStatus.MS_CALCULATING
-        assert ret.mos_status == MetricStatus.MS_AVAILABLE
-        assert ret.test_mode == TestMode.TM_LOAD
-        assert ret.increment_strategy == IncrementStrategy.IS_LINEAR
-        assert ret.processing_started == common.processing_started
-        assert ret.processing_finished == common.processing_finished
-        assert ret.execution_started == common.execution_started
-        assert ret.execution_finished == common.execution_finished
-        assert ret.script_file_id == common.file_id
-        assert ret.test_name == "py test test"
-        assert ret.start_interval == 98
-        assert ret.participant_timeout == 92
-        assert ret.launching_account_id == 12
-        assert ret.success_rate == 0.3
-        assert ret.total_cu_count == 3.3
-        assert ret.group_count == 5
-        assert ret.participant_count == 89
-        assert ret.mos_test is True
+        assert httpretty.last_request().method == httpretty.GET
+        assert not httpretty.last_request().parsed_body
 
-    # pylint: disable=too-many-statements
-    def utest_read_all(self):
+    def utest_read_all_parent_project(self):
         resp = RunAPI.read_all()
 
         assert len(resp) == 2
 
-        for i, ret in enumerate(resp):
-            assert ret.run_id == common.run_id + i + 1
-            assert ret.test_id == common.test_id
-            assert ret.created == common.created_time
-            assert ret.updated == common.updated_time
-            assert ret.status == RunStatus.RS_RUNNING
-            assert ret.metric_status == MetricStatus.MS_CALCULATING
-            assert ret.mos_status == MetricStatus.MS_AVAILABLE
-            assert ret.test_mode == TestMode.TM_LOAD
-            assert ret.increment_strategy == IncrementStrategy.IS_LINEAR
-            assert ret.processing_started == common.processing_started
-            assert ret.processing_finished == common.processing_finished
-            assert ret.execution_started == common.execution_started
-            assert ret.execution_finished == common.execution_finished
-            assert ret.script_file_id == common.file_id
-            assert ret.test_name == "py test test"
-            assert ret.start_interval == 98
-            assert ret.participant_timeout == 92
-            assert ret.launching_account_id == 12
-            assert ret.success_rate == 0.3
-            assert ret.total_cu_count == 3.3
-            assert ret.group_count == 5
-            assert ret.participant_count == 89
-            assert ret.mos_test is True
+        for ret in resp:
+            common.check_run_params(ret)
 
+        assert httpretty.last_request().method == httpretty.GET
+        assert not httpretty.last_request().parsed_body
+
+    def utest_read_all_parent_test(self):
         resp = RunAPI.read_all(common.test_id)
 
         assert len(resp) == 2
 
-        for i, ret in enumerate(resp):
-            assert ret.run_id == common.run_id + i + 1
-            assert ret.test_id == common.test_id
-            assert ret.created == common.created_time
-            assert ret.updated == common.updated_time
-            assert ret.status == RunStatus.RS_RUNNING
-            assert ret.metric_status == MetricStatus.MS_CALCULATING
-            assert ret.mos_status == MetricStatus.MS_AVAILABLE
-            assert ret.test_mode == TestMode.TM_LOAD
-            assert ret.increment_strategy == IncrementStrategy.IS_LINEAR
-            assert ret.processing_started == common.processing_started
-            assert ret.processing_finished == common.processing_finished
-            assert ret.execution_started == common.execution_started
-            assert ret.execution_finished == common.execution_finished
-            assert ret.script_file_id == common.file_id
-            assert ret.test_name == "py test test"
-            assert ret.start_interval == 98
-            assert ret.participant_timeout == 92
-            assert ret.launching_account_id == 12
-            assert ret.success_rate == 0.3
-            assert ret.total_cu_count == 3.3
-            assert ret.group_count == 5
-            assert ret.participant_count == 89
-            assert ret.mos_test is True
+        for ret in resp:
+            common.check_run_params(ret)
+
+        assert httpretty.last_request().method == httpretty.GET
+        assert not httpretty.last_request().parsed_body
 
     def utest_read_all_no_results(self):
         pg = common.paged_response.copy()
@@ -434,17 +412,15 @@ class UTestRunAPI:
         resp = RunAPI.read_all()
 
         assert len(resp) == 0
-        assert httpretty.last_request().parsed_body == ""
-
-    def utest_read_invalid_params(self):
-        with pytest.raises(Exception):
-            RunAPI.read(RunParams())
+        assert not httpretty.last_request().parsed_body
 
     def utest_stop(self):
-        RunAPI.stop(1)
+        RunAPI.stop(RunParams(run_id=common.run_id, test_id=common.test_id))
+
+        assert httpretty.last_request().method == httpretty.POST
+        assert not httpretty.last_request().parsed_body
 
     def utest_route(self):
-
         assert (
             RunAPI.route() == "http://mock.loadero.api/v2/projects/538591/runs/"
         )
@@ -461,3 +437,10 @@ class UTestRunAPI:
             == "http://mock.loadero.api/"
             "v2/projects/538591/tests/12734/runs/937561/"
         )
+
+    def utest_validate_identifiers(self):
+        with pytest.raises(Exception):
+            RunAPI.read(RunParams())
+
+        with pytest.raises(ValueError):
+            RunAPI.create(RunParams())

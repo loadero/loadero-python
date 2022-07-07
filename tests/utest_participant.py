@@ -305,7 +305,7 @@ class UTestParticipant:
         assert p.params.network is Network.N_4G
         assert p.params.video_feed is VideoFeed.VF_480P_15FPS
 
-        assert httpretty.last_request().parsed_body == ""
+        assert not httpretty.last_request().parsed_body
 
     def utest_update(self):
         p = Participant(
@@ -368,7 +368,7 @@ class UTestParticipant:
         assert p.params.test_id == common.test_id
         assert p.params.participant_id == common.participant_id
 
-        assert httpretty.last_request().parsed_body == ""
+        assert not httpretty.last_request().parsed_body
 
     def utest_duplicate(self):
         p = Participant(
@@ -490,7 +490,7 @@ class UTestParticipantAPI:
         assert ret.network is Network.N_4G
         assert ret.video_feed is VideoFeed.VF_480P_15FPS
 
-        assert httpretty.last_request().parsed_body == ""
+        assert not httpretty.last_request().parsed_body
 
     def utest_read_invalid_params(self):
         with pytest.raises(Exception):
@@ -566,7 +566,7 @@ class UTestParticipantAPI:
 
         assert ret is None
 
-        assert httpretty.last_request().parsed_body == ""
+        assert not httpretty.last_request().parsed_body
 
     def utest_delete_invalid_params(self):
         with pytest.raises(Exception):
@@ -652,7 +652,7 @@ class UTestParticipantAPI:
             assert ret.network is Network.N_4G
             assert ret.video_feed is VideoFeed.VF_480P_15FPS
 
-        assert httpretty.last_request().parsed_body == ""
+        assert not httpretty.last_request().parsed_body
 
     def utest_read_no_results(self):
         pg = common.paged_response.copy()
@@ -671,7 +671,7 @@ class UTestParticipantAPI:
         resp = ParticipantAPI.read_all(common.test_id)
 
         assert len(resp) == 0
-        assert httpretty.last_request().parsed_body == ""
+        assert not httpretty.last_request().parsed_body
 
     def utest_route(self):
         assert (

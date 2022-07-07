@@ -173,18 +173,18 @@ class UTestAssertParams:
 @pytest.mark.usefixtures("mock")
 class UTestAssert:
     def utest_create(self):
-        a = Assert(
-            params=AssertParams(
-                test_id=common.test_id,
-                path=MetricPath.MACHINE_NETWORK_BITRATE_IN_AVG,
-                operator=Operator.O_GT,
-                expected="892",
+        common.check_assert_params(
+            Assert(
+                params=AssertParams(
+                    test_id=common.test_id,
+                    path=MetricPath.MACHINE_NETWORK_BITRATE_IN_AVG,
+                    operator=Operator.O_GT,
+                    expected="892",
+                )
             )
+            .create()
+            .params
         )
-
-        a.create()
-
-        common.check_assert_params(a.params)
 
         assert httpretty.last_request().method == httpretty.POST
         assert (
@@ -192,32 +192,32 @@ class UTestAssert:
         )
 
     def utest_read(self):
-        a = Assert(
-            assert_id=common.assert_id,
-            test_id=common.test_id,
+        common.check_assert_params(
+            Assert(
+                assert_id=common.assert_id,
+                test_id=common.test_id,
+            )
+            .read()
+            .params
         )
-
-        a.read()
-
-        common.check_assert_params(a.params)
 
         assert httpretty.last_request().method == httpretty.GET
         assert not httpretty.last_request().parsed_body
 
     def utest_update(self):
-        a = Assert(
-            params=AssertParams(
-                assert_id=common.assert_id,
-                test_id=common.test_id,
-                path=MetricPath.MACHINE_NETWORK_BITRATE_IN_AVG,
-                operator=Operator.O_GT,
-                expected="892",
+        common.check_assert_params(
+            Assert(
+                params=AssertParams(
+                    assert_id=common.assert_id,
+                    test_id=common.test_id,
+                    path=MetricPath.MACHINE_NETWORK_BITRATE_IN_AVG,
+                    operator=Operator.O_GT,
+                    expected="892",
+                )
             )
+            .update()
+            .params
         )
-
-        a.update()
-
-        common.check_assert_params(a.params)
 
         assert httpretty.last_request().method == httpretty.PUT
         assert (
@@ -225,38 +225,36 @@ class UTestAssert:
         )
 
     def utest_delete(self):
-        a = Assert(
+        Assert(
             params=AssertParams(
                 assert_id=common.assert_id, test_id=common.test_id
             )
-        )
-
-        a.delete()
+        ).delete()
 
         assert httpretty.last_request().method == httpretty.DELETE
         assert not httpretty.last_request().parsed_body
 
     def utest_duplicate(self):
-        a = Assert(
-            params=AssertParams(
-                assert_id=common.assert_id, test_id=common.test_id
+        common.check_assert_params(
+            Assert(
+                params=AssertParams(
+                    assert_id=common.assert_id, test_id=common.test_id
+                )
             )
+            .duplicate()
+            .params
         )
-
-        dupl = a.duplicate()
-
-        common.check_assert_params(dupl.params)
 
         assert httpretty.last_request().method == httpretty.POST
         assert not httpretty.last_request().parsed_body
 
     def utest_preconditions(self):
-        a = Assert(assert_id=common.assert_id, test_id=common.test_id)
+        resp = Assert(
+            assert_id=common.assert_id, test_id=common.test_id
+        ).preconditions()
 
-        ps = a.preconditions()
-
-        for p in ps:
-            common.check_assert_precondition_params(p.params)
+        for ret in resp:
+            common.check_assert_precondition_params(ret.params)
 
         assert httpretty.last_request().method == httpretty.GET
         assert not httpretty.last_request().parsed_body
@@ -276,16 +274,16 @@ class UTestAssert:
 @pytest.mark.usefixtures("mock")
 class UTestAssertAPI:
     def utest_create(self):
-        ret = AssertAPI.create(
-            AssertParams(
-                test_id=common.test_id,
-                path=MetricPath.MACHINE_NETWORK_BITRATE_IN_AVG,
-                operator=Operator.O_GT,
-                expected="892",
+        common.check_assert_params(
+            AssertAPI.create(
+                AssertParams(
+                    test_id=common.test_id,
+                    path=MetricPath.MACHINE_NETWORK_BITRATE_IN_AVG,
+                    operator=Operator.O_GT,
+                    expected="892",
+                )
             )
         )
-
-        common.check_assert_params(ret)
 
         assert httpretty.last_request().method == httpretty.POST
         assert (
@@ -293,30 +291,30 @@ class UTestAssertAPI:
         )
 
     def utest_read(self):
-        ret = AssertAPI.read(
-            AssertParams(
-                assert_id=common.assert_id,
-                test_id=common.test_id,
+        common.check_assert_params(
+            AssertAPI.read(
+                AssertParams(
+                    assert_id=common.assert_id,
+                    test_id=common.test_id,
+                )
             )
         )
-
-        common.check_assert_params(ret)
 
         assert httpretty.last_request().method == httpretty.GET
         assert not httpretty.last_request().parsed_body
 
     def utest_update(self):
-        ret = AssertAPI.update(
-            AssertParams(
-                assert_id=common.assert_id,
-                test_id=common.test_id,
-                path=MetricPath.MACHINE_NETWORK_BITRATE_IN_AVG,
-                operator=Operator.O_GT,
-                expected="892",
+        common.check_assert_params(
+            AssertAPI.update(
+                AssertParams(
+                    assert_id=common.assert_id,
+                    test_id=common.test_id,
+                    path=MetricPath.MACHINE_NETWORK_BITRATE_IN_AVG,
+                    operator=Operator.O_GT,
+                    expected="892",
+                )
             )
         )
-
-        common.check_assert_params(ret)
 
         assert httpretty.last_request().method == httpretty.PUT
         assert (
@@ -334,22 +332,22 @@ class UTestAssertAPI:
         assert not httpretty.last_request().parsed_body
 
     def utest_duplicate(self):
-        ret = AssertAPI.duplicate(
-            AssertParams(assert_id=common.assert_id, test_id=common.test_id)
+        common.check_assert_params(
+            AssertAPI.duplicate(
+                AssertParams(assert_id=common.assert_id, test_id=common.test_id)
+            )
         )
-
-        common.check_assert_params(ret)
 
         assert httpretty.last_request().method == httpretty.POST
         assert not httpretty.last_request().parsed_body
 
     def utest_read_all(self):
-        ret = AssertAPI.read_all(common.test_id)
+        resp = AssertAPI.read_all(common.test_id)
 
-        assert len(ret) == 2
+        assert len(resp) == 2
 
-        for r in ret:
-            common.check_assert_params(r)
+        for ret in resp:
+            common.check_assert_params(ret)
 
         assert httpretty.last_request().method == httpretty.GET
         assert not httpretty.last_request().parsed_body

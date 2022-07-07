@@ -74,9 +74,9 @@ class Script(Serializable):
 
     def __init__(
         self,
-        script_id: int or None = None,
+        file_id: int or None = None,
         content: str or None = None,
-        script_file: str or None = None,
+        filepath: str or None = None,
     ) -> None:
         """Creates a new script or loads an existing script.
 
@@ -92,70 +92,30 @@ class Script(Serializable):
         script_file - third.
         """
 
-        self._content = None
-        self._params = None
+        self.file_id = file_id
+        self.content = content
 
-        if script_id is not None:
-            self._params = FileParams(script_id)
-
-            return
-
-        if content is not None:
-            self.from_content(content)
-
-            return
-
-        if script_file is not None:
-            self.from_file(script_file)
+        if filepath is not None:
+            self.from_file(filepath)
 
     def __str__(self) -> str:
-        if self._content is None:
-            return "<empty script>"
+        if self.content is None:
+            return "<no script>"
 
-        return self._content
+        return self.content
 
-    @property
-    def content(self) -> str:
-        """Contents of script.
-
-        Returns:
-            str: Contents of a script loaded by user or read from Loadero API.
-        """
-
-        if self._params is not None:
-            return self._params.content
-
-        if self._content is not None:
-            return self._content
-
-        return ""
-
-    def from_file(self, script_file: str) -> Script:
+    def from_file(self, filepath: str) -> Script:
         """Loads Loadero script from file.
 
         Args:
-            script_file (str): file path to script file
+            filepath (str): file path to script file
 
         Returns:
             Script: script loaded from file
         """
 
-        with open(script_file, "r") as f:
-            self._content = f.read()
-
-        return self
-
-    def from_content(self, content: str) -> Script:
-        """Loads Loadero script from provided str data.
-
-        Args:
-            content (str): script
-
-        Returns:
-            Script: script loaded from data
-        """
-
-        self._content = content
+        with open(filepath, "r") as f:
+            self.content = f.read()
 
         return self
 
@@ -169,17 +129,7 @@ class Script(Serializable):
         return self
 
     def read(self) -> Script:
-        """Reads script from Loadero API.
-
-        Raises:
-            ValueError: If script id is not set.
-            APIException: If API call fails.
-
-        Returns:
-            Script: Script with its contents loaded from Loadero API.
-        """
-
-        self._params = FileAPI().read(self._params)
+        self.content = FileAPI().read(FileParams(self.file_id)).content
 
         return self
 
@@ -202,8 +152,7 @@ class FileAPI:
             FileParams: Read file resource.
         """
 
-        if params.file_id is None:
-            raise ValueError("FileParams.file_id must be a valid int")
+        FileAPI.__validate_identifiers(params)
 
         return params.from_dict(
             APIClient().get(FileAPI().route(params.file_id))
@@ -246,4 +195,18 @@ class FileAPI:
 
         return r
 
-    # TODO: create __validate_identifiers method and apply it
+    @staticmethod
+    def __validate_identifiers(params: FileParams, single: bool = True):
+        """Validate file resource identifiers.
+
+        Args:
+            params (FileParams): File params.
+            single (bool, optional): Indicates if the resource identifiers
+                should be validated as pointing to a single resource.
+                Defaults to True.
+        Raises:
+            ValueError: FileParams.file_id must be a valid int.
+        """
+
+        if single and params.file_id is None:
+            raise Exception("FileParams.file_id must be a valid int")

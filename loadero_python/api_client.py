@@ -129,7 +129,10 @@ class APIClient:
             dict or None: API JSON response decoded as dictionary or None if
                 request returned nothing.
         """
-        encoded_body = json.dumps(body)
+
+        encoded_body = ""
+        if body is not None:
+            encoded_body = json.dumps(body)
 
         resp = self.__pool_manager.request(
             method="POST",
@@ -138,17 +141,17 @@ class APIClient:
             headers=self._build_headers({"Content-Type": "application/json"}),
         )
 
-        if "application/json" not in resp.headers["Content-Type"]:
-            raise APIException(
-                "Loadero API returned content type other that "
-                f"'application/json': {resp.headers['Content-Type']}"
-            )
-
         if resp.status // 100 != 2:
             raise APIException(f"Loadero API request failed: {resp.data}")
 
         if len(resp.data) == 0:
             return None
+
+        if "application/json" not in resp.headers["Content-Type"]:
+            raise APIException(
+                "Loadero API returned content type other that "
+                f"'application/json': {resp.headers['Content-Type']}"
+            )
 
         return json.loads(resp.data)
 
