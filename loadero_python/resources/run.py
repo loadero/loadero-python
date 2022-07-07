@@ -290,7 +290,7 @@ class Run:
         Raises:
             ValueError: If resource params do not sufficiently identify
                 resource.
-            APIException: If API call fails.l
+            APIException: If API call fails.
             TimeoutError: Run poll timeout exceeded
 
         Returns:
