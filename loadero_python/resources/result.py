@@ -1,8 +1,10 @@
-"""
-Loadero result resource.
-Result resource is seperated into two parts - ResultParams class that describes
-result attributes and Result class that in combination with ResultParams and
-APIClient allows to perform CRUD operations on Loadero Result resources.
+"""Loadero result resource.
+Result resource is seperated into three parts
+    - ResultParams class describes result attributes
+    - ResultAPI group all API operations for result resource
+    - Result class combines ResultParams and ResultAPI
+
+Single result object coresponds to single result in Loadero.
 """
 
 from __future__ import annotations
@@ -11,6 +13,7 @@ from dateutil import parser
 from ..api_client import APIClient
 from .resource import (
     LoaderoResourceParams,
+    LoaderoResource,
     from_dict_as_list,
     from_dict_as_new,
 )
@@ -26,9 +29,7 @@ from .run_participant import RunParticipantParams
 
 
 class ResultLogParams(LoaderoResourceParams):
-    """
-    ResultLogParams represents Loadero result log resource attributes.
-    """
+    """ResultLogParams describes Loadero result log resource attributes."""
 
     def __init__(self):
         super().__init__(
@@ -58,41 +59,87 @@ class ResultLogParams(LoaderoResourceParams):
 
     @property
     def result_log_id(self) -> int:
+        """Result log id.
+
+        Returns:
+            int: Result log id.
+        """
+
         return self._result_log_id
 
     @property
     def created(self) -> datetime:
+        """Time when result log  was created.
+
+        Returns:
+            datetime: Time when result log was created.
+        """
+
         return self._created
 
     @property
     def result_id(self) -> int:
+        """Result id that the result log belongs to.
+
+        Returns:
+            int: Result id.
+        """
+
         return self._result_id
 
     @property
     def webrtc(self) -> str:
+        """WebRTC log URL.
+
+        Returns:
+            str: WebRTC log URL.
+        """
+
         return self._webrtc
 
     @property
     def selenium(self) -> str:
+        """Selenium log URL.
+
+        Returns:
+            str: Selenium log URL.
+        """
+
         return self._selenium
 
     @property
     def browser(self) -> str:
+        """Browser log URL.
+
+        Returns:
+            str: Browser log URL.
+        """
+
         return self._browser
 
     @property
     def rru(self) -> str:
+        """Result resource usage log URL.
+
+        Returns:
+            str: Result resource usage log URL.
+        """
+
         return self._rru
 
     @property
     def allure_report(self) -> str:
+        """Allure report URL.
+
+        Returns:
+            str: Allure report URL.
+        """
+
         return self._allure_report
 
 
 class ResultAssertParams(LoaderoResourceParams):
-    """
-    ResultAssert represents Loadero result assert resource attributes.
-    """
+    """ResultAssert describes Loadero result assert resource attributes."""
 
     def __init__(self):
         super().__init__(
@@ -129,49 +176,107 @@ class ResultAssertParams(LoaderoResourceParams):
 
     @property
     def result_assert_id(self) -> int:
+        """Result assert id.
+
+        Returns:
+            int: Result assert id.
+        """
+
         return self._result_assert_id
 
     @property
     def created(self) -> datetime:
+        """Time when result assert was created.
+
+        Returns:
+            datetime: Time when result assert was created.
+        """
+
         return self._created
 
     @property
     def path(self) -> MetricPath:
+        """Metric pats of result assert.
+
+        Returns:
+            MetricPath: Metric path.
+        """
+
         return self._path
 
     @property
     def operator(self) -> Operator:
+        """Operator of result assert.
+
+        Returns:
+            Operator: Operator.
+        """
+
         return self._operator
 
     @property
     def expected(self) -> str:
+        """Expected value of result assert.
+
+        Returns:
+            str: Expected value.
+        """
+
         return self._expected
 
     @property
     def result_id(self) -> int:
+        """Result id that the result assert belongs to.
+
+        Returns:
+            int: Result id.
+        """
+
         return self._result_id
 
     @property
     def run_assert_id(self) -> int:
+        """Run assert id that the result assert belongs to.
+
+        Returns:
+            int: Run assert id.
+        """
+
         return self._run_assert_id
 
     @property
     def message(self) -> str:
+        """Result assert message.
+
+        Returns:
+            str: Result assert message.
+        """
+
         return self._message
 
     @property
     def actual(self) -> str:
+        """Actual value of result assert.
+
+        Returns:
+            str: Actual value.
+        """
+
         return self._actual
 
     @property
     def status(self) -> AssertStatus:
+        """Result assert status.
+
+        Returns:
+            AssertStatus: Result assert status.
+        """
+
         return self._status
 
 
 class ArtifactInfoParams(LoaderoResourceParams):
-    """
-    ArtifactInfoParams describes Loadero artifact resources.
-    """
+    """ArtifactInfoParams describes Loadero artifact resources."""
 
     def __init__(self):
         super().__init__(
@@ -186,10 +291,22 @@ class ArtifactInfoParams(LoaderoResourceParams):
 
     @property
     def error(self) -> str:
+        """Artifact error message.
+
+        Returns:
+            str: Artifact error message.
+        """
+
         return self._error
 
     @property
     def paths(self) -> list[str]:
+        """URLs of artifact files.
+
+        Returns:
+            list[str]: URLs of artifact files.
+        """
+
         return self._paths
 
 
@@ -221,18 +338,42 @@ class ArtifactsInfoParams(LoaderoResourceParams):
 
     @property
     def audio(self) -> ArtifactInfoParams:
+        """Audio artifacts.
+
+        Returns:
+            ArtifactInfoParams: Audio artifacts.
+        """
+
         return self._audio
 
     @property
     def downloads(self) -> ArtifactInfoParams:
+        """Downloads artifacts.
+
+        Returns:
+            ArtifactInfoParams: Downloads artifacts.
+        """
+
         return self._downloads
 
     @property
     def screenshots(self) -> ArtifactInfoParams:
+        """Screenshots artifacts.
+
+        Returns:
+            ArtifactInfoParams: Screenshots artifacts.
+        """
+
         return self._screenshots
 
     @property
     def video(self) -> ArtifactInfoParams:
+        """Video artifacts.
+
+        Returns:
+            ArtifactInfoParams: Video artifacts.
+        """
+
         return self._video
 
 
@@ -290,81 +431,187 @@ class MetricParams(LoaderoResourceParams):
 
     @property
     def metric_id(self) -> int:
+        """Metric id.
+
+        Returns:
+            int: Metric id.
+        """
+
         return self._metric_id
 
     @property
     def created(self) -> datetime:
+        """Time when metric was created.
+
+        Returns:
+            datetime: Time when metric was created.
+        """
+
         return self._created
 
     @property
     def data_count(self) -> int:
+        """Number of data points of metric.
+
+        Returns:
+            int: Number of data points of metric.
+        """
+
         return self._data_count
 
     @property
     def metric_path(self) -> MetricBasePath:
+        """Metric base path of metric.
+
+        Returns:
+            MetricBasePath: Metric base path of metric.
+        """
+
         return self._metric_path
 
     @property
     def value(self) -> str:
+        """Value of metric.
+
+        Returns:
+            str: Value of metric.
+        """
+
         return self._value
 
     @property
     def total(self) -> float:
+        """Total value of all data points of metric.
+
+        Returns:
+            float: Total value of all data points of metric.
+        """
+
         return self._total
 
     @property
     def minimum(self) -> float:
+        """Minimum value of all data points of metric.
+
+        Returns:
+            float: Minimum value of all data points of metric.
+        """
+
         return self._minimum
 
     @property
     def maximum(self) -> float:
+        """Maximum value of all data points of metric.
+
+        Returns:
+            float: Maximum value of all data points of metric.
+        """
+
         return self._maximum
 
     @property
     def average(self) -> float:
+        """Average value of all data points of metric.
+
+        Returns:
+            float: Average value of all data points of metric.
+        """
+
         return self._average
 
     @property
     def stddev(self) -> float:
+        """Standard deviation of all data points of metric.
+
+        Returns:
+            float: Standard deviation of all data points of metric.
+        """
+
         return self._stddev
 
     @property
     def rstddev(self) -> float:
+        """Relative standard deviation of all data points of metric.
+
+        Returns:
+            float: Relative standard deviation of all data points of metric.
+        """
+
         return self._rstddev
 
     @property
     def perc_1st(self) -> float:
+        """1st percentile of all data points of metric.
+
+        Returns:
+            float: 1st percentile of all data points of metric.
+        """
+
         return self._perc_1st
 
     @property
     def perc_5th(self) -> float:
+        """5th percentile of all data points of metric.
+
+        Returns:
+            float: 5th percentile of all data points of metric.
+        """
+
         return self._perc_5th
 
     @property
     def perc_25th(self) -> float:
+        """25th percentile of all data points of metric.
+
+        Returns:
+            float: 25th percentile of all data points of metric.
+        """
+
         return self._perc_25th
 
     @property
     def perc_50th(self) -> float:
+        """50th percentile of all data points of metric.
+
+        Returns:
+            float: 50th percentile of all data points of metric.
+        """
+
         return self._perc_50th
 
     @property
     def perc_75th(self) -> float:
+        """75th percentile of all data points of metric.
+
+        Returns:
+            float: 75th percentile of all data points of metric.
+        """
+
         return self._perc_75th
 
     @property
     def perc_95th(self) -> float:
+        """95th percentile of all data points of metric.
+
+        Returns:
+            float: 95th percentile of all data points of metric.
+        """
+
         return self._perc_95th
 
     @property
     def perc_99th(self) -> float:
+        """99th percentile of all data points of metric.
+
+        Returns:
+            float: 99th percentile of all data points of metric.
+        """
+
         return self._perc_99th
 
 
 class MetricsParams(LoaderoResourceParams):
-    """
-    MetricsParams groups all result metrics of a Loadero test run.
-    """
+    """MetricsParams groups all result metrics of a Loadero test run."""
 
     def __init__(self):
         super().__init__(
@@ -373,8 +620,8 @@ class MetricsParams(LoaderoResourceParams):
                 "webrtc": "_webrtc",
             },
             custom_deserializers={
-                "machine": self.__from_dict_metric_list,
-                "webrtc": self.__from_dict_metric_list,
+                "machine": MetricsParams.__from_dict_metric_list,
+                "webrtc": MetricsParams.__from_dict_metric_list,
             },
         )
 
@@ -383,14 +630,27 @@ class MetricsParams(LoaderoResourceParams):
 
     @property
     def machine(self) -> dict[MetricBasePath, MetricParams]:
+        """Machine metrics.
+
+        Returns:
+            dict[MetricBasePath, MetricParams]: Machine metrics.
+        """
+
         return self._machine
 
     @property
     def webrtc(self) -> dict[MetricBasePath, MetricParams]:
+        """Webrtc metrics.
+
+        Returns:
+            dict[MetricBasePath, MetricParams]: Webrtc metrics.
+        """
+
         return self._webrtc
 
+    @staticmethod
     def __from_dict_metric_list(
-        self, json_dict: dict[str, any]
+        json_dict: dict[str, any]
     ) -> dict[MetricBasePath, MetricParams]:
         """Serializes metric list from JSON.
 
@@ -411,9 +671,7 @@ class MetricsParams(LoaderoResourceParams):
 
 
 class ResultMOSParams(LoaderoResourceParams):
-    """
-    ResultMOSParams describes a single MOS result.
-    """
+    """ResultMOSParams describes a single MOS result."""
 
     def __init__(self):
         super().__init__(
@@ -444,37 +702,77 @@ class ResultMOSParams(LoaderoResourceParams):
 
     @property
     def result_mos_id(self) -> int:
+        """Result MOS ID.
+
+        Returns:
+            int: Result MOS ID.
+        """
+
         return self._result_mos_id
 
     @property
     def created(self) -> datetime:
+        """Time when mos result was created.
+
+        Returns:
+            datetime: Time when mos result was created.
+        """
+
         return self._created
 
     @property
     def result_id(self) -> int:
+        """Result id that the mos result belongs to.
+
+        Returns:
+            int: Result id that the mos result belongs to.
+        """
+
         return self._result_id
 
     @property
     def algorithm(self) -> MosAlgorithm:
+        """Algorithm used to calculate MOS.
+
+        Returns:
+            MosAlgorithm: Algorithm used to calculate MOS.
+        """
+
         return self._algorithm
 
     @property
     def score(self) -> str:
+        """Mean opinion score.
+
+        Returns:
+            str: Mean opinion score.
+        """
+
         return self._score
 
     @property
     def start(self) -> datetime:
+        """Start time of audio fragment.
+
+        Returns:
+            datetime: Start time of audio fragment.
+        """
+
         return self._start
 
     @property
     def end(self) -> datetime:
+        """End time of audio fragment.
+
+        Returns:
+            datetime: End time of audio fragment.
+        """
+
         return self._end
 
 
 class MeanOpinionScoresParams(LoaderoResourceParams):
-    """
-    MeanOpinionScoresParams groups all MOS evaluations results.
-    """
+    """MeanOpinionScoresParams groups all MOS evaluations results."""
 
     def __init__(self):
         super().__init__(
@@ -490,13 +788,18 @@ class MeanOpinionScoresParams(LoaderoResourceParams):
 
     @property
     def visqol(self) -> list[ResultMOSParams]:
+        """Mean opinion scores calculated using Visqol algorithm.
+
+        Returns:
+            list[ResultMOSParams]: Mean opinion scores calculated using Visqol
+                algorithm.
+        """
+
         return self._visqol
 
 
 class ResultTimecardParams(LoaderoResourceParams):
-    """
-    ResultTimecardParams describes a single timecard result.
-    """
+    """ResultTimecardParams describes a single timecard result."""
 
     def __init__(self):
         super().__init__(
@@ -522,33 +825,67 @@ class ResultTimecardParams(LoaderoResourceParams):
 
     @property
     def result_timecard_id(self) -> int:
+        """Result timecard ID.
+
+        Returns:
+            int: Result timecard ID.
+        """
+
         return self._result_timecard_id
 
     @property
     def created(self) -> datetime:
+        """Time when result timecard was created.
+
+        Returns:
+            datetime: Time when result timecard was created.
+        """
+
         return self._created
 
     @property
     def result_id(self) -> int:
+        """Result id that the timecard result belongs to.
+
+        Returns:
+            int: Result id that the timecard result belongs to.
+        """
+
         return self._result_id
 
     @property
     def name(self) -> str:
+        """Name of the timecard.
+
+        Returns:
+            str: Name of the timecard.
+        """
+
         return self._name
 
     @property
     def start(self) -> int:
+        """Start time of timecard as Unix timestamp in milliseconds.
+
+        Returns:
+            int: Start time of timecard as Unix timestamp in milliseconds.
+        """
+
         return self._start
 
     @property
     def end(self) -> int:
+        """End time of timecard as Unix timestamp in milliseconds.
+
+        Returns:
+            int: End time of timecard as Unix timestamp in milliseconds.
+        """
+
         return self._end
 
 
 class DataSyncParams(LoaderoResourceParams):
-    """
-    DataSyncParams groups all datasync results result.
-    """
+    """DataSyncParams groups all datasync results result."""
 
     def __init__(self):
         super().__init__(
@@ -564,15 +901,21 @@ class DataSyncParams(LoaderoResourceParams):
 
     @property
     def result_timecards(self) -> list[ResultTimecardParams]:
+        """List of timecards created duding test.
+
+        Returns:
+            list[ResultTimecardParams]: List of timecards created duding test.
+        """
+
         return self._result_timecards
 
 
 class ResultParams(LoaderoResourceParams):
-    """
-    ResultParams represents Loadero result resource attributes.
-    """
+    """ResultParams represents Loadero result resource attributes."""
 
-    def __init__(self, result_id: int or None = None):
+    def __init__(
+        self, result_id: int or None = None, run_id: int or None = None
+    ):
         super().__init__(
             attribute_map={
                 "id": "result_id",
@@ -610,6 +953,7 @@ class ResultParams(LoaderoResourceParams):
         )
 
         self.result_id = result_id
+        self.run_id = run_id
         self._created = None
         self._updated = None
         self._start = None
@@ -627,70 +971,149 @@ class ResultParams(LoaderoResourceParams):
 
     @property
     def created(self) -> datetime:
+        """Time when result was created.
+
+        Returns:
+            datetime: Time when result was created.
+        """
+
         return self._created
 
     @property
     def updated(self) -> datetime:
+        """Time when result was last updated.
+
+        Returns:
+            datetime: Time when result was last updated.
+        """
+
         return self._updated
 
     @property
     def start(self) -> datetime:
+        """Test particpiant execution start time.
+
+        Returns:
+            datetime: Test  particpiant execution start time.
+        """
+
         return self._start
 
     @property
     def end(self) -> datetime:
+        """Test particpiant execution end time.
+
+        Returns:
+            datetime: Test particpiant execution end time.
+        """
+
         return self._end
 
     @property
     def status(self) -> ResultStatus:
+        """Test particpiant execution status.
+
+        Returns:
+            ResultStatus: Test particpiant execution status.
+        """
+
         return self._status
 
     @property
     def selenium_result(self) -> ResultStatus:
+        """Test script execution result of particpiant.
+
+        Returns:
+            ResultStatus: Test script execution result of particpiant.
+        """
+
         return self._selenium_result
 
     @property
     def mos_status(self) -> MetricStatus:
+        """Mean opinion score calculation status.
+
+        Returns:
+            MetricStatus: Mean opinion score calculation status.
+        """
+
         return self._mos_status
 
     @property
     def participant_details(self) -> RunParticipantParams:
+        """Participant details.
+
+        Returns:
+            RunParticipantParams: Participant details.
+        """
+
         return self._participant_details
 
     @property
     def log_paths(self) -> ResultLogParams:
+        """Log paths.
+
+        Returns:
+            ResultLogParams: Log paths.
+        """
+
         return self._log_paths
 
     @property
     def asserts(self) -> list[ResultAssertParams]:
+        """Assert results for participant.
+
+        Returns:
+            list[ResultAssertParams]: Assert results for participant.
+        """
+
         return self._asserts
 
     @property
     def artifacts(self) -> ArtifactsInfoParams:
+        """Artifacts created by participant.
+
+        Returns:
+            ArtifactsInfoParams: Artifacts created by participant.
+        """
+
         return self._artifacts
 
     @property
     def metrics(self) -> MetricsParams:
+        """Metrics results of participant.
+
+        Returns:
+            MetricsParams: Metrics results of participant.
+        """
+
         return self._metrics
 
     @property
     def mos(self) -> MeanOpinionScoresParams:
+        """Mean opinion score results of participant.
+
+        Returns:
+            MeanOpinionScoresParams: Mean opinion score results of participant.
+        """
+
         return self._mos
 
     @property
     def data_sync(self) -> DataSyncParams:
+        """Data collected with datasync wy participant.
+
+        Returns:
+            DataSyncParams: Data collected with datasync wy participant.
+        """
+
         return self._data_sync
 
 
-class Result:
+class Result(LoaderoResource):
+    """Result class allows to perform read operation of Loadero result resource.
+    APIClient must be previously initialized with a valid Loadero access token.
     """
-    Result class allows to perform read operation of Loadero result resource.
-    APIClient must be previously initialized with a valid Loadero
-    access token.
-    """
-
-    params = None
-    run_id = None  # TODO: move this field to ResultParams
 
     def __init__(
         self,
@@ -698,34 +1121,29 @@ class Result:
         result_id: int or None = None,
         params: ResultParams or None = None,
     ):
-        if params is not None:
-            self.params = params
-        else:
-            self.params = ResultParams()
+        self.params = params or ResultParams()
 
         if run_id is not None:
-            self.run_id = run_id
+            self.params.run_id = run_id
 
         if result_id is not None:
             self.params.result_id = result_id
+
+        super().__init__(self.params)
 
     def read(self) -> Result:
         """Reads a existing result.
 
         Raises:
-            ValueError: Run id is not set.
-            ValueError: Result id is not set.
+            ValueError: If resource params do not sufficiently identify
+                resource.
+            APIException: If API call fails.
 
         Returns:
             Result: Read result resource.
         """
-        if not isinstance(self.run_id, int):
-            raise ValueError("Result run_id must be a valid int")
 
-        if not isinstance(self.params.result_id, int):
-            raise ValueError("Result result_id must be a valid int")
-
-        self.params = ResultAPI.read(self.run_id, self.params.result_id)
+        ResultAPI.read(self.params)
 
         return self
 
@@ -733,24 +1151,26 @@ class Result:
 class ResultAPI:
     """ResultAPI defines Loadero API operations for result resources."""
 
-    # TODO: convert function signature to take ResultParams as argument
     @staticmethod
-    def read(run_id: int, result_id: int) -> ResultParams:
+    def read(params: ResultParams) -> ResultParams:
         """Read an existing result resource.
 
         Args:
-            run_id (int): Run resource id that the result belongs to.
-            result_id (int): Result resource id.
+            params (ResultParams): Describes the result resource to read.
 
         Raises:
+            ValueError: If resource params do not sufficiently identify
+                resource.
             APIException: If API call fails.
 
         Returns:
             ResultParams: Read Result resource params.
         """
 
-        return from_dict_as_new(ResultParams)(
-            APIClient().get(ResultAPI.route(run_id, result_id))
+        ResultAPI.__validate_identifiers(params)
+
+        return params.from_dict(
+            APIClient().get(ResultAPI.route(params.run_id, params.result_id))
         )
 
     @staticmethod
@@ -776,6 +1196,7 @@ class ResultAPI:
 
     @staticmethod
     def request_mos(run_id: int, result_id: int):  # TODO: implement
+        """Not implemented."""
         raise Exception("not implemented")
 
     @staticmethod
@@ -792,9 +1213,27 @@ class ResultAPI:
             str: Route to result resource/s.
         """
 
-        r = APIClient().project_url + f"runs/{run_id}/results/"
+        r = APIClient().project_route + f"runs/{run_id}/results/"
 
         if result_id is not None:
             r += f"{result_id}/"
 
         return r
+
+    @staticmethod
+    def __validate_identifiers(params: ResultParams):
+        """Validate result params identifiers.
+
+        Args:
+            params (ResultParams): Result params.
+
+        Raises:
+            ValueError: Result result_id must be a valid int
+            ValueError: Result run_id must be a valid int
+        """
+
+        if params.result_id is None:
+            raise ValueError("Result result_id must be a valid int")
+
+        if params.run_id is None:
+            raise ValueError("Result run_id must be a valid int")

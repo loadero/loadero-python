@@ -251,7 +251,18 @@ class LoaderoResourceParams(ParamsSerializer):
 
 
 class LoaderoResource:
-    """Base class for Loadero resources."""
+    """Base class for Loadero resources.
+
+    All Loadero resources have
+        - params attribute that contains the resources data.
+        - __str__ method.
+    """
+
+    def __init__(self, params: LoaderoResourceParams):
+        self.params = params
+
+    def __str__(self):
+        return self.params.__str__()
 
 
 class DuplicateResourceBodyParams(LoaderoResourceParams):

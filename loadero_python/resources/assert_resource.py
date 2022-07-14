@@ -1,10 +1,11 @@
-# coding: utf-8
+"""Loadero assert resource.
 
-"""
-Loadero assert resource.
-Assert resource is seperated into two parts - AssertParams class that describes
-assert attributes and Assert class that in combination with AssertParams and
-APIClient allows to perform CRUD operations on Loadero assert resources.
+Assert resource is seperated into three parts
+    - AssertParams class describes assert attributes
+    - AssertAPI class that groups all API operations with assert resource.
+    - Assert class that combines AssertParams and AssertAPI.
+
+Single Assert object coresponds to single assert in Loadero.
 """
 
 from __future__ import annotations
@@ -15,6 +16,7 @@ from .assert_precondition import AssertPrecondition, AssertPreconditionAPI
 from ..api_client import APIClient
 from .resource import (
     LoaderoResourceParams,
+    LoaderoResource,
     convert_params_list,
     from_dict_as_list,
 )
@@ -23,8 +25,7 @@ from .classificator import Operator
 
 
 class AssertParams(LoaderoResourceParams):
-    """
-    AssertParams represents Loadero assert resource attributes.
+    """AssertParams describes single Loadero assert resources attributes.
     AssertParams has a builder pattern for assert resources read and write
     attributes.
     """
@@ -68,41 +69,93 @@ class AssertParams(LoaderoResourceParams):
 
     @property
     def created(self) -> datetime:
+        """Time when assert was created.
+
+        Returns:
+            datetime: Time when assert was created.
+        """
+
         return self._created
 
     @property
     def updated(self) -> datetime:
+        """Time when assert was last updated.
+
+        Returns:
+            datetime: Time when assert was last updated.
+        """
+
         return self._updated
 
     def with_id(self, assert_id: int) -> AssertParams:
-        self.assert_id = assert_id
+        """Set assert id.
 
+        Args:
+            assert_id (int): Assert id.
+
+        Returns:
+            AssertParams: Assert params with set id.
+        """
+
+        self.assert_id = assert_id
         return self
 
     def in_test(self, test_id: int) -> AssertParams:
-        self.test_id = test_id
+        """Set parent test id.
 
+        Args:
+            test_id (int): Test id.
+
+        Returns:
+            AssertParams: Assert params with set parent test id.
+        """
+
+        self.test_id = test_id
         return self
 
     def with_path(self, path: MetricPath) -> AssertParams:
-        self.path = path
+        """Set assert metric path.
 
+        Args:
+            path (MetricPath): Metric path.
+
+        Returns:
+            AssertParams: Assert params with set metric path.
+        """
+
+        self.path = path
         return self
 
     def with_operator(self, operator: Operator) -> AssertParams:
-        self.operator = operator
+        """Set assert operator.
 
+        Args:
+            operator (Operator): Operator.
+
+        Returns:
+            AssertParams: Assert params with set operator.
+        """
+
+        self.operator = operator
         return self
 
     def with_expected(self, expected: str) -> AssertParams:
-        self.expected = expected
+        """Set assert expected value.
 
+        Args:
+            expected (str): Expected value.
+
+        Returns:
+            AssertParams: Assert params with set expected value.
+        """
+
+        self.expected = expected
         return self
 
 
-class Assert:
-    """
-    Assert class allows to perform CRUD operations on Loadero assert resources.
+class Assert(LoaderoResource):
+    """Assert class allows to perform CRUD manipulatons on a single Loadero
+    assert resource.
     APIClient must be previously initialized with a valid Loadero access token.
     The target Loadero assert resource is determined by AssertParams.
     """
@@ -115,16 +168,15 @@ class Assert:
         test_id: int or None = None,
         params: AssertParams or None = None,
     ) -> None:
-        if params is not None:
-            self.params = params
-        else:
-            self.params = AssertParams()
+        self.params = params or AssertParams()
 
         if assert_id is not None:
             self.params.assert_id = assert_id
 
         if test_id is not None:
             self.params.test_id = test_id
+
+        super().__init__(self.params)
 
     def create(self) -> Assert:
         """Creates new assert with given data.
@@ -383,7 +435,7 @@ class AssertAPI:
             str: Route to assert resource/s.
         """
 
-        r = APIClient().project_url + f"tests/{test_id}/asserts/"
+        r = APIClient().project_route + f"tests/{test_id}/asserts/"
 
         if assert_id is not None:
             r += f"{assert_id}/"

@@ -1,11 +1,11 @@
-# coding: utf-8
+"""Loadero participant resource.
 
-"""
-Loadero participant resource.
-Participant resources is seperated into two parts ParticipantParams class that
-describes participant attributes and Participant class that in combination with
-ParticipantParams and APIClient allows to perform CRUD operations on Loadero
-participant resources.
+Participant resources is seperated into three parts
+    - ParticipantParams class describes participant attributes
+    - ParticipantAPI groups all API operations with participant resource.
+    - Participant class combines ParticipantParams and ParticipantAPI.
+
+Single Participant object coresponds to single participant in Loadero.
 """
 
 from __future__ import annotations
@@ -14,8 +14,10 @@ from dateutil import parser
 from ..api_client import APIClient
 from .resource import (
     LoaderoResourceParams,
+    LoaderoResource,
     DuplicateResourceBodyParams,
     from_dict_as_list,
+    from_dict_as_new,
 )
 from .classificator import (
     ComputeUnit,
@@ -28,8 +30,8 @@ from .classificator import (
 
 
 class ParticipantParams(LoaderoResourceParams):
-    """
-    ParticipantParams represents Loadero participant resources attributes.
+    """ParticipantParams describes single Loadero participant resources
+    attributes.
     ParticipantParams has a builder pattern for Participant resource read and
     write attributes.
     """
@@ -119,74 +121,182 @@ class ParticipantParams(LoaderoResourceParams):
 
     @property
     def created(self) -> datetime:
+        """Time when participant was created.
+
+        Returns:
+            datetime: Time when participant was created.
+        """
+
         return self._created
 
     @property
     def updated(self) -> datetime:
+        """Time when particpant was last updated.
+
+        Returns:
+            datetime: Time when participant was last updated.
+        """
+
         return self._updated
 
-    def with_id(self, pid: int) -> ParticipantParams:
-        self.participant_id = pid
+    def with_id(self, participant_id: int) -> ParticipantParams:
+        """Set participant id.
 
+        Args:
+            pid (int): Participant id.
+
+        Returns:
+            ParticipantParams: Participant params with participant id set.
+        """
+
+        self.participant_id = participant_id
         return self
 
-    def in_test(self, tid: int) -> ParticipantParams:
-        self.test_id = tid
+    def in_test(self, test_id: int) -> ParticipantParams:
+        """Set parent test id.
 
+        Args:
+            test_id (int): Test id.
+
+        Returns:
+            ParticipantParams: Participant params with parent test id set.
+        """
+
+        self.test_id = test_id
         return self
 
     def with_name(self, name: str) -> ParticipantParams:
+        """Set participant name.
+
+        Args:
+            name (str): Participant name.
+
+        Returns:
+            ParticipantParams: Participant params with participant name set.
+        """
+
         self.name = name
-
         return self
 
-    def with_count(self, c: int) -> ParticipantParams:
-        self.count = c
+    def with_count(self, count: int) -> ParticipantParams:
+        """Set participant count.
 
+        Args:
+            count (int): Participant count.
+
+        Returns:
+            ParticipantParams: Participant params with participant count set.
+        """
+
+        self.count = count
         return self
 
-    def with_compute_unit(self, cu: ComputeUnit) -> ParticipantParams:
-        self.compute_unit = cu
+    def with_compute_unit(self, compute_unit: ComputeUnit) -> ParticipantParams:
+        """Set participant compute unit.
 
+        Args:
+            compute_unit (ComputeUnit): Compute unit.
+
+        Returns:
+            ParticipantParams: Participant params with set compute unit.
+        """
+
+        self.compute_unit = compute_unit
         return self
 
-    def in_group(self, gid: int) -> ParticipantParams:
-        self.group_id = gid
+    def in_group(self, group_id: int) -> ParticipantParams:
+        """Set participant parent group id.
 
+        Args:
+            group_id (int): Group id.
+
+        Returns:
+            ParticipantParams: Participant params with set parent group id.s
+        """
+
+        self.group_id = group_id
         return self
 
-    def with_record_audio(self, ra: bool) -> ParticipantParams:
-        self.record_audio = ra
+    def with_record_audio(self, record_audio: bool) -> ParticipantParams:
+        """Set participant record audio flag.
 
+        Args:
+            record_audio (bool): Participant record audio flag.
+
+        Returns:
+            ParticipantParams: Participant params with set record audio flag.
+        """
+
+        self.record_audio = record_audio
         return self
 
-    def with_audio_feed(self, af: AudioFeed) -> ParticipantParams:
-        self.audio_feed = af
+    def with_audio_feed(self, audio_feed: AudioFeed) -> ParticipantParams:
+        """Set participant audio feed.
 
+        Args:
+            audio_feed (AudioFeed): Participant audio feed.
+
+        Returns:
+            ParticipantParams: Participant params with set audio feed.
+        """
+
+        self.audio_feed = audio_feed
         return self
 
     def with_browser(self, browser: Browser) -> ParticipantParams:
+        """Set participant browser.
+
+        Args:
+            browser (Browser): Browser.
+
+        Returns:
+            ParticipantParams: Participant params with set browser.
+        """
+
         self.browser = browser
-
         return self
 
-    def with_location(self, loc: Location) -> ParticipantParams:
-        self.location = loc
+    def with_location(self, location: Location) -> ParticipantParams:
+        """Set participant location.
 
+        Args:
+            location (Location): Location.
+
+        Returns:
+            ParticipantParams: Participant params with set location.
+        """
+
+        self.location = location
         return self
 
-    def with_network(self, nt: Network) -> ParticipantParams:
-        self.network = nt
+    def with_network(self, network: Network) -> ParticipantParams:
+        """Set participant network.
 
+        Args:
+            network (Network): Network.
+
+        Returns:
+            ParticipantParams: Participant params with set network.
+        """
+
+        self.network = network
         return self
 
-    def with_video_feed(self, vf: VideoFeed) -> ParticipantParams:
-        self.video_feed = vf
+    def with_video_feed(self, video_feed: VideoFeed) -> ParticipantParams:
+        """Set participant video feed.
 
+        Args:
+            video_feed (VideoFeed): Video feed.
+
+        Returns:
+            ParticipantParams: Participant params with set video feed.
+        """
+
+        self.video_feed = video_feed
         return self
 
 
-class Participant:
+class Participant(LoaderoResource):
     """
     Participant class allows to perform CRUD operations on Loadero participant
     resources. APIClient must be previously initialized with a valid Loadero
@@ -200,10 +310,7 @@ class Participant:
         test_id: int or None = None,
         params: ParticipantParams or None = None,
     ) -> None:
-        if params is not None:
-            self.params = params
-        else:
-            self.params = ParticipantParams()
+        self.params = params or ParticipantParams()
 
         if participant_id is not None:
             self.params.participant_id = participant_id
@@ -211,8 +318,15 @@ class Participant:
         if test_id is not None:
             self.params.test_id = test_id
 
+        super().__init__(self.params)
+
     def create(self) -> Participant:
         """Creates new participant with given data.
+
+        Raises:
+            ValueError: If resource params do not sufficiently identify parent
+                resource or resource params required attributes are None.
+            APIException: If API call fails.
 
         Returns:
             Participant: Created participant resource.
@@ -225,6 +339,11 @@ class Participant:
     def read(self) -> Participant:
         """Reads information about an existing participant.
 
+        Raises:
+            ValueError: If resource params do not sufficiently identify
+                resource.
+            APIException: If API call fails.
+
         Returns:
             Participant: Read participant resource.
         """
@@ -236,6 +355,11 @@ class Participant:
     def update(self) -> Participant:
         """Updates particpant with given parameters.
 
+        Raises:
+            ValueError: If resource params do not sufficiently identify
+                resource or resource params required attributes are None.
+            APIException: If API call fails.
+
         Returns:
             Participant: Updated participant resource.
         """
@@ -245,7 +369,13 @@ class Participant:
         return self
 
     def delete(self) -> None:
-        """Deletes and existing participant."""
+        """Deletes and existing participant.
+
+        Raises:
+            ValueError: If resource params do not sufficiently identify
+                resource.
+            APIException: If API call fails.
+        """
 
         ParticipantAPI.delete(self.params)
 
@@ -255,24 +385,29 @@ class Participant:
         Args:
             name (str): New name for the duplicate participant.
 
+        Raises:
+            ValueError: If resource params do not sufficiently identify
+                resource.
+            APIException: If API call fails.
+
         Returns:
             Participant: Duplicate instance of participant.
         """
 
-        dp = ParticipantParams(
-            participant_id=self.params.participant_id,
-            test_id=self.params.test_id,
-            name=name,
+        return Participant(
+            params=ParticipantAPI.duplicate(
+                ParticipantParams(
+                    participant_id=self.params.participant_id,
+                    test_id=self.params.test_id,
+                ),
+                name,
+            )
         )
-
-        dupl = Participant(params=ParticipantAPI.duplicate(dp))
-
-        return dupl
 
 
 class ParticipantAPI:
-    """
-    ParticipantAPI defines Loadero API operations for participant resources.
+    """ParticipantAPI defines Loadero API operations for participant
+    resources.
     """
 
     @staticmethod
@@ -284,14 +419,15 @@ class ParticipantAPI:
                 be created.
 
         Raises:
-            Exception: ParticipantParams.test_id was not defined.
+            ValueError: If resource params do not sufficiently identify parent
+                resource or resource params required attributes are None.
+            APIException: If API call fails.
 
         Returns:
             ParticipantParams: Created participant resource.
         """
 
-        if params.test_id is None:
-            raise Exception("ParticipantParams.test_id must be a valid int")
+        ParticipantAPI.__validate_identifiers(params, False)
 
         return params.from_dict(
             APIClient().post(
@@ -309,20 +445,15 @@ class ParticipantAPI:
                 read.
 
         Raises:
-            Exception: ParticipantParams.test_id was not defined.
-            Exception: ParticipantParams.participant_id was not defined.
+            ValueError: If resource params do not sufficiently identify
+                resource.
+            APIException: If API call fails.
 
         Returns:
             ParticipantParams: Read participant resource.
         """
 
-        if params.test_id is None:
-            raise Exception("ParticipantParams.test_id must be a valid int")
-
-        if params.participant_id is None:
-            raise Exception(
-                "ParticipantParams.participant_id must be a valid int"
-            )
+        ParticipantAPI.__validate_identifiers(params)
 
         return params.from_dict(
             APIClient().get(
@@ -339,20 +470,15 @@ class ParticipantAPI:
                 update.
 
         Raises:
-            Exception: ParticipantParams.test_id was not defined.
-            Exception: ParticipantParams.participant_id was not defined.
+            ValueError: If resource params do not sufficiently identify
+                resource or resource params required attributes are None.
+            APIException: If API call fails.
 
         Returns:
             ParticipantParams: Updated participant resource.
         """
 
-        if params.test_id is None:
-            raise Exception("ParticipantParams.test_id must be a valid int")
-
-        if params.participant_id is None:
-            raise Exception(
-                "ParticipantParams.participant_id must be a valid int"
-            )
+        ParticipantAPI.__validate_identifiers(params)
 
         return params.from_dict(
             APIClient().put(
@@ -370,24 +496,19 @@ class ParticipantAPI:
                 delete.
 
         Raises:
-            Exception: ParticipantParams.test_id was not defined.
-            Exception: ParticipantParams.participant_id was not defined.
+            ValueError: If resource params do not sufficiently identify
+                resource.
+            APIException: If API call fails.
         """
 
-        if params.test_id is None:
-            raise Exception("ParticipantParams.test_id must be a valid int")
-
-        if params.participant_id is None:
-            raise Exception(
-                "ParticipantParams.participant_id must be a valid int"
-            )
+        ParticipantAPI.__validate_identifiers(params)
 
         APIClient().delete(
             ParticipantAPI().route(params.test_id, params.participant_id)
         )
 
     @staticmethod
-    def duplicate(params: ParticipantParams) -> ParticipantParams:
+    def duplicate(params: ParticipantParams, name: str) -> ParticipantParams:
         """Duplicate an existing participant resource.
 
         Args:
@@ -395,30 +516,21 @@ class ParticipantAPI:
                 duplicate and the name of duplicate participant resource.
 
         Raises:
-            Exception: ParticipantParams.test_id was not defined.
-            Exception: ParticipantParams.participant_id was not defined.
+            ValueError: If resource params do not sufficiently identify
+                resource.
+            APIException: If API call fails.
 
         Returns:
             ParticipantParams: Duplicate participant resource.
         """
 
-        if params.test_id is None:
-            raise Exception("ParticipantParams.test_id must be a valid int")
+        ParticipantAPI.__validate_identifiers(params)
 
-        if params.participant_id is None:
-            raise Exception(
-                "ParticipantParams.participant_id must be a valid int"
-            )
-
-        dupl = ParticipantParams()
-
-        req = DuplicateResourceBodyParams(name=params.name)
-
-        return dupl.from_dict(
+        return from_dict_as_new(ParticipantParams)(
             APIClient().post(
                 ParticipantAPI().route(params.test_id, params.participant_id)
                 + "copy/",
-                req.to_dict(),
+                DuplicateResourceBodyParams(name=name).to_dict(),
             )
         )
 
@@ -437,9 +549,8 @@ class ParticipantAPI:
             list[ParticipantParams]: List of all participant resources in test
                 or group.
         """
-        r = ParticipantAPI.route(test_id, group_id=group_id)
 
-        resp = APIClient().get(r)
+        resp = APIClient().get(ParticipantAPI.route(test_id, group_id=group_id))
 
         if "results" not in resp or resp["results"] is None:
             return []
@@ -463,11 +574,12 @@ class ParticipantAPI:
         Returns:
             str: Route to participant resource/s.
         """
-        r = APIClient().project_url + f"tests/{test_id}/participants/"
+
+        r = APIClient().project_route + f"tests/{test_id}/participants/"
 
         if group_id is not None:
             r = (
-                APIClient().project_url
+                APIClient().project_route
                 + f"tests/{test_id}/groups/{group_id}/participants/"
             )
 
@@ -476,4 +588,26 @@ class ParticipantAPI:
 
         return r
 
-    # TODO: create and apply __validate_identifiers method
+    @staticmethod
+    def __validate_identifiers(params: ParticipantParams, single: bool = True):
+        """Validate participant identifiers.
+
+        Args:
+            params (ParticipantParams): Participant resource params.
+            single (bool, optional): Indicates if the resource identifiers
+                should be validated as pointing to a single resource (True) or
+                to all assert resources belinging to test resource.
+                Defaults to True.
+
+        Raises:
+            ValueError: ParticipantParams.test_id must be a valid int
+            ValueError: ParticipantParams.participant_id must be a valid int
+        """
+
+        if params.test_id is None:
+            raise ValueError("ParticipantParams.test_id must be a valid int")
+
+        if single and params.participant_id is None:
+            raise ValueError(
+                "ParticipantParams.participant_id must be a valid int"
+            )

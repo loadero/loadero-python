@@ -14,6 +14,7 @@ from dateutil import parser
 from ..api_client import APIClient
 from .resource import (
     LoaderoResourceParams,
+    LoaderoResource,
     convert_params_list,
     from_dict_as_list,
 )
@@ -103,109 +104,252 @@ class RunParams(LoaderoResourceParams):
 
     @property
     def created(self) -> datetime:
+        """Time when run was created.
+
+        Returns:
+            datetime: Time when run was created.
+        """
+
         return self._created
 
     @property
     def updated(self) -> datetime:
+        """Time when run was last updated.
+
+        Returns:
+            datetime: Time when run was last updated.
+        """
+
         return self._updated
 
     @property
     def status(self) -> RunStatus:
+        """Status of the run.
+
+        Returns:
+            RunStatus: Status of the run.
+        """
+
         return self._status
 
     @property
     def metric_status(self) -> MetricStatus:
+        """Status of metric calculation for the run.
+
+        Returns:
+            MetricStatus: Status of metric calculation for the run.
+        """
+
         return self._metric_status
 
     @property
     def test_mode(self) -> TestMode:
+        """Test mode of the run.
+
+        Returns:
+            TestMode: Test mode of the run.
+        """
+
         return self._test_mode
 
     @property
     def increment_strategy(self) -> IncrementStrategy:
+        """Increment strategy of the run.
+
+        Returns:
+            IncrementStrategy: Increment strategy of the run.
+        """
+
         return self._increment_strategy
 
     @property
     def mos_status(self) -> MetricStatus:
+        """Status of mean opinion score calculation for the run.
+
+        Returns:
+            MetricStatus: Status of mean opinion score calculation for the run.
+        """
+
         return self._mos_status
 
     @property
     def processing_started(self) -> datetime:
+        """Time when processing of the run started.
+
+        Returns:
+            datetime: Time when processing of the run started.
+        """
+
         return self._processing_started
 
     @property
     def processing_finished(self) -> datetime:
+        """Time when processing of the run finished.
+
+        Returns:
+            datetime: Time when processing of the run finished.
+        """
+
         return self._processing_finished
 
     @property
     def execution_started(self) -> datetime:
+        """Time when test script execution of the run started.
+
+        Returns:
+            datetime: Time when test script execution of the run started.
+        """
+
         return self._execution_started
 
     @property
     def execution_finished(self) -> datetime:
+        """Time when test script execution of the run finished.
+
+        Returns:
+            datetime: Time when test script execution of the run finished.
+        """
+
         return self._execution_finished
 
     @property
     def script_file_id(self) -> int:
+        """ID of the script file used for the run.
+
+        Returns:
+            int: ID of the script file used for the run.
+        """
+
         return self._script_file_id
 
     @property
     def test_name(self) -> str:
+        """Name of the test being run.
+
+        Returns:
+            str: Name of the test being run.
+        """
+
         return self._test_name
 
     @property
     def start_interval(self) -> int:
+        """Start interval of the test.
+
+        Returns:
+            int: Start interval of the test.
+        """
+
         return self._start_interval
 
     @property
     def participant_timeout(self) -> int:
+        """Timeout for participants in the test.
+
+        Returns:
+            int: Timeout for participants in the test.
+        """
+
         return self._participant_timeout
+
+    # TODO: consider removing this property, because project tokens cant do
+    # anything with this data.
 
     @property
     def launching_account_id(self) -> int:
+        """ID of the account that launched the test.
+
+        Returns:
+            int: ID of the account that launched the test.
+        """
+
         return self._launching_account_id
 
     @property
     def success_rate(self) -> float:
+        """Fraction of participants that finished the test successfully over
+        the total number of participants.
+
+        Returns:
+            float: Success rate of the test run.
+        """
+
         return self._success_rate
 
     @property
     def total_cu_count(self) -> float:
+        """Total compute units used by the test run.
+
+        Returns:
+            float: Total compute units used by the test run.
+        """
+
         return self._total_cu_count
 
     @property
     def group_count(self) -> int:
+        """Number of groups in the test.
+
+        Returns:
+            int: Number of groups in the test.
+        """
+
         return self._group_count
 
     @property
     def participant_count(self) -> int:
+        """Number of participants in the test.
+
+        Returns:
+            int: Number of participants in the test.
+        """
+
         return self._participant_count
 
     @property
     def mos_test(self) -> bool:
+        """Whether the test run is a MOS test run.
+
+        Returns:
+            bool: Whether the test run is a MOS test run.
+        """
+
         return self._mos_test
 
     # param builder
 
     def with_id(self, run_id: int) -> RunParams:
-        self.run_id = run_id
+        """Set the ID of the run.
 
+        Args:
+            run_id (int): ID of the run.
+
+        Returns:
+            RunParams: Run params with set run id.
+        """
+
+        self.run_id = run_id
         return self
 
     def in_test(self, test_id: int) -> RunParams:
-        self.test_id = test_id
+        """Set the ID of the test.
 
+        Args:
+            test_id (int): ID of the test.
+
+        Returns:
+            RunParams: Run params with set test id.
+        """
+
+        self.test_id = test_id
         return self
 
 
-class Run:
-    """
-    Run class allows to create, read and stop runs.
+class Run(LoaderoResource):
+    """Run class allows to create, read and stop runs.
     APIClient must be previously initialized with a valid Loadero access token.
     The target Loadero run resource is determined by RunParams.
     """
-
-    params = None
 
     def __init__(
         self,
@@ -213,16 +357,15 @@ class Run:
         test_id: int or None = None,
         params: RunParams or None = None,
     ) -> None:
-        if params is not None:
-            self.params = params
-        else:
-            self.params = RunParams()
+        self.params = params or RunParams()
 
         if run_id is not None:
             self.params.run_id = run_id
 
         if test_id is not None:
             self.params.test_id = test_id
+
+        super().__init__(self.params)
 
     def create(self) -> Run:
         """Creates new run with given data.
@@ -322,7 +465,17 @@ class Run:
         return self
 
     def results(self) -> list[Result]:
-        if not isinstance(self.params.run_id, int):
+        """Get all results of the run.
+
+        Raises:
+            APIException: If API call fails.
+            ValueError: Run.params.run_id must be a valid int
+
+        Returns:
+            list[Result]: List of all results of the run.
+        """
+
+        if self.params.run_id is None:
             raise ValueError("Run.params.run_id must be a valid int")
 
         return convert_params_list(
@@ -439,7 +592,7 @@ class RunAPI:
             str: Route to run resource/s.
         """
 
-        r = APIClient().project_url
+        r = APIClient().project_route
 
         if test_id is not None:
             r += f"tests/{test_id}/"

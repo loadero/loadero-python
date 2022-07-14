@@ -1,28 +1,127 @@
-# coding: utf-8
+"""Loadero test resource.
 
-"""
-Loadero test resource.
-Test resource is seperated into two parts - TestParams class that describes test
-attributes and Test class that in combination with TestParams and APIClient
-allows to perform CRUD operations on Loadero test resources.
+Test resource is seperated into three parts
+    - TestParams class describes test attributes
+    - TestAPI class groups API operation with test resources.
+    - Test class combines TestParams and TestAPI.
+
+Single Test object coresponds to single test in Loadero.
 """
 
 from __future__ import annotations
 from datetime import datetime
 from dateutil import parser
 from ..api_client import APIClient
-from .script import Script
 from .resource import (
+    Serializable,
     LoaderoResourceParams,
+    LoaderoResource,
     DuplicateResourceBodyParams,
     from_dict_as_list,
     convert_params_list,
 )
+from .file import FileParams, FileAPI
 from .classificator import TestMode, IncrementStrategy
 from .group import Group, GroupAPI
 from .participant import Participant, ParticipantAPI
 from .assert_resource import Assert, AssertAPI
 from .run import Run
+
+
+class Script(Serializable):
+    """Script describes a single Loadero test script."""
+
+    def __init__(
+        self,
+        file_id: int or None = None,
+        content: str or None = None,
+        filepath: str or None = None,
+    ) -> None:
+        """Creates a new script or loads an existing script.
+
+        Args:
+            script_id (int, optional): File id of the script Loadero resource.
+                Defaults to None.
+            content (str, optional): Script file contents. Defaults to None.
+            script_file (str, optional): File path to a script. Defaults to
+                None.
+
+        If more than one script content source is specified, then the loading
+        priorities are: script_id - first, content - second,
+        script_file - third.
+        """
+
+        self.file_id = file_id
+        self.content = content
+
+        if filepath is not None:
+            self.from_file(filepath)
+
+    def __str__(self) -> str:
+        if self.content is None:
+            return "<no script>"
+
+        return self.content
+
+    def from_file(self, filepath: str) -> Script:
+        """Loads Loadero script from file.
+
+        Args:
+            filepath (str): file path to script file
+
+        Returns:
+            Script: script loaded from file
+        """
+
+        with open(filepath, "r", encoding="utf-8") as f:
+            self.content = f.read()
+
+        return self
+
+    def to_dict(self) -> str:
+        """Returns script content as a string. Used for serialization.
+
+        Returns:
+            str: Script content.
+        """
+
+        return self.content
+
+    def to_dict_full(self) -> str:
+        """Returns script content as a string. Used for serialization.
+
+        Returns:
+            str: Script content.
+        """
+
+        return self.to_dict()
+
+    def from_dict(self, json_dict: dict[str, any]) -> Script:
+        """Loads script from a dictionary. Never used. Required for
+            serialization.
+
+        Args:
+            json_dict (dict[str, any]): JSON parsed as dictionary.
+
+        Returns:
+            Script: Script loaded from dictionary.
+        """
+
+        return self
+
+    def read(self) -> Script:
+        """Reads script from Loadero API.
+
+        Raises:
+            ValueError: If file_id is not specified.
+            APIException: If API call fails.
+
+        Returns:
+            Script: Script loaded from Loadero API.
+        """
+
+        self.content = FileAPI().read(FileParams(self.file_id)).content
+        return self
 
 
 class TestParams(LoaderoResourceParams):
@@ -102,22 +201,52 @@ class TestParams(LoaderoResourceParams):
 
     @property
     def created(self) -> datetime:
+        """Time when test was created.
+
+        Returns:
+            datetime: Time when test was created.
+        """
+
         return self._created
 
     @property
     def updated(self) -> datetime:
+        """Time when test was last updated.
+
+        Returns:
+            datetime: Time when test was last updated.
+        """
+
         return self._updated
 
     @property
     def group_count(self) -> int:
+        """Number of groups in test.
+
+        Returns:
+            int: Number of groups in test.
+        """
+
         return self._group_count
 
     @property
     def participant_count(self) -> int:
+        """Number of participants in test.
+
+        Returns:
+            int: Number of participants in test.
+        """
+
         return self._participant_count
 
     @property
     def deleted(self) -> bool:
+        """True if test is deleted.
+
+        Returns:
+            bool: True if test is deleted.
+        """
+
         return self._deleted
 
     @property
@@ -137,54 +266,125 @@ class TestParams(LoaderoResourceParams):
 
     @script.setter
     def script(self, script: Script):
+        """Set the test script.
+
+        Args:
+            script (Script): Test script.
+        """
+
         self._script = script
 
     # parameter builder
 
-    def with_id(self, tid) -> TestParams:
-        self.test_id = tid
+    def with_id(self, test_id: int) -> TestParams:
+        """Set test id.
 
+        Args:
+            test_id (int): Test id.
+
+        Returns:
+            TestParams: TestParams with test id set.
+        """
+
+        self.test_id = test_id
         return self
 
     def with_name(self, name: str) -> TestParams:
+        """Set test name.
+
+        Args:
+            name (str): Test name.
+
+        Returns:
+            TestParams: TestParams with test name set.
+        """
+
         self.name = name
-
         return self
 
-    def with_start_interval(self, si: int) -> TestParams:
-        self.start_interval = si
+    def with_start_interval(self, start_interval: int) -> TestParams:
+        """Set test start interval.
 
+        Args:
+            start_interval (int): Test start interval.
+
+        Returns:
+            TestParams: TestParams with test start interval set.
+        """
+
+        self.start_interval = start_interval
         return self
 
-    def with_participant_timeout(self, pt: int) -> TestParams:
-        self.participant_timeout = pt
+    def with_participant_timeout(self, participant_timeout: int) -> TestParams:
+        """Set test participant timeout.
 
+        Args:
+            participant_timeout (int): Test participant timeout.
+
+        Returns:
+            TestParams: TestParams with test participant timeout set.
+        """
+
+        self.participant_timeout = participant_timeout
         return self
 
-    def with_mode(self, m: TestMode) -> TestParams:
-        self.mode = m
+    def with_mode(self, test_mode: TestMode) -> TestParams:
+        """Set test mode.
 
+        Args:
+            test_mode (TestMode): Test mode.
+
+        Returns:
+            TestParams: TestParams with test mode set.
+        """
+
+        self.mode = test_mode
         return self
 
-    def with_increment_strategy(self, inc: IncrementStrategy) -> TestParams:
-        self.increment_strategy = inc
+    def with_increment_strategy(
+        self, increment_strategy: IncrementStrategy
+    ) -> TestParams:
+        """Set test increment strategy.
 
+        Args:
+            increment_strategy (IncrementStrategy): Test increment strategy.
+
+        Returns:
+            TestParams: TestParams with test increment strategy set.
+        """
+
+        self.increment_strategy = increment_strategy
         return self
 
-    def with_mos_test(self, mt: bool) -> TestParams:
-        self.mos_test = mt
+    def with_mos_test(self, mos_test: bool) -> TestParams:
+        """Set test MOS test.
 
+        Args:
+            mos_test (bool): Test MOS test.
+
+        Returns:
+            TestParams: TestParams with test MOS test set.
+        """
+
+        self.mos_test = mos_test
         return self
 
-    def with_script(self, sc: Script) -> TestParams:
-        self._script = sc
+    def with_script(self, script: Script) -> TestParams:
+        """Set test script.
 
+        Args:
+            script (Script): The test script.
+
+        Returns:
+            TestParams: TestParams with test script set.
+        """
+
+        self._script = script
         return self
 
 
-class Test:
-    """
-    Test class allows to perform CRUD operations on Loadero test resources.
+class Test(LoaderoResource):
+    """Test class allows to perform CRUD operations on Loadero test resources.
     APIClient must be previously initialized with a valid Loadero access token.
     The target Loadero test resource is determined by TestParams.
     """
@@ -192,13 +392,12 @@ class Test:
     def __init__(
         self, test_id: int or None = None, params: TestParams or None = None
     ) -> None:
-        if params is not None:
-            self.params = params
-        else:
-            self.params = TestParams()
+        self.params = params or TestParams()
 
         if test_id is not None:
             self.params.test_id = test_id
+
+        super().__init__(self.params)
 
     def create(self) -> Test:
         """Creates new test with given data.
@@ -213,7 +412,6 @@ class Test:
         """
 
         TestAPI.create(self.params)
-
         return self
 
     def read(self) -> Test:
@@ -228,10 +426,7 @@ class Test:
             Test: Read test resource.
         """
 
-        TestAPI.read(self.params)
-
-        self.params.script.read()
-
+        TestAPI.read(self.params).script.read()
         return self
 
     def update(self) -> Test:
@@ -247,7 +442,6 @@ class Test:
         """
 
         TestAPI.update(self.params)
-
         return self
 
     def delete(self) -> Test:
@@ -263,7 +457,6 @@ class Test:
         """
 
         TestAPI.delete(self.params)
-
         return self
 
     def duplicate(self, name: str) -> Test:
@@ -283,11 +476,15 @@ class Test:
 
         dupl = Test(params=TestAPI.duplicate(self.params, name))
         dupl.params.script.read()
-
         return dupl
 
     def launch(self) -> Run:
         """Launches test.
+
+        Raises:
+            ValueError: If resource params do not sufficiently identify
+                resource.
+            APIException: If API call fails.
 
         Returns:
             Run: Launched test run.
@@ -295,7 +492,6 @@ class Test:
 
         r = Run(test_id=self.params.test_id)
         r.create()
-
         return r
 
     def groups(self) -> list[Group]:
@@ -309,7 +505,7 @@ class Test:
             list[Group]: List of groups in test.
         """
 
-        if not isinstance(self.params.test_id, int):
+        if self.params.test_id is None:
             raise ValueError("Test.params.test_id must be a valid int")
 
         return convert_params_list(
@@ -327,7 +523,7 @@ class Test:
             list[Participant]: List of participants in test.
         """
 
-        if not isinstance(self.params.test_id, int):
+        if self.params.test_id is None:
             raise ValueError("Test.params.test_id must be a valid int")
 
         return convert_params_list(
@@ -346,7 +542,7 @@ class Test:
             list[Assert]: List of asserts in test.
         """
 
-        if not isinstance(self.params.test_id, int):
+        if self.params.test_id is None:
             raise ValueError("Test.params.test_id must be a valid int")
 
         return convert_params_list(
@@ -494,7 +690,7 @@ class TestAPI:
         Returns:
             str: Route to test resource/s.
         """
-        r = APIClient().project_url + "tests/"
+        r = APIClient().project_route + "tests/"
 
         if test_id is not None:
             r += f"{test_id}/"
