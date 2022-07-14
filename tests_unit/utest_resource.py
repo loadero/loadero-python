@@ -66,8 +66,6 @@ class UTestParamsSerializer:
             "right": "999",
         }
 
-        assert 1 == 2
-
     @staticmethod
     def utest_to_dict_ignore_missing():
         ps = ParamsSerializer(

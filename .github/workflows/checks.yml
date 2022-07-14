@@ -29,8 +29,8 @@ jobs:
       - name: format
         run: black --diff --check --config pyproject.toml loadero_python tests_unit tests_integration
 
-      # - name: test
-      #   run: pytest -vv tests
+      - name: test
+        run: pytest -vv tests_unit
 
       - name: generate coverage report
         run: pytest --cov=loadero_python tests_unit > pytest-coverage.txt
