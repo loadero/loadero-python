@@ -3,9 +3,11 @@ Assert resource is seperated into three parts
     - AssertPreconditionParams class describes assert preconditions attributes
     - AssertPreconditionAPI class that groups all API operations with assert
         preconditions attributes.
+    - AssertPrecondition class combines AssertPreconditionParams and
+        AssertPreconditionAPI.
 
-    assert attributes and Assert class that in combination with AssertParams and
-APIClient allows to perform CRUD operations on Loadero assert resources.
+Single AssertPrecondition object coresponds to a single assert precondition in
+Loadero.
 """
 
 from __future__ import annotations

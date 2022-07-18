@@ -349,10 +349,10 @@ class SubscriptionParams(LoaderoResourceParams):
 
     @property
     def updated(self) -> datetime:
-        """Time when project was last updated.
+        """Time when subscription was last updated.
 
         Returns:
-            datetime: Time when project was last updated.
+            datetime: Time when subscription was last updated.
         """
 
         return self._updated
@@ -644,7 +644,6 @@ class Project(LoaderoResource):
         """
 
         self.params = ProjectAPI.read()
-
         return self
 
     def tests(self) -> list[Test]:  # pylint: disable=no-self-use

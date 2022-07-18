@@ -15,13 +15,6 @@ from loadero_python.resources.classificator import FileType, TestMode
 
 @pytest.fixture(scope="module")
 def api_client():
-    print(
-        os.environ.get("PROJECT_ID"),
-        os.environ.get("ACCESS_TOKEN"),
-        os.environ.get("API_BASE"),
-        os.environ,
-    )
-
     APIClient(
         project_id=int(os.environ.get("PROJECT_ID")),
         access_token=os.environ.get("ACCESS_TOKEN"),

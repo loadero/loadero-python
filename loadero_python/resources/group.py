@@ -24,8 +24,7 @@ from .participant import Participant, ParticipantAPI
 
 
 class GroupParams(LoaderoResourceParams):
-    """
-    GroupParams represents Loadero group resource attributes.
+    """GroupParams represents Loadero group resource attributes.
     GroupParams has a builder pattern for group resources read and write
     attributes.
     """
@@ -356,7 +355,7 @@ class GroupAPI:
         """Duplicate an existing group resource.
 
         Args:
-            params (GroupParams): Identified  the group resource to duplicate.
+            params (GroupParams): Identified the group resource to duplicate.
             name (str): Name of the duplicate group.
 
         Raises:

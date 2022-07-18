@@ -40,15 +40,14 @@ class Script(Serializable):
         """Creates a new script or loads an existing script.
 
         Args:
-            script_id (int, optional): File id of the script Loadero resource.
+            file_id (int, optional): File id of the script Loadero resource.
                 Defaults to None.
             content (str, optional): Script file contents. Defaults to None.
-            script_file (str, optional): File path to a script. Defaults to
+            filepath (str, optional): File path to a script. Defaults to
                 None.
 
         If more than one script content source is specified, then the loading
-        priorities are: script_id - first, content - second,
-        script_file - third.
+        priorities are: file_id - first, content - second, filepath - third.
         """
 
         self.file_id = file_id
@@ -241,10 +240,10 @@ class TestParams(LoaderoResourceParams):
 
     @property
     def deleted(self) -> bool:
-        """True if test is deleted.
+        """Is test deleted.
 
         Returns:
-            bool: True if test is deleted.
+            bool: Is test deleted.
         """
 
         return self._deleted

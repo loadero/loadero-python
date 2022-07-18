@@ -143,7 +143,7 @@ class ParticipantParams(LoaderoResourceParams):
         """Set participant id.
 
         Args:
-            pid (int): Participant id.
+            participant_id (int): Participant id.
 
         Returns:
             ParticipantParams: Participant params with participant id set.
