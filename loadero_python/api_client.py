@@ -1,6 +1,4 @@
-"""
-    API client to access Loadero API
-"""
+"""API client to access Loadero API"""
 
 import json
 import threading
@@ -14,6 +12,9 @@ class APIException(Exception):
     indicate that an invalid request was made or that an internal error
     occurred in the Loadero servers.
     """
+
+
+# TODO: ADD RATE LIMIT
 
 
 class APIClient:
@@ -247,20 +248,53 @@ class APIClient:
 
     @property
     def api_base(self) -> str:
+        """Returns Loadero API base URL.
+
+        Returns:
+            str: Loadero API base URL.
+        """
+
         return self.__api_base
 
     @property
-    def project_url(self) -> str:
-        return self.__api_base + f"projects/{self.project_id}/"
+    def project_route(self) -> str:
+        """Returns Loadero API URL to the project that APIClient is configured
+        for.
+
+        Returns:
+            str: Loadero API URL to the project that APIClient is configured
+                for.
+        """
+
+        return f"projects/{self.project_id}/"
 
     @property
     def access_token(self) -> str:
+        """Returns Loadero API access token of project.
+
+        Returns:
+            str: Loadero API access token of project.
+        """
+
         return self.__access_token
 
     @property
     def project_id(self) -> int:
+        """Returns project ID that the APIClient is configured for.
+
+        Returns:
+            int: Project ID that the APIClient is configured for.
+        """
+
         return self.__project_id
 
     @property
     def auth_header(self) -> dict[str, str]:
+        """Returns Loadero API authentication header used for all requests.
+
+        Returns:
+            dict[str, str]: Loadero API authentication header used for all
+                requests.
+        """
+
         return self.__auth_header

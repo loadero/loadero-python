@@ -4,22 +4,52 @@
 # running this script a venv for this repo has been created and activated.
 
 
+function header() {
+    echo "###############################################################################"
+    echo "## $1"
+    echo "###############################################################################"
+}
 
+function unit_test() {
+    header "running unit tests"
+    pytest --cov=loadero_python --cov-report term -vv tests_unit
+}
 
-if [ "$1" == "t" ]
-then 
-    pytest -vv --cov=loadero_python --cov-report term tests
-elif [ "$1" == "c" ]
-then
-    pytest -vv --cov=loadero_python --cov-report html tests
-    open htmlcov/index.html
-elif [ "$1" == "cu" ]
-then
-    pytest -vv --cov=loadero_python --cov-report html tests
+function intgration_test() {
+    header "running integration tests"
+    env -$(cat .env) sh -c "pytest --cov=loadero_python --cov-report term -vv tests_integration"
+}
+
+function lint() {
+    header "running lint"
+    pylint -j 4 --rcfile=.pylintrc loadero_python tests_unit tests_integration
+}
+
+function format() {
+    header "running format"
+    black --diff --check --config pyproject.toml loadero_python tests_unit tests_integration
+}
+
+if [ $# -eq 0 ]; then
+    lint
+    format
+    unit_test
+    intgration_test
+elif [ "$1" == "l" ]; then
+    lint
+elif [ "$1" == "f" ]; then
+    format
+elif [ "$1" == "t" ]; then
+    if [ $# -eq 1 ]; then
+        unit_test
+        intgration_test
+    elif [ "$2" == "u" ]; then
+        unit_test
+    elif [ "$2" == "i" ]; then
+        intgration_test
+    else 
+        echo "Invalid argument"
+    fi
 else
-    pip install -r requirements.txt -q
-    pylint --rcfile=.pylintrc loadero_python tests/*.py
-    black --diff --check --config pyproject.toml loadero_python tests
-    # pytest -vv --cov=loadero_python --cov-report term tests
-    pytest --cov=loadero_python --cov-report term tests
+    echo "Invalid argument"
 fi

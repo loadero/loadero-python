@@ -1,10 +1,13 @@
-# coding: utf-8
+"""Loadero assert resource.
+Assert resource is seperated into three parts
+    - AssertPreconditionParams class describes assert preconditions attributes
+    - AssertPreconditionAPI class that groups all API operations with assert
+        preconditions attributes.
+    - AssertPrecondition class combines AssertPreconditionParams and
+        AssertPreconditionAPI.
 
-"""
-Loadero assert resource.
-Assert resource is seperated into two parts - AssertParams class that describes
-assert attributes and Assert class that in combination with AssertParams and
-APIClient allows to perform CRUD operations on Loadero assert resources.
+Single AssertPrecondition object coresponds to a single assert precondition in
+Loadero.
 """
 
 from __future__ import annotations
@@ -12,14 +15,14 @@ from datetime import datetime
 from dateutil import parser
 
 from ..api_client import APIClient
-from .resource import LoaderoResourceParams, from_dict_as_list
+from .resource import LoaderoResourceParams, LoaderoResource, from_dict_as_list
 from .classificator import Operator, Property
 
 
 class AssertPreconditionParams(LoaderoResourceParams):
-    """
-    AssertPreconditionParams represents Loadero assert precondition resource
-    attributes. AssertPreconditionParams has a builder pattern for write
+    """AssertPreconditionParams describes single Loadero assert precondition
+    resources attributes.
+    AssertPreconditionParams has a builder pattern for write
     attributes.
     """
 
@@ -65,47 +68,107 @@ class AssertPreconditionParams(LoaderoResourceParams):
 
     @property
     def created(self) -> datetime:
+        """Time when resource was created.
+
+        Returns:
+            datetime: Time when resource was created.
+        """
+
         return self._created
 
     @property
     def updated(self) -> datetime:
+        """Time when resource was last updated.
+
+        Returns:
+            datetime: Time when resource was last updated.
+        """
+
         return self._updated
 
     def with_id(self, assert_precondition_id: int) -> AssertPreconditionParams:
-        self.assert_precondition_id = assert_precondition_id
+        """Set assert precondition id.
 
+        Args:
+            assert_precondition_id (int): Assert precondition id.
+
+        Returns:
+            AssertPreconditionParams: Resource params with set id.
+        """
+
+        self.assert_precondition_id = assert_precondition_id
         return self
 
     def for_assert(self, assert_id: int) -> AssertPreconditionParams:
-        self.assert_id = assert_id
+        """Set parent assert resource id.
 
+        Args:
+            assert_id (int): Assert resource id.
+
+        Returns:
+            AssertPreconditionParams: Resource params with set parent assert id.
+        """
+
+        self.assert_id = assert_id
         return self
 
     def in_test(self, test_id: int) -> AssertPreconditionParams:
-        self.test_id = test_id
+        """Set parent test resource id.
 
+        Args:
+            test_id (int): Test resource id.
+
+        Returns:
+            AssertPreconditionParams: Resource params with set parent test
+                resource id.
+        """
+
+        self.test_id = test_id
         return self
 
     def with_expected(self, expected: str) -> AssertPreconditionParams:
-        self.expected = expected
+        """Set precondition expected value.
 
+        Args:
+            expected (str): Precondition expected value.
+
+        Returns:
+            AssertPreconditionParams: Resource params with set expected value.
+        """
+
+        self.expected = expected
         return self
 
     def with_operator(self, operator: Operator) -> AssertPreconditionParams:
-        self.operator = operator
+        """Set precondition operator.
 
+        Args:
+            operator (Operator): Precondition operator.
+
+        Returns:
+            AssertPreconditionParams: Resource params with set operator.
+        """
+
+        self.operator = operator
         return self
 
-    # pylint: disable=missing-function-docstring
     def with_property(
         self, precondition_property: Property
     ) -> AssertPreconditionParams:
-        self.precondition_property = precondition_property
+        """Set precondition property.
 
+        Args:
+            precondition_property (Property): Precondition property.
+
+        Returns:
+            AssertPreconditionParams: Resource params with set property.
+        """
+
+        self.precondition_property = precondition_property
         return self
 
 
-class AssertPrecondition:
+class AssertPrecondition(LoaderoResource):
     """
     AssertPrecondition class allows to perform CRUD operations on Loadero
     assert precondition resources. APIClient must be previously initialized
@@ -121,10 +184,7 @@ class AssertPrecondition:
         assert_precondition_id: int or None = None,
         params: AssertPreconditionParams or None = None,
     ) -> None:
-        if params is not None:
-            self.params = params
-        else:
-            self.params = AssertPreconditionParams()
+        self.params = params or AssertPreconditionParams()
 
         if test_id is not None:
             self.params.test_id = test_id
@@ -134,6 +194,8 @@ class AssertPrecondition:
 
         if assert_precondition_id is not None:
             self.params.assert_precondition_id = assert_precondition_id
+
+        super().__init__(self.params)
 
     def create(self) -> AssertPrecondition:
         """Creates new assert precondition with given data.
@@ -198,8 +260,7 @@ class AssertPrecondition:
 
 
 class AssertPreconditionAPI:
-    """
-    AssertPreconditionAPI defines Loadero API operations for assert
+    """AssertPreconditionAPI defines Loadero API operations for assert
     precondition resources.
     """
 
@@ -359,7 +420,7 @@ class AssertPreconditionAPI:
         """
 
         r = (
-            APIClient().project_url
+            APIClient().project_route
             + f"tests/{test_id}/asserts/{assert_id}/preconditions/"
         )
 
@@ -387,6 +448,7 @@ class AssertPreconditionAPI:
             ValueError: AssertPreconditionParams.assert_precondition_id must be
                 a valid int
         """
+
         if params.test_id is None:
             raise ValueError(
                 "AssertPreconditionParams.test_id must be a valid int"

@@ -1,10 +1,11 @@
-# coding: utf-8
+"""Loadero group resource.
 
-"""
-Loadero group resource.
-Group resource is seperated into two parts - GroupParams class that describes
-groups attributes and Group class that in combination with GroupParams and
-APIClient allows to perform CRUD operations on Loadero group resources.
+Group resource is seperated into three parts
+    - GroupParams class describes groups attributes
+    - GroupAPI class groups all API operations related to groups.
+    - Group class combined GroupParams and GroupAPI
+
+Single group object coresponds to single group in Loadero.
 """
 
 from __future__ import annotations
@@ -13,16 +14,17 @@ from dateutil import parser
 from ..api_client import APIClient
 from .resource import (
     LoaderoResourceParams,
+    LoaderoResource,
     DuplicateResourceBodyParams,
     from_dict_as_list,
     convert_params_list,
+    from_dict_as_new,
 )
 from .participant import Participant, ParticipantAPI
 
 
 class GroupParams(LoaderoResourceParams):
-    """
-    GroupParams represents Loadero group resource attributes.
+    """GroupParams represents Loadero group resource attributes.
     GroupParams has a builder pattern for group resources read and write
     attributes.
     """
@@ -71,49 +73,102 @@ class GroupParams(LoaderoResourceParams):
 
     @property
     def created(self) -> datetime or None:
+        """Time when group was created.
+
+        Returns:
+            datetime: Time when group was created.
+        """
+
         return self._created
 
     @property
     def updated(self) -> datetime:
+        """Time when group was last updated.
+
+        Returns:
+            datetime: Time when group was last updated.
+        """
         return self._updated
 
     @property
     def total_cu_count(self) -> int:
+        """Total compute unit count in group.
+
+        Returns:
+            int: Total compute unit count in group.
+        """
+
         return self._total_cu_count
 
     @property
     def participant_count(self) -> int:
+        """Participant count in group.
+
+        Returns:
+            int: Participant count in group.
+        """
+
         return self._participant_count
 
     def with_id(self, group_id: int) -> GroupParams:
-        self.group_id = group_id
+        """Set group id.
 
+        Args:
+            group_id (int): Group id.
+
+        Returns:
+            GroupParams: Group params with set group id.
+        """
+
+        self.group_id = group_id
         return self
 
     def with_name(self, name: str) -> GroupParams:
-        self.name = name
+        """Set group name.
 
+        Args:
+            name (str): Group name.
+
+        Returns:
+            GroupParams: Group params with set group name.
+        """
+
+        self.name = name
         return self
 
     def with_count(self, count: int) -> GroupParams:
-        self.count = count
+        """Set group count.
 
+        Args:
+            count (int): Group count.
+
+        Returns:
+            GroupParams: Group params with set group count.
+        """
+
+        self.count = count
         return self
 
     def in_test(self, tid: int) -> GroupParams:
-        self.test_id = tid
+        """Set parent test id.
 
+        Args:
+            tid (int): Test id.
+
+        Returns:
+            GroupParams: Group params with set parent test id.
+        """
+
+        self.test_id = tid
         return self
 
 
-class Group:
-    """
-    Group class allows to perform CRUD operations on Loadero group resources.
+class Group(LoaderoResource):
+    """Group class allows to perform CRUD operations on a single Loadero group
+    resource.
     APIClient must be previously initialized with a valid Loadero access token.
     The target Loadero group resource is determined by GroupParams.
     """
-
-    params = None
 
     def __init__(
         self,
@@ -121,10 +176,7 @@ class Group:
         test_id: int or None = None,
         params: GroupParams or None = None,
     ) -> None:
-        if params is not None:
-            self.params = params
-        else:
-            self.params = GroupParams()
+        self.params = params or GroupParams()
 
         if group_id is not None:
             self.params.group_id = group_id
@@ -132,8 +184,15 @@ class Group:
         if test_id is not None:
             self.params.test_id = test_id
 
+        super().__init__(self.params)
+
     def create(self) -> Group:
         """Creates new group with given data.
+
+        Raises:
+            ValueError: If resource params do not sufficiently identify parent
+                resource or resource params required attributes are None.
+            APIException: If API call fails.
 
         Returns:
             Group: Created group resource.
@@ -145,6 +204,11 @@ class Group:
 
     def read(self) -> Group:
         """Reads information about an existing group.
+
+        Raises:
+            ValueError: If resource params do not sufficiently identify
+                resource.
+            APIException: If API call fails.
 
         Returns:
             Group: Read group resource.
@@ -180,15 +244,7 @@ class Group:
             Group: Duplicate instance of group.
         """
 
-        dp = GroupParams(
-            group_id=self.params.group_id,
-            test_id=self.params.test_id,
-            name=name,
-        )
-
-        dupl = Group(params=GroupAPI.duplicate(dp))
-
-        return dupl
+        return Group(params=GroupAPI.duplicate(self.params, name))
 
     def participants(self) -> list[Participant]:
         """Read all participants in group.
@@ -216,14 +272,15 @@ class GroupAPI:
             params (GroupParams): Describes the group resource to be created.
 
         Raises:
-            Exception: GroupParams.test_id was not defined.
+            ValueError: If resource params do not sufficiently identify parent
+                resource or resource params required attributes are None.
+            APIException: If API call fails.
 
         Returns:
             GroupParams: Created group resource.
         """
 
-        if params.test_id is None:
-            raise Exception("GroupParams.test_id must be a valid int")
+        GroupAPI.__validate_identifiers(params, False)
 
         return params.from_dict(
             APIClient().post(GroupAPI.route(params.test_id), params.to_dict())
@@ -237,18 +294,15 @@ class GroupAPI:
             params (GroupParams): Describes the group resource to read.
 
         Raises:
-            Exception: GroupParams.test_id was not defined.
-            Exception: GroupParams.group_id was not defined.
+            ValueError: If resource params do not sufficiently identify
+                resource.
+            APIException: If API call fails.
 
         Returns:
             GroupParams: Read group resource.
         """
 
-        if params.test_id is None:
-            raise Exception("GroupParams.test_id must be a valid int")
-
-        if params.group_id is None:
-            raise Exception("GroupParams.group_id must be a valid int")
+        GroupAPI.__validate_identifiers(params)
 
         return params.from_dict(
             APIClient().get(GroupAPI.route(params.test_id, params.group_id))
@@ -262,18 +316,15 @@ class GroupAPI:
             params (GroupParams): Describes the group resource to update.
 
         Raises:
-            Exception: GroupParams.test_id was not defined.
-            Exception: GroupParams.group_id was not defined.
+            ValueError: If resource params do not sufficiently identify
+                resource or resource params required attributes are None.
+            APIException: If API call fails.
 
         Returns:
             GroupParams: Updated group resource.
         """
 
-        if params.test_id is None:
-            raise Exception("GroupParams.test_id must be a valid int")
-
-        if params.group_id is None:
-            raise Exception("GroupParams.group_id must be a valid int")
+        GroupAPI.__validate_identifiers(params)
 
         return params.from_dict(
             APIClient().put(
@@ -290,48 +341,38 @@ class GroupAPI:
             params (GroupParams): Describes the group resource to delete.
 
         Raises:
-            Exception: GroupParams.test_id was not defined.
-            Exception: GroupParams.group_id was not defined.
+            ValueError: If resource params do not sufficiently identify
+                resource.
+            APIException: If API call fails.
         """
 
-        if params.test_id is None:
-            raise Exception("GroupParams.test_id must be a valid int")
-
-        if params.group_id is None:
-            raise Exception("GroupParams.group_id must be a valid int")
+        GroupAPI.__validate_identifiers(params)
 
         APIClient().delete(GroupAPI.route(params.test_id, params.group_id))
 
     @staticmethod
-    def duplicate(params: GroupParams) -> GroupParams:
+    def duplicate(params: GroupParams, name: str) -> GroupParams:
         """Duplicate an existing group resource.
 
         Args:
-            params (GroupParams): Describe the group resource to duplicate and
-            the name of duplicate group resource.
+            params (GroupParams): Identified the group resource to duplicate.
+            name (str): Name of the duplicate group.
 
         Raises:
-            Exception: GroupParams.test_id was not defined.
-            Exception: GroupParams.group_id was not defined.
+            ValueError: If resource params do not sufficiently identify
+                resource.
+            APIException: If API call fails.
 
         Returns:
             GroupParams: Duplicate group resource.
         """
 
-        if params.test_id is None:
-            raise Exception("GroupParams.test_id must be a valid int")
+        GroupAPI.__validate_identifiers(params)
 
-        if params.group_id is None:
-            raise Exception("GroupParams.group_id must be a valid int")
-
-        dupl = GroupParams()
-
-        req = DuplicateResourceBodyParams(name=params.name)
-
-        return dupl.from_dict(
+        return from_dict_as_new(GroupParams)(
             APIClient().post(
                 GroupAPI.route(params.test_id, params.group_id) + "copy/",
-                req.to_dict(),
+                DuplicateResourceBodyParams(name=name).to_dict(),
             )
         )
 
@@ -345,6 +386,7 @@ class GroupAPI:
         Returns:
             list[GroupParams]: List of all group resources in test.
         """
+
         resp = APIClient().get(GroupAPI.route(test_id))
 
         if "results" not in resp or resp["results"] is None:
@@ -364,11 +406,33 @@ class GroupAPI:
         Returns:
             str: Route to group resource/s.
         """
-        r = APIClient().project_url + f"tests/{test_id}/groups/"
+        r = APIClient().project_route + f"tests/{test_id}/groups/"
 
         if group_id is not None:
             r += f"{group_id}/"
 
         return r
 
-    # TODO: create __validate_identifiers method and apply it.
+    @staticmethod
+    def __validate_identifiers(
+        params: GroupParams, single: bool = True
+    ) -> None:
+        """Validate group resource identifiers.
+
+        Args:
+            params (GroupParams): Group resource params.
+            single (bool, optional): Indicates if the resource identifiers
+                should be validated as pointing to a single resource (True) or
+                to all assert resources belinging to test resource.
+                Defaults to True.
+
+        Raises:
+            ValueError: GroupParams.test_id must be a valid int
+            ValueError: GroupParams.group_id must be a valid int
+        """
+
+        if params.test_id is None:
+            raise ValueError("GroupParams.test_id must be a valid int")
+
+        if single and params.group_id is None:
+            raise ValueError("GroupParams.group_id must be a valid int")

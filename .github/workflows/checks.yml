@@ -24,16 +24,16 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: lint
-        run: pylint --rcfile=.pylintrc loadero_python tests/*.py
+        run: pylint -j 4 --rcfile=.pylintrc loadero_python tests_unit tests_integration
 
       - name: format
-        run: black --check --verbose --config pyproject.toml loadero_python tests
+        run: black --diff --check --config pyproject.toml loadero_python tests_unit tests_integration
 
       - name: test
-        run: pytest -vv tests
+        run: pytest -vv tests_unit
 
       - name: generate coverage report
-        run: pytest --cov=loadero_python tests > pytest-coverage.txt
+        run: pytest --cov=loadero_python tests_unit > pytest-coverage.txt
 
       - name: comment coverage
         uses: coroo/pytest-coverage-commentator@v1.0.2
