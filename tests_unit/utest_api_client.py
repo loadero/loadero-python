@@ -1,13 +1,12 @@
 """API client tests"""
 
 
-# pylint: disable=unused-argument
 # pylint: disable=missing-function-docstring
-# pylint: disable=redefined-outer-name
 # pylint: disable=missing-class-docstring
 # pylint: disable=unused-variable
 
 
+import time
 import pytest
 import httpretty
 from loadero_python.api_client import APIClient
@@ -19,7 +18,7 @@ def dict_includes(want: dict, got: dict) -> None:
         assert v == got[k]
 
 
-@pytest.fixture
+@pytest.fixture(scope="class")
 def api():
     httpretty.enable(allow_net_connect=False, verbose=True)
 
@@ -27,6 +26,7 @@ def api():
         project_id=common.PROJECT_ID,
         access_token=common.ACCESS_TOKEN,
         api_base=common.API_BASE,
+        rate_limit=False,
     )
 
     yield
@@ -34,12 +34,14 @@ def api():
     httpretty.disable()
 
 
-class UTestAPIClient:
-    @staticmethod
-    def utest_init_no_args():
-        with pytest.raises(Exception):
-            APIClient()
+@pytest.fixture(scope="function")
+def reset():
+    httpretty.reset()
+    yield
 
+
+@pytest.mark.usefixtures("api", "reset")
+class UTestAPIClient:
     @staticmethod
     def utest_init_no_access_token():
         with pytest.raises(Exception):
@@ -83,28 +85,29 @@ class UTestAPIClient:
         assert APIClient().project_id == common.PROJECT_ID
 
     @staticmethod
-    def utest_api_client_api_base(api):
+    def utest_api_client_api_base():
         assert APIClient().api_base == common.API_BASE
 
     @staticmethod
-    def utest_api_client_access_token(api):
+    def utest_api_client_access_token():
         assert APIClient().access_token == common.ACCESS_TOKEN
 
     @staticmethod
-    def utest_api_client_project_id(api):
+    def utest_api_client_project_id():
         assert APIClient().project_id == common.PROJECT_ID
 
     @staticmethod
-    def utest_api_client_auth_header(api):
+    def utest_api_client_auth_header():
         dict_includes(
             {"Authorization": "LoaderoAuth " + common.ACCESS_TOKEN},
             APIClient().auth_header,
         )
 
 
+@pytest.mark.usefixtures("api", "reset")
 class UTestAPIClientGet:
     @staticmethod
-    def utest_valid(api):
+    def utest_valid():
         httpretty.register_uri(
             httpretty.GET,
             common.API_BASE + "route/",
@@ -124,7 +127,7 @@ class UTestAPIClientGet:
         )
 
     @staticmethod
-    def utest_invalid_headers(api):
+    def utest_invalid_headers():
         httpretty.register_uri(
             httpretty.GET,
             common.API_BASE + "route/",
@@ -134,7 +137,7 @@ class UTestAPIClientGet:
             APIClient().get("route/")
 
     @staticmethod
-    def utest_non_success_resp(api):
+    def utest_non_success_resp():
         httpretty.register_uri(
             httpretty.GET,
             common.API_BASE + "route/",
@@ -146,7 +149,7 @@ class UTestAPIClientGet:
             APIClient().get("route/")
 
     @staticmethod
-    def utest_empty_response(api):
+    def utest_empty_response():
         httpretty.register_uri(
             httpretty.GET,
             common.API_BASE + "route/",
@@ -157,9 +160,10 @@ class UTestAPIClientGet:
         assert APIClient().get("route/") is None
 
 
+@pytest.mark.usefixtures("api", "reset")
 class UTestAPIClientPost:
     @staticmethod
-    def utest_valid(api):
+    def utest_valid():
         httpretty.register_uri(
             httpretty.POST,
             common.API_BASE + "route/",
@@ -182,7 +186,7 @@ class UTestAPIClientPost:
         assert httpretty.last_request().body == b'{"hello": "world"}'
 
     @staticmethod
-    def utest_invalid_headers(api):
+    def utest_invalid_headers():
         httpretty.register_uri(
             httpretty.POST,
             common.API_BASE + "route/",
@@ -192,7 +196,7 @@ class UTestAPIClientPost:
             APIClient().post("route/", {"hello": "world"})
 
     @staticmethod
-    def utest_non_success_resp(api):
+    def utest_non_success_resp():
         httpretty.register_uri(
             httpretty.POST,
             common.API_BASE + "route/",
@@ -204,7 +208,7 @@ class UTestAPIClientPost:
             APIClient().post("route/", {"hello": "world"})
 
     @staticmethod
-    def utest_empty_response(api):
+    def utest_empty_response():
         httpretty.register_uri(
             httpretty.POST,
             common.API_BASE + "route/",
@@ -215,9 +219,10 @@ class UTestAPIClientPost:
         assert APIClient().post("route/", {"hello": "world"}) is None
 
 
+@pytest.mark.usefixtures("api", "reset")
 class UTestAPIPut:
     @staticmethod
-    def utest_valid(api):
+    def utest_valid():
         httpretty.register_uri(
             httpretty.PUT,
             common.API_BASE + "route/",
@@ -240,7 +245,7 @@ class UTestAPIPut:
         assert httpretty.last_request().body == b'{"hello": "world"}'
 
     @staticmethod
-    def utest_invalid_headers(api):
+    def utest_invalid_headers():
         httpretty.register_uri(
             httpretty.PUT,
             common.API_BASE + "route/",
@@ -250,7 +255,7 @@ class UTestAPIPut:
             APIClient().put("route/", {"hello": "world"})
 
     @staticmethod
-    def utest_non_success_resp(api):
+    def utest_non_success_resp():
         httpretty.register_uri(
             httpretty.PUT,
             common.API_BASE + "route/",
@@ -262,7 +267,7 @@ class UTestAPIPut:
             APIClient().put("route/", {"hello": "world"})
 
     @staticmethod
-    def utest_empty_response(api):
+    def utest_empty_response():
         httpretty.register_uri(
             httpretty.PUT,
             common.API_BASE + "route/",
@@ -273,9 +278,10 @@ class UTestAPIPut:
         assert APIClient().put("route/", {"hello": "world"}) is None
 
 
+@pytest.mark.usefixtures("api", "reset")
 class UTestAPIDelete:
     @staticmethod
-    def utest_valid(api):
+    def utest_valid():
         httpretty.register_uri(
             httpretty.DELETE,
             common.API_BASE + "route/",
@@ -294,7 +300,7 @@ class UTestAPIDelete:
         )
 
     @staticmethod
-    def utest_non_success_resp(api):
+    def utest_non_success_resp():
         httpretty.register_uri(
             httpretty.DELETE,
             common.API_BASE + "route/",
@@ -304,3 +310,30 @@ class UTestAPIDelete:
 
         with pytest.raises(Exception):
             APIClient().delete("route/")
+
+
+@pytest.mark.usefixtures("api", "reset")
+def utest_ratelimit():
+    httpretty.register_uri(
+        httpretty.GET,
+        common.API_BASE + "route/",
+        forcing_headers={"Content-Type": "application/json"},
+        body='{"hello":"world"}',
+    )
+
+    APIClient(
+        project_id=common.PROJECT_ID,
+        access_token=common.ACCESS_TOKEN,
+        api_base=common.API_BASE,
+        rate_limit=True,
+    )
+
+    start_time = time.time()
+
+    APIClient().get("route/")
+    APIClient().get("route/")
+    APIClient().get("route/")
+    APIClient().get("route/")
+    APIClient().get("route/")
+
+    assert time.time() - start_time > 1

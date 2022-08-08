@@ -7,9 +7,11 @@
 
 
 import json
+from urllib.parse import urlparse, parse_qs
 import pytest
 import httpretty
 from loadero_python.api_client import APIClient
+from loadero_python.resources.file import FileFilterKey
 from loadero_python.resources.project import (
     PlanLimitsParams,
     SubscriptionSettingsParams,
@@ -19,6 +21,8 @@ from loadero_python.resources.project import (
     Project,
     ProjectAPI,
 )
+from loadero_python.resources.run import RunFilterKey
+from loadero_python.resources.test import TestFilterKey
 from . import common
 
 
@@ -27,7 +31,7 @@ def mock():
     httpretty.enable(allow_net_connect=False, verbose=True)
     httpretty.reset()
 
-    APIClient(common.PROJECT_ID, common.ACCESS_TOKEN, common.API_BASE)
+    APIClient(common.PROJECT_ID, common.ACCESS_TOKEN, common.API_BASE, False)
 
     # read
     httpretty.register_uri(
@@ -38,7 +42,7 @@ def mock():
     )
 
     # read all tests
-    pg = common.PAGED_RESPONSE.copy()
+    pg = common.PAGED_RESPONSE_JSON.copy()
     pg["results"] = [common.test_json, common.test_json]
 
     httpretty.register_uri(
@@ -49,7 +53,7 @@ def mock():
     )
 
     # read all files
-    pg = common.PAGED_RESPONSE.copy()
+    pg = common.PAGED_RESPONSE_JSON.copy()
     pg["results"] = [common.FILE_JSON, common.FILE_JSON]
 
     httpretty.register_uri(
@@ -59,7 +63,7 @@ def mock():
         forcing_headers={"Content-Type": "application/json"},
     )
 
-    pg = common.PAGED_RESPONSE.copy()
+    pg = common.PAGED_RESPONSE_JSON.copy()
     pg["results"] = [common.RUN_JSON, common.RUN_JSON]
 
     # read all runs
@@ -126,36 +130,66 @@ class UTestProject:
 
     @staticmethod
     def utest_tests():
-        resp = Project().tests()
+        tests, pagination, filters = Project().tests(
+            common.build_query_params(list(TestFilterKey))
+        )
 
-        assert len(resp) == 2
+        common.check_pagination_params(pagination)
+        assert filters == common.FILTER_JSON
 
-        for ret in resp:
+        assert len(tests) == 2
+
+        for ret in tests:
             common.check_test_params(ret.params, False)
+
+        assert (
+            len(parse_qs(urlparse(httpretty.last_request().url).query))
+            == len(TestFilterKey) + 2
+        )
 
         assert not httpretty.last_request().parsed_body
         assert httpretty.last_request().method == httpretty.GET
 
     @staticmethod
     def utest_files():
-        resp = Project().files()
+        participants, pagination, filters = Project().files(
+            common.build_query_params(list(FileFilterKey))
+        )
 
-        assert len(resp) == 2
+        common.check_pagination_params(pagination)
+        assert filters == common.FILTER_JSON
 
-        for ret in resp:
+        assert len(participants) == 2
+
+        for ret in participants:
             common.check_file_params(ret.params)
+
+        assert (
+            len(parse_qs(urlparse(httpretty.last_request().url).query))
+            == len(FileFilterKey) + 2
+        )
 
         assert not httpretty.last_request().parsed_body
         assert httpretty.last_request().method == httpretty.GET
 
     @staticmethod
     def utest_runs():
-        resp = Project().runs()
+        runs, pagination, filters = Project().runs(
+            common.build_query_params(list(RunFilterKey))
+        )
 
-        assert len(resp) == 2
+        common.check_pagination_params(pagination)
+        assert filters == common.FILTER_JSON
 
-        for ret in resp:
+        assert len(runs) == 2
+
+        for ret in runs:
             common.check_run_params(ret.params)
+
+        assert (
+            len(parse_qs(urlparse(httpretty.last_request().url).query))
+            == len(RunFilterKey) + 2
+        )
 
         assert not httpretty.last_request().parsed_body
         assert httpretty.last_request().method == httpretty.GET

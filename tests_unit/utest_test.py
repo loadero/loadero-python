@@ -8,10 +8,21 @@
 
 import json
 import re
+from urllib.parse import urlparse, parse_qs
 import pytest
 import httpretty
 from loadero_python.api_client import APIClient
-from loadero_python.resources.test import Test, TestParams, Script, TestAPI
+from loadero_python.resources.assert_resource import AssertFilterKey
+from loadero_python.resources.group import GroupFilterKey
+from loadero_python.resources.participant import ParticipantFilterKey
+from loadero_python.resources.run import RunFilterKey
+from loadero_python.resources.test import (
+    Test,
+    TestFilterKey,
+    TestParams,
+    Script,
+    TestAPI,
+)
 from loadero_python.resources.classificator import (
     TestMode,
     IncrementStrategy,
@@ -24,7 +35,7 @@ def mock():
     httpretty.enable(allow_net_connect=False, verbose=True)
     httpretty.reset()
 
-    APIClient(common.PROJECT_ID, common.ACCESS_TOKEN, common.API_BASE)
+    APIClient(common.PROJECT_ID, common.ACCESS_TOKEN, common.API_BASE, False)
 
     # create
     httpretty.register_uri(
@@ -75,7 +86,7 @@ def mock():
     )
 
     # read all tests
-    pg = common.PAGED_RESPONSE.copy()
+    pg = common.PAGED_RESPONSE_JSON.copy()
     pg["results"] = [common.test_json, common.test_json]
 
     httpretty.register_uri(
@@ -86,7 +97,7 @@ def mock():
     )
 
     # read all groups
-    pg = common.PAGED_RESPONSE.copy()
+    pg = common.PAGED_RESPONSE_JSON.copy()
     pg["results"] = [common.GROUP_JSON, common.GROUP_JSON]
 
     httpretty.register_uri(
@@ -99,7 +110,7 @@ def mock():
     )
 
     # read all participants
-    pg = common.PAGED_RESPONSE.copy()
+    pg = common.PAGED_RESPONSE_JSON.copy()
     pg["results"] = [common.PARTICIPANT_JSON, common.PARTICIPANT_JSON]
 
     httpretty.register_uri(
@@ -113,7 +124,7 @@ def mock():
     )
 
     # read all asserts
-    pg = common.PAGED_RESPONSE.copy()
+    pg = common.PAGED_RESPONSE_JSON.copy()
     pg["results"] = [common.ASSERT_JSON, common.ASSERT_JSON]
 
     httpretty.register_uri(
@@ -126,12 +137,23 @@ def mock():
         forcing_headers={"Content-Type": "application/json"},
     )
 
+    # read all runs
+    pg = common.PAGED_RESPONSE_JSON.copy()
+    pg["results"] = [common.RUN_JSON, common.RUN_JSON]
+
+    httpretty.register_uri(
+        httpretty.GET,
+        f"{common.API_BASE}projects/{common.PROJECT_ID}/"
+        f"tests/{common.TEST_ID}/runs/",
+        body=json.dumps(pg),
+        forcing_headers={"Content-Type": "application/json"},
+    )
+
     # launch test
     httpretty.register_uri(
         httpretty.POST,
-        re.compile(
-            r"^http://mock\.loadero\.api/v2/projects/\d*/tests/\d*/runs/$"
-        ),
+        f"{common.API_BASE}projects/{common.PROJECT_ID}/"
+        f"tests/{common.TEST_ID}/runs/",
         body=json.dumps(common.RUN_JSON),
         forcing_headers={"Content-Type": "application/json"},
     )
@@ -421,13 +443,22 @@ class UTestTest:
 
     @staticmethod
     def utest_groups():
-        resp = Test(test_id=common.TEST_ID).groups()
+        groups, pagination, filters = Test(test_id=common.TEST_ID).groups(
+            common.build_query_params(list(GroupFilterKey))
+        )
 
-        assert len(resp) == 2
+        common.check_pagination_params(pagination)
+        assert filters == common.FILTER_JSON
 
-        for ret in resp:
+        assert len(groups) == 2
+
+        for ret in groups:
             common.check_group_params(ret.params)
 
+        assert (
+            len(parse_qs(urlparse(httpretty.last_request().url).query))
+            == len(GroupFilterKey) + 2
+        )
         assert httpretty.last_request().method == httpretty.GET
         assert not httpretty.last_request().parsed_body
 
@@ -438,13 +469,22 @@ class UTestTest:
 
     @staticmethod
     def utest_participants():
-        resp = Test(test_id=common.TEST_ID).participants()
+        participants, pagination, filters = Test(
+            test_id=common.TEST_ID
+        ).participants(common.build_query_params(list(ParticipantFilterKey)))
 
-        assert len(resp) == 2
+        common.check_pagination_params(pagination)
+        assert filters == common.FILTER_JSON
 
-        for ret in resp:
+        assert len(participants) == 2
+
+        for ret in participants:
             common.check_participant_params(ret.params)
 
+        assert (
+            len(parse_qs(urlparse(httpretty.last_request().url).query))
+            == len(ParticipantFilterKey) + 2
+        )
         assert httpretty.last_request().method == httpretty.GET
         assert not httpretty.last_request().parsed_body
 
@@ -455,13 +495,22 @@ class UTestTest:
 
     @staticmethod
     def utest_asserts():
-        resp = Test(test_id=common.TEST_ID).asserts()
+        asserts, pagination, filters = Test(test_id=common.TEST_ID).asserts(
+            common.build_query_params(list(AssertFilterKey))
+        )
 
-        assert len(resp) == 2
+        common.check_pagination_params(pagination)
+        assert filters == common.FILTER_JSON
 
-        for ret in resp:
+        assert len(asserts) == 2
+
+        for ret in asserts:
             common.check_assert_params(ret.params)
 
+        assert (
+            len(parse_qs(urlparse(httpretty.last_request().url).query))
+            == len(AssertFilterKey) + 2
+        )
         assert httpretty.last_request().method == httpretty.GET
         assert not httpretty.last_request().parsed_body
 
@@ -469,6 +518,32 @@ class UTestTest:
     def utest_asserts_invalid_params():
         with pytest.raises(ValueError):
             Test().asserts()
+
+    @staticmethod
+    def utest_runs():
+        runs, pagination, filters = Test(test_id=common.TEST_ID).runs(
+            common.build_query_params(list(RunFilterKey))
+        )
+
+        common.check_pagination_params(pagination)
+        assert filters == common.FILTER_JSON
+
+        assert len(runs) == 2
+
+        for ret in runs:
+            common.check_run_params(ret.params)
+
+        assert (
+            len(parse_qs(urlparse(httpretty.last_request().url).query))
+            == len(RunFilterKey) + 2
+        )
+        assert httpretty.last_request().method == httpretty.GET
+        assert not httpretty.last_request().parsed_body
+
+    @staticmethod
+    def utest_runs_invalid_params():
+        with pytest.raises(ValueError):
+            Test().runs()
 
 
 @pytest.mark.usefixtures("mock")
@@ -585,32 +660,37 @@ class UTestTestAPI:
     def utest_read_all():
         resp = TestAPI().read_all()
 
-        assert len(resp) == 2
+        common.check_pagination_params(resp.pagination)
+        assert resp.filter == common.FILTER_JSON
 
-        for ret in resp:
+        assert len(resp.results) == 2
+
+        for ret in resp.results:  # pylint: disable=not-an-iterable
             common.check_test_params(ret, False)
 
-        assert not httpretty.last_request().parsed_body
         assert httpretty.last_request().method == httpretty.GET
+        assert not httpretty.last_request().parsed_body
 
     @staticmethod
-    def utest_read_all_no_results():
-        pg = common.PAGED_RESPONSE.copy()
-        pg["results"] = None
-
-        httpretty.register_uri(
-            httpretty.GET,
-            re.compile(r"^http://mock\.loadero\.api/v2/projects/\d*/tests/$"),
-            body=json.dumps(pg),
-            forcing_headers={"Content-Type": "application/json"},
+    def utest_read_all_with_query_params():
+        resp = TestAPI().read_all(
+            common.build_query_params(list(TestFilterKey))
         )
 
-        resp = TestAPI().read_all()
+        common.check_pagination_params(resp.pagination)
+        assert resp.filter == common.FILTER_JSON
 
-        assert len(resp) == 0
+        assert len(resp.results) == 2
 
-        assert not httpretty.last_request().parsed_body
+        for ret in resp.results:  # pylint: disable=not-an-iterable
+            common.check_test_params(ret, False)
+
+        assert (
+            len(parse_qs(urlparse(httpretty.last_request().url).query))
+            == len(TestFilterKey) + 2
+        )
         assert httpretty.last_request().method == httpretty.GET
+        assert not httpretty.last_request().parsed_body
 
     @staticmethod
     def utest_route():

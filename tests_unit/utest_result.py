@@ -8,11 +8,13 @@
 
 import json
 import re
+from urllib.parse import urlparse, parse_qs
 import pytest
 import httpretty
 from loadero_python.api_client import APIClient
 from loadero_python.resources.result import (
     ResultAPI,
+    ResultFilterKey,
     ResultLogParams,
     ResultAssertParams,
     ArtifactInfoParams,
@@ -1073,7 +1075,7 @@ def mock():
     httpretty.enable(allow_net_connect=False, verbose=True)
     httpretty.reset()
 
-    APIClient(common.PROJECT_ID, common.ACCESS_TOKEN, common.API_BASE)
+    APIClient(common.PROJECT_ID, common.ACCESS_TOKEN, common.API_BASE, False)
 
     # read
     httpretty.register_uri(
@@ -1086,7 +1088,7 @@ def mock():
     )
 
     # read all
-    pg = common.PAGED_RESPONSE.copy()
+    pg = common.PAGED_RESPONSE_JSON.copy()
     pg["results"] = [common.RESULT_JSON, common.RESULT_JSON]
 
     httpretty.register_uri(
@@ -1167,27 +1169,37 @@ class UTestResultAPI:
     def utest_read_all():
         resp = ResultAPI.read_all(common.RUN_ID)
 
-        for ret in resp:
+        common.check_pagination_params(resp.pagination)
+        assert resp.filter == common.FILTER_JSON
+
+        assert len(resp.results) == 2
+
+        for ret in resp.results:  # pylint: disable=not-an-iterable
             common.check_result_params(ret)
 
         assert httpretty.last_request().method == httpretty.GET
         assert not httpretty.last_request().parsed_body
 
     @staticmethod
-    def utest_read_all_null_results():
-        rpg = common.PAGED_RESPONSE.copy()
-        rpg["results"] = None
-
-        httpretty.register_uri(
-            httpretty.GET,
-            re.compile(
-                r"^http://mock\.loadero\.api/v2/projects/\d*/runs/\d*/results/$"
-            ),
-            body=json.dumps(rpg),
-            forcing_headers={"Content-Type": "application/json"},
+    def utest_read_all_with_query_params():
+        resp = ResultAPI.read_all(
+            common.RUN_ID, common.build_query_params(list(ResultFilterKey))
         )
 
-        assert not ResultAPI.read_all(common.RUN_ID)
+        common.check_pagination_params(resp.pagination)
+        assert resp.filter == common.FILTER_JSON
+
+        assert len(resp.results) == 2
+
+        for ret in resp.results:  # pylint: disable=not-an-iterable
+            common.check_result_params(ret)
+
+        assert (
+            len(parse_qs(urlparse(httpretty.last_request().url).query))
+            == len(ResultFilterKey) + 2
+        )
+        assert httpretty.last_request().method == httpretty.GET
+        assert not httpretty.last_request().parsed_body
 
     @staticmethod
     def utest_request_mos():

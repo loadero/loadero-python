@@ -10,15 +10,42 @@ function header() {
     echo "###############################################################################"
 }
 
-function unit_test() {
-    header "running unit tests"
-    pytest --cov=loadero_python --cov-report term -vv tests_unit
+function run_test() {
+    if [ $# -eq 2 ]; then 
+        pytest --cov=loadero_python --cov-report $1 -vv $2
+    elif [ $# -eq 3 ]; then # run with env
+        cmd="pytest --cov=loadero_python --cov-report $1 -vv $2"
+        env -$(cat $3) sh -c "$cmd"
+    else
+        echo "Invalid number of arguments"
+    fi
 }
 
-function intgration_test() {
-    header "running integration tests"
-    env -$(cat .env) sh -c "pytest --cov=loadero_python --cov-report term -vv tests_integration"
+function run_tests() {
+    # $1 - coverage report type
+    # $2 - test type or ommited
+    # $3 - spesific test
+    if [ $# -eq 1 ]; then # run all unit and integration tests
+        header "unit tests"
+        run_test $1 tests_unit
+        header "integration tests"
+        run_test $1 tests_integration .env
+    elif [ "$2" == "u" ]; then
+        if [ $# -eq 2 ]; then # run all unit tests
+            header "unit tests"
+            run_test $1 tests_unit
+        else # run spesified unit test
+            header "unit test"
+            run_test $1 $3
+        fi
+    elif [ "$2" == "i" ]; then # run all integration tests
+        run_test $1 tests_integration .env
+    else 
+        echo "Invalid argument"
+    fi
 }
+
+
 
 function lint() {
     header "running lint"
@@ -32,24 +59,24 @@ function format() {
 
 if [ $# -eq 0 ]; then
     lint
+    
     format
-    unit_test
-    intgration_test
+    
+    header "unit tests"
+    run_test term tests_unit
+    
+    header "integration tests"
+    run_test term tests_integration .env
 elif [ "$1" == "l" ]; then
     lint
 elif [ "$1" == "f" ]; then
     format
-elif [ "$1" == "t" ]; then
-    if [ $# -eq 1 ]; then
-        unit_test
-        intgration_test
-    elif [ "$2" == "u" ]; then
-        unit_test
-    elif [ "$2" == "i" ]; then
-        intgration_test
-    else 
-        echo "Invalid argument"
-    fi
+elif [ "$1" == "t" ]; then # test with report in terminal
+    run_tests term $2 $3
+elif [ "$1" == "c" ]; then # test with coverage reports
+    run_tests xml $2 $3
+elif [ "$1" == "oc" ]; then # open coverage report
+    open htmlcov/index.html 
 else
     echo "Invalid argument"
 fi

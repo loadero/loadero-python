@@ -12,16 +12,28 @@ from __future__ import annotations
 from datetime import datetime
 from dateutil import parser
 
+
 from .assert_precondition import AssertPrecondition, AssertPreconditionAPI
 from ..api_client import APIClient
 from .resource import (
+    FilterKey,
     LoaderoResourceParams,
     LoaderoResource,
+    QueryParams,
     convert_params_list,
-    from_dict_as_list,
 )
 from .metric_path import MetricPath
 from .classificator import Operator
+from .pagination import PagedResponse
+
+
+class AssertFilterKey(FilterKey):
+    """AssertFilterKey is an enum of all filter keys for assert read all API
+    operation."""
+
+    PATH = "filter_path"
+    OPERATOR = "filter_operator"
+    EXPECTED = "filter_expected"
 
 
 class AssertParams(LoaderoResourceParams):
@@ -258,8 +270,13 @@ class Assert(LoaderoResource):
 
         return dupl
 
-    def preconditions(self) -> list[AssertPrecondition]:
+    def preconditions(
+        self, query_params: QueryParams or None = None
+    ) -> list[AssertPrecondition]:
         """Read all preconditions of assert.
+
+        Args:
+            query_params (QueryParams, optional): Describes query parameters
 
         Raises:
             ValueError: Assert.params.test_id must be a valid int
@@ -268,6 +285,8 @@ class Assert(LoaderoResource):
 
         Returns:
             list[AssertPrecondition]: List of all preconditions of assert
+            PaginationParams: Pagination parameters of request.
+            dict[any, any]: Filters applied to in request.
         """
 
         if self.params.test_id is None:
@@ -276,11 +295,16 @@ class Assert(LoaderoResource):
         if self.params.assert_id is None:
             raise ValueError("Assert.params.assert_id must be a valid int")
 
-        return convert_params_list(
-            AssertPrecondition,
-            AssertPreconditionAPI.read_all(
-                self.params.test_id, self.params.assert_id
-            ),
+        resp = AssertPreconditionAPI.read_all(
+            self.params.test_id,
+            self.params.assert_id,
+            query_params=query_params,
+        )
+
+        return (
+            convert_params_list(AssertPrecondition, resp.results),
+            resp.pagination,
+            resp.filter,
         )
 
 
@@ -402,25 +426,29 @@ class AssertAPI:
         )
 
     @staticmethod
-    def read_all(test_id: int) -> list[AssertParams]:
+    def read_all(
+        test_id: int, query_params: QueryParams or None = None
+    ) -> PagedResponse:
         """Read all assert resources.
 
         Args:
             test_id (int): Parent test resource id.
+            query_params (QueryParams, optional): Describes query parameters.
 
         Raises:
             APIException: If API call fails.
 
         Returns:
-            list[AssertParams]: List of all assert resources in test.
+            PagedResponse: Paged response of assert resources.
         """
 
-        resp = APIClient().get(AssertAPI.route(test_id))
+        qp = None
+        if query_params is not None:
+            qp = query_params.parse()
 
-        if "results" not in resp or resp["results"] is None:
-            return []
-
-        return from_dict_as_list(AssertParams)(resp["results"])
+        return PagedResponse(AssertParams).from_dict(
+            APIClient().get(AssertAPI.route(test_id), query_params=qp)
+        )
 
     @staticmethod
     def route(test_id: int, assert_id: int or None = None) -> str:

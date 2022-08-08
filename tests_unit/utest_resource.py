@@ -8,14 +8,18 @@
 
 import pytest
 from dateutil import parser
+from loadero_python.resources.classificator import TestMode
 from loadero_python.resources.resource import (
     LoaderoResource,
+    QueryParams,
     Serializable,
     ParamsSerializer,
     from_dict_as_list,
     LoaderoResourceParams,
 )
 from loadero_python.resources.group import GroupParams
+from loadero_python.resources.test import TestFilterKey
+from loadero_python.resources.metric_path import MetricPath, MetricBasePath
 from . import common
 
 
@@ -274,31 +278,122 @@ class UTestLoaderoResource:
         )
 
 
-def utest_from_dict_as_list():
-    f = from_dict_as_list(GroupParams)
+class UTestFromDictAsList:
+    @staticmethod
+    def utest_valid():
+        f = from_dict_as_list(GroupParams)
 
-    ret = f([])
-    assert not ret
+        g1 = common.GROUP_JSON.copy()
+        g1["id"] += 1
 
-    g1 = common.GROUP_JSON.copy()
-    g1["id"] += 1
+        g2 = common.GROUP_JSON.copy()
+        g2["id"] += 2
 
-    g2 = common.GROUP_JSON.copy()
-    g2["id"] += 2
+        g3 = common.GROUP_JSON.copy()
+        g3["id"] += 3
 
-    g3 = common.GROUP_JSON.copy()
-    g3["id"] += 3
+        ret = f([g1, g2, g3])
 
-    ret = f([g1, g2, g3])
+        assert len(ret) == 3
 
-    assert len(ret) == 3
+        for i, g in enumerate(ret):
+            assert g.group_id == common.GROUP_ID + i + 1
+            assert g.test_id == common.TEST_ID
+            assert g.created == common.CREATED_TIME
+            assert g.updated == common.UPDATED_TIME
+            assert g.name == "pytest_group"
+            assert g.count == 8
+            assert g.participant_count == 331
+            assert g.total_cu_count == 1234
 
-    for i, g in enumerate(ret):
-        assert g.group_id == common.GROUP_ID + i + 1
-        assert g.test_id == common.TEST_ID
-        assert g.created == common.CREATED_TIME
-        assert g.updated == common.UPDATED_TIME
-        assert g.name == "pytest_group"
-        assert g.count == 8
-        assert g.participant_count == 331
-        assert g.total_cu_count == 1234
+    @staticmethod
+    def utest_empty_json_value():
+        f = from_dict_as_list(GroupParams)
+        # pylint: disable=use-implicit-booleaness-not-comparison
+        assert f([]) == []
+
+    @staticmethod
+    def utest_null_json_value():
+        f = from_dict_as_list(GroupParams)
+        # pylint: disable=use-implicit-booleaness-not-comparison
+        assert f(None) == []
+
+
+class UTestQueryParams:
+    @staticmethod
+    def utest_limit():
+        qp = QueryParams()
+        qp.limit(30)
+        assert qp.parse() == [("limit", 30)]
+
+    @staticmethod
+    def utest_offset():
+        qp = QueryParams()
+        qp.offset(30)
+        assert qp.parse() == [("offset", 30)]
+
+    @staticmethod
+    def utest_filter_str():
+        qp = QueryParams()
+        qp.filter(TestFilterKey.TEST_MODE, "test_mode")
+        assert qp.parse() == [
+            ("filter_test_mode", "test_mode"),
+        ]
+
+        qp = QueryParams()
+        qp.filter(TestFilterKey.TEST_MODE, "test_mode", "test_mode2")
+        assert qp.parse() == [
+            ("filter_test_mode", "test_mode"),
+            ("filter_test_mode", "test_mode2"),
+        ]
+
+    @staticmethod
+    def utest_filter_int():
+        qp = QueryParams()
+        qp.filter(TestFilterKey.TEST_MODE, 1)
+        assert qp.parse() == [
+            ("filter_test_mode", 1),
+        ]
+
+        qp = QueryParams()
+        qp.filter(TestFilterKey.TEST_MODE, 1, 3)
+        assert qp.parse() == [
+            ("filter_test_mode", 1),
+            ("filter_test_mode", 3),
+        ]
+
+    @staticmethod
+    def utest_filter_classificator():
+        qp = QueryParams()
+        qp.filter(TestFilterKey.TEST_MODE, TestMode.TM_PERFORMANCE)
+        assert qp.parse() == [
+            ("filter_test_mode", "performance"),
+        ]
+
+        qp = QueryParams()
+        qp.filter(
+            TestFilterKey.TEST_MODE, TestMode.TM_PERFORMANCE, TestMode.TM_LOAD
+        )
+        assert qp.parse() == [
+            ("filter_test_mode", "performance"),
+            ("filter_test_mode", "load"),
+        ]
+
+    @staticmethod
+    def utest_filter_metric_path():
+        qp = QueryParams()
+        qp.filter(TestFilterKey.TEST_MODE, MetricPath.MACHINE_CPU_USED_1ST)
+        assert qp.parse() == [
+            ("filter_test_mode", "machine/cpu/used/1st"),
+        ]
+
+        qp = QueryParams()
+        qp.filter(
+            TestFilterKey.TEST_MODE,
+            MetricPath.MACHINE_CPU_PERCENT_50TH,
+            MetricBasePath.MACHINE_CPU_PERCENT,
+        )
+        assert qp.parse() == [
+            ("filter_test_mode", "machine/cpu/percent/50th"),
+            ("filter_test_mode", "machine/cpu/percent"),
+        ]

@@ -11,22 +11,43 @@ Single File object coresponds to single file in Loadero.
 from __future__ import annotations
 from datetime import datetime
 from dateutil import parser
+
+from .pagination import PagedResponse
 from ..api_client import APIClient
-from .resource import LoaderoResourceParams, LoaderoResource, from_dict_as_list
+from .resource import (
+    FilterKey,
+    LoaderoResourceParams,
+    LoaderoResource,
+    QueryParams,
+)
 from .classificator import FileType
+
+
+class FileFilterKey(FilterKey):
+    """FileFilterKey is an enum of all filter keys for file read all API
+    operation."""
+
+    FILE_TYPE = "filter_file_type"
 
 
 class FileParams(LoaderoResourceParams):
     """FileParams represents Loadero file parameters."""
 
-    def __init__(self, file_id: int or None = None):
+    def __init__(
+        self,
+        file_id: int or None = None,
+        file_type: FileType or None = None,
+        content: str or None = None,
+        password: str or None = None,
+    ):
         super().__init__(
             attribute_map={
                 "id": "file_id",
                 "created": "_created",
                 "updated": "_updated",
-                "file_type": "_file_type",
-                "content": "_content",
+                "file_type": "file_type",
+                "content": "content",
+                "password": "password",
             },
             custom_deserializers={
                 "created": parser.parse,
@@ -34,21 +55,23 @@ class FileParams(LoaderoResourceParams):
                 "file_type": FileType.from_dict,
             },
             body_attributes=[
-                "count",
-                "name",
+                "content",
+                "file_type",
+                "password",
             ],
             required_body_attributes=[
-                "count",
-                "name",
+                "content",
+                "file_type",
             ],
         )
 
         self.file_id = file_id
+        self.file_type = file_type
+        self.content = content
+        self.password = password
 
         self._created = None
         self._updated = None
-        self._file_type = None
-        self._content = None
 
     @property
     def created(self) -> datetime:
@@ -70,26 +93,6 @@ class FileParams(LoaderoResourceParams):
 
         return self._updated
 
-    @property
-    def file_type(self) -> FileType:
-        """Files type.
-
-        Returns:
-            FileType: Files type.
-        """
-
-        return self._file_type
-
-    @property
-    def content(self) -> str:
-        """Files content.
-
-        Returns:
-            str: Files content.
-        """
-
-        return self._content
-
 
 class File(LoaderoResource):
     """File allows to perform CRUD manipulatons on a single Loadero file
@@ -108,6 +111,19 @@ class File(LoaderoResource):
 
         super().__init__(self.params)
 
+    def create(self) -> File:
+        """Creates a new file.
+
+        Raises:
+            APIException: If API call fails.
+
+        Returns:
+            File: Created file resource.
+        """
+
+        FileAPI.create(self.params)
+        return self
+
     def read(self) -> File:
         """Reads information about an existing file.
 
@@ -123,9 +139,53 @@ class File(LoaderoResource):
         FileAPI.read(self.params)
         return self
 
+    def update(self) -> File:
+        """Update information about an existing file.
+
+        Raises:
+            ValueError: If resource params do not sufficiently identify
+                resource.
+            APIException: If API call fails.
+
+        Returns:
+            File: Updated file resource.
+        """
+
+        FileAPI.update(self.params)
+        return self
+
+    def delete(self) -> None:
+        """Delete an existing file.
+
+        Raises:
+            ValueError: If resource params do not sufficiently identify
+                resource.
+            APIException: If API call fails.
+        """
+
+        FileAPI.delete(self.params)
+
 
 class FileAPI:
     """FileAPI defines Loadero API operations for file resources."""
+
+    @staticmethod
+    def create(params: FileParams) -> FileParams:
+        """Create a new file resource.
+
+        Args:
+            params (FileParams): Describes the file resource to create.
+
+        Raises:
+            APIException: If API call fails.
+
+        Returns:
+            FileParams: Created file resource params.
+        """
+
+        return params.from_dict(
+            APIClient().post(FileAPI.route(), params.to_dict())
+        )
 
     @staticmethod
     def read(params: FileParams) -> FileParams:
@@ -139,7 +199,7 @@ class FileAPI:
             APIException: If API call fails.
 
         Returns:
-            FileParams: Read file resource.
+            FileParams: Read file resource params.
         """
 
         FileAPI.__validate_identifiers(params)
@@ -149,22 +209,66 @@ class FileAPI:
         )
 
     @staticmethod
-    def read_all() -> list[FileParams]:
+    def update(params: FileParams) -> FileParams:
+        """Update an existing file resource.
+
+        Args:
+            params (FileParams): Describes the file and the changes to apply.
+
+        Raises:
+            Exception: FileParams.file_id was not defined.
+            APIException: If API call fails.
+
+        Returns:
+            FileParams: Read file resource.
+        """
+
+        FileAPI.__validate_identifiers(params)
+
+        return params.from_dict(
+            APIClient().put(FileAPI.route(params.file_id), params.to_dict())
+        )
+
+    @staticmethod
+    def delete(params: FileParams) -> None:
+        """Delete an existing file resource.
+
+        Args:
+            params (FileParams): Describes the file to delete.
+
+        Raises:
+            Exception: FileParams.file_id was not defined.
+            APIException: If API call fails.
+
+        Returns:
+            FileParams: Read file resource.
+        """
+
+        FileAPI.__validate_identifiers(params)
+
+        APIClient().delete(FileAPI.route(params.file_id))
+
+    @staticmethod
+    def read_all(query_params: QueryParams or None = None) -> PagedResponse:
         """Read all files in project.
+
+        Args:
+            query_params (QueryParams, optional): Describes query parameters.
 
         Raises:
             APIException: If API call fails.
 
         Returns:
-            list[FileParams]: List of file resources in project.
+            PagedResponse: Paged response of file resources.
         """
 
-        resp = APIClient().get(FileAPI.route())
+        qp = None
+        if query_params is not None:
+            qp = query_params.parse()
 
-        if "results" not in resp or resp["results"] is None:
-            return []
-
-        return from_dict_as_list(FileParams)(resp["results"])
+        return PagedResponse(FileParams).from_dict(
+            APIClient().get(FileAPI.route(), qp)
+        )
 
     @staticmethod
     def route(file_id: int or None = None) -> str:
@@ -199,4 +303,4 @@ class FileAPI:
         """
 
         if single and params.file_id is None:
-            raise Exception("FileParams.file_id must be a valid int")
+            raise ValueError("FileParams.file_id must be a valid int")

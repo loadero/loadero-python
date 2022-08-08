@@ -16,8 +16,9 @@ from .resource import (
     LoaderoResourceParams,
     LoaderoResource,
     DuplicateResourceBodyParams,
-    from_dict_as_list,
     from_dict_as_new,
+    FilterKey,
+    QueryParams,
 )
 from .classificator import (
     ComputeUnit,
@@ -27,6 +28,25 @@ from .classificator import (
     Network,
     VideoFeed,
 )
+from .pagination import PagedResponse
+
+
+class ParticipantFilterKey(FilterKey):
+    """ParticipantFilterKey is an enum of all filter keys for participant read
+    all API operation."""
+
+    NAME = "filter_name"
+    COUNT_FROM = "filter_count_from"
+    COUNT_TO = "filter_count_to"
+    COMPUTE_UNIT = "filter_compute_unit"
+    HAS_GROUP = "filter_has_group"
+    RECORD_AUDIO = "filter_record_audio"
+    BROWSER = "filter_browser"
+    NETWORK = "filter_network"
+    LOCATION = "filter_location"
+    MEDIATYPE = "filter_media_type"
+    VIDEOFEED = "filter_video_feed"
+    AUDIOFEED = "filter_audio_feed"
 
 
 class ParticipantParams(LoaderoResourceParams):
@@ -536,26 +556,31 @@ class ParticipantAPI:
 
     @staticmethod
     def read_all(
-        test_id: int, group_id: int or None = None
-    ) -> list[ParticipantParams]:
+        test_id: int,
+        group_id: int or None = None,
+        query_params: QueryParams or None = None,
+    ) -> PagedResponse:
         """Real all participant resources.
 
         Args:
             test_id (int): Parent test resource id.
             group_id (int, optional): Parent group resource id. Defaults to
                 None. If omitted all participants in parent test will be read.
+            query_params (QueryParams, optional): Describes query parameters.
 
         Returns:
-            list[ParticipantParams]: List of all participant resources in test
-                or group.
+            PagedResponse: Paged response of participant resources.
         """
 
-        resp = APIClient().get(ParticipantAPI.route(test_id, group_id=group_id))
+        qp = None
+        if query_params is not None:
+            qp = query_params.parse()
 
-        if "results" not in resp or resp["results"] is None:
-            return []
-
-        return from_dict_as_list(ParticipantParams)(resp["results"])
+        return PagedResponse(ParticipantParams).from_dict(
+            APIClient().get(
+                ParticipantAPI.route(test_id, group_id=group_id), qp
+            )
+        )
 
     @staticmethod
     def route(

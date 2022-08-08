@@ -9,10 +9,17 @@
 
 import json
 import re
+from urllib.parse import urlparse, parse_qs
 import pytest
 import httpretty
 from loadero_python.api_client import APIClient
-from loadero_python.resources.group import Group, GroupParams, GroupAPI
+from loadero_python.resources.group import (
+    Group,
+    GroupFilterKey,
+    GroupParams,
+    GroupAPI,
+)
+from loadero_python.resources.participant import ParticipantFilterKey
 from . import common
 
 
@@ -21,7 +28,7 @@ def mock():
     httpretty.enable(allow_net_connect=False, verbose=True)
     httpretty.reset()
 
-    APIClient(common.PROJECT_ID, common.ACCESS_TOKEN, common.API_BASE)
+    APIClient(common.PROJECT_ID, common.ACCESS_TOKEN, common.API_BASE, False)
 
     # create
     httpretty.register_uri(
@@ -73,7 +80,7 @@ def mock():
     )
 
     # read all
-    pg = common.PAGED_RESPONSE.copy()
+    pg = common.PAGED_RESPONSE_JSON.copy()
     pg["results"] = [common.GROUP_JSON, common.GROUP_JSON]
 
     httpretty.register_uri(
@@ -86,7 +93,7 @@ def mock():
     )
 
     # read all participants in group
-    pg = common.PAGED_RESPONSE.copy()
+    pg = common.PAGED_RESPONSE_JSON.copy()
     pg["results"] = [common.PARTICIPANT_JSON, common.PARTICIPANT_JSON]
 
     httpretty.register_uri(
@@ -250,17 +257,46 @@ class UTestGroup:
 
     @staticmethod
     def utest_participants():
-        resp = Group(
+        participants, pagination, filters = Group(
             params=GroupParams(group_id=common.GROUP_ID, test_id=common.TEST_ID)
         ).participants()
 
-        assert len(resp) == 2
+        common.check_pagination_params(pagination)
+        assert filters == common.FILTER_JSON
 
-        for ret in resp:
+        assert len(participants) == 2
+
+        for ret in participants:
             common.check_participant_params(ret.params)
 
         assert httpretty.last_request().method == httpretty.GET
         assert not httpretty.last_request().parsed_body
+
+    @staticmethod
+    def utest_participants_with_query_params():
+        participants, pagination, filters = Group(
+            params=GroupParams(group_id=common.GROUP_ID, test_id=common.TEST_ID)
+        ).participants(common.build_query_params(list(ParticipantFilterKey)))
+
+        common.check_pagination_params(pagination)
+        assert filters == common.FILTER_JSON
+
+        assert len(participants) == 2
+
+        for ret in participants:
+            common.check_participant_params(ret.params)
+
+        assert (
+            len(parse_qs(urlparse(httpretty.last_request().url).query))
+            == len(ParticipantFilterKey) + 2
+        )
+        assert httpretty.last_request().method == httpretty.GET
+        assert not httpretty.last_request().parsed_body
+
+    @staticmethod
+    def utest_participants_invalid_params():
+        with pytest.raises(ValueError):
+            Group().participants()
 
 
 @pytest.mark.usefixtures("mock")
@@ -347,31 +383,37 @@ class UTestGroupAPI:
     def utest_read_all():
         resp = GroupAPI.read_all(common.TEST_ID)
 
-        assert len(resp) == 2
+        common.check_pagination_params(resp.pagination)
+        assert resp.filter == common.FILTER_JSON
 
-        for ret in resp:
+        assert len(resp.results) == 2
+
+        for ret in resp.results:  # pylint: disable=not-an-iterable
             common.check_group_params(ret)
 
         assert httpretty.last_request().method == httpretty.GET
         assert not httpretty.last_request().parsed_body
 
     @staticmethod
-    def utest_read_all_no_results():
-        pg = common.PAGED_RESPONSE.copy()
-        pg["results"] = None
-
-        httpretty.register_uri(
-            httpretty.GET,
-            re.compile(
-                r"^http://mock\.loadero\.api/v2/projects/\d*/tests/\d*/groups/$"
-            ),
-            body=json.dumps(pg),
-            forcing_headers={"Content-Type": "application/json"},
+    def utest_read_all_with_query_params():
+        resp = GroupAPI.read_all(
+            common.TEST_ID,
+            query_params=common.build_query_params(list(GroupFilterKey)),
         )
 
-        resp = GroupAPI.read_all(common.TEST_ID)
+        common.check_pagination_params(resp.pagination)
+        assert resp.filter == common.FILTER_JSON
 
-        assert len(resp) == 0
+        assert len(resp.results) == 2
+
+        for ret in resp.results:  # pylint: disable=not-an-iterable
+            common.check_group_params(ret)
+
+        assert (
+            len(parse_qs(urlparse(httpretty.last_request().url).query))
+            == len(GroupFilterKey) + 2
+        )
+        assert httpretty.last_request().method == httpretty.GET
         assert not httpretty.last_request().parsed_body
 
     @staticmethod
