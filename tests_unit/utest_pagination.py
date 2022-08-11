@@ -29,5 +29,5 @@ class UTestPagedResponse:
         common.check_pagination_params(pr.pagination)
         assert pr.filter == common.FILTER_JSON
 
-        for a in pr.results:  # pylint: disable=not-an-iterable
+        for a in pr.results:
             common.check_assert_params(a)

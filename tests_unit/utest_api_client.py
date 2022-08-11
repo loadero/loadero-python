@@ -330,10 +330,9 @@ def utest_ratelimit():
 
     start_time = time.time()
 
-    APIClient().get("route/")
-    APIClient().get("route/")
-    APIClient().get("route/")
-    APIClient().get("route/")
-    APIClient().get("route/")
+    # APIClient is configured for 4rps, soo 5 requests should take longer than
+    # one second.
+    for _ in range(5):
+        APIClient().get("route/")
 
     assert time.time() - start_time > 1

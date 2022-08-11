@@ -276,6 +276,9 @@ class Group(LoaderoResource):
         if self.params.test_id is None:
             raise ValueError("Group.params.test_id must be a valid int")
 
+        if self.params.group_id is None:
+            raise ValueError("Group.params.group_id must be a valid int")
+
         resp = ParticipantAPI.read_all(
             self.params.test_id,
             group_id=self.params.group_id,

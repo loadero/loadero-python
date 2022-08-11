@@ -414,7 +414,7 @@ class AssertPreconditionAPI:
             )
         )
 
-        for ap in pr.results:  # pylint: disable=not-an-iterable
+        for ap in pr.results:
             ap.test_id = test_id
 
         return pr

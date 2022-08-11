@@ -152,16 +152,16 @@ class UTestProject:
 
     @staticmethod
     def utest_files():
-        participants, pagination, filters = Project().files(
+        files, pagination, filters = Project().files(
             common.build_query_params(list(FileFilterKey))
         )
 
         common.check_pagination_params(pagination)
         assert filters == common.FILTER_JSON
 
-        assert len(participants) == 2
+        assert len(files) == 2
 
-        for ret in participants:
+        for ret in files:
             common.check_file_params(ret.params)
 
         assert (

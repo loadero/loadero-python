@@ -15,7 +15,6 @@ from loadero_python.resources.project import Project
 
 @pytest.fixture(scope="module")
 def api_client():
-    print(os.environ.get("PROJECT_ID"))
     APIClient(
         project_id=int(os.environ.get("PROJECT_ID")),
         access_token=os.environ.get("ACCESS_TOKEN"),

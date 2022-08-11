@@ -575,7 +575,7 @@ class RunAPI:
     def read_all(
         test_id: int or None = None,
         query_params: QueryParams or None = None,
-    ) -> list[RunParams]:
+    ) -> PagedResponse:
         """Read all run resources.
 
         Args:

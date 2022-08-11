@@ -1174,7 +1174,7 @@ class UTestResultAPI:
 
         assert len(resp.results) == 2
 
-        for ret in resp.results:  # pylint: disable=not-an-iterable
+        for ret in resp.results:
             common.check_result_params(ret)
 
         assert httpretty.last_request().method == httpretty.GET
@@ -1191,7 +1191,7 @@ class UTestResultAPI:
 
         assert len(resp.results) == 2
 
-        for ret in resp.results:  # pylint: disable=not-an-iterable
+        for ret in resp.results:
             common.check_result_params(ret)
 
         assert (

@@ -578,7 +578,8 @@ class ParticipantAPI:
 
         return PagedResponse(ParticipantParams).from_dict(
             APIClient().get(
-                ParticipantAPI.route(test_id, group_id=group_id), qp
+                ParticipantAPI.route(test_id, group_id=group_id),
+                query_params=qp,
             )
         )
 

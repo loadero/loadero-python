@@ -1,4 +1,8 @@
-"""lol"""
+"""Loadero resource pagination.
+
+Pagination describes and provides a way to manage large read all operation
+responses
+"""
 
 from .resource import LoaderoResourceParams, from_dict_as_list, from_dict_as_new
 
@@ -112,6 +116,9 @@ class PagedResponse(LoaderoResourceParams):
         Returns:
             list[LoaderoResourceParams]: Results.
         """
+
+        if self._results is None:
+            return []
 
         return self._results
 
