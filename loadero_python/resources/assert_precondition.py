@@ -15,8 +15,23 @@ from datetime import datetime
 from dateutil import parser
 
 from ..api_client import APIClient
-from .resource import LoaderoResourceParams, LoaderoResource, from_dict_as_list
+from .resource import (
+    FilterKey,
+    LoaderoResourceParams,
+    LoaderoResource,
+    QueryParams,
+)
 from .classificator import Operator, Property
+from .pagination import PagedResponse
+
+
+class AssertPreconditionFilterKey(FilterKey):
+    """AssertPreconditionFilterKey is an enum of all filter keys for assert
+    precondition read all API operation."""
+
+    FILTER_PROPERTY = "filter_property"
+    FILTER_OPERATOR = "filter_operator"
+    FILTER_EXPECTED = "filter_expected"
 
 
 class AssertPreconditionParams(LoaderoResourceParams):
@@ -373,33 +388,36 @@ class AssertPreconditionAPI:
 
     @staticmethod
     def read_all(
-        test_id: int, assert_id: int
-    ) -> list[AssertPreconditionParams]:
+        test_id: int, assert_id: int, query_params: QueryParams or None = None
+    ) -> PagedResponse:
         """Read all assert precondition resources of assert.
 
         Args:
             test_id (int): Test resource id.
             assert_id (int): Parent assert resource id.
+            query_params (QueryParams, optional): Describes query parameters.
 
         Raises:
             APIException: If API call fails.
 
         Returns:
-            list[AssertPreconditionParams]: List of all assert precondition
-                resources for assert.
+            PagedResponse: Paged response of assert precondition resources.
         """
 
-        resp = APIClient().get(AssertPreconditionAPI.route(test_id, assert_id))
+        qp = None
+        if query_params is not None:
+            qp = query_params.parse()
 
-        if "results" not in resp or resp["results"] is None:
-            return []
+        pr = PagedResponse(AssertPreconditionParams).from_dict(
+            APIClient().get(
+                AssertPreconditionAPI.route(test_id, assert_id), query_params=qp
+            )
+        )
 
-        res = from_dict_as_list(AssertPreconditionParams)(resp["results"])
+        for ap in pr.results:
+            ap.test_id = test_id
 
-        for r in res:
-            r.test_id = test_id
-
-        return res
+        return pr
 
     @staticmethod
     def route(

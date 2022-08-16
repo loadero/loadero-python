@@ -13,11 +13,12 @@ from datetime import datetime
 from dateutil import parser
 from ..api_client import APIClient
 from .resource import (
+    FilterKey,
+    QueryParams,
     Serializable,
     LoaderoResourceParams,
     LoaderoResource,
     DuplicateResourceBodyParams,
-    from_dict_as_list,
     convert_params_list,
 )
 from .file import FileParams, FileAPI
@@ -25,7 +26,21 @@ from .classificator import TestMode, IncrementStrategy
 from .group import Group, GroupAPI
 from .participant import Participant, ParticipantAPI
 from .assert_resource import Assert, AssertAPI
-from .run import Run
+from .run import Run, RunAPI
+from .pagination import PagedResponse, PaginationParams
+
+
+class TestFilterKey(FilterKey):
+    """TestFilterKey is an enum of all filter keys for test read all API
+    operation."""
+
+    NAME = "filter_name"
+    TEST_MODE = "filter_test_mode"
+    INCREMENT_STRATEGY = "filter_increment_strategy"
+    START_INTERVAL_FROM = "filter_start_interval_from"
+    START_INTERVAL_TO = "filter_start_interval_to"
+    PARTICIPANT_TIMEOUT_FROM = "filter_participant_timeout_from"
+    PARTICIPANT_TIMEOUT_TO = "filter_participant_timeout_to"
 
 
 class Script(Serializable):
@@ -493,8 +508,13 @@ class Test(LoaderoResource):
         r.create()
         return r
 
-    def groups(self) -> list[Group]:
+    def groups(
+        self, query_params: QueryParams or None = None
+    ) -> tuple[list[Group], PaginationParams, dict[any, any]]:
         """Read all groups in test.
+
+        Args:
+            query_params (QueryParams, optional): Describes query parameters
 
         Raises:
             ValueError: Test.params.test_id must be a valid int.
@@ -502,17 +522,28 @@ class Test(LoaderoResource):
 
         Returns:
             list[Group]: List of groups in test.
+            PaginationParams: Pagination parameters of request.
+            dict[any, any]: Filters applied to in request.
         """
 
         if self.params.test_id is None:
             raise ValueError("Test.params.test_id must be a valid int")
 
-        return convert_params_list(
-            Group, GroupAPI.read_all(self.params.test_id)
+        resp = GroupAPI.read_all(self.params.test_id, query_params=query_params)
+
+        return (
+            convert_params_list(Group, resp.results),
+            resp.pagination,
+            resp.filter,
         )
 
-    def participants(self) -> list[Participant]:
+    def participants(
+        self, query_params: QueryParams or None = None
+    ) -> tuple[list[Participant], PaginationParams, dict[any, any]]:
         """Read all participants in test.
+
+        Args:
+            query_params (QueryParams, optional): Describes query parameters
 
         Raises:
             ValueError: Test.params.test_id must be a valid int.
@@ -520,18 +551,30 @@ class Test(LoaderoResource):
 
         Returns:
             list[Participant]: List of participants in test.
+            PaginationParams: Pagination parameters of request.
+            dict[any, any]: Filters applied to in request.
         """
 
         if self.params.test_id is None:
             raise ValueError("Test.params.test_id must be a valid int")
 
-        return convert_params_list(
-            Participant,
-            ParticipantAPI.read_all(self.params.test_id),
+        resp = ParticipantAPI.read_all(
+            self.params.test_id, query_params=query_params
         )
 
-    def asserts(self) -> list[Assert]:
+        return (
+            convert_params_list(Participant, resp.results),
+            resp.pagination,
+            resp.filter,
+        )
+
+    def asserts(
+        self, query_params: QueryParams or None = None
+    ) -> tuple[list[Assert], PaginationParams, dict[any, any]]:
         """Read all asserts in test.
+
+        Args:
+            query_params (QueryParams, optional): Describes query parameters
 
         Raises:
             ValueError: Test.params.test_id must be a valid int.
@@ -539,14 +582,52 @@ class Test(LoaderoResource):
 
         Returns:
             list[Assert]: List of asserts in test.
+            PaginationParams: Pagination parameters of request.
+            dict[any, any]: Filters applied to in request.
         """
 
         if self.params.test_id is None:
             raise ValueError("Test.params.test_id must be a valid int")
 
-        return convert_params_list(
-            Assert,
-            AssertAPI.read_all(self.params.test_id),
+        resp = AssertAPI.read_all(
+            self.params.test_id, query_params=query_params
+        )
+
+        return (
+            convert_params_list(Assert, resp.results),
+            resp.pagination,
+            resp.filter,
+        )
+
+    def runs(
+        self, query_params: QueryParams or None = None
+    ) -> tuple[list[Run], PaginationParams, dict[any, any]]:
+        """Read all runs in test.
+
+        Args:
+            query_params (QueryParams, optional): Describes query parameters
+
+        Raises:
+            ValueError: Test.params.test_id must be a valid int.
+            APIException: If API call fails.
+
+        Returns:
+            list[Assert]: List of asserts in test.
+            PaginationParams: Pagination parameters of request.
+            dict[any, any]: Filters applied to in request.
+        """
+
+        if self.params.test_id is None:
+            raise ValueError("Test.params.test_id must be a valid int")
+
+        resp = RunAPI.read_all(
+            test_id=self.params.test_id, query_params=query_params
+        )
+
+        return (
+            convert_params_list(Run, resp.results),
+            resp.pagination,
+            resp.filter,
         )
 
 
@@ -661,22 +742,25 @@ class TestAPI:
         )
 
     @staticmethod
-    def read_all() -> list[TestParams]:
+    def read_all(
+        query_params: QueryParams or None = None,
+    ) -> PagedResponse:
         """Read all test resources.
 
         Raises:
             APIException: If API call fails.
 
         Returns:
-            list[TestParams]: List of all test resources in project.
+            PagedResponse: Paged response of participant resources.
         """
 
-        resp = APIClient().get(TestAPI.route())
+        qp = None
+        if query_params is not None:
+            qp = query_params.parse()
 
-        if "results" not in resp or resp["results"] is None:
-            return []
-
-        return from_dict_as_list(TestParams)(resp["results"])
+        return PagedResponse(TestParams).from_dict(
+            APIClient().get(TestAPI.route(), query_params=qp)
+        )
 
     @staticmethod
     def route(test_id: int or None = None) -> str:

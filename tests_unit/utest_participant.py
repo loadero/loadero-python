@@ -8,6 +8,7 @@
 
 import json
 import re
+from urllib.parse import urlparse, parse_qs
 import pytest
 import httpretty
 from loadero_python.api_client import APIClient
@@ -15,6 +16,7 @@ from loadero_python.resources.participant import (
     Participant,
     ParticipantParams,
     ParticipantAPI,
+    ParticipantFilterKey,
 )
 from loadero_python.resources.classificator import (
     ComputeUnit,
@@ -32,7 +34,7 @@ def mock():
     httpretty.enable(allow_net_connect=False, verbose=True)
     httpretty.reset()
 
-    APIClient(common.PROJECT_ID, common.ACCESS_TOKEN, common.API_BASE)
+    APIClient(common.PROJECT_ID, common.ACCESS_TOKEN, common.API_BASE, False)
 
     # create
     httpretty.register_uri(
@@ -88,7 +90,7 @@ def mock():
     )
 
     # read all participants in test
-    pg = common.PAGED_RESPONSE.copy()
+    pg = common.PAGED_RESPONSE_JSON.copy()
     pg["results"] = [common.PARTICIPANT_JSON, common.PARTICIPANT_JSON]
 
     httpretty.register_uri(
@@ -470,9 +472,12 @@ class UTestParticipantAPI:
     def utest_read_all_in_test():
         resp = ParticipantAPI.read_all(common.TEST_ID)
 
-        assert len(resp) == 2
+        common.check_pagination_params(resp.pagination)
+        assert resp.filter == common.FILTER_JSON
 
-        for ret in resp:
+        assert len(resp.results) == 2
+
+        for ret in resp.results:
             common.check_participant_params(ret)
 
         assert httpretty.last_request().method == httpretty.GET
@@ -482,31 +487,37 @@ class UTestParticipantAPI:
     def utest_read_all_in_group():
         resp = ParticipantAPI.read_all(common.TEST_ID, common.GROUP_ID)
 
-        assert len(resp) == 2
+        common.check_pagination_params(resp.pagination)
+        assert resp.filter == common.FILTER_JSON
 
-        for ret in resp:
+        assert len(resp.results) == 2
+
+        for ret in resp.results:
             common.check_participant_params(ret)
 
         assert httpretty.last_request().method == httpretty.GET
         assert not httpretty.last_request().parsed_body
 
     @staticmethod
-    def utest_read_no_results():
-        pg = common.PAGED_RESPONSE.copy()
-        pg["results"] = None
-
-        httpretty.register_uri(
-            httpretty.GET,
-            re.compile(
-                r"^http://mock\.loadero\.api/v2/"
-                r"projects/\d*/tests/\d*/participants/$"
-            ),
-            body=json.dumps(pg),
-            forcing_headers={"Content-Type": "application/json"},
+    def utest_read_all_with_query_params():
+        resp = ParticipantAPI.read_all(
+            common.TEST_ID,
+            common.GROUP_ID,
+            common.build_query_params(list(ParticipantFilterKey)),
         )
 
-        assert len(ParticipantAPI.read_all(common.TEST_ID)) == 0
+        common.check_pagination_params(resp.pagination)
+        assert resp.filter == common.FILTER_JSON
 
+        assert len(resp.results) == 2
+
+        for ret in resp.results:
+            common.check_participant_params(ret)
+
+        assert (
+            len(parse_qs(urlparse(httpretty.last_request().url).query))
+            == len(ParticipantFilterKey) + 2
+        )
         assert httpretty.last_request().method == httpretty.GET
         assert not httpretty.last_request().parsed_body
 

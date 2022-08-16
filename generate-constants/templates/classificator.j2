@@ -9,8 +9,7 @@ from .resource import Serializable
 
 
 class VersionedBrowser(Serializable):
-    """
-    VersionedBrowser describes Loadero classificator constants for
+    """VersionedBrowser describes Loadero classificator constants for
     browser classificator with specific version type.
     """
 
@@ -33,8 +32,7 @@ class VersionedBrowser(Serializable):
 
 
 class Browser(Serializable, Enum):
-    """
-    Browser enumerates Loadero classificator constants for
+    """Browser enumerates Loadero classificator constants for
     browser classificator type.
     """
 
@@ -63,8 +61,7 @@ class Browser(Serializable, Enum):
 {% for c in classificators %}
 
 class {{ c["class_name"] }}(Serializable, Enum):
-    """
-    {{ c["class_name"] }} enumerates Loadero classificator constants for
+    """{{ c["class_name"] }} enumerates Loadero classificator constants for
     {{ c["type"] }} classificator type.
     """
 {% for m in c["members"] %}

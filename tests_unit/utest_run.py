@@ -8,10 +8,12 @@
 
 import json
 import re
+from urllib.parse import urlparse, parse_qs
 import pytest
 import httpretty
 from loadero_python.api_client import APIClient
-from loadero_python.resources.run import RunParams, RunAPI, Run
+from loadero_python.resources.result import ResultFilterKey
+from loadero_python.resources.run import RunFilterKey, RunParams, RunAPI, Run
 from loadero_python.resources.classificator import (
     RunStatus,
     MetricStatus,
@@ -26,7 +28,7 @@ def mock():
     httpretty.enable(allow_net_connect=False, verbose=True)
     httpretty.reset()
 
-    APIClient(common.PROJECT_ID, common.ACCESS_TOKEN, common.API_BASE)
+    APIClient(common.PROJECT_ID, common.ACCESS_TOKEN, common.API_BASE, False)
 
     # create
     httpretty.register_uri(
@@ -46,7 +48,7 @@ def mock():
         forcing_headers={"Content-Type": "application/json"},
     )
 
-    pg = common.PAGED_RESPONSE.copy()
+    pg = common.PAGED_RESPONSE_JSON.copy()
     pg["results"] = [common.RUN_JSON, common.RUN_JSON]
 
     # read all, parent project
@@ -68,7 +70,7 @@ def mock():
     )
 
     # read all results
-    pg = common.PAGED_RESPONSE.copy()
+    pg = common.PAGED_RESPONSE_JSON.copy()
     pg["results"] = [common.RESULT_JSON, common.RESULT_JSON]
 
     httpretty.register_uri(
@@ -375,13 +377,22 @@ class UTestRun:
 
     @staticmethod
     def utest_results():
-        resp = Run(run_id=common.RUN_ID).results()
+        results, pagination, filters = Run(run_id=common.RUN_ID).results(
+            common.build_query_params(list(ResultFilterKey))
+        )
 
-        assert len(resp) == 2
+        common.check_pagination_params(pagination)
+        assert filters == common.FILTER_JSON
 
-        for ret in resp:
+        assert len(results) == 2
+
+        for ret in results:
             common.check_result_params(ret.params)
 
+        assert (
+            len(parse_qs(urlparse(httpretty.last_request().url).query))
+            == len(ResultFilterKey) + 2
+        )
         assert httpretty.last_request().method == httpretty.GET
         assert not httpretty.last_request().parsed_body
 
@@ -411,44 +422,39 @@ class UTestRunAPI:
         assert not httpretty.last_request().parsed_body
 
     @staticmethod
-    def utest_read_all_parent_project():
+    def utest_read_all():
         resp = RunAPI.read_all()
 
-        assert len(resp) == 2
+        common.check_pagination_params(resp.pagination)
+        assert resp.filter == common.FILTER_JSON
 
-        for ret in resp:
+        assert len(resp.results) == 2
+
+        for ret in resp.results:
             common.check_run_params(ret)
 
         assert httpretty.last_request().method == httpretty.GET
         assert not httpretty.last_request().parsed_body
 
     @staticmethod
-    def utest_read_all_parent_test():
-        resp = RunAPI.read_all(common.TEST_ID)
-
-        assert len(resp) == 2
-
-        for ret in resp:
-            common.check_run_params(ret)
-
-        assert httpretty.last_request().method == httpretty.GET
-        assert not httpretty.last_request().parsed_body
-
-    @staticmethod
-    def utest_read_all_no_results():
-        pg = common.PAGED_RESPONSE.copy()
-        pg["results"] = None
-
-        httpretty.register_uri(
-            httpretty.GET,
-            re.compile(r"^http://mock\.loadero\.api/v2/projects/\d*/runs/$"),
-            body=json.dumps(pg),
-            forcing_headers={"Content-Type": "application/json"},
+    def utest_read_all_with_query_params():
+        resp = RunAPI.read_all(
+            query_params=common.build_query_params(RunFilterKey)
         )
 
-        resp = RunAPI.read_all()
+        common.check_pagination_params(resp.pagination)
+        assert resp.filter == common.FILTER_JSON
 
-        assert len(resp) == 0
+        assert len(resp.results) == 2
+
+        for ret in resp.results:
+            common.check_run_params(ret)
+
+        assert (
+            len(parse_qs(urlparse(httpretty.last_request().url).query))
+            == len(RunFilterKey) + 2
+        )
+        assert httpretty.last_request().method == httpretty.GET
         assert not httpretty.last_request().parsed_body
 
     @staticmethod

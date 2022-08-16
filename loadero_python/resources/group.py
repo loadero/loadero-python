@@ -13,14 +13,25 @@ from datetime import datetime
 from dateutil import parser
 from ..api_client import APIClient
 from .resource import (
+    FilterKey,
     LoaderoResourceParams,
     LoaderoResource,
     DuplicateResourceBodyParams,
-    from_dict_as_list,
     convert_params_list,
     from_dict_as_new,
 )
 from .participant import Participant, ParticipantAPI
+from .pagination import PagedResponse, PaginationParams
+from .resource import QueryParams
+
+
+class GroupFilterKey(FilterKey):
+    """GroupFilterKey is an enum of all filter keys for group read all API
+    operation."""
+
+    NAME = "filter_name"
+    COUNT_FROM = "filter_count_from"
+    COUNT_TO = "filter_count_to"
 
 
 class GroupParams(LoaderoResourceParams):
@@ -246,18 +257,38 @@ class Group(LoaderoResource):
 
         return Group(params=GroupAPI.duplicate(self.params, name))
 
-    def participants(self) -> list[Participant]:
+    def participants(
+        self, query_params: QueryParams or None = None
+    ) -> tuple[list[Participant], PaginationParams, dict[any, any]]:
         """Read all participants in group.
+
+        Args:
+            query_params (QueryParams, optional): Describes query parameters
+
+        Raises:
+            ValueError: Test.params.test_id must be a valid int.
+            APIException: If API call fails.
 
         Returns:
             list[Participant]: List of participants in group.
         """
 
-        return convert_params_list(
-            Participant,
-            ParticipantAPI.read_all(
-                self.params.test_id, group_id=self.params.group_id
-            ),
+        if self.params.test_id is None:
+            raise ValueError("Group.params.test_id must be a valid int")
+
+        if self.params.group_id is None:
+            raise ValueError("Group.params.group_id must be a valid int")
+
+        resp = ParticipantAPI.read_all(
+            self.params.test_id,
+            group_id=self.params.group_id,
+            query_params=query_params,
+        )
+
+        return (
+            convert_params_list(Participant, resp.results),
+            resp.pagination,
+            resp.filter,
         )
 
 
@@ -377,22 +408,26 @@ class GroupAPI:
         )
 
     @staticmethod
-    def read_all(test_id: int) -> list[GroupParams]:
+    def read_all(
+        test_id: int, query_params: QueryParams or None = None
+    ) -> PagedResponse:
         """Read all group resources.
 
         Args:
             test_id (int): Parent test resource id.
+            query_params (QueryParams, optional): Describes query parameters.
 
         Returns:
-            list[GroupParams]: List of all group resources in test.
+            PagedResponse: Paged response of group resources.
         """
 
-        resp = APIClient().get(GroupAPI.route(test_id))
+        qp = None
+        if query_params is not None:
+            qp = query_params.parse()
 
-        if "results" not in resp or resp["results"] is None:
-            return []
-
-        return from_dict_as_list(GroupParams)(resp["results"])
+        return PagedResponse(GroupParams).from_dict(
+            APIClient().get(GroupAPI.route(test_id), query_params=qp)
+        )
 
     @staticmethod
     def route(test_id: int, group_id: int or None = None) -> str:

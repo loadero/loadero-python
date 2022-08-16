@@ -9,10 +9,12 @@
 
 import json
 import re
+from urllib.parse import urlparse, parse_qs
 import pytest
 import httpretty
 from loadero_python.api_client import APIClient
 from loadero_python.resources.assert_precondition import (
+    AssertPreconditionFilterKey,
     AssertPreconditionParams,
     AssertPrecondition,
     AssertPreconditionAPI,
@@ -26,7 +28,7 @@ def mock():
     httpretty.enable(allow_net_connect=False, verbose=True)
     httpretty.reset()
 
-    APIClient(common.PROJECT_ID, common.ACCESS_TOKEN, common.API_BASE)
+    APIClient(common.PROJECT_ID, common.ACCESS_TOKEN, common.API_BASE, False)
 
     # create
     httpretty.register_uri(
@@ -71,7 +73,7 @@ def mock():
     )
 
     # read all
-    pg = common.PAGED_RESPONSE.copy()
+    pg = common.PAGED_RESPONSE_JSON.copy()
     pg["results"] = [
         common.ASSERT_PRECONDITION_JSON,
         common.ASSERT_PRECONDITION_JSON,
@@ -313,50 +315,57 @@ class UTestAssertPreconditionAPI:
 
     @staticmethod
     def utest_delete():
-        ret = AssertPreconditionAPI.delete(
-            AssertPreconditionParams(
-                test_id=common.TEST_ID,
-                assert_id=common.ASSERT_ID,
-                assert_precondition_id=common.ASSERT_PRECONDITION_ID,
+        assert (
+            AssertPreconditionAPI.delete(
+                AssertPreconditionParams(
+                    test_id=common.TEST_ID,
+                    assert_id=common.ASSERT_ID,
+                    assert_precondition_id=common.ASSERT_PRECONDITION_ID,
+                )
             )
+            is None
         )
-
-        assert ret is None
 
         assert httpretty.last_request().method == httpretty.DELETE
         assert not httpretty.last_request().parsed_body
 
     @staticmethod
     def utest_read_all():
-        ret = AssertPreconditionAPI.read_all(common.TEST_ID, common.ASSERT_ID)
+        resp = AssertPreconditionAPI.read_all(common.TEST_ID, common.ASSERT_ID)
 
-        assert len(ret) == 2
+        common.check_pagination_params(resp.pagination)
+        assert resp.filter == common.FILTER_JSON
 
-        for r in ret:
-            common.check_assert_precondition_params(r)
+        assert len(resp.results) == 2
+
+        for ret in resp.results:
+            common.check_assert_precondition_params(ret)
 
         assert httpretty.last_request().method == httpretty.GET
         assert not httpretty.last_request().parsed_body
 
     @staticmethod
-    def utest_read_all_no_results():
-        pg = common.PAGED_RESPONSE.copy()
-        pg["results"] = None
-
-        httpretty.register_uri(
-            httpretty.GET,
-            re.compile(
-                r"^http://mock\.loadero\.api"
-                r"/v2/projects/\d*/tests/\d*/asserts/\d*/preconditions/$"
+    def utest_read_all_with_query_params():
+        resp = AssertPreconditionAPI.read_all(
+            common.TEST_ID,
+            common.ASSERT_ID,
+            query_params=common.build_query_params(
+                list(AssertPreconditionFilterKey)
             ),
-            body=json.dumps(pg),
-            forcing_headers={"Content-Type": "application/json"},
         )
 
-        ret = AssertPreconditionAPI.read_all(common.TEST_ID, common.ASSERT_ID)
+        common.check_pagination_params(resp.pagination)
+        assert resp.filter == common.FILTER_JSON
 
-        assert len(ret) == 0
+        assert len(resp.results) == 2
 
+        for ret in resp.results:
+            common.check_assert_precondition_params(ret)
+
+        assert (
+            len(parse_qs(urlparse(httpretty.last_request().url).query))
+            == len(AssertPreconditionFilterKey) + 2
+        )
         assert httpretty.last_request().method == httpretty.GET
         assert not httpretty.last_request().parsed_body
 

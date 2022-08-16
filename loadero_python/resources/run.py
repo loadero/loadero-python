@@ -11,12 +11,14 @@ from __future__ import annotations
 from time import sleep
 from datetime import datetime
 from dateutil import parser
+from .pagination import PagedResponse, PaginationParams
 from ..api_client import APIClient
 from .resource import (
+    FilterKey,
     LoaderoResourceParams,
     LoaderoResource,
+    QueryParams,
     convert_params_list,
-    from_dict_as_list,
 )
 from .classificator import (
     RunStatus,
@@ -25,6 +27,33 @@ from .classificator import (
     IncrementStrategy,
 )
 from .result import Result, ResultAPI
+
+
+class RunFilterKey(FilterKey):
+    """RunFilterKey is an enum of all filter keys for run read all API
+    operation."""
+
+    NAME = "filter_test_name"
+    INCREMENT_STRATEGY = "filter_increment_strategy"
+    STATUS = "filter_status"
+    METRIC_STATUS = "filter_metric_status"
+    TEST_MODE = "filter_test_mode"
+    MOS_STATUS = "filter_mos_status"
+    START_INTERVAL_FROM = "filter_start_interval_from"
+    START_INTERVAL_TO = "filter_start_interval_to"
+    PARTICIPANT_TIMEOUT_FROM = "filter_participant_timeout_from"
+    PARTICIPANT_TIMEOUT_TO = "filter_participant_timeout_to"
+    STARTED_FROM = "filter_started_from"
+    STARTED_TO = "filter_started_to"
+    FINISHED_FROM = "filter_finished_from"
+    FINISHED_TO = "filter_finished_to"
+    EXECUTION_STARTED_FROM = "filter_execution_started_from"
+    EXECUTION_STARTED_TO = "filter_execution_started_to"
+    EXECUTION_FINISHED_FROM = "filter_execution_finished_from"
+    EXECUTION_FINISHED_TO = "filter_execution_finished_to"
+    MOS_TEST = "filter_mos_test"
+    STARTED = "filter_started"
+    FINISHED = "filter_finished"
 
 
 class RunParams(LoaderoResourceParams):
@@ -464,8 +493,13 @@ class Run(LoaderoResource):
 
         return self
 
-    def results(self) -> list[Result]:
+    def results(
+        self, query_params: QueryParams or None = None
+    ) -> tuple[list[Result], PaginationParams, dict[any, any]]:
         """Get all results of the run.
+
+        Args:
+            query_params (QueryParams, optional): Describes query parameters
 
         Raises:
             APIException: If API call fails.
@@ -473,13 +507,19 @@ class Run(LoaderoResource):
 
         Returns:
             list[Result]: List of all results of the run.
+            PaginationParams: Pagination parameters of request.
+            dict[any, any]: Filters applied to in request.
         """
 
         if self.params.run_id is None:
             raise ValueError("Run.params.run_id must be a valid int")
 
-        return convert_params_list(
-            Result, ResultAPI.read_all(self.params.run_id)
+        resp = ResultAPI.read_all(self.params.run_id, query_params=query_params)
+
+        return (
+            convert_params_list(Result, resp.results),
+            resp.pagination,
+            resp.filter,
         )
 
 
@@ -532,12 +572,16 @@ class RunAPI:
         )
 
     @staticmethod
-    def read_all(test_id: int or None = None) -> list[RunParams]:
+    def read_all(
+        test_id: int or None = None,
+        query_params: QueryParams or None = None,
+    ) -> PagedResponse:
         """Read all run resources.
 
         Args:
             test_id (int, optional): Parent test resource id. Defaults to None.
                 If omitted all runs in project will be read.
+            query_params (QueryParams, optional): Describes query parameters.
 
         Raises:
             ValueError: If resource params do not sufficiently identify parent
@@ -545,16 +589,16 @@ class RunAPI:
             APIException: If API call fails.
 
         Returns:
-            list[RunParams]: List of all runs resource params in test or
-                project.
+            PagedResponse: Paged response of run resources.
         """
 
-        resp = APIClient().get(RunAPI.route(test_id=test_id))
+        qp = None
+        if query_params is not None:
+            qp = query_params.parse()
 
-        if "results" not in resp or resp["results"] is None:
-            return []
-
-        return from_dict_as_list(RunParams)(resp["results"])
+        return PagedResponse(RunParams).from_dict(
+            APIClient().get(RunAPI.route(test_id=test_id), query_params=qp)
+        )
 
     @staticmethod
     def stop(params: RunParams) -> None:

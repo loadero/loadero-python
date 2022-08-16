@@ -1,6 +1,7 @@
 """Describes generics and utility functions of Loadero resources."""
 
 from __future__ import annotations
+from enum import Enum
 from typing import Callable
 import json
 from datetime import datetime
@@ -206,6 +207,9 @@ def from_dict_as_list(
     """
 
     def func(json_value: dict[str, any]) -> list[LoaderoResourceParams]:
+        if json_value is None:
+            return []
+
         resources = []
 
         for jv in json_value:
@@ -302,3 +306,107 @@ def convert_params_list(
         resources.append(resource_class(params=p))
 
     return resources
+
+
+class FilterKey(Enum):
+    """FilterKey is a base class that all resource filter keys inherit form."""
+
+    def __str__(self) -> str:
+        return self.value
+
+
+class QueryParams:
+    """QueryParams allows setting pagination settings an filters for
+    requests."""
+
+    def __init__(self):
+        self.__query_params = {}
+
+    def limit(self, limit: int) -> QueryParams:
+        """Set maximum number of resources to return in a single read all
+        operation.
+
+        Args:
+            limit (int): Maximum number of resources to return.
+
+        Returns:
+            QueryParams: QueryParams with limit set.
+        """
+
+        self.__set_param("limit", limit)
+        return self
+
+    def offset(self, offset: int) -> QueryParams:
+        """Set the number of resources the read all response should be offset
+        by.
+
+        Args:
+            offset (int): Offset of resources.
+
+        Returns:
+            QueryParams: QueryParams with offset set.
+        """
+
+        self.__set_param("offset", offset)
+        return self
+
+    def filter(self, key: FilterKey, *values: any) -> QueryParams:
+        """Set filter for read all operation.
+
+        Args:
+            key (ResourceFilters): Filter key.
+            value (any): Filter value. Variadic argument.
+
+        Returns:
+            QueryParams: QueryParams with filter set.
+        """
+
+        if len(values) == 0:
+            return self
+
+        if len(values) > 1:
+            for value in values:
+                self.filter(key, value)
+
+            return self
+
+        value = values[0]
+
+        if isinstance(value, Serializable):
+            self.__add_param(str(key), value.to_dict())
+            return self
+
+        if isinstance(value, datetime):
+            self.__add_param(str(key), int(value.timestamp()))
+            return self
+
+        self.__add_param(str(key), value)
+        return self
+
+    def __set_param(self, key: str, value: any):
+        if key not in self.__query_params:
+            self.__query_params[key] = []
+
+        self.__query_params[key] = [value]
+
+    def __add_param(self, key: str, value: any):
+        if key not in self.__query_params:
+            self.__query_params[key] = []
+
+        self.__query_params[key].append(value)
+
+    def parse(self) -> list[tuple[str, any]]:
+        """Parses QueryParams into a list of tuples representation that will be
+            used for sending the request.
+
+        Returns:
+            list[tuple[str, any]]: List of tuples representation of QueryParams.
+        """
+
+        query_params = []
+
+        for key, values in self.__query_params.items():
+            for v in values:
+                query_params.append((key, v))
+
+        return query_params

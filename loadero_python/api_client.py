@@ -1,14 +1,16 @@
 """API client to access Loadero API"""
 
+from __future__ import annotations
+
 import json
 import threading
+import time
 from urllib.parse import urljoin
 import urllib3
 
 
 class APIException(Exception):
-    """
-    APIException indicates that Loadero API returned an error. This can
+    """APIException indicates that Loadero API returned an error. This can
     indicate that an invalid request was made or that an internal error
     occurred in the Loadero servers.
     """
@@ -20,9 +22,9 @@ class APIException(Exception):
 class APIClient:
     """API client to access Loadero API"""
 
-    __pool_size = 4
+    __max_pool_size = 4
     __timeout = urllib3.Timeout(total=30.0)
-    __pool_manager = None
+    # __http = None
     __auth_header = {}
 
     __initalized = False
@@ -32,12 +34,15 @@ class APIClient:
 
     __instance = None
     __lock = threading.Lock()
+    __last_request_time = None
+    __average_rps = 4
 
     def __init__(
         self,
         project_id: int or None = None,
         access_token: str or None = None,
         api_base: str = "https://api.loadero.com/v2/",
+        rate_limit: bool = True,
     ) -> None:
         if self.__initalized and project_id is None and access_token is None:
             return
@@ -56,14 +61,16 @@ class APIClient:
         self.__project_id = project_id
         self.__access_token = access_token
         self.__api_base = api_base
+        self.__do_rate_limit = rate_limit
 
         self.__auth_header["Authorization"] = (
             "LoaderoAuth " + self.__access_token
         )
 
-        self.__pool_manager = urllib3.PoolManager(
-            num_pools=self.__pool_size,
-            timeout=self.__timeout,
+        self.__http = urllib3.PoolManager(
+            maxsize=APIClient.__max_pool_size,
+            timeout=APIClient.__timeout,
+            block=True,
         )
 
         self.__initalized = True
@@ -76,7 +83,24 @@ class APIClient:
 
         return cls.__instance
 
-    def get(self, route: str) -> dict or None:
+    def __rate_limit(self) -> None:
+        if not self.__do_rate_limit:
+            return
+
+        if self.__last_request_time is None:
+            self.__last_request_time = time.time()
+            return
+
+        dt = time.time() - self.__last_request_time
+
+        if dt < 1.0 / self.__average_rps:
+            time.sleep((1.0 / self.__average_rps) - dt)
+
+        self.__last_request_time = time.time()
+
+    def get(
+        self, route: str, query_params: list[tuple[str, any]] or None = None
+    ) -> dict or None:
         """Sends a HTTP GET request to Loadero API.
 
         Args:
@@ -93,10 +117,13 @@ class APIClient:
                 request returned nothing.
         """
 
-        resp = self.__pool_manager.request(
+        self.__rate_limit()
+
+        resp = self.__http.request(
             method="GET",
             url=urljoin(self.api_base, route),
             headers=self._build_headers(),
+            fields=query_params,
         )
 
         if "application/json" not in resp.headers["Content-Type"]:
@@ -131,11 +158,13 @@ class APIClient:
                 request returned nothing.
         """
 
+        self.__rate_limit()
+
         encoded_body = ""
         if body is not None:
             encoded_body = json.dumps(body)
 
-        resp = self.__pool_manager.request(
+        resp = self.__http.request(
             method="POST",
             url=urljoin(self.api_base, route),
             body=encoded_body,
@@ -174,9 +203,11 @@ class APIClient:
                 request returned nothing.
         """
 
+        self.__rate_limit()
+
         encoded_body = json.dumps(body)
 
-        resp = self.__pool_manager.request(
+        resp = self.__http.request(
             method="PUT",
             url=urljoin(self.api_base, route),
             body=encoded_body,
@@ -210,7 +241,9 @@ class APIClient:
                 client error or server error.
         """
 
-        resp = self.__pool_manager.request(
+        self.__rate_limit()
+
+        resp = self.__http.request(
             method="DELETE",
             url=urljoin(self.api_base, route),
             headers=self._build_headers(),

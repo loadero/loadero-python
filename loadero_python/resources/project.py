@@ -11,10 +11,13 @@ Single Project object coresponds to single project in Loadero.
 from __future__ import annotations
 from datetime import datetime
 from dateutil import parser
+
+from .pagination import PaginationParams
 from ..api_client import APIClient
 from .resource import (
     LoaderoResourceParams,
     LoaderoResource,
+    QueryParams,
     from_dict_as_new,
     convert_params_list,
 )
@@ -646,35 +649,83 @@ class Project(LoaderoResource):
         self.params = ProjectAPI.read()
         return self
 
-    def tests(self) -> list[Test]:  # pylint: disable=no-self-use
+    # pylint: disable=no-self-use
+    def tests(
+        self, query_params: QueryParams or None = None
+    ) -> tuple[list[Test], PaginationParams, dict[any, any]]:
         """Read all tests in the project.
+
+        Args:
+            query_params (QueryParams, optional): Describes query parameters
 
         Raises:
             APIException: If API call fails.
 
         Returns:
             list[Test]: List of tests.
+            PaginationParams: Pagination parameters of request.
+            dict[any, any]: Filters applied to in request.
         """
 
-        return convert_params_list(Test, TestAPI.read_all())
+        resp = TestAPI.read_all(query_params=query_params)
 
-    def files(self) -> list[File]:  # pylint: disable=no-self-use
+        return (
+            convert_params_list(Test, resp.results),
+            resp.pagination,
+            resp.filter,
+        )
+
+    # pylint: disable=no-self-use
+    def files(
+        self, query_params: QueryParams or None = None
+    ) -> tuple[list[File], PaginationParams, dict[any, any]]:
         """Read all files in the project.
+
+        Args:
+            query_params (QueryParams, optional): Describes query parameters
+
+        Raises:
+            APIException: If API call fails.
 
         Returns:
             list[File]: List of files.
+            PaginationParams: Pagination parameters of request.
+            dict[any, any]: Filters applied to in request.
         """
 
-        return convert_params_list(File, FileAPI.read_all())
+        resp = FileAPI.read_all(query_params=query_params)
 
-    def runs(self) -> list[Run]:  # pylint: disable=no-self-use
+        return (
+            convert_params_list(File, resp.results),
+            resp.pagination,
+            resp.filter,
+        )
+
+    # pylint: disable=no-self-use
+    def runs(
+        self, query_params: QueryParams or None = None
+    ) -> tuple[list[Run], PaginationParams, dict[any, any]]:
         """Read all runs in the project.
+
+        Args:
+            query_params (QueryParams, optional): Describes query parameters
+
+        Raises:
+            APIException: If API call fails.
 
         Returns:
             list[Run]: List of runs.
+            PaginationParams: Pagination parameters of request.
+            dict[any, any]: Filters applied to in request.
         """
 
-        return convert_params_list(Run, RunAPI.read_all())
+        resp = RunAPI.read_all(query_params=query_params)
+
+        return (
+            convert_params_list(Run, resp.results),
+            resp.pagination,
+            resp.filter,
+        )
 
 
 class ProjectAPI:

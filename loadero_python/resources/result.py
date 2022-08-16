@@ -10,10 +10,13 @@ Single result object coresponds to single result in Loadero.
 from __future__ import annotations
 from datetime import datetime
 from dateutil import parser
+
 from ..api_client import APIClient
 from .resource import (
+    FilterKey,
     LoaderoResourceParams,
     LoaderoResource,
+    QueryParams,
     from_dict_as_list,
     from_dict_as_new,
 )
@@ -26,6 +29,20 @@ from .classificator import (
     MosAlgorithm,
 )
 from .run_participant import RunParticipantParams
+from .pagination import PagedResponse
+
+
+class ResultFilterKey(FilterKey):
+    """ResultFilterKey is an enum of all filter keys for result read all API
+    operation."""
+
+    START_FROM = "filter_start_from"
+    START_TO = "filter_start_to"
+    END_FROM = "filter_end_from"
+    END_TO = "filter_end_to"
+    STATUS = "filter_status"
+    SELENIUM_RESULT = "filter_selenium_result"
+    MOS_STATUS = "filter_mos_status"
 
 
 class ResultLogParams(LoaderoResourceParams):
@@ -1174,30 +1191,30 @@ class ResultAPI:
         )
 
     @staticmethod
-    def read_all(run_id: int) -> list[ResultParams]:
+    def read_all(
+        run_id: int,
+        query_params: QueryParams or None = None,
+    ) -> PagedResponse:
         """Read all result resources for run.
 
         Args:
             run_id (int): Parent run resource id.
+            query_params (QueryParams, optional): Describes query parameters.
 
         Raises:
             APIException: If API call fails.
 
         Returns:
-            list[ResultParams]: List of all result resources in run.
+            PagedResponse: Paged response of result resources.
         """
 
-        resp = APIClient().get(ResultAPI.route(run_id))
+        qp = None
+        if query_params is not None:
+            qp = query_params.parse()
 
-        if "results" not in resp or resp["results"] is None:
-            return []
-
-        return from_dict_as_list(ResultParams)(resp["results"])
-
-    @staticmethod
-    def request_mos(run_id: int, result_id: int):  # TODO: implement
-        """Not implemented."""
-        raise Exception("not implemented")
+        return PagedResponse(ResultParams).from_dict(
+            APIClient().get(ResultAPI.route(run_id), query_params=qp)
+        )
 
     @staticmethod
     def route(run_id: int, result_id: int or None = None) -> str:

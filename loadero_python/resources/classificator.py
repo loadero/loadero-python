@@ -9,8 +9,7 @@ from .resource import Serializable
 
 
 class VersionedBrowser(Serializable):
-    """
-    VersionedBrowser describes Loadero classificator constants for
+    """VersionedBrowser describes Loadero classificator constants for
     browser classificator with specific version type.
     """
 
@@ -33,8 +32,7 @@ class VersionedBrowser(Serializable):
 
 
 class Browser(Serializable, Enum):
-    """
-    Browser enumerates Loadero classificator constants for
+    """Browser enumerates Loadero classificator constants for
     browser classificator type.
     """
 
@@ -63,8 +61,7 @@ class Browser(Serializable, Enum):
 
 
 class Artifact(Serializable, Enum):
-    """
-    Artifact enumerates Loadero classificator constants for
+    """Artifact enumerates Loadero classificator constants for
     artifact classificator type.
     """
 
@@ -92,8 +89,7 @@ class Artifact(Serializable, Enum):
 
 
 class AssertStatus(Serializable, Enum):
-    """
-    AssertStatus enumerates Loadero classificator constants for
+    """AssertStatus enumerates Loadero classificator constants for
     assert_status classificator type.
     """
 
@@ -119,8 +115,7 @@ class AssertStatus(Serializable, Enum):
 
 
 class AudioFeed(Serializable, Enum):
-    """
-    AudioFeed enumerates Loadero classificator constants for
+    """AudioFeed enumerates Loadero classificator constants for
     audio_feed classificator type.
     """
 
@@ -156,8 +151,7 @@ class AudioFeed(Serializable, Enum):
 
 
 class AwsStatus(Serializable, Enum):
-    """
-    AwsStatus enumerates Loadero classificator constants for
+    """AwsStatus enumerates Loadero classificator constants for
     aws_status classificator type.
     """
 
@@ -189,8 +183,7 @@ class AwsStatus(Serializable, Enum):
 
 
 class ComputeUnit(Serializable, Enum):
-    """
-    ComputeUnit enumerates Loadero classificator constants for
+    """ComputeUnit enumerates Loadero classificator constants for
     compute_unit classificator type.
     """
 
@@ -220,14 +213,9 @@ class ComputeUnit(Serializable, Enum):
 
 
 class FileType(Serializable, Enum):
-    """
-    FileType enumerates Loadero classificator constants for
+    """FileType enumerates Loadero classificator constants for
     file_type classificator type.
     """
-
-    FT_FT_TEST_1 = "ft_test_1"
-
-    FT_FT_TEST_2 = "ft_test_2"
 
     FT_RUN_SCRIPT = "run_script"
 
@@ -253,8 +241,7 @@ class FileType(Serializable, Enum):
 
 
 class IncrementStrategy(Serializable, Enum):
-    """
-    IncrementStrategy enumerates Loadero classificator constants for
+    """IncrementStrategy enumerates Loadero classificator constants for
     increment_strategy classificator type.
     """
 
@@ -282,8 +269,7 @@ class IncrementStrategy(Serializable, Enum):
 
 
 class Language(Serializable, Enum):
-    """
-    Language enumerates Loadero classificator constants for
+    """Language enumerates Loadero classificator constants for
     language classificator type.
     """
 
@@ -309,8 +295,7 @@ class Language(Serializable, Enum):
 
 
 class Location(Serializable, Enum):
-    """
-    Location enumerates Loadero classificator constants for
+    """Location enumerates Loadero classificator constants for
     location classificator type.
     """
 
@@ -354,8 +339,7 @@ class Location(Serializable, Enum):
 
 
 class MediaType(Serializable, Enum):
-    """
-    MediaType enumerates Loadero classificator constants for
+    """MediaType enumerates Loadero classificator constants for
     media_type classificator type.
     """
 
@@ -405,8 +389,7 @@ class MediaType(Serializable, Enum):
 
 
 class MemberRole(Serializable, Enum):
-    """
-    MemberRole enumerates Loadero classificator constants for
+    """MemberRole enumerates Loadero classificator constants for
     member_role classificator type.
     """
 
@@ -432,8 +415,7 @@ class MemberRole(Serializable, Enum):
 
 
 class MetricKey(Serializable, Enum):
-    """
-    MetricKey enumerates Loadero classificator constants for
+    """MetricKey enumerates Loadero classificator constants for
     metric_key classificator type.
     """
 
@@ -450,6 +432,8 @@ class MetricKey(Serializable, Enum):
     MK_95TH = "95th"
 
     MK_99TH = "99th"
+
+    MK_ACTIONS = "actions"
 
     MK_AUDIO = "audio"
 
@@ -507,6 +491,8 @@ class MetricKey(Serializable, Enum):
 
     MK_STDDEV = "stddev"
 
+    MK_TIMEEXECUTION = "timeExecution"
+
     MK_TOTAL = "total"
 
     MK_USED = "used"
@@ -514,6 +500,8 @@ class MetricKey(Serializable, Enum):
     MK_VIDEO = "video"
 
     MK_WEBRTC = "webrtc"
+
+    MK_DYNAMIC_NAME = "{name}"
 
     # pylint: disable=arguments-differ
     @staticmethod
@@ -531,8 +519,7 @@ class MetricKey(Serializable, Enum):
 
 
 class MetricStatus(Serializable, Enum):
-    """
-    MetricStatus enumerates Loadero classificator constants for
+    """MetricStatus enumerates Loadero classificator constants for
     metric_status classificator type.
     """
 
@@ -564,8 +551,7 @@ class MetricStatus(Serializable, Enum):
 
 
 class MosAlgorithm(Serializable, Enum):
-    """
-    MosAlgorithm enumerates Loadero classificator constants for
+    """MosAlgorithm enumerates Loadero classificator constants for
     mos_algorithm classificator type.
     """
 
@@ -587,8 +573,7 @@ class MosAlgorithm(Serializable, Enum):
 
 
 class Network(Serializable, Enum):
-    """
-    Network enumerates Loadero classificator constants for
+    """Network enumerates Loadero classificator constants for
     network classificator type.
     """
 
@@ -638,8 +623,7 @@ class Network(Serializable, Enum):
 
 
 class NodeStatus(Serializable, Enum):
-    """
-    NodeStatus enumerates Loadero classificator constants for
+    """NodeStatus enumerates Loadero classificator constants for
     node_status classificator type.
     """
 
@@ -669,8 +653,7 @@ class NodeStatus(Serializable, Enum):
 
 
 class Operator(Serializable, Enum):
-    """
-    Operator enumerates Loadero classificator constants for
+    """Operator enumerates Loadero classificator constants for
     operator classificator type.
     """
 
@@ -704,8 +687,7 @@ class Operator(Serializable, Enum):
 
 
 class PaymentPlan(Serializable, Enum):
-    """
-    PaymentPlan enumerates Loadero classificator constants for
+    """PaymentPlan enumerates Loadero classificator constants for
     payment_plan classificator type.
     """
 
@@ -735,8 +717,7 @@ class PaymentPlan(Serializable, Enum):
 
 
 class PaymentStatus(Serializable, Enum):
-    """
-    PaymentStatus enumerates Loadero classificator constants for
+    """PaymentStatus enumerates Loadero classificator constants for
     payment_status classificator type.
     """
 
@@ -770,8 +751,7 @@ class PaymentStatus(Serializable, Enum):
 
 
 class Property(Serializable, Enum):
-    """
-    Property enumerates Loadero classificator constants for
+    """Property enumerates Loadero classificator constants for
     property classificator type.
     """
 
@@ -813,8 +793,7 @@ class Property(Serializable, Enum):
 
 
 class ResultStatus(Serializable, Enum):
-    """
-    ResultStatus enumerates Loadero classificator constants for
+    """ResultStatus enumerates Loadero classificator constants for
     result_status classificator type.
     """
 
@@ -842,8 +821,7 @@ class ResultStatus(Serializable, Enum):
 
 
 class RunStatus(Serializable, Enum):
-    """
-    RunStatus enumerates Loadero classificator constants for
+    """RunStatus enumerates Loadero classificator constants for
     run_status classificator type.
     """
 
@@ -891,8 +869,7 @@ class RunStatus(Serializable, Enum):
 
 
 class TestDuration(Serializable, Enum):
-    """
-    TestDuration enumerates Loadero classificator constants for
+    """TestDuration enumerates Loadero classificator constants for
     test_duration classificator type.
     """
 
@@ -926,8 +903,7 @@ class TestDuration(Serializable, Enum):
 
 
 class TestMode(Serializable, Enum):
-    """
-    TestMode enumerates Loadero classificator constants for
+    """TestMode enumerates Loadero classificator constants for
     test_mode classificator type.
     """
 
@@ -953,8 +929,7 @@ class TestMode(Serializable, Enum):
 
 
 class VideoFeed(Serializable, Enum):
-    """
-    VideoFeed enumerates Loadero classificator constants for
+    """VideoFeed enumerates Loadero classificator constants for
     video_feed classificator type.
     """
 

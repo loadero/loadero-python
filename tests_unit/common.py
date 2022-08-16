@@ -58,6 +58,8 @@ from loadero_python.resources.project import (
     ProjectComputeUnitUsageParams,
     ProjectParams,
 )
+from loadero_python.resources.pagination import PaginationParams
+from loadero_python.resources.resource import FilterKey, QueryParams
 
 API_BASE = "http://mock.loadero.api/v2/"
 ACCESS_TOKEN = "LOADERO_PROJECT_ACCESS_TOKEN"
@@ -96,9 +98,37 @@ UPDATED_TIME_STRING = "2024-02-03T15:42:54.689Z"
 UPDATED_TIME = parser.parse(UPDATED_TIME_STRING)
 
 
-PAGED_RESPONSE = {
-    "filter": {},
-    "pagination": {"limit": 0, "offset": 0, "page": 0, "total_pages": 0},
+LIMIT = 332
+OFFSET = 931
+
+PAGINATION_JSON = {
+    "limit": LIMIT,
+    "offset": OFFSET,
+    "page": 991201,
+    "total_pages": 9231,
+    "total_items": 9283411,
+}
+
+
+def check_pagination_params(params: PaginationParams):
+    assert params.limit == LIMIT
+    assert params.offset == OFFSET
+    assert params.page == 991201
+    assert params.total_pages == 9231
+    assert params.total_items == 9283411
+
+
+FILTER_JSON = {
+    "compute_unit": ["g6", "g1"],
+    "name": "clever name",
+    "selenium_result": ["pass"],
+    "count_from": 431,
+}
+
+
+PAGED_RESPONSE_JSON = {
+    "filter": FILTER_JSON,
+    "pagination": PAGINATION_JSON,
     "results": [],
 }
 
@@ -774,3 +804,25 @@ def check_project_params(params: ProjectParams):
     check_plan_limits_params(params.plan_limits)
     check_subscription_params(params.subscription)
     check_project_compute_unit_usage_params(params.compute_unit_usage)
+
+
+QUERY_PARAM_VALUES = [
+    CREATED_TIME,
+    ComputeUnit.CU_G4,
+    [Language.L_PYTHON, MemberRole.MR_ADMINISTRATOR],
+    1,
+    "pytest project",
+    True,
+]
+
+
+def build_query_params(keys: list[FilterKey]) -> QueryParams:
+    qp = QueryParams()
+
+    qp.limit(LIMIT)
+    qp.offset(OFFSET)
+
+    for i, key in enumerate(keys):
+        qp.filter(key, QUERY_PARAM_VALUES[i % len(QUERY_PARAM_VALUES)])
+
+    return qp
