@@ -40,7 +40,7 @@ class UTestTest:
         assert pagination.offset == 0
         assert pagination.page == 1
         assert pagination.total_pages == 1
-        assert pagination.total_items == 0
+        assert pagination.total_items == 2
 
         assert not filters
 
@@ -54,7 +54,7 @@ class UTestTest:
         assert pagination.offset == 0
         assert pagination.page == 1
         assert pagination.total_pages == 2
-        assert pagination.total_items == 0
+        assert pagination.total_items == 2
 
         assert not filters
 
@@ -70,7 +70,7 @@ class UTestTest:
         assert pagination.offset == 0
         assert pagination.page == 1
         assert pagination.total_pages == 1
-        assert pagination.total_items == 0
+        assert pagination.total_items == 1
 
         assert filters == {"profile": {"browser": ["chromeLatest"]}}
 
@@ -86,7 +86,7 @@ class UTestTest:
         assert pagination.offset == 0
         assert pagination.page == 1
         assert pagination.total_pages == 1
-        assert pagination.total_items == 0
+        assert pagination.total_items == 1
 
         assert filters == {"profile": {"browser": ["firefoxLatest"]}}
 
@@ -104,7 +104,7 @@ class UTestTest:
         assert pagination.offset == 0
         assert pagination.page == 1
         assert pagination.total_pages == 1
-        assert pagination.total_items == 0
+        assert pagination.total_items == 2
 
         assert filters == {
             "profile": {"browser": ["chromeLatest", "firefoxLatest"]}

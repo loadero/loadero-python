@@ -222,3 +222,4 @@ pip-selfcheck.json
 
 dev-files
 .vscode
+pytest-coverage.txt
