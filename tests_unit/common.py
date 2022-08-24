@@ -1,5 +1,6 @@
 """Common data shared between tests"""
 
+
 # pylint: disable=missing-function-docstring
 # pylint: disable=unused-variable
 
