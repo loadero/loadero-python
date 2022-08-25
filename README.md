@@ -110,19 +110,19 @@ print(test1)
 
 Similar output can be expected
 
-```json
+```
 {
-  "id": 12734,
-  "name": "pytest test",
-  "start_interval": 12,
-  "participant_timeout": 13,
-  "mode": "load",
-  "increment_strategy": "linear",
-  "created": "2022-04-01 13:54:25.689000+00:00",
-  "updated": "2024-02-03 15:42:54.689000+00:00",
-  "script_file_id": 65,
-  "group_count": 52,
-  "participant_count": 9355
+    "id": 12734,
+    "name": "pytest test",
+    "start_interval": 12,
+    "participant_timeout": 13,
+    "mode": "load",
+    "increment_strategy": "linear",
+    "created": "2022-04-01 13:54:25.689000+00:00",
+    "updated": "2024-02-03 15:42:54.689000+00:00",
+    "script_file_id": 65,
+    "group_count": 52,
+    "participant_count": 9355
 }
 ```
 
