@@ -133,7 +133,7 @@ class UTestAssertParams:
     "id": 29643,
     "test_id": 12734,
     "path": "machine/network/bitrate/in/avg",
-    "operator": "gt",
+    "operator": "gtt",
     "expected": "892",
     "created": "2022-04-01 13:54:25.689000+00:00",
     "updated": "2024-02-03 15:42:54.689000+00:00"
