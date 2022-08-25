@@ -7,6 +7,30 @@ to manage tests, participants, asserts, runs and other Loadero resources, start
 and stop tests, extract test run results. Example usage might be running Loadero
 tests as a part of CI/CD.
 
+## Table of Contents
+
+- [Installation](#installation)
+- [Usage](#usage)
+  - [API Access](#api-access)
+  - [Initalisation](#initalisation)
+  - [Working with Existing Resources](#working-with-existing-resources)
+  - [Creating a Test](#creating-a-test)
+  - [Running a Test](#running-a-test)
+    - [Polling](#polling)
+    - [Stopping Test Execution](#stopping-test-execution)
+  - [Getting Results](#getting-results)
+    - [Participant Results](#participant-results)
+      - [Log retrival](#log-retrival)
+      - [Extracting failed asserts](#extracting-failed-asserts)
+      - [Checking metrics](#checking-metrics)
+  - [Pagination and Filtering](#pagination-and-filtering)
+    - [Filtering](#filtering)
+    - [Pagination](#pagination)
+- [Structure](#structure)
+  - [API client](#api-client)
+  - [Resources and Operations](#resources-and-operations)
+- [Contributing](#contributing)
+
 ## Installation
 
 Loadero-Python is available on [PyPI](https://pypi.org/project/loadero-python/)
@@ -18,7 +42,7 @@ pip install loadero-python
 
 ## Usage
 
-### API access
+### API Access
 
 Before using Loadero-Python client an API access token needs to be acquired.
 Currently this can be done by contacting
@@ -48,7 +72,7 @@ APIClient(
 Further examples will not include `APIClient` initalisation. It is assumed that
 the client has been initialize at an earlier step.
 
-### Working with existing resources
+### Working with Existing Resources
 
 Loadero resources have a tree like structure hence there can be child and parent
 resources.
@@ -91,7 +115,7 @@ tests, pagination, filters = Project().tests()
 A more detailed explanation of `pagination` and `filters` return values is
 available at **Pagination and Filtering** section.
 
-### Creating a test
+### Creating a Test
 
 With an initialized `APIClient` Loadero-Python can now manage resources in the
 project. Since all resources have a similar structure this showcase will cover
@@ -205,7 +229,7 @@ start_interval: 1
 updated: "2022-08-25 15:33:04+00:00"
 ```
 
-### Running a test
+### Running a Test
 
 To run a test the only required attribute is test ID.
 
@@ -249,7 +273,7 @@ run.poll(interval=5.0, timeout=10 * 60.0)
 If test execution does not finnish within the specified timeout, `poll` will
 raise an exception.
 
-#### Stopping test execution
+#### Stopping Test Execution
 
 If a tests execution need to be prematurely stopped, it can be done with
 
@@ -265,7 +289,7 @@ longer.
 **Note** If another process is polling the test execution, it will automatically
 stop if the test is stopped.
 
-### Getting results
+### Getting Results
 
 After the test run finishes execution the `run` object already contains many
 usefull attributes that may be used in result analysis. The attributes are
@@ -276,7 +300,7 @@ stored on `run.params` field. `run.params` is an `RunParams` object form
 print(run.params.success_rate)
 ```
 
-#### Participant results
+#### Participant Results
 
 `run` object describes a result overview of the whole test. To get a more
 detailed result information about each test participant results need to be read.
