@@ -518,10 +518,12 @@ All resources except classificators and metric paths are split into tree parts
 
 ## Contributing
 
-Found a bug? - Feel free to open an issue.
+Found a bug? - Feel free to open an
+[issue](https://github.com/loadero/loadero-python/issues/new/choose).
 
 Would like to request a feature? - Open an issue describing the request an the
 reason for it or contact Loadero [support](mailto:support@loadero.com).
 
-Want to contribute? - Open issues is a good place where to find stuff that needs
-to be worked on.
+Want to contribute? - Open
+[issues](https://github.com/loadero/loadero-python/issues) is a good place where
+to find stuff that needs to be worked on.
