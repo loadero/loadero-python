@@ -1,4 +1,4 @@
-name: CHECKS
+name: PIPELINE
 
 on:
   push:
@@ -17,7 +17,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v3
 
-      - name: setup-python
+      - name: setup python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10' 
@@ -42,19 +42,29 @@ jobs:
         uses: coroo/pytest-coverage-commentator@v1.0.2
         with:
           pytest-coverage: pytest-coverage.txt
+  
+  publish:
+    if: startsWith(github.ref, 'refs/tags')
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
 
-      - name: build wheel and source tarball
-        if: startsWith(github.ref, 'refs/tags')
+      - name: setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10' 
+          cache: 'pip'
+        
+      - name: install build
         run: >-
-          python -m
-          build
-          --sdist
-          --wheel
-          --outdir dist/
-          .
+          python -m pip install build --user
+          
+      - name: build wheel and source tarball
+        run: >-
+          python -m build --sdist --wheel --outdir dist/ .
 
       - name: publish to PyPI
-        if: startsWith(github.ref, 'refs/tags')
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           password: ${{ secrets.LOADERO_PYTHON_PYPI_API_TOKEN }}
