@@ -2,15 +2,10 @@
 
 Python client for Loadero API.
 
-Loadero-Python provides a easy to use programatic access to Loadero API.
-
-Allows to manage Loadero tests, participants, asserts, runs and other resources,
-start and stop tests, extract test run results.
-
-Can be used to run Loadero tests as a part of CI/CD.
-
-Loadero performance and load testing service is available via Loadero's
-[site](https://loadero.com/) and REST API.
+Loadero-Python provides a easy to use programatic access to Loadero API. Allows
+to manage tests, participants, asserts, runs and other Loadero resources, start
+and stop tests, extract test run results. Example usage might be running Loadero
+tests as a part of CI/CD.
 
 ## Installation
 
@@ -28,6 +23,8 @@ pip install loadero-python
 Before using Loadero-Python client an API access token needs to be acquired.
 Currently this can be done by contacting
 [support](mailto:support@loadero.com?subject=I%20want%20to%20request%20project%20access%20token%20for%20API).
+More information about the API can be found in the
+[Loadero wiki](https://wiki.loadero.com/loadero-usage/api/)
 
 **Note** Access tokens are project specific and cannot be used across multiple
 projects. Make sure to specify the project ID in the request for access token.
@@ -51,18 +48,75 @@ APIClient(
 Further examples will not include `APIClient` initalisation. It is assumed that
 the client has been initialize at an earlier step.
 
+### Working with existing resources
+
+Loadero resources have a tree like structure hence there can be child and parent
+resources.
+
+```
+project
+   |
+   |----tests----groups-----participants
+   |      |
+   |      |------asserts----assert_preconditions
+   |
+   |----files
+   |
+   |----runs-----results
+```
+
+Every parent resource can read all of its child resources.
+
+`Project` class from `loadero_python.resources.project` module provides entry
+point to access all of its child resources.
+
+`Project` class can be imported with
+
+```py
+from loadero_python.resources.project import Project
+```
+
+All tests in a project can be read with
+
+```py
+tests, pagination, filters = Project().tests()
+```
+
+- `tests` is a list of `Test` objects form `loadero_python.resources.test`
+  module
+- `pagination` is a `PaginationParams` object form
+  `loadero_python.resources.pagination` module.
+- `filters` is a python dictionary of applied filters.
+
+A more detailed explanation of `pagination` and `filters` return values is
+available at **Pagination and Filtering** section.
+
 ### Creating a test
 
-With an initialized `APIClient` Loadero-Python can now manage resources in teh
+With an initialized `APIClient` Loadero-Python can now manage resources in the
 project. Since all resources have a similar structure this showcase will cover
-only the core functionalit starting with creating a test. Test attributes can be
-specified directly as arguments in params initalisation or with builder methods.
+only the core functionality starting with creating a test.
+
+Test resource is contianed within the `loadero_python.resources.test` module.
+From it `Test`, `TestParams` and `Script` classes need to be imported.
 
 ```py
 from loadero_python.resources.test import Test, TestParams, Script
-from loadero_python.resources.classificator import TestMode, IncrementStrategy
+```
 
-test1 = Test(
+Additionally `TestMode` and `IncrementStrategy` classificator constant
+enumerations need to be imported from `loadero_python.resources.classificator`.
+They will be used for test attribute definitions.
+
+```py
+from loadero_python.resources.classificator import TestMode, IncrementStrategy
+```
+
+Test attributes can be specified in two ways. Directly as arguments in params
+initalisation
+
+```py
+test = Test(
     params=TestParams(
         name="my first loadero python test",
         start_interval=1,
@@ -72,8 +126,12 @@ test1 = Test(
         script=Script(content='print("hello test script")'),
     )
 ).create()
+```
 
-test2 = Test(
+or with builder methods.
+
+```py
+test = Test(
     params=TestParams()
     .with_name("my second loadero python test")
     .with_start_interval(1)
@@ -83,9 +141,6 @@ test2 = Test(
     .with_script(Script(content='print("hello test script")'))
 ).create()
 ```
-
-`TestMode` and `IncrementStrategy` are two of many classificator constant
-enumerations.
 
 Resource create and update operations have required and optional attributes. If
 an required attribute is missing the API call will fail. Loadero-Python checks
@@ -100,31 +155,314 @@ For test resource the required attributes are:
 - `mode`
 - `increment_strategy`
 
-After the create operation completes the `test1` and `test2` objects will have a
-few more of its attributes populated. To view any resources attributes it can be
-simply printed.
+After the create operation completes the `test` object will have a few more of
+its attributes populated. Any resources attributes it can be simply printed.
 
 ```py
-print(test1)
+print(test)
 ```
 
-Similar output can be expected
+This will output a JSON object representation of the resource.
 
-```
+```json
 {
-    "id": 12734,
-    "name": "pytest test",
-    "start_interval": 12,
-    "participant_timeout": 13,
-    "mode": "load",
-    "increment_strategy": "linear",
-    "created": "2022-04-01 13:54:25.689000+00:00",
-    "updated": "2024-02-03 15:42:54.689000+00:00",
-    "script_file_id": 65,
-    "group_count": 52,
-    "participant_count": 9355
+  "id": 1234,
+  "name": "my first loadero python test",
+  "start_interval": 1,
+  "participant_timeout": 600,
+  "mode": "load",
+  "increment_strategy": "linear",
+  "script": "print(\"hello test script\")",
+  "created": "2022-08-25 15:33:04+00:00",
+  "updated": "2022-08-25 15:33:04+00:00",
+  "script_file_id": 12345
 }
 ```
+
+Different output formats can be acchived by using `to_dict` and `to_dict_full`
+resource params methods. Both methods return a python dictionary representation
+of the resource. `to_dict` will return only the required attributes and optional
+attributes if present. `to_dict_full` will return all attributes present.
+**Note** `to_dict` will raise an exception if one or more required attribute is
+missing.
+
+```py
+import yaml
+
+print(yaml.dump(test.params.to_dict_full()))
+```
+
+```yaml
+created: "2022-08-25 15:33:04+00:00"
+id: 1234
+increment_strategy: linear
+mode: load
+name: my first loadero python test
+participant_timeout: 600
+script: print("hello test script")
+script_file_id: 12345
+start_interval: 1
+updated: "2022-08-25 15:33:04+00:00"
+```
+
+### Running a test
+
+To run a test the only required attribute is test ID.
+
+For `test` object form previous examples `test_id` attributes has been populated
+by create operation, so it can simply be run by calling `launch` method.
+
+```py
+run = test.launch()
+```
+
+If a test ID is known it can be run directly.
+
+```py
+run = Test(test_id=1234).launch()
+```
+
+All tests in a project can be run with
+
+```py
+for test in Project().tests()[0]:
+    test.launch()
+```
+
+#### Polling
+
+After a test has been launched, waiting for the test to finnish can be done with
+
+```py
+run.poll()
+```
+
+By default `poll` will make a API call to check if the tests execution has
+finished every 15 seconds and will wait up to 12 hours. This functionality can
+be customized with the `interval` and `timeout` arguments.
+
+```py
+# will poll every 5 seconds and will wait up to 10 minutes.
+run.poll(interval=5.0, timeout=10 * 60.0)
+```
+
+If test execution does not finnish within the specified timeout, `poll` will
+raise an exception.
+
+#### Stopping test execution
+
+If a tests execution need to be prematurely stopped, it can be done with
+
+```py
+run.stop()
+```
+
+**Note** `stop` only sends an API request that starts an Loadero procedure of
+stopping the test. This process is NOT immediate. Even though the `stop` API
+request completes relatively quickly, the test can remain running for a while
+longer.
+
+**Note** If another process is polling the test execution, it will automatically
+stop if the test is stopped.
+
+### Getting results
+
+After the test run finishes execution the `run` object already contains many
+usefull attributes that may be used in result analysis. The attributes are
+stored on `run.params` field. `run.params` is an `RunParams` object form
+`loadero_python.resources.run` module.
+
+```py
+print(run.params.success_rate)
+```
+
+#### Participant results
+
+`run` object describes a result overview of the whole test. To get a more
+detailed result information about each test participant results need to be read.
+
+```py
+results, _, _ = run.Results()
+result = results[0]
+```
+
+The ignored return values are pagination and filters. They are not relevant for
+result retrieval, hence they are omitted. A more detailed explanation of these
+values is available at the **Pagination and Filtering** section.
+
+`results` is a list of `Result` objects from `loadero_python.resources.result`
+module. A single result coresponds to a single participant of test.
+
+`Result` just like a regular resource object has a `params` field of type
+`ResultParams` that contains its attributes. Result resource has the larges
+amount of attributes, so this showcase will cover only common usecases.
+
+##### Log retrival
+
+```py
+import requests
+
+resp = requests.get(result.params.log_paths.selenium)
+if not resp:
+    print("failed to download selenium log")
+    exit(1)
+
+with open(f"selenium_log_of_result_{result.params.result_id}", "w") as f:
+    f.write(resp.text)
+```
+
+`result.params.log_paths.selenium` is an URL to an Selenium log. It first needs
+to be downloaded using the http library `requests`. Then it can be written to a
+file.
+
+##### Extracting failed asserts
+
+Before extracting failed asserts. `AssertStatus` classificator constant
+enumeration needs to be imported
+
+```py
+from loadero_python.resources.classificator import AssertStatus
+```
+
+```py
+failed_asserts = []
+
+for result_assert in result.params.asserts:
+    if result_assert.status == AssertStatus.AS_FAIL
+        failed_asserts.append(result_assert)
+```
+
+##### Checking metrics
+
+Loadero tests collect various different metrics from CPU, RAM and network usage
+to video and audio quality indicators. Loadero organizes these metrics with
+metric base paths - a path like string that uniquely identifies metric data. For
+example CPU usage metric data is described by the metric base path
+`machine/cpu/used`.
+
+After test execution finishes Loadero processes the collected metric data by
+applying aggregator functions.
+
+- total
+- minimum
+- maximum
+- average
+- standart deviation
+- relative standard deviation
+- 1st percentile
+- 5th percentile
+- 25th percentile
+- 50th percentile
+- 75th percentile
+- 95th percentile
+- 99th percentile
+
+The result is a single float value identified by a metric path. For example the
+maximal CPU usage is described by the metric path - `machine/cpu/used/maximum`
+
+In Loadero-Python metric base paths - `MetricBasePath` and metric paths -
+`MetricPath` are constant enumerations of all the available metric and metric
+base paths. Contained with in the `loadero_python.resources.metric_path` module.
+
+To access a specific metric `MetricBasePath` enumeration needs to be imported.
+
+```py
+from loadero_python.resources.metric_path import MetricBasePath
+```
+
+Then a specific metric can be checked like this
+
+```py
+if result.params.metrics is None or result.metrics.machine is None:
+    print("result has no machine metrics")
+    exit(1)
+
+if result.params.metrics.machine[MetricBasePath.MACHINE_CPU_AVAILABLE] is None:
+    print("result has no machine cpu available metric")
+    exit(1)
+
+if (
+    result.params.metrics.machine[MetricBasePath.MACHINE_CPU_AVAILABLE].average
+    < 10.0
+):
+    print("test is well configured. efficient usage of CPU resources")
+```
+
+The `not None` checks are required, because some or all metrics for a result can
+be missing. For example non-WebRTC tests will not have any `webrtc` metrics.
+
+### Pagination and Filtering
+
+Read all operations have the option to limit the number of resources returned,
+offset a limited read all operation by some amount of resources and filter out
+undesired resources.
+
+This is done passing a query params argument when performing a read all
+operation.
+
+`QueryParams` class is contained in `loadero_python.resources.resource` module
+and can be imported with
+
+```py
+from loadero_python.resources.resource import QueryParams
+```
+
+#### Filtering
+
+Filters are resource specific and are defined in each resource module. For
+example test resource filters are defined in the `TestFilterKey` constan
+enumeration in the `loadero_python.resources.test` module.
+
+`TestFilterKey` can be imported with
+
+```py
+from loadero_python.resources.test import TestFilterKey
+```
+
+Now test read all operations can be filtered like this
+
+```py
+tests, _, filters = Project().tests(
+    query_params=QueryParams().filter(
+        TestFilterKey.PARTICIPANT_TIMEOUT_TO, 10 * 60 # ten minutes
+    )
+)
+```
+
+The ignored value is pagination. It can ignored because limit and offset where
+not applied.
+
+This will return tests whose participant timeout attribute is smaller than ten
+minutes.
+
+`filters` is a python dictionary with the applied filters.
+
+#### Pagination
+
+When performing a read all operation that will return many resources it is good
+practice to limit the amount of resources returned and perform multiple smaller
+reads. This can be acchived by limiting an offsetting the number of resources
+returned.
+
+```py
+tests, pagination, _ = Project().tests(
+    query_params=QueryParams().limit(20).offset(10)
+)
+```
+
+This time the ignored value is filters. It can be ignored because no filters
+where applied
+
+Let's assume that the project has 28 tests numbered from 1 to 28, then this read
+all operation would return test with numbers from 11 to 28. This happens because
+the returned resources where offset by 10 and the next resource after 10th is
+11th. Only 18 resources where returned because the remaining resources after
+offset where smaller than the defined limit - 20.
+
+`pagination` is an instance `PaginationParams` class from
+`loadero_python.resources.resource` module. It contains information about the
+applied limit and offset, plus additional information describing how many
+resources remain to be read.
 
 ## Structure
 
@@ -175,7 +513,15 @@ All resources except classificators and metric paths are split into tree parts
 - `Resource` - class that combines previously described `ResourceParams` and
   `ResourceAPI` classes to provide easy access to resources data and simple to
   use interface that operates with the resources data. (`Test`, `Run`, ...)
+  Every resource object has a `params` field - a `ResourceParams` object that
+  contains attribute data.
 
-https://pypi.org/project/loadero-python/
+## Contributing
 
-https://wiki.loadero.com/loadero-usage/api/
+Found a bug? - Feel free to open an issue.
+
+Would like to request a feature? - Open an issue describing the request an the
+reason for it or contact Loadero [support](mailto:support@loadero.com).
+
+Want to contribute? - Open issues is a good place where to find stuff that needs
+to be worked on.
