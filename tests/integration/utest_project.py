@@ -106,7 +106,7 @@ class UTestProject:
     def utest_files():
         files, _, _ = Project().files()
 
-        assert len(files) == 18
+        assert len(files) == 19
         assert files[0].params.file_type == FileType.FT_TEST_SCRIPT
 
     @staticmethod

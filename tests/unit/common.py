@@ -85,7 +85,7 @@ AWS_INFO_ID = 9929311
 
 SCRIPT = Script(content="pytest test script")
 # Relative to repo root dir.
-SCRIPT_FILE_PATH = "tests_unit/res/sample_test_script.py"
+SCRIPT_FILE_PATH = "tests/unit/res/sample_test_script.py"
 SCRIPT_FILE_DATA = """def test_on_loadero(driver: TestUIDriver):
     print("hello test")
 """

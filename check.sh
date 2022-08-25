@@ -4,10 +4,15 @@
 # running this script a venv for this repo has been created and activated.
 
 
+failed=0
+
+
 function header() {
+    echo "\033[0;36m"
     echo "###############################################################################"
     echo "## $1"
     echo "###############################################################################"
+    echo "\033[0m"
 }
 
 function run_test() {
@@ -21,62 +26,87 @@ function run_test() {
     fi
 }
 
-function run_tests() {
-    # $1 - coverage report type
-    # $2 - test type or ommited
-    # $3 - spesific test
-    if [ $# -eq 1 ]; then # run all unit and integration tests
-        header "unit tests"
-        run_test $1 tests_unit
-        header "integration tests"
-        run_test $1 tests_integration .env
-    elif [ "$2" == "u" ]; then
-        if [ $# -eq 2 ]; then # run all unit tests
-            header "unit tests"
-            run_test $1 tests_unit
-        else # run spesified unit test
-            header "unit test"
-            run_test $1 $3
-        fi
-    elif [ "$2" == "i" ]; then # run all integration tests
-        run_test $1 tests_integration .env
-    else 
-        echo "Invalid argument"
+function integration_tests() {
+    header "running integration tests"
+    env -$(cat .env) sh -c "pytest --cov=loadero_python --cov-report term -vv tests/integration" || failed=1
+}
+
+function unit_tests() {
+    header "running unit tests"
+    pytest --cov=loadero_python --cov-report term -vv tests/unit || failed=1
+}
+
+function unit_tests_with_report() {
+    header "running unit tests with report"
+    pytest --cov=loadero_python --cov-report term -vv tests/unit > pytest-coverage.txt
+    if [ $? != 0 ]; then
+        failed=1
     fi
 }
 
-
-
 function lint() {
     header "running lint"
-    pylint -j 4 --rcfile=.pylintrc loadero_python tests_unit tests_integration
+    pylint -j 4 --rcfile=.pylintrc loadero_python tests || failed=1
 }
 
 function format() {
     header "running format"
-    black --diff --check --config pyproject.toml loadero_python tests_unit tests_integration
+    black --diff --check --config pyproject.toml loadero_python tests || failed=1
 }
+
 
 if [ $# -eq 0 ]; then
     lint
     
     format
     
-    header "unit tests"
-    run_test term tests_unit
+    unit_tests
     
-    header "integration tests"
-    run_test term tests_integration .env
-elif [ "$1" == "l" ]; then
+    integration_tests
+
+elif [ "$1" == "lint" ] || [ "$1" == "l" ]; then
     lint
-elif [ "$1" == "f" ]; then
+
+elif [ "$1" == "format" ] || [ "$1" == "f" ]; then
     format
-elif [ "$1" == "t" ]; then # test with report in terminal
-    run_tests term $2 $3
-elif [ "$1" == "c" ]; then # test with coverage reports
-    run_tests xml $2 $3
-elif [ "$1" == "oc" ]; then # open coverage report
-    open htmlcov/index.html 
+
+elif [ "$1" == "test" ] || [ "$1" == "t" ]; then # test with report in terminal
+
+    if [ $# -eq 1 ]; then # no additional arguments spesified, run all tests (unit and integration)
+        unit_tests
+
+        integration_tests
+
+    elif [ "$2" == "unit" ] || [ "$2" == "u" ]; then
+        unit_tests
+
+    elif [ "$2" == "integration" ] || [ "$2" == "i" ]; then
+        integration_tests
+
+    elif [ "$2" == "report" ] || [ "$2" == "r" ]; then
+        unit_tests_with_report
+
+    else 
+        echo "Invalid argument"
+    fi
+
+elif [ "$1" == "b" ]; then # build
+    header "building source distribution"
+    python -m build --sdist
+    header "building wheel"
+    python -m build --wheel
+
+elif [ "$1" == "u" ]; then # upload
+    twine check dist/*
+    twine upload --repository pypi dist/*
+    rm dist/*
+
 else
     echo "Invalid argument"
+fi
+
+
+if [ $failed -eq 1 ]; then
+    header "checks failed"
+    exit 1
 fi
