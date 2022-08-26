@@ -4,8 +4,8 @@ Python client for Loadero API.
 
 Loadero-Python provides a easy to use programatic access to Loadero API. Allows
 to manage tests, participants, asserts, runs and other Loadero resources, start
-and stop tests, extract test run results. Example usage might be running Loadero
-tests as a part of CI/CD.
+and stop tests and extract test run results. Example usage might be running
+Loadero tests as a part of CI/CD.
 
 ## Table of Contents
 
@@ -20,10 +20,10 @@ tests as a part of CI/CD.
     - [Stopping Test Execution](#stopping-test-execution)
   - [Getting Results](#getting-results)
     - [Participant Results](#participant-results)
-      - [Log retrival](#log-retrival)
-      - [Extracting failed asserts](#extracting-failed-asserts)
-      - [Checking metrics](#checking-metrics)
-  - [Pagination and Filtering](#pagination-and-filtering)
+      - [Log Retrival](#log-retrival)
+      - [Extracting Failed Asserts](#extracting-failed-asserts)
+      - [Checking Metrics](#checking-metrics)
+  - [Filtering and Pagination](#filtering-and-pagination)
     - [Filtering](#filtering)
     - [Pagination](#pagination)
 - [Structure](#structure)
@@ -92,7 +92,7 @@ project
 Every parent resource can read all of its child resources.
 
 `Project` class from `loadero_python.resources.project` module provides entry
-point to access all of its child resources.
+point to access all resources.
 
 `Project` class can be imported with
 
@@ -113,7 +113,7 @@ tests, pagination, filters = Project().tests()
 - `filters` is a python dictionary of applied filters.
 
 A more detailed explanation of `pagination` and `filters` return values is
-available at **Pagination and Filtering** section.
+available at [Filtering and Pagination](#filtering-and-pagination) section.
 
 ### Creating a Test
 
@@ -318,10 +318,10 @@ values is available at the **Pagination and Filtering** section.
 module. A single result coresponds to a single participant of test.
 
 `Result` just like a regular resource object has a `params` field of type
-`ResultParams` that contains its attributes. Result resource has the larges
+`ResultParams` that contains its attributes. Result resource has the largest
 amount of attributes, so this showcase will cover only common usecases.
 
-##### Log retrival
+##### Log Retrival
 
 ```py
 import requests
@@ -339,7 +339,7 @@ with open(f"selenium_log_of_result_{result.params.result_id}", "w") as f:
 to be downloaded using the http library `requests`. Then it can be written to a
 file.
 
-##### Extracting failed asserts
+##### Extracting Failed Asserts
 
 Before extracting failed asserts. `AssertStatus` classificator constant
 enumeration needs to be imported
@@ -401,7 +401,7 @@ if result.params.metrics is None or result.metrics.machine is None:
     print("result has no machine metrics")
     exit(1)
 
-if result.params.metrics.machine[MetricBasePath.MACHINE_CPU_AVAILABLE] is None:
+if MetricBasePath.MACHINE_CPU_AVAILABLE not in result.params.metrics.machine:
     print("result has no machine cpu available metric")
     exit(1)
 
@@ -415,7 +415,7 @@ if (
 The `not None` checks are required, because some or all metrics for a result can
 be missing. For example non-WebRTC tests will not have any `webrtc` metrics.
 
-### Pagination and Filtering
+### Filtering and Pagination
 
 Read all operations have the option to limit the number of resources returned,
 offset a limited read all operation by some amount of resources and filter out
@@ -434,7 +434,7 @@ from loadero_python.resources.resource import QueryParams
 #### Filtering
 
 Filters are resource specific and are defined in each resource module. For
-example test resource filters are defined in the `TestFilterKey` constan
+example test resource filters are defined in the `TestFilterKey` constant
 enumeration in the `loadero_python.resources.test` module.
 
 `TestFilterKey` can be imported with
