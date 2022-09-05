@@ -9,12 +9,10 @@ Loadero tests as a part of CI/CD.
 
 ## Table of Contents
 
-<!-- // TODO: REGENERATE -->
-
 - [Installation](#installation)
 - [Usage](#usage)
   - [API Access](#api-access)
-  - [Initalization](#Initalization)
+  - [Initialization](#initialization)
   - [Working with Existing Resources](#working-with-existing-resources)
   - [Creating a Test](#creating-a-test)
   - [Running a Test](#running-a-test)
@@ -24,7 +22,7 @@ Loadero tests as a part of CI/CD.
     - [Participant Results](#participant-results)
       - [Log Retrieval](#log-retrieval)
       - [Extracting Failed Asserts](#extracting-failed-asserts)
-      - [Checking Metrics](#checking-metrics)
+      - [Checking metrics](#checking-metrics)
   - [Filtering and Pagination](#filtering-and-pagination)
     - [Filtering](#filtering)
     - [Pagination](#pagination)
