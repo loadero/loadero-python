@@ -20,7 +20,7 @@ Loadero tests as a part of CI/CD.
     - [Stopping Test Execution](#stopping-test-execution)
   - [Getting Results](#getting-results)
     - [Participant Results](#participant-results)
-      - [Log Retrival](#log-retrival)
+      - [Log Retrieval](#log-retrieval)
       - [Extracting Failed Asserts](#extracting-failed-asserts)
       - [Checking Metrics](#checking-metrics)
   - [Filtering and Pagination](#filtering-and-pagination)
@@ -70,7 +70,7 @@ APIClient(
 ```
 
 Further examples will not include `APIClient` initalisation. It is assumed that
-the client has been initialize at an earlier step.
+the client has been initialized at an earlier step.
 
 ### Working with Existing Resources
 
@@ -121,7 +121,7 @@ With an initialized `APIClient` Loadero-Python can now manage resources in the
 project. Since all resources have a similar structure this showcase will cover
 only the core functionality starting with creating a test.
 
-Test resource is contianed within the `loadero_python.resources.test` module.
+Test resource is contained within the `loadero_python.resources.test` module.
 From it `Test`, `TestParams` and `Script` classes need to be imported.
 
 ```py
@@ -129,7 +129,7 @@ from loadero_python.resources.test import Test, TestParams, Script
 ```
 
 Additionally `TestMode` and `IncrementStrategy` classificator constant
-enumerations need to be imported from `loadero_python.resources.classificator`.
+enumerations needs to be imported from `loadero_python.resources.classificator`.
 They will be used for test attribute definitions.
 
 ```py
@@ -180,7 +180,7 @@ For test resource the required attributes are:
 - `increment_strategy`
 
 After the create operation completes the `test` object will have a few more of
-its attributes populated. Any resources attributes it can be simply printed.
+its attributes populated. Any resource attributes can be simply printed.
 
 ```py
 print(test)
@@ -203,7 +203,7 @@ This will output a JSON object representation of the resource.
 }
 ```
 
-Different output formats can be acchived by using `to_dict` and `to_dict_full`
+Different output formats can be achieved by using `to_dict` and `to_dict_full`
 resource params methods. Both methods return a python dictionary representation
 of the resource. `to_dict` will return only the required attributes and optional
 attributes if present. `to_dict_full` will return all attributes present.
@@ -233,7 +233,7 @@ updated: "2022-08-25 15:33:04+00:00"
 
 To run a test the only required attribute is test ID.
 
-For `test` object form previous examples `test_id` attributes has been populated
+For `test` object from previous examples `test_id` attribute has been populated
 by create operation, so it can simply be run by calling `launch` method.
 
 ```py
@@ -255,7 +255,7 @@ for test in Project().tests()[0]:
 
 #### Polling
 
-After a test has been launched, waiting for the test to finnish can be done with
+After a test has been launched, waiting for the test to finish can be achieved with `poll` method.
 
 ```py
 run.poll()
@@ -275,7 +275,7 @@ raise an exception.
 
 #### Stopping Test Execution
 
-If a tests execution need to be prematurely stopped, it can be done with
+If test execution needs to be prematurely stopped, it can be done with `stop` method.
 
 ```py
 run.stop()
@@ -293,7 +293,7 @@ stop if the test is stopped.
 
 After the test run finishes execution the `run` object already contains many
 usefull attributes that may be used in result analysis. The attributes are
-stored on `run.params` field. `run.params` is an `RunParams` object form
+stored on `run.params` field. `run.params` is an `RunParams` object from
 `loadero_python.resources.run` module.
 
 ```py
@@ -318,10 +318,10 @@ values is available at the **Pagination and Filtering** section.
 module. A single result coresponds to a single participant of test.
 
 `Result` just like a regular resource object has a `params` field of type
-`ResultParams` that contains its attributes. Result resource has the largest
-amount of attributes, so this showcase will cover only common usecases.
+`ResultParams` that contains it's attributes. Result resource has the largest
+amount of attributes, so this showcase will cover only common use cases.
 
-##### Log Retrival
+##### Log Retrieval
 
 ```py
 import requests
@@ -342,7 +342,7 @@ file.
 ##### Extracting Failed Asserts
 
 Before extracting failed asserts. `AssertStatus` classificator constant
-enumeration needs to be imported
+enumeration needs to be imported.
 
 ```py
 from loadero_python.resources.classificator import AssertStatus
@@ -358,7 +358,7 @@ for result_assert in result.params.asserts:
 
 ##### Checking metrics
 
-Loadero tests collect various different metrics from CPU, RAM and network usage
+Loadero tests collects various different metrics from CPU, RAM and network usage
 to video and audio quality indicators. Loadero organizes these metrics with
 metric base paths - a path like string that uniquely identifies metric data. For
 example CPU usage metric data is described by the metric base path
@@ -421,7 +421,7 @@ Read all operations have the option to limit the number of resources returned,
 offset a limited read all operation by some amount of resources and filter out
 undesired resources.
 
-This is done passing a query params argument when performing a read all
+This is done by passing a query params argument when performing a read all
 operation.
 
 `QueryParams` class is contained in `loadero_python.resources.resource` module
@@ -465,7 +465,7 @@ minutes.
 
 When performing a read all operation that will return many resources it is good
 practice to limit the amount of resources returned and perform multiple smaller
-reads. This can be acchived by limiting an offsetting the number of resources
+reads. This can be achieved by limiting and offsetting the number of resources
 returned.
 
 ```py
@@ -475,7 +475,7 @@ tests, pagination, _ = Project().tests(
 ```
 
 This time the ignored value is filters. It can be ignored because no filters
-where applied
+where applied.
 
 Let's assume that the project has 28 tests numbered from 1 to 28, then this read
 all operation would return test with numbers from 11 to 28. This happens because
