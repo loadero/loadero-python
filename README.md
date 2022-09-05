@@ -137,7 +137,7 @@ from loadero_python.resources.classificator import TestMode, IncrementStrategy
 ```
 
 Test attributes can be specified in two ways. Directly as arguments in params
-initalisation
+initalization.
 
 ```py
 test = Test(
@@ -255,7 +255,8 @@ for test in Project().tests()[0]:
 
 #### Polling
 
-After a test has been launched, waiting for the test to finish can be achieved with `poll` method.
+After a test has been launched, waiting for the test to finish can be achieved
+with `poll` method.
 
 ```py
 run.poll()
@@ -275,7 +276,8 @@ raise an exception.
 
 #### Stopping Test Execution
 
-If test execution needs to be prematurely stopped, it can be done with `stop` method.
+If test execution needs to be prematurely stopped, it can be done with `stop`
+method.
 
 ```py
 run.stop()
@@ -382,7 +384,7 @@ applying aggregator functions.
 - 99th percentile
 
 The result is a single float value identified by a metric path. For example the
-maximal CPU usage is described by the metric path - `machine/cpu/used/maximum`
+maximal CPU usage is described by the metric path - `machine/cpu/used/max`
 
 In Loadero-Python metric base paths - `MetricBasePath` and metric paths -
 `MetricPath` are constant enumerations of all the available metric and metric
@@ -453,8 +455,8 @@ tests, _, filters = Project().tests(
 )
 ```
 
-The ignored value is pagination. It can ignored because limit and offset where
-not applied.
+The ignored value is pagination. It can ignored because pagination will contain
+usufull page information when limit and offset query_params have been applied.
 
 This will return tests whose participant timeout attribute is smaller than ten
 minutes.
@@ -503,7 +505,15 @@ object. It needs to be initialized once with project ID and access token. All
 requests to Loadero API are done with `APIClient` object. It adds the required
 headers to make valid API requests. Additionally `APIClient` rate limits all
 requests to be compliant with Loadero API's access limits. Rate limiting can be
-opted out on initalisation.
+opted out on initalization.
+
+```py
+APIClient(
+    project_id=1234,
+    access_token="your_access_token",
+    rate_limit=False,
+)
+```
 
 ### Resources and Operations
 
