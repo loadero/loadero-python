@@ -9,6 +9,8 @@ Loadero tests as a part of CI/CD.
 
 ## Table of Contents
 
+<!-- generate with https://luciopaiva.com/markdown-toc/ -->
+
 - [Installation](#installation)
 - [Usage](#usage)
   - [API Access](#api-access)
