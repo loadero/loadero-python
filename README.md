@@ -4,7 +4,7 @@ Python client for managing [Loadero](https://loadero.com) tests.
 
 Loadero-Python provides easy-to-use programmatic access to Loadero API. Allows
 to manage tests, participants, asserts, runs and other Loadero resources, start
-and stop tests and extract test run results. An example usage might be running
+and stop tests and extract test run results. Example usage might be running
 Loadero tests as a part of CI/CD.
 
 ## Table of Contents
@@ -53,13 +53,14 @@ API can be found in the
 [Loadero wiki](https://wiki.loadero.com/loadero-usage/api/).
 
 Before using Loadero-Python client an API access token needs to be acquired.
-Currently this can be done by contacting
+Currently, this can be done by contacting
 [support](mailto:support@loadero.com?subject=I%20want%20to%20request%20project%20access%20token%20for%20API).
 More information about the API can be found in the
 [Loadero wiki](https://wiki.loadero.com/loadero-usage/api/)
 
 **Note** Access tokens are project specific and cannot be used across multiple
-projects. Make sure to specify the project ID in the request for access token.
+projects. Make sure to specify the project ID in the request for an access
+token.
 
 ### Initialization
 
@@ -115,7 +116,7 @@ tests, pagination, filters = Project().tests()
 ```
 
 Notice, that project ID was not specified in this example, this is because the
-`APIClient` has allready been initialized with the project ID and coresponding
+`APIClient` has already been initialized with the project ID and corresponding
 access token.
 
 - `tests` is a list of `Test` objects from `loadero_python.resources.test`
@@ -133,7 +134,7 @@ With an initialized `APIClient` Loadero-Python can now manage resources in the
 project. Test is a resource one of many in Loadero-Python. More information
 about all the resources that Loadero-Python provides can be found in the
 [Structure](#structure) section. This usage guide cannot demonstrate all of
-Loadero-Python's functionality, hence will cover only common usecase scenarios
+Loadero-Python's functionality hence will cover only common use case scenarios
 starting with creating a test.
 
 Test resource is contained within the `loadero_python.resources.test` module.
@@ -584,7 +585,7 @@ common operations are:
 Some resources have unique API operations. For example run has `stop`.
 
 Some resources do not implement common operations, because they are imposable or
-unavailable via API access. For example project resource has only a single API
+unavailable via API access. For example, project resource has only a single API
 operation - read.
 
 `Resource` classes use API operations implemented by `ResourceAPI` and apply
@@ -597,10 +598,10 @@ operations, `Resource` classes have common methods:
 - delete
 - duplicate
 
-`Resource` classes similarly also do not implement common methods and implement
-unique ones.
+`Resource` classes similarly also do not implement standard methods and
+implement unique ones.
 
-Resources that can have child resources in implement a child getter methods.
+Resources that can have child resources in implement child getter methods.
 
 ```py
 tests, pagination, filters = Project().tests()
