@@ -30,7 +30,8 @@ Loadero tests as a part of CI/CD.
     - [Pagination](#pagination)
 - [Structure](#structure)
   - [API client](#api-client)
-  - [Resources and Operations](#resources-and-operations)
+  - [Resources](#resources)
+  - [Operations](#operations)
 - [Contributing](#contributing)
 
 ## Installation
@@ -113,6 +114,10 @@ All tests in a project can be read with
 tests, pagination, filters = Project().tests()
 ```
 
+Notice, that project ID was not specified in this example, this is because the
+`APIClient` has allready been initialized with the project ID and coresponding
+access token.
+
 - `tests` is a list of `Test` objects from `loadero_python.resources.test`
   module
 - `pagination` is a `PaginationParams` object from
@@ -125,8 +130,11 @@ available in the [Filtering and Pagination](#filtering-and-pagination) section.
 ### Creating a Test
 
 With an initialized `APIClient` Loadero-Python can now manage resources in the
-project. Since all resources have a similar structure this showcase will cover
-only the core functionality starting with creating a test.
+project. Test is a resource one of many in Loadero-Python. More information
+about all the resources that Loadero-Python provides can be found in the
+[Structure](#structure) section. This usage guide cannot demonstrate all of
+Loadero-Python's functionality, hence will cover only common usecase scenarios
+starting with creating a test.
 
 Test resource is contained within the `loadero_python.resources.test` module.
 From it `Test`, `TestParams`, and `Script` classes need to be imported.
@@ -526,7 +534,7 @@ APIClient(
 )
 ```
 
-### Resources and Operations
+### Resources
 
 Loadero-Python separates resources and their operations by modules
 
@@ -560,6 +568,43 @@ All resources except classificators and metric paths are split into three parts
   use interface that operates with the resources data. (`Test`, `Run`, ...)
   Every resource object has a `params` field - a `ResourceParams` object that
   contains attribute data.
+
+### Operations
+
+`ResourceAPI` classes implement all the possible operations for a resource. Most
+common operations are:
+
+- create
+- read
+- update
+- delete
+- duplicate
+- read all
+
+Some resources have unique API operations. For example run has `stop`.
+
+Some resources do not implement common operations, because they are imposable or
+unavailable via API access. For example project resource has only a single API
+operation - read.
+
+`Resource` classes use API operations implemented by `ResourceAPI` and apply
+them to a single resource. Similar to how `ResourceAPI` classes have common API
+operations, `Resource` classes have common methods:
+
+- create
+- read
+- update
+- delete
+- duplicate
+
+`Resource` classes similarly also do not implement common methods and implement
+unique ones.
+
+Resources that can have child resources in implement a child getter methods.
+
+```py
+tests, pagination, filters = Project().tests()
+```
 
 ## Contributing
 
