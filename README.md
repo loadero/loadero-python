@@ -1,6 +1,6 @@
 # Loadero-Python
 
-Python client for Loadero API.
+Python client for managing [Loadero](https://loadero.com) tests.
 
 Loadero-Python provides easy-to-use programmatic access to Loadero API. Allows
 to manage tests, participants, asserts, runs and other Loadero resources, start
