@@ -190,8 +190,6 @@ class AssertPrecondition(LoaderoResource):
     with a valid Loadero access token.
     """
 
-    params = None
-
     def __init__(
         self,
         test_id: int or None = None,
