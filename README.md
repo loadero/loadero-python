@@ -31,7 +31,9 @@ Loadero tests as a part of CI/CD.
 - [Structure](#structure)
   - [API client](#api-client)
   - [Resources](#resources)
-  - [Operations](#operations)
+  - [Resource Params](#resource-params)
+  - [Constants](#constants)
+  - [Resource API](#resource-api)
 - [Contributing](#contributing)
 
 ## Installation
@@ -537,82 +539,100 @@ APIClient(
 
 ### Resources
 
-Loadero-Python separates resources and their operations by modules
+Each resource has a separate module.
 
-- assert precondition - `loadero_python.resources.assert_precondition`
-- assert - `loadero_python.resources.assert_resource`
-- classificator - `loadero_python.resources.classificator`
-- file - `loadero_python.resources.file`
-- group - `loadero_python.resources.group`
-- metric path - `loadero_python.resources.metric_path`
-- participant - `loadero_python.resources.participant`
-- project - `loadero_python.resources.project`
-- result - `loadero_python.resources.result`
-- run participant - `loadero_python.resources.run_participant`
-- run - `loadero_python.resources.run`
-- test - `loadero_python.resources.test`
+| Resource class       | Module                                         |
+| -------------------- | ---------------------------------------------- |
+| `AssertPrecondition` | `loadero_python.resources.assert_precondition` |
+| `Assert`             | `loadero_python.resources.assert_resource`     |
+| `File`               | `loadero_python.resources.file`                |
+| `Group`              | `loadero_python.resources.group`               |
+| `Participant`        | `loadero_python.resources.participant`         |
+| `Project`            | `loadero_python.resources.project`             |
+| `Result`             | `loadero_python.resources.result`              |
+| `RunParticipant`     | `loadero_python.resources.run_participant`     |
+| `Run`                | `loadero_python.resources.run`                 |
+| `Test`               | `loadero_python.resources.test`                |
 
-All resources except classificators and metric paths are split into three parts
+All resource classes have a similar structure:
 
-- `ResourceParams` - a class that holds a single resource instances data.
-  (`TestParams`, `RunParams`, ...)
+- Resource classes have an attribute `params` that is used to store the data of
+  a single instance of the resource. Read more about resource params **here**.
+- most resources implement common CRUD manipulation methods - `create`, `read`,
+  `update`, `delete`, `duplicate`. Some resources do not have these methods
+  because they are impossible or not available via API access. For example,
+  `Project` resource has only `read` method because API access prohibits updates
+  to this resource.
+- resources that can have child resources have methods for reading all the child
+  resources.
+  ```py
+  # reads all groups in test
+  groups, _, _ = Test(test_id=123).groups()
+  ```
 
-- `ResourceAPI` - a class that implements all available API operations for a
-  specific resource. (`TestAPI`, `RunAPI`) Resource API's can be very different
-  depending on the resource. For example, `TestAPI` implements create, read,
-  update and delete operations, but `ResultAPI` only reads (that is because the
-  result is a read-only resource and has no create, update or delete operations
-  in Loadero API).
+### Resource Params
 
-- `Resource` - a class that combines previously described `ResourceParams` and
-  `ResourceAPI` classes to provide easy access to resources data and simple to
-  use interface that operates with the resources data. (`Test`, `Run`, ...)
-  Every resource object has a `params` field - a `ResourceParams` object that
-  contains attribute data.
+Every resource has a resource params class that stores the data of a single
+resource instance.
 
-### Operations
+Resource params class for each resource is available in the resources module.
 
-`ResourceAPI` classes implement all the possible operations for a resource. Most
-common operations are:
+| Resource params class      | Module                                         |
+| -------------------------- | ---------------------------------------------- |
+| `AssertPreconditionParams` | `loadero_python.resources.assert_precondition` |
+| `AssertParams`             | `loadero_python.resources.assert_resource`     |
+| `FileParams`               | `loadero_python.resources.file`                |
+| `GroupParams`              | `loadero_python.resources.group`               |
+| `ParticipantParams`        | `loadero_python.resources.participant`         |
+| `ProjectParams`            | `loadero_python.resources.project`             |
+| `ResultParams`             | `loadero_python.resources.result`              |
+| `RunParticipantParams`     | `loadero_python.resources.run_participant`     |
+| `RunParams`                | `loadero_python.resources.run`                 |
+| `TestParams`               | `loadero_python.resources.test`                |
 
-- create
-- read
-- update
-- delete
-- duplicate
-- read all
-
-Some resources have unique API operations. For example run has `stop`.
-
-Some resources do not implement common operations, because they are imposable or
-unavailable via API access. For example, project resource has only a single API
-operation - read.
-
-`Resource` classes use API operations implemented by `ResourceAPI` and apply
-them to a single resource. Similar to how `ResourceAPI` classes have common API
-operations, `Resource` classes have common methods:
-
-- create
-- read
-- update
-- delete
-- duplicate
-
-`Resource` classes similarly also do not implement standard methods and
-implement unique ones.
-
-Resources that can have child resources in implement child getter methods.
+Resource params classes provide access to the resource attributes.
 
 ```py
-tests, pagination, filters = Project().tests()
+# read a test and print its name
+print(Test(test_id=123).read().params.name)
 ```
+
+### Constants
+
+Loadero-Python has two modules for constants.
+
+- `loadero_python.resources.classificator` for classificator constant
+  enumerations.
+- `loadero_python.resources.metric_path` for metric path and metric base path
+  constant enumerations.
+
+### Resource API
+
+Every resource has its own API class also available in the resources module.
+
+| Resource class          | Module                                         |
+| ----------------------- | ---------------------------------------------- |
+| `AssertPreconditionAPI` | `loadero_python.resources.assert_precondition` |
+| `AssertAPI`             | `loadero_python.resources.assert_resource`     |
+| `FileAPI`               | `loadero_python.resources.file`                |
+| `GroupAPI`              | `loadero_python.resources.group`               |
+| `ParticipantAPI`        | `loadero_python.resources.participant`         |
+| `ProjectAPI`            | `loadero_python.resources.project`             |
+| `ResultAPI`             | `loadero_python.resources.result`              |
+| `RunParticipantAPI`     | `loadero_python.resources.run_participant`     |
+| `RunAPI`                | `loadero_python.resources.run`                 |
+| `TestAPI`               | `loadero_python.resources.test`                |
+
+Resource API class implements all the available API operations of that resource.
+Resource API classes are internally used by all resources, but the class on its
+own is not very useful.
 
 ## Contributing
 
 Found a bug? - Feel free to open an
 [issue](https://github.com/loadero/loadero-python/issues/new/choose).
 
-Would like to request a feature? - Open an issue describing the request an the
+Would like to request a feature? - Open an issue describing the request and the
 reason for it or contact Loadero [support](mailto:support@loadero.com).
 
 Want to contribute? - Open

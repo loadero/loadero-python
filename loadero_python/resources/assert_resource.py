@@ -172,8 +172,6 @@ class Assert(LoaderoResource):
     The target Loadero assert resource is determined by AssertParams.
     """
 
-    params = None
-
     def __init__(
         self,
         assert_id: int or None = None,
