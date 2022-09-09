@@ -557,7 +557,8 @@ Each resource has a separate module.
 All resource classes have a similar structure:
 
 - Resource classes have an attribute `params` that is used to store the data of
-  a single instance of the resource. Read more about resource params **here**.
+  a single instance of the resource. Read more about resource params
+  [here](#resource-params).
 - most resources implement common CRUD manipulation methods - `create`, `read`,
   `update`, `delete`, `duplicate`. Some resources do not have these methods
   because they are impossible or not available via API access. For example,
