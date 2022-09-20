@@ -74,7 +74,7 @@ class UTestProject:
         }
     },
     "compute_unit_usage": {
-        "used": 3
+        "used": 0
     }
 }"""
         )

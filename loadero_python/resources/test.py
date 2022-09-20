@@ -2,7 +2,9 @@
 
 Test resource is seperated into three parts
     - TestParams class describes test attributes
+
     - TestAPI class groups API operation with test resources.
+
     - Test class combines TestParams and TestAPI.
 
 Single Test object coresponds to single test in Loadero.
@@ -32,7 +34,8 @@ from .pagination import PagedResponse, PaginationParams
 
 class TestFilterKey(FilterKey):
     """TestFilterKey is an enum of all filter keys for test read all API
-    operation."""
+    operation.
+    """
 
     NAME = "filter_name"
     TEST_MODE = "filter_test_mode"
@@ -56,13 +59,18 @@ class Script(Serializable):
 
         Args:
             file_id (int, optional): File id of the script Loadero resource.
-                Defaults to None.
+            Defaults to None.
+
             content (str, optional): Script file contents. Defaults to None.
+
             filepath (str, optional): File path to a script. Defaults to
-                None.
+            None.
 
         If more than one script content source is specified, then the loading
-        priorities are: file_id - first, content - second, filepath - third.
+        priorities are:
+            file_id - first
+            content - second
+            filepath - third
         """
 
         self.file_id = file_id
@@ -112,7 +120,7 @@ class Script(Serializable):
 
     def from_dict(self, json_dict: dict[str, any]) -> Script:
         """Loads script from a dictionary. Never used. Required for
-            serialization.
+        serialization.
 
         Args:
             json_dict (dict[str, any]): JSON parsed as dictionary.
@@ -128,6 +136,7 @@ class Script(Serializable):
 
         Raises:
             ValueError: If file_id is not specified.
+
             APIException: If API call fails.
 
         Returns:
@@ -139,10 +148,9 @@ class Script(Serializable):
 
 
 class TestParams(LoaderoResourceParams):
-    """
-    TestParams represents Loadero test parameters.
-    TestParams has a builder method pattern for test resources read and write
-    attributes.
+    """TestParams describes single Loadero test resources attributes.
+
+    TestParams has a builder pattern for writeable attributes.
     """
 
     def __init__(
@@ -156,6 +164,33 @@ class TestParams(LoaderoResourceParams):
         mos_test: bool or None = None,
         script: Script or None = None,
     ) -> None:
+        """Creates a new TestParams instance that will contain single test
+        resources attributes.
+
+        Args:
+            test_id (int, optional): Existing test resources ID.
+            Defaults to None.
+
+            name (str, optional): Name of test. Defaults to None.
+
+            start_interval (int, optional): Start interval of test in seconds.
+            Defaults to None.
+
+            participant_timeout (int, optional): Participant timeout of test in
+            seconds. Defaults to None.
+
+            mode (TestMode, optional): Tests mode. Defaults to None.
+
+            increment_strategy (IncrementStrategy, optional): Increment
+            strategy of tests participants. Defaults to None.
+
+            mos_test (bool, optional): Indicated whether the test should be
+            configured to collect data for Mean Opinion Score evaluation.
+            Defaults to None.
+
+            script (Script, optional): Test script. Defaults to None.
+        """
+
         super().__init__(
             attribute_map={
                 "id": "test_id",
@@ -399,13 +434,29 @@ class TestParams(LoaderoResourceParams):
 
 class Test(LoaderoResource):
     """Test class allows to perform CRUD operations on Loadero test resources.
+
     APIClient must be previously initialized with a valid Loadero access token.
+
     The target Loadero test resource is determined by TestParams.
     """
 
     def __init__(
         self, test_id: int or None = None, params: TestParams or None = None
     ) -> None:
+        """Creates a new instance of Test that allows to perform CRUD
+        operations on a single test resource.
+
+        The resources attribute data is stored in params field that is an
+        instance of TestParams.
+
+        Args:
+            test_id (int, optional): Existing test resources ID.
+            Defaults to None.
+
+            params (TestParams, optional): Instance of TestParams that
+            describes the test resource. Defaults to None.
+        """
+
         self.params = params or TestParams()
 
         if test_id is not None:
@@ -416,9 +467,18 @@ class Test(LoaderoResource):
     def create(self) -> Test:
         """Creates new test with given data.
 
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - name
+            - start_interval
+            - participant_timeout
+            - mode
+            - increment_strategy
+
         Raises:
             ValueError: If resource params do not sufficiently identify parent
-                resource or resource params required attributes are None.
+            resource or resource params required attributes are None.
+
             APIException: If API call fails.
 
         Returns:
@@ -431,9 +491,14 @@ class Test(LoaderoResource):
     def read(self) -> Test:
         """Reads information about an existing test.
 
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - test_id
+
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource.
+            resource.
+
             APIException: If API call fails.
 
         Returns:
@@ -446,9 +511,19 @@ class Test(LoaderoResource):
     def update(self) -> Test:
         """Updates test with given parameters.
 
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - test_id
+            - name
+            - start_interval
+            - participant_timeout
+            - mode
+            - increment_strategy
+
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource or resource params required attributes are None.
+            resource or resource params required attributes are None.
+
             APIException: If API call fails.
 
         Returns:
@@ -461,9 +536,14 @@ class Test(LoaderoResource):
     def delete(self) -> Test:
         """Deletes and existing test.
 
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - test_id
+
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource.
+            resource.
+
             APIException: If API call fails.
 
         Returns:
@@ -476,12 +556,17 @@ class Test(LoaderoResource):
     def duplicate(self, name: str) -> Test:
         """Duplicates and existing test.
 
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - test_id
+
         Args:
             name (str): New name for the duplicate test.
 
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource.
+            resource.
+
             APIException: If API call fails.
 
         Returns:
@@ -495,9 +580,14 @@ class Test(LoaderoResource):
     def launch(self) -> Run:
         """Launches test.
 
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - test_id
+
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource.
+            resource.
+
             APIException: If API call fails.
 
         Returns:
@@ -513,16 +603,23 @@ class Test(LoaderoResource):
     ) -> tuple[list[Group], PaginationParams, dict[any, any]]:
         """Read all groups in test.
 
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - test_id
+
         Args:
             query_params (QueryParams, optional): Describes query parameters
 
         Raises:
             ValueError: Test.params.test_id must be a valid int.
+
             APIException: If API call fails.
 
         Returns:
             list[Group]: List of groups in test.
+
             PaginationParams: Pagination parameters of request.
+
             dict[any, any]: Filters applied to in request.
         """
 
@@ -542,16 +639,23 @@ class Test(LoaderoResource):
     ) -> tuple[list[Participant], PaginationParams, dict[any, any]]:
         """Read all participants in test.
 
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - test_id
+
         Args:
             query_params (QueryParams, optional): Describes query parameters
 
         Raises:
             ValueError: Test.params.test_id must be a valid int.
+
             APIException: If API call fails.
 
         Returns:
             list[Participant]: List of participants in test.
+
             PaginationParams: Pagination parameters of request.
+
             dict[any, any]: Filters applied to in request.
         """
 
@@ -573,16 +677,23 @@ class Test(LoaderoResource):
     ) -> tuple[list[Assert], PaginationParams, dict[any, any]]:
         """Read all asserts in test.
 
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - test_id
+
         Args:
             query_params (QueryParams, optional): Describes query parameters
 
         Raises:
             ValueError: Test.params.test_id must be a valid int.
+
             APIException: If API call fails.
 
         Returns:
             list[Assert]: List of asserts in test.
+
             PaginationParams: Pagination parameters of request.
+
             dict[any, any]: Filters applied to in request.
         """
 
@@ -604,16 +715,23 @@ class Test(LoaderoResource):
     ) -> tuple[list[Run], PaginationParams, dict[any, any]]:
         """Read all runs in test.
 
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - test_id
+
         Args:
             query_params (QueryParams, optional): Describes query parameters
 
         Raises:
             ValueError: Test.params.test_id must be a valid int.
+
             APIException: If API call fails.
 
         Returns:
             list[Assert]: List of asserts in test.
+
             PaginationParams: Pagination parameters of request.
+
             dict[any, any]: Filters applied to in request.
         """
 
@@ -640,6 +758,7 @@ class TestAPI:
 
         Args:
             params (TestParams): Describes the test resource to be created.
+
             APIException: If API call fails.
 
         Returns:
@@ -659,6 +778,7 @@ class TestAPI:
 
         Raises:
             Exception: TestParams.test_id was not defined.
+
             APIException: If API call fails.
 
         Returns:
@@ -680,6 +800,7 @@ class TestAPI:
 
         Raises:
             Exception: TestParams.test_id was not defined.
+
             APIException: If API call fails.
 
         Returns:
@@ -701,8 +822,8 @@ class TestAPI:
 
         Raises:
             Exception: TestParams.test_id was not defined.
-            APIException: If API call fails.
 
+            APIException: If API call fails.
 
         Returns:
             TestParams: Deleted test resource.
@@ -726,6 +847,7 @@ class TestAPI:
 
         Raises:
             Exception: TestParams.test_id was not defined.
+
             APIException: If API call fails.
 
         Returns:
@@ -768,7 +890,7 @@ class TestAPI:
 
         Args:
             test_id (int, optional): Test resource id. Defaults to None. If
-                omitted the route will point to all test resources.
+            omitted the route will point to all test resources.
 
         Returns:
             str: Route to test resource/s.
@@ -786,9 +908,10 @@ class TestAPI:
 
         Args:
             params (TestParams): Test params.
+
             single (bool, optional): Indicates if the resource identifiers
-                should be validated as pointing to a single resource.
-                Defaults to True.
+            should be validated as pointing to a single resource.
+            Defaults to True.
 
         Raises:
             ValueError: TestParams.test_id must be a valid int.

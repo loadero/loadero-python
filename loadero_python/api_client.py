@@ -16,15 +16,15 @@ class APIException(Exception):
     """
 
 
-# TODO: ADD RATE LIMIT
-
-
 class APIClient:
-    """API client to access Loadero API"""
+    """APIClient allows to perform GET, POST, PUT, DELETE HTTP methods to
+    Loadero API
+
+    The client will automatically set the appropriate headers and authorization.
+    """
 
     __max_pool_size = 4
     __timeout = urllib3.Timeout(total=30.0)
-    # __http = None
     __auth_header = {}
 
     __initalized = False
@@ -44,19 +44,47 @@ class APIClient:
         api_base: str = "https://api.loadero.com/v2/",
         rate_limit: bool = True,
     ) -> None:
+        """APIClient uses the singleton design pattern, meaning it needs to be
+        initialized only once and can be accessed by __init__ method anywhere.
+        Repeated initalisations can be performed but are not necessary.
+
+        Args:
+            project_id (int, optional): Projects ID whose resources APIClient
+                will be able to manage. Must be the same project for whom access
+                was created. Required for initalisation. Defaults to None.
+
+            access_token (str, optional): Projects access token. Required for
+                initalisation. Defaults to None.
+
+            api_base (str, optional): Base URL to Loadero API.
+                Defaults to "https://api.loadero.com/v2/".
+
+            rate_limit (bool, optional): Whether the APIClient should limit how
+                often requests to Loadero API client are sent to comply with the
+                APIs access limitations. Defaults to True.
+
+        Raises:
+            ValueError: If one or more arguments required for initalisation are
+                missing.
+        """
+
         if self.__initalized and project_id is None and access_token is None:
             return
 
         if project_id is None:
-            raise Exception(
+            raise ValueError(
                 "APIClient singleton first must be initalized with project id."
             )
 
         if access_token is None:
-            raise Exception(
+            raise ValueError(
                 "APIClient singleton first must be "
                 "initalized with access token."
             )
+
+        # TODO: these fields likely do not need to be class variables, but
+        # rather can be instance fields. check that. then remove them from
+        # class definition.
 
         self.__project_id = project_id
         self.__access_token = access_token
@@ -109,6 +137,7 @@ class APIClient:
         Raises:
             APIException: When Loadero API returns non application/json content
                 response. This should never happen.
+
             APIException: When Loadero API request fails. Either because of
                 client error or server error.
 
@@ -145,11 +174,13 @@ class APIClient:
 
         Args:
             route (str): Loadero API route.
+
             body (dict): Request JSON body decoded as dictionary.
 
         Raises:
             APIException: When Loadero API returns non application/json content
                 response. This should never happen.
+
             APIException: When Loadero API request fails. Either because of
                 client error or server error.
 
@@ -190,11 +221,13 @@ class APIClient:
 
         Args:
             route (str): Loadero API route.
+
             body (dict): Request JSON body decoded as dictionary.
 
         Raises:
             APIException: When Loadero API returns non application/json content
                 response. This should never happen.
+
             APIException: When Loadero API request fails. Either because of
                 client error or server error.
 
@@ -237,6 +270,7 @@ class APIClient:
         Raises:
             APIException: When Loadero API returns non application/json content
                 response. This should never happen.
+
             APIException: When Loadero API request fails. Either because of
                 client error or server error.
         """

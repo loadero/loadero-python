@@ -2,7 +2,9 @@
 
 File resource is seperated into three parts
     - FileParams class describes file attributes
+
     - FileAPI class groups file related API calls
+
     - File class combines FileParams and FileAPI
 
 Single File object coresponds to single file in Loadero.
@@ -31,7 +33,7 @@ class FileFilterKey(FilterKey):
 
 
 class FileParams(LoaderoResourceParams):
-    """FileParams represents Loadero file parameters."""
+    """FileParams describes single Loadero file resources attributes."""
 
     def __init__(
         self,
@@ -40,6 +42,22 @@ class FileParams(LoaderoResourceParams):
         content: str or None = None,
         password: str or None = None,
     ):
+        """Creates a new FileParams instance that will contain single file
+        resources attributes.
+
+        Args:
+            file_id (int, optional): Existing file resources ID.
+            Defaults to None.
+
+            file_type (FileType, optional): The file resources type.
+            Defaults to None.
+
+            content (str, optional): Content of file resource. Defaults to None.
+
+            password (str, optional): Set or provide a password for file.
+            Defaults to None.
+        """
+
         super().__init__(
             attribute_map={
                 "id": "file_id",
@@ -97,13 +115,29 @@ class FileParams(LoaderoResourceParams):
 class File(LoaderoResource):
     """File allows to perform CRUD manipulatons on a single Loadero file
     resource.
+
     APIClient must be previously initialized with a valid Loadero access token.
+
     The target Loadero file resource is determined by FileParams.
     """
 
     def __init__(
         self, file_id: int or None = None, params: FileParams or None = None
     ):
+        """Creates a new instance of File that allows to perform CRUD operations
+        of a single Loadero file resource.
+
+        The resources attribute data is stored in params field that is an
+        instance of FileParams.
+
+        Args:
+            file_id (int, optional): Existing file resources ID.
+            Defaults to None.
+
+            params (FileParams, optional): Instance of FileParams that describes
+            the file resource. Defaults to None.
+        """
+
         self.params = params or FileParams()
 
         if file_id is not None:
@@ -113,6 +147,11 @@ class File(LoaderoResource):
 
     def create(self) -> File:
         """Creates a new file.
+
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - content
+            - file_type
 
         Raises:
             APIException: If API call fails.
@@ -127,9 +166,14 @@ class File(LoaderoResource):
     def read(self) -> File:
         """Reads information about an existing file.
 
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - file_id
+
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource.
+            resource.
+
             APIException: If API call fails.
 
         Returns:
@@ -142,9 +186,16 @@ class File(LoaderoResource):
     def update(self) -> File:
         """Update information about an existing file.
 
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - file_id
+            - content
+            - file_type
+
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource.
+            resource.
+
             APIException: If API call fails.
 
         Returns:
@@ -157,9 +208,14 @@ class File(LoaderoResource):
     def delete(self) -> None:
         """Delete an existing file.
 
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - file_id
+
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource.
+            resource.
+
             APIException: If API call fails.
         """
 

@@ -1,8 +1,11 @@
 """Loadero run participant resource.
+
 Run participant resources is seperated into three parts
     - RunParticipantParams class describes run participant attributes
+
     - RunParticipantAPI class groups all API operations related to run
-        participant.
+    participant.
+
     - RunParticipant class combined RunParticipantParams and RunParticipantAPI.
 
 Single RunParticipant object coresponds to single run participant in Loadero.
@@ -24,11 +27,19 @@ from .classificator import (
 
 
 class RunParticipantParams(LoaderoResourceParams):
-    """
-    RunParticipantParams represents Loadero RunParticipant resource attributes.
+    """RunParticipantParams represents Loadero RunParticipant resource
+    attributes.
     """
 
     def __init__(self, run_participant_id: int or None = None) -> None:
+        """Creates a new RunParticipantParams instance that will contain single
+        run participant resources attributes.
+
+        Args:
+            run_participant_id (int, optional): Existing run participant
+            resources ID. Defaults to None.
+        """
+
         super().__init__(
             attribute_map={
                 "id": "run_participant_id",
