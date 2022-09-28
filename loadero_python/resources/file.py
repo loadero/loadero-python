@@ -54,8 +54,8 @@ class FileParams(LoaderoResourceParams):
 
             content (str, optional): Content of file resource. Defaults to None.
 
-            password (str, optional): Set or provide a password for file.
-            Defaults to None.
+            password (str, optional): For SSL certificate files,
+            provides a password for file. Defaults to None.
         """
 
         super().__init__(

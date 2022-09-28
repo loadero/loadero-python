@@ -634,7 +634,7 @@ class Project(LoaderoResource):
 
     def __init__(self):
         """Creates a new instance of Project that allows to perform read
-        operation on a single group resource and ist child resources.
+        operation on a single project resource and its child resources.
 
         The resources attribute data is stored in params field that is an
         instance of ProjectParams.

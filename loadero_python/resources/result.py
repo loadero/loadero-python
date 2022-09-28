@@ -1150,7 +1150,7 @@ class Result(LoaderoResource):
         params: ResultParams or None = None,
     ):
         """Creates a new instance of Result that allows to perform
-        read operation on a single group resource.
+        read operation on a single result resource.
 
         The resources attribute data is stored in params field that is an
         instance of ResultParams.
