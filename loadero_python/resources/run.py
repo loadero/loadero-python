@@ -1,10 +1,12 @@
-"""
-Loadero run resource.
+"""Loadero run resource.
+
 Run resources is seperated into three parts:
-    RunParams class that describes runs attributes
-    RunAPI class implements run resources API operations
-    Runs class that in combination with RunParams and RunAPI allows to manage a
-        single run resources instance.
+    - RunParams class that describes runs attributes
+
+    - RunAPI class implements run resources API operations
+
+    - Runs class that in combination with RunParams and RunAPI allows to manage
+    a single run resources instance.
 """
 
 from __future__ import annotations
@@ -31,7 +33,8 @@ from .result import Result, ResultAPI
 
 class RunFilterKey(FilterKey):
     """RunFilterKey is an enum of all filter keys for run read all API
-    operation."""
+    operation.
+    """
 
     NAME = "filter_test_name"
     INCREMENT_STRATEGY = "filter_increment_strategy"
@@ -57,13 +60,24 @@ class RunFilterKey(FilterKey):
 
 
 class RunParams(LoaderoResourceParams):
-    """
-    RunParams represents Loadero run resource attributes.
+    """RunParams describes single Loadero run resources attributes.
+
+    RunParams has a builder pattern for writeable attributes.
     """
 
     def __init__(
         self, run_id: int or None = None, test_id: int or None = None
     ) -> None:
+        """Creates a new RunParams instance that will contain single run
+        resources attributes.
+
+        Args:
+            run_id (int, optional): Existing run resources ID. Defaults to None.
+
+            test_id (int, optional): Existing test resources ID.
+            Defaults to None.
+        """
+
         super().__init__(
             attribute_map={
                 "id": "run_id",
@@ -376,7 +390,9 @@ class RunParams(LoaderoResourceParams):
 
 class Run(LoaderoResource):
     """Run class allows to create, read and stop runs.
+
     APIClient must be previously initialized with a valid Loadero access token.
+
     The target Loadero run resource is determined by RunParams.
     """
 
@@ -386,6 +402,22 @@ class Run(LoaderoResource):
         test_id: int or None = None,
         params: RunParams or None = None,
     ) -> None:
+        """Creates a new instance of Run that allows to perform CRUD operations
+        on a single run resource.
+
+        The resources attribute data is stored in params field that is an
+        instance of RunParams.
+
+        Args:
+            run_id (int, optional): Existing run resources ID. Defaults to None.
+
+            test_id (int, optional): Existing test resources ID.
+            Defaults to None.
+
+            params (RunParams, optional): Instance of RunParams that describes
+            the run resource. Defaults to None.
+        """
+
         self.params = params or RunParams()
 
         if run_id is not None:
@@ -399,9 +431,14 @@ class Run(LoaderoResource):
     def create(self) -> Run:
         """Creates new run with given data.
 
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - test_id
+
         Raises:
             ValueError: If resource params do not sufficiently identify parent
-                resource.
+            resource.
+
             APIException: If API call fails.
 
         Returns:
@@ -415,9 +452,14 @@ class Run(LoaderoResource):
     def read(self) -> Run:
         """Read an existing run resource.
 
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - run_id
+
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource.
+            resource.
+
             APIException: If API call fails.
 
         Returns:
@@ -432,9 +474,14 @@ class Run(LoaderoResource):
         """Stop an active run. To stop a run need only to specify the test_id
         and run_id in resource params.
 
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - run_id
+
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource.
+            resource.
+
             APIException: If API call fails.
 
         Returns:
@@ -450,16 +497,23 @@ class Run(LoaderoResource):
     ) -> Run:
         """Polls run status until it is finished.
 
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - run_id
+
         Args:
             interval (float, optional): Poll interval in seconds.
-                Defaults to 15.0.
+            Defaults to 15.0.
+
             timeout (float, optional): Poll timeout in seconds. Defaults to
-                12*60*60 (12h).
+            12*60*60 (12h).
 
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource.
+            resource.
+
             APIException: If API call fails.
+
             TimeoutError: Run poll timeout exceeded
 
         Returns:
@@ -498,16 +552,23 @@ class Run(LoaderoResource):
     ) -> tuple[list[Result], PaginationParams, dict[any, any]]:
         """Get all results of the run.
 
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - run_id
+
         Args:
             query_params (QueryParams, optional): Describes query parameters
 
         Raises:
             APIException: If API call fails.
+
             ValueError: Run.params.run_id must be a valid int
 
         Returns:
             list[Result]: List of all results of the run.
+
             PaginationParams: Pagination parameters of request.
+
             dict[any, any]: Filters applied to in request.
         """
 

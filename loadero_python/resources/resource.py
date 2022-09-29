@@ -27,9 +27,7 @@ class Serializable:
 
 
 class ParamsSerializer(Serializable):
-    """
-    ParamsSerializer implements Serializable for Loadero resource params.
-    """
+    """ParamsSerializer implements Serializable for Loadero resource params."""
 
     # pylint: disable=dangerous-default-value
     def __init__(
@@ -43,15 +41,18 @@ class ParamsSerializer(Serializable):
 
         Args:
             attribute_map (dict[str, str], optional): Mapping of JSON field
-                names to attribute names in object. Defaults to {}.
+            names to attribute names in object. Defaults to {}.
+
             custom_deserializers (dict[str, any], optional): Mapping of JSON
-                field names to functions with signature (json_dict) -> (object)
-                that convert the specified JSON value in a custom manner.
-                Defaults to {}.
+            field names to functions with signature (json_dict) -> (object)
+            that convert the specified JSON value in a custom manner.
+            Defaults to {}.
+
             body_attributes (list[str], optional): List of JSON field names
-                that are going to be serialized if present. Defaults to [].
+            that are going to be serialized if present. Defaults to [].
+
             required_body_attributes (list[str], optional): List of JSON field
-                names that will fail serialization if missing. Defaults to [].
+            names that will fail serialization if missing. Defaults to [].
         """
 
         super().__init__()
@@ -106,7 +107,8 @@ class ParamsSerializer(Serializable):
 
     def __get_attribute_dict(self, attribute, full=False):
         """Recursively converts the attribute to a dictionary that only
-        contains the body attributes."""
+        contains the body attributes.
+        """
 
         if isinstance(attribute, Serializable):
             if full:
@@ -131,10 +133,8 @@ class ParamsSerializer(Serializable):
         return attribute
 
     def to_dict_full(self) -> dict[str, any]:
-        """
-        Returns a dictionary representation of the object that contains all
+        """Returns a dictionary representation of the object that contains all
         of the objects attributes.
-
 
         Returns:
             dict[str, any]: dictionary representation of the object.
@@ -168,7 +168,7 @@ class ParamsSerializer(Serializable):
 
         Args:
             json_dict (dict[str, any]): JSON parsed as dictionary
-                representation of the resource.
+            representation of the resource.
 
         Returns:
             ParamsSerializer: The resource params object.
@@ -203,7 +203,7 @@ def from_dict_as_list(
 
     Returns:
         function: Function that deserializes a json dictionary to a list of new
-            LoaderoResourceParams objects.
+        LoaderoResourceParams objects.
     """
 
     def func(json_value: dict[str, any]) -> list[LoaderoResourceParams]:
@@ -232,7 +232,7 @@ def from_dict_as_new(
 
     Returns:
         function: Function that deserializes a json dictionary to a new
-            LoaderoResourceParams object.
+        LoaderoResourceParams object.
     """
 
     def func(json_value: dict[str, any]) -> LoaderoResourceParams:
@@ -288,13 +288,13 @@ class DuplicateResourceBodyParams(LoaderoResourceParams):
 def convert_params_list(
     resource_class: type, params: list[LoaderoResource]
 ) -> list:
-    """
-    Converts a list of resource params to a list of resource objects.
+    """Converts a list of resource params to a list of resource objects.
     User of this function is responsible for matching the type of params and
     resource, otherwise the function will produce invalid resource instances.
 
     Args:
         resource_class (type): Class name of the target resource object type.
+
         params (list[LoaderoResource]): List of resource params.
 
     Returns:
@@ -355,6 +355,7 @@ class QueryParams:
 
         Args:
             key (ResourceFilters): Filter key.
+
             value (any): Filter value. Variadic argument.
 
         Returns:

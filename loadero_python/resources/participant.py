@@ -2,7 +2,9 @@
 
 Participant resources is seperated into three parts
     - ParticipantParams class describes participant attributes
+
     - ParticipantAPI groups all API operations with participant resource.
+
     - Participant class combines ParticipantParams and ParticipantAPI.
 
 Single Participant object coresponds to single participant in Loadero.
@@ -33,7 +35,8 @@ from .pagination import PagedResponse
 
 class ParticipantFilterKey(FilterKey):
     """ParticipantFilterKey is an enum of all filter keys for participant read
-    all API operation."""
+    all API operation.
+    """
 
     NAME = "filter_name"
     COUNT_FROM = "filter_count_from"
@@ -52,18 +55,19 @@ class ParticipantFilterKey(FilterKey):
 class ParticipantParams(LoaderoResourceParams):
     """ParticipantParams describes single Loadero participant resources
     attributes.
-    ParticipantParams has a builder pattern for Participant resource read and
-    write attributes.
+
+    ParticipantParams has a builder pattern for Participant resource writeable
+    attributes.
     """
 
     def __init__(
         self,
         participant_id: int or None = None,
         test_id: int or None = None,
+        group_id: int or None = None,
         name: str or None = None,
         count: int or None = None,
         compute_unit: ComputeUnit or None = None,
-        group_id: int or None = None,
         record_audio: bool or None = None,
         audio_feed: AudioFeed or None = None,
         browser: Browser or None = None,
@@ -71,6 +75,46 @@ class ParticipantParams(LoaderoResourceParams):
         network: Network or None = None,
         video_feed: VideoFeed or None = None,
     ) -> None:
+        """Creates a new ParticipantParams instance that will contain single
+        participant resources attributes.
+
+        Args:
+            participant_id (int, optional): Existing participant resources ID.
+            Defaults to None.
+
+            test_id (int, optional): Existing participant resources ID.
+            Defaults to None.
+
+            group_id (int, optional): Existing group resources ID.
+            Defaults to None.
+
+            name (str, optional): Name of participant. Defaults to None.
+
+            count (int, optional): Count of how many participants of this kind
+            should be created in test run. Defaults to None.
+
+            compute_unit (ComputeUnit, optional): Compute unit of participant.
+            Defaults to None.
+
+            record_audio (bool, optional): Flag that indicates whether to record
+            the participants audio. Defaults to None.
+
+            audio_feed (AudioFeed, optional): Audio feed of participant.
+            Defaults to None.
+
+            browser (Browser, optional): Browser of participant.
+            Defaults to None.
+
+            location (Location, optional): Location of participant.
+            Defaults to None.
+
+            network (Network, optional): Network settings of participant.
+            Defaults to None.
+
+            video_feed (VideoFeed, optional): Video feed of participant.
+            Defaults to None.
+        """
+
         super().__init__(
             attribute_map={
                 "id": "participant_id",
@@ -317,11 +361,12 @@ class ParticipantParams(LoaderoResourceParams):
 
 
 class Participant(LoaderoResource):
-    """
-    Participant class allows to perform CRUD operations on Loadero participant
-    resources. APIClient must be previously initialized with a valid Loadero
-    access token. The target Loadero participant resource is determined by
-    ParticipantParams.
+    """Participant class allows to perform CRUD operations on Loadero
+    participant resources.
+
+    APIClient must be previously initialized with a valid Loadero access token.
+
+    The target Loadero participant resource is determined by ParticipantParams.
     """
 
     def __init__(
@@ -330,6 +375,23 @@ class Participant(LoaderoResource):
         test_id: int or None = None,
         params: ParticipantParams or None = None,
     ) -> None:
+        """Creates a new instance of Participant that allows to perform
+        CRUD operations on a single participant resource.
+
+        The resources attribute data is stored in params field that is an
+        instance of ParticipantParams.
+
+        Args:
+            participant_id (int, optional): Existing participant resources ID.
+            Defaults to None.
+
+            test_id (int, optional): Existing test resources ID.
+            Defaults to None.
+
+            params (ParticipantParams, optional): Instance of ParticipantParams
+            that describes the participant resource. Defaults to None.
+        """
+
         self.params = params or ParticipantParams()
 
         if participant_id is not None:
@@ -343,9 +405,23 @@ class Participant(LoaderoResource):
     def create(self) -> Participant:
         """Creates new participant with given data.
 
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - test_id
+            - name
+            - count
+            - compute_unit
+            - record_audio
+            - audio_feed
+            - browser
+            - location
+            - network
+            - video_feed
+
         Raises:
             ValueError: If resource params do not sufficiently identify parent
-                resource or resource params required attributes are None.
+            resource or resource params required attributes are None.
+
             APIException: If API call fails.
 
         Returns:
@@ -359,9 +435,15 @@ class Participant(LoaderoResource):
     def read(self) -> Participant:
         """Reads information about an existing participant.
 
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - participant_id
+            - test_id
+
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource.
+            resource.
+
             APIException: If API call fails.
 
         Returns:
@@ -375,9 +457,24 @@ class Participant(LoaderoResource):
     def update(self) -> Participant:
         """Updates particpant with given parameters.
 
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - participant_id
+            - test_id
+            - name
+            - count
+            - compute_unit
+            - record_audio
+            - audio_feed
+            - browser
+            - location
+            - network
+            - video_feed
+
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource or resource params required attributes are None.
+            resource or resource params required attributes are None.
+
             APIException: If API call fails.
 
         Returns:
@@ -391,9 +488,15 @@ class Participant(LoaderoResource):
     def delete(self) -> None:
         """Deletes and existing participant.
 
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - test_id
+            - participant_id
+
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource.
+            resource.
+
             APIException: If API call fails.
         """
 
@@ -402,12 +505,18 @@ class Participant(LoaderoResource):
     def duplicate(self, name: str) -> Participant:
         """Duplicates and existing participant.
 
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - test_id
+            - participant_id
+
         Args:
             name (str): New name for the duplicate participant.
 
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource.
+            resource.
+
             APIException: If API call fails.
 
         Returns:
@@ -436,11 +545,12 @@ class ParticipantAPI:
 
         Args:
             params (ParticipantParams): Describes the participant resource to
-                be created.
+            be created.
 
         Raises:
             ValueError: If resource params do not sufficiently identify parent
-                resource or resource params required attributes are None.
+            resource or resource params required attributes are None.
+
             APIException: If API call fails.
 
         Returns:
@@ -462,11 +572,12 @@ class ParticipantAPI:
 
         Args:
             params (ParticipantParams): Describes the participant resource to
-                read.
+            read.
 
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource.
+            resource.
+
             APIException: If API call fails.
 
         Returns:
@@ -487,11 +598,12 @@ class ParticipantAPI:
 
         Args:
             params (ParticipantParams): Describes the participant resource to
-                update.
+            update.
 
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource or resource params required attributes are None.
+            resource or resource params required attributes are None.
+
             APIException: If API call fails.
 
         Returns:
@@ -513,11 +625,12 @@ class ParticipantAPI:
 
         Args:
             params (ParticipantParams): Describes the participant resource to
-                delete.
+            delete.
 
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource.
+            resource.
+
             APIException: If API call fails.
         """
 
@@ -533,11 +646,12 @@ class ParticipantAPI:
 
         Args:
             params (ParticipantParams): Describes the participant resource to
-                duplicate and the name of duplicate participant resource.
+            duplicate and the name of duplicate participant resource.
 
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource.
+            resource.
+
             APIException: If API call fails.
 
         Returns:
@@ -564,8 +678,10 @@ class ParticipantAPI:
 
         Args:
             test_id (int): Parent test resource id.
+
             group_id (int, optional): Parent group resource id. Defaults to
-                None. If omitted all participants in parent test will be read.
+            None. If omitted all participants in parent test will be read.
+
             query_params (QueryParams, optional): Describes query parameters.
 
         Returns:
@@ -593,9 +709,10 @@ class ParticipantAPI:
 
         Args:
             test_id (int): Test resource id.
+
             participant_id (int, optional): Participant resource id. Defaults
-                to None. If omitted the route will point to all participant
-                resources.
+            to None. If omitted the route will point to all participant
+            resources.
 
         Returns:
             str: Route to participant resource/s.
@@ -620,13 +737,15 @@ class ParticipantAPI:
 
         Args:
             params (ParticipantParams): Participant resource params.
+
             single (bool, optional): Indicates if the resource identifiers
-                should be validated as pointing to a single resource (True) or
-                to all assert resources belinging to test resource.
-                Defaults to True.
+            should be validated as pointing to a single resource (True) or
+            to all assert resources belinging to test resource.
+            Defaults to True.
 
         Raises:
             ValueError: ParticipantParams.test_id must be a valid int
+
             ValueError: ParticipantParams.participant_id must be a valid int
         """
 

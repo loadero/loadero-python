@@ -633,6 +633,13 @@ class Project(LoaderoResource):
     """
 
     def __init__(self):
+        """Creates a new instance of Project that allows to perform read
+        operation on a single project resource and its child resources.
+
+        The resources attribute data is stored in params field that is an
+        instance of ProjectParams.
+        """
+
         self.params = ProjectParams()
         super().__init__(self.params)
 
@@ -663,7 +670,9 @@ class Project(LoaderoResource):
 
         Returns:
             list[Test]: List of tests.
+
             PaginationParams: Pagination parameters of request.
+
             dict[any, any]: Filters applied to in request.
         """
 
@@ -689,7 +698,9 @@ class Project(LoaderoResource):
 
         Returns:
             list[File]: List of files.
+
             PaginationParams: Pagination parameters of request.
+
             dict[any, any]: Filters applied to in request.
         """
 
@@ -715,7 +726,9 @@ class Project(LoaderoResource):
 
         Returns:
             list[Run]: List of runs.
+
             PaginationParams: Pagination parameters of request.
+
             dict[any, any]: Filters applied to in request.
         """
 

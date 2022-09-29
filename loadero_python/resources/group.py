@@ -2,7 +2,9 @@
 
 Group resource is seperated into three parts
     - GroupParams class describes groups attributes
+
     - GroupAPI class groups all API operations related to groups.
+
     - Group class combined GroupParams and GroupAPI
 
 Single group object coresponds to single group in Loadero.
@@ -27,7 +29,8 @@ from .resource import QueryParams
 
 class GroupFilterKey(FilterKey):
     """GroupFilterKey is an enum of all filter keys for group read all API
-    operation."""
+    operation.
+    """
 
     NAME = "filter_name"
     COUNT_FROM = "filter_count_from"
@@ -36,17 +39,33 @@ class GroupFilterKey(FilterKey):
 
 class GroupParams(LoaderoResourceParams):
     """GroupParams represents Loadero group resource attributes.
-    GroupParams has a builder pattern for group resources read and write
-    attributes.
+
+    GroupParams has a builder pattern for group resources writeable attributes.
     """
 
     def __init__(
         self,
         group_id: int or None = None,
+        test_id: int or None = None,
         name: str or None = None,
         count: int or None = None,
-        test_id: int or None = None,
     ) -> None:
+        """Creates a new GroupParams instance that will contain single group
+        resources attributes.
+
+        Args:
+            group_id (int, optional): Existing group resources ID.
+            Defaults to None.
+
+            test_id (int, optional): Existing test resources ID.
+            Defaults to None.
+
+            name (str, optional): Name of group. Defaults to None.
+
+            count (int, optional): Count of how many groups of this kind should
+            be created in test run. Defaults to None.
+        """
+
         super().__init__(
             attribute_map={
                 "id": "group_id",
@@ -99,6 +118,7 @@ class GroupParams(LoaderoResourceParams):
         Returns:
             datetime: Time when group was last updated.
         """
+
         return self._updated
 
     @property
@@ -177,7 +197,9 @@ class GroupParams(LoaderoResourceParams):
 class Group(LoaderoResource):
     """Group class allows to perform CRUD operations on a single Loadero group
     resource.
+
     APIClient must be previously initialized with a valid Loadero access token.
+
     The target Loadero group resource is determined by GroupParams.
     """
 
@@ -187,6 +209,23 @@ class Group(LoaderoResource):
         test_id: int or None = None,
         params: GroupParams or None = None,
     ) -> None:
+        """Creates a new instance of Group that allows to perform
+        CRUD operations on a single group resource.
+
+        The resources attribute data is stored in params field that is an
+        instance of GroupParams.
+
+        Args:
+            group_id (int, optional): Existing group resources ID.
+            Defaults to None.
+
+            test_id (int, optional): Existing test resources ID.
+            Defaults to None.
+
+            params (GroupParams, optional): Instance of GroupParams that
+            describes the group resource. Defaults to None.
+        """
+
         self.params = params or GroupParams()
 
         if group_id is not None:
@@ -200,9 +239,16 @@ class Group(LoaderoResource):
     def create(self) -> Group:
         """Creates new group with given data.
 
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - test_id
+            - count
+            - name
+
         Raises:
             ValueError: If resource params do not sufficiently identify parent
-                resource or resource params required attributes are None.
+            resource or resource params required attributes are None.
+
             APIException: If API call fails.
 
         Returns:
@@ -216,9 +262,15 @@ class Group(LoaderoResource):
     def read(self) -> Group:
         """Reads information about an existing group.
 
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - test_id
+            - group_id
+
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource.
+            resource.
+
             APIException: If API call fails.
 
         Returns:
@@ -232,6 +284,19 @@ class Group(LoaderoResource):
     def update(self) -> Group:
         """Updates group with given parameters.
 
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - group_id
+            - test_id
+            - count
+            - name
+
+        Raises:
+            ValueError: If resource params do not sufficiently identify
+            resource.
+
+            APIException: If API call fails.
+
         Returns:
             Group: Updated group resource.
         """
@@ -241,15 +306,38 @@ class Group(LoaderoResource):
         return self
 
     def delete(self) -> None:
-        """Deletes and existing group."""
+        """Deletes and existing group.
+
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - group_id
+            - test_id
+
+        Raises:
+            ValueError: If resource params do not sufficiently identify
+            resource.
+
+            APIException: If API call fails.
+        """
 
         GroupAPI.delete(self.params)
 
     def duplicate(self, name: str) -> Group:
         """Duplicates and existing group.
 
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - group_id
+            - test_id
+
         Args:
             name (str): New name for the duplicate group.
+
+        Raises:
+            ValueError: If resource params do not sufficiently identify
+            resource.
+
+            APIException: If API call fails.
 
         Returns:
             Group: Duplicate instance of group.
@@ -262,11 +350,17 @@ class Group(LoaderoResource):
     ) -> tuple[list[Participant], PaginationParams, dict[any, any]]:
         """Read all participants in group.
 
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - group_id
+            - test_id
+
         Args:
             query_params (QueryParams, optional): Describes query parameters
 
         Raises:
             ValueError: Test.params.test_id must be a valid int.
+
             APIException: If API call fails.
 
         Returns:
@@ -304,7 +398,8 @@ class GroupAPI:
 
         Raises:
             ValueError: If resource params do not sufficiently identify parent
-                resource or resource params required attributes are None.
+            resource or resource params required attributes are None.
+
             APIException: If API call fails.
 
         Returns:
@@ -326,7 +421,8 @@ class GroupAPI:
 
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource.
+            resource.
+
             APIException: If API call fails.
 
         Returns:
@@ -348,7 +444,8 @@ class GroupAPI:
 
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource or resource params required attributes are None.
+            resource or resource params required attributes are None.
+
             APIException: If API call fails.
 
         Returns:
@@ -373,7 +470,8 @@ class GroupAPI:
 
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource.
+            resource.
+
             APIException: If API call fails.
         """
 
@@ -387,11 +485,13 @@ class GroupAPI:
 
         Args:
             params (GroupParams): Identified the group resource to duplicate.
+
             name (str): Name of the duplicate group.
 
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource.
+            resource.
+
             APIException: If API call fails.
 
         Returns:
@@ -415,6 +515,7 @@ class GroupAPI:
 
         Args:
             test_id (int): Parent test resource id.
+
             query_params (QueryParams, optional): Describes query parameters.
 
         Returns:
@@ -435,12 +536,14 @@ class GroupAPI:
 
         Args:
             test_id (int): Test resource id.
+
             group_id (int, optional): Group resource id. Defaults to None. If
-                omitted the route will point to all group resources.
+            omitted the route will point to all group resources.
 
         Returns:
             str: Route to group resource/s.
         """
+
         r = APIClient().project_route + f"tests/{test_id}/groups/"
 
         if group_id is not None:
@@ -456,13 +559,15 @@ class GroupAPI:
 
         Args:
             params (GroupParams): Group resource params.
+
             single (bool, optional): Indicates if the resource identifiers
-                should be validated as pointing to a single resource (True) or
-                to all assert resources belinging to test resource.
-                Defaults to True.
+            should be validated as pointing to a single resource (True) or
+            to all assert resources belinging to test resource.
+            Defaults to True.
 
         Raises:
             ValueError: GroupParams.test_id must be a valid int
+
             ValueError: GroupParams.group_id must be a valid int
         """
 

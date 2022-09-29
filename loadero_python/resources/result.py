@@ -34,7 +34,8 @@ from .pagination import PagedResponse
 
 class ResultFilterKey(FilterKey):
     """ResultFilterKey is an enum of all filter keys for result read all API
-    operation."""
+    operation.
+    """
 
     START_FROM = "filter_start_from"
     START_TO = "filter_start_to"
@@ -328,9 +329,7 @@ class ArtifactInfoParams(LoaderoResourceParams):
 
 
 class ArtifactsInfoParams(LoaderoResourceParams):
-    """
-    ArtifactsInfoParams describes Loadero artifacts of a single test run.
-    """
+    """ArtifactsInfoParams describes Loadero artifacts of a single test run."""
 
     def __init__(self):
         super().__init__(
@@ -395,9 +394,7 @@ class ArtifactsInfoParams(LoaderoResourceParams):
 
 
 class MetricParams(LoaderoResourceParams):
-    """
-    MetricParams describes single result metric of a Loadero test run.
-    """
+    """MetricParams describes single result metric of a Loadero test run."""
 
     def __init__(self):
         super().__init__(
@@ -809,7 +806,7 @@ class MeanOpinionScoresParams(LoaderoResourceParams):
 
         Returns:
             list[ResultMOSParams]: Mean opinion scores calculated using Visqol
-                algorithm.
+            algorithm.
         """
 
         return self._visqol
@@ -933,6 +930,17 @@ class ResultParams(LoaderoResourceParams):
     def __init__(
         self, result_id: int or None = None, run_id: int or None = None
     ):
+        """Creates a new ResultParams instance that will contain single result
+        resources attributes.
+
+        Args:
+            result_id (int, optional): Existing result resources ID.
+            Defaults to None.
+
+            run_id (int, optional): Existing result resources run ID.
+            Defaults to None.
+        """
+
         super().__init__(
             attribute_map={
                 "id": "result_id",
@@ -1129,7 +1137,10 @@ class ResultParams(LoaderoResourceParams):
 
 class Result(LoaderoResource):
     """Result class allows to perform read operation of Loadero result resource.
+
     APIClient must be previously initialized with a valid Loadero access token.
+
+    The target Loadero result resource is determined by ResultParams.
     """
 
     def __init__(
@@ -1138,6 +1149,22 @@ class Result(LoaderoResource):
         result_id: int or None = None,
         params: ResultParams or None = None,
     ):
+        """Creates a new instance of Result that allows to perform
+        read operation on a single result resource.
+
+        The resources attribute data is stored in params field that is an
+        instance of ResultParams.
+
+        Args:
+            run_id (int, optional): Existing run resources ID. Defaults to None.
+
+            result_id (int, optional): Existing result resources ID.
+            Defaults to None.
+
+            params (ResultParams, optional): Instance of ResultParams that
+            describes the result resource. Defaults to None.
+        """
+
         self.params = params or ResultParams()
 
         if run_id is not None:
@@ -1151,9 +1178,15 @@ class Result(LoaderoResource):
     def read(self) -> Result:
         """Reads a existing result.
 
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - result_id
+            - run_id
+
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource.
+            resource.
+
             APIException: If API call fails.
 
         Returns:
@@ -1177,7 +1210,8 @@ class ResultAPI:
 
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource.
+            resource.
+
             APIException: If API call fails.
 
         Returns:
@@ -1199,6 +1233,7 @@ class ResultAPI:
 
         Args:
             run_id (int): Parent run resource id.
+
             query_params (QueryParams, optional): Describes query parameters.
 
         Raises:
@@ -1222,9 +1257,10 @@ class ResultAPI:
 
         Args:
             run_id (int): Run resource id.
+
             result_id (int, optional): Result resource id. Defaults to None. If
-                omitted, the route will point to all result resources of parent
-                run resource.
+            omitted, the route will point to all result resources of parent
+            run resource.
 
         Returns:
             str: Route to result resource/s.
@@ -1246,6 +1282,7 @@ class ResultAPI:
 
         Raises:
             ValueError: Result result_id must be a valid int
+
             ValueError: Result run_id must be a valid int
         """
 

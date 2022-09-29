@@ -1,10 +1,13 @@
 """Loadero assert resource.
+
 Assert resource is seperated into three parts
     - AssertPreconditionParams class describes assert preconditions attributes
+
     - AssertPreconditionAPI class that groups all API operations with assert
-        preconditions attributes.
+    preconditions attributes.
+
     - AssertPrecondition class combines AssertPreconditionParams and
-        AssertPreconditionAPI.
+    AssertPreconditionAPI.
 
 Single AssertPrecondition object coresponds to a single assert precondition in
 Loadero.
@@ -27,7 +30,8 @@ from .pagination import PagedResponse
 
 class AssertPreconditionFilterKey(FilterKey):
     """AssertPreconditionFilterKey is an enum of all filter keys for assert
-    precondition read all API operation."""
+    precondition read all API operation.
+    """
 
     FILTER_PROPERTY = "filter_property"
     FILTER_OPERATOR = "filter_operator"
@@ -37,8 +41,8 @@ class AssertPreconditionFilterKey(FilterKey):
 class AssertPreconditionParams(LoaderoResourceParams):
     """AssertPreconditionParams describes single Loadero assert precondition
     resources attributes.
-    AssertPreconditionParams has a builder pattern for write
-    attributes.
+
+    AssertPreconditionParams has a builder pattern for writeable attributes.
     """
 
     def __init__(
@@ -50,6 +54,29 @@ class AssertPreconditionParams(LoaderoResourceParams):
         operator: Operator or None = None,
         precondition_property: Property or None = None,
     ) -> None:
+        """Creates a new AssertPreconditionParams instance that will contain
+        single assert precondition resources attributes.
+
+        Args:
+            assert_precondition_id (int, optional): Existing assert precondition
+            resources ID. Defaults to None.
+
+            assert_id (int, optional): Existing assert resources ID.
+            Defaults to None.
+
+            test_id (int, optional): Existing test resources ID.
+            Defaults to None.
+
+            expected (str, optional): Expected value of the precondition.
+            Defaults to None.
+
+            operator (Operator, optional): Operation how the preconditions
+            actual and expected values are compared. Defaults to None.
+
+            precondition_property (Property, optional): Test participants
+            property whose value is compared with expected. Defaults to None.
+        """
+
         super().__init__(
             attribute_map={
                 "id": "assert_precondition_id",
@@ -184,10 +211,13 @@ class AssertPreconditionParams(LoaderoResourceParams):
 
 
 class AssertPrecondition(LoaderoResource):
-    """
-    AssertPrecondition class allows to perform CRUD operations on Loadero
-    assert precondition resources. APIClient must be previously initialized
-    with a valid Loadero access token.
+    """AssertPrecondition class allows to perform CRUD operations on Loadero
+    assert precondition resources.
+
+    APIClient must be previously initialized with a valid Loadero access token.
+
+    The target Loadero assert precondition resource is determined by
+    AssertPreconditionParams.
     """
 
     def __init__(
@@ -197,6 +227,27 @@ class AssertPrecondition(LoaderoResource):
         assert_precondition_id: int or None = None,
         params: AssertPreconditionParams or None = None,
     ) -> None:
+        """Creates a new instance of AssertPrecondition that allows to perform
+        CRUD operations on a single assert precondition resource.
+
+        The resources attribute data is stored in params field that is an
+        instance of AssertPreconditionParams.
+
+        Args:
+            test_id (int, optional): Existing test resources ID.
+            Defaults to None.
+
+            assert_id (int, optional): Existing assert resources ID.
+            Defaults to None.
+
+            assert_precondition_id (int, optional): Existing assert precondition
+            resources ID. Defaults to None.
+
+            params (AssertPreconditionParams, optional): Instance of
+            AssertPreconditionParams that describes the assert precondition
+            resource. Defaults to None.
+        """
+
         self.params = params or AssertPreconditionParams()
 
         if test_id is not None:
@@ -213,9 +264,18 @@ class AssertPrecondition(LoaderoResource):
     def create(self) -> AssertPrecondition:
         """Creates new assert precondition with given data.
 
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - test_id
+            - assert_id
+            - expected
+            - operator
+            - property
+
         Raises:
             ValueError: If resource params do not sufficiently identify parent
-                resource or resource params required attributes are None.
+            resource or resource params required attributes are None.
+
             APIException: If API call fails.
 
         Returns:
@@ -229,9 +289,16 @@ class AssertPrecondition(LoaderoResource):
     def read(self) -> AssertPrecondition:
         """Reads information about an existing assert precondition.
 
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - test_id
+            - assert_id
+            - assert_precondition_id
+
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource.
+            resource.
+
             APIException: If API call fails.
 
         Returns:
@@ -245,9 +312,19 @@ class AssertPrecondition(LoaderoResource):
     def update(self) -> AssertPrecondition:
         """Updates assert precondition with given parameters.
 
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - test_id
+            - assert_id
+            - assert_precondition_id
+            - expected
+            - operator
+            - property
+
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource or resource params required attributes are None.
+            resource or resource params required attributes are None.
+
             APIException: If API call fails.
 
         Returns:
@@ -261,9 +338,16 @@ class AssertPrecondition(LoaderoResource):
     def delete(self) -> AssertPrecondition:
         """Deletes and existing assert precondition.
 
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - test_id
+            - assert_id
+            - assert_precondition_id
+
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource.
+            resource.
+
             APIException: If API call fails.
         """
 
@@ -283,11 +367,12 @@ class AssertPreconditionAPI:
 
         Args:
             params (AssertPreconditionParams): Describes the assert
-                precondition resource to be created.
+            precondition resource to be created.
 
         Raises:
             ValueError: If resource params do not sufficiently identify parent
-                resource or resource params required attributes are None.
+            resource or resource params required attributes are None.
+
             APIException: If API call fails.
 
         Returns:
@@ -309,11 +394,12 @@ class AssertPreconditionAPI:
 
         Args:
             params (AssertPreconditionParams): Describes the assert
-                precondition resource to be read.
+            precondition resource to be read.
 
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource.
+            resource.
+
             APIException: If API call fails.
 
         Returns:
@@ -338,11 +424,12 @@ class AssertPreconditionAPI:
 
         Args:
             params (AssertPreconditionParams): Describes the assert
-                precondition resource to update.
+            precondition resource to update.
 
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource or resource params required attributes are None.
+            resource or resource params required attributes are None.
+
             APIException: If API call fails.
 
         Returns:
@@ -368,11 +455,12 @@ class AssertPreconditionAPI:
 
         Args:
             params (AssertPreconditionParams): Describes the assert
-                precondition resource to delete.
+            precondition resource to delete.
 
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource.
+            resource.
+
             APIException: If API call fails.
         """
 
@@ -392,7 +480,9 @@ class AssertPreconditionAPI:
 
         Args:
             test_id (int): Test resource id.
+
             assert_id (int): Parent assert resource id.
+
             query_params (QueryParams, optional): Describes query parameters.
 
         Raises:
@@ -425,11 +515,12 @@ class AssertPreconditionAPI:
 
         Args:
             test_id (int): Test resource id.
-            assert_id (int): Assert resource id.
-            assert_precondition_id (int, optional): Assert precondition
-                resource id. Defaults to None. If omitted the route will point
-                to all assert preconditions of assert.
 
+            assert_id (int): Assert resource id.
+
+            assert_precondition_id (int, optional): Assert precondition
+            resource id. Defaults to None. If omitted the route will point
+            to all assert preconditions of assert.
 
         Returns:
             str: Route to assert precondition resource/s.
@@ -453,16 +544,19 @@ class AssertPreconditionAPI:
 
         Args:
             params (AssertPreconditionParams): Assert precondition params.
+
             single (bool, optional): Indicates if the resource identifiers
-                should be validated as pointing to a single resource (True) or
-                to all precondition resources belonging to assert resource.
-                Defaults to True.
+            should be validated as pointing to a single resource (True) or
+            to all precondition resources belonging to assert resource.
+            Defaults to True.
 
         Raises:
             ValueError: AssertPreconditionParams.test_id must be a valid int
+
             ValueError: AssertPreconditionParams.assert_id must be a valid int
+
             ValueError: AssertPreconditionParams.assert_precondition_id must be
-                a valid int
+            a valid int
         """
 
         if params.test_id is None:

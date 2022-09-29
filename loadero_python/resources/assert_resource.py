@@ -2,7 +2,9 @@
 
 Assert resource is seperated into three parts
     - AssertParams class describes assert attributes
+
     - AssertAPI class that groups all API operations with assert resource.
+
     - Assert class that combines AssertParams and AssertAPI.
 
 Single Assert object coresponds to single assert in Loadero.
@@ -29,7 +31,8 @@ from .pagination import PagedResponse
 
 class AssertFilterKey(FilterKey):
     """AssertFilterKey is an enum of all filter keys for assert read all API
-    operation."""
+    operation.
+    """
 
     PATH = "filter_path"
     OPERATOR = "filter_operator"
@@ -38,7 +41,8 @@ class AssertFilterKey(FilterKey):
 
 class AssertParams(LoaderoResourceParams):
     """AssertParams describes single Loadero assert resources attributes.
-    AssertParams has a builder pattern for assert resources read and write
+
+    AssertParams has a builder pattern for assert resources writable
     attributes.
     """
 
@@ -50,6 +54,26 @@ class AssertParams(LoaderoResourceParams):
         operator: Operator or None = None,
         expected: str or None = None,
     ) -> None:
+        """Creates a new AssertParams instance that will contain single assert
+        resources attributes.
+
+        Args:
+            assert_id (into, optional): Existing assert resources ID.
+            Defaults to None.
+
+            test_id (int, optional): Existing test resources ID.
+            Defaults to None.
+
+            path (MetricPath, optional): Single metric described by MetricPath
+            that the assert will check. Defaults to None.
+
+            operator (Operator, optional): Operation that will determin if the
+            actual value is compliant with the expected. Defaults to None.
+
+            expected (str, optional): Expected value of metric.
+            Defaults to None.
+        """
+
         super().__init__(
             attribute_map={
                 "id": "assert_id",
@@ -168,7 +192,9 @@ class AssertParams(LoaderoResourceParams):
 class Assert(LoaderoResource):
     """Assert class allows to perform CRUD manipulatons on a single Loadero
     assert resource.
+
     APIClient must be previously initialized with a valid Loadero access token.
+
     The target Loadero assert resource is determined by AssertParams.
     """
 
@@ -178,6 +204,23 @@ class Assert(LoaderoResource):
         test_id: int or None = None,
         params: AssertParams or None = None,
     ) -> None:
+        """Creates a net instance of Assert that allows to perform CRUD
+        operations on a single assert resource.
+
+        The resources attribute data is stored in params field that is an
+        instance of AssertParams.
+
+        Args:
+            assert_id (int, optional): Existing assert resources ID.
+            Defaults to None.
+
+            test_id (int, optional): Existing test resources ID.
+            Defaults to None.
+
+            params (AssertParams, optional): Instance of AssertParams that
+            describes the assert resource. Defaults to None.
+        """
+
         self.params = params or AssertParams()
 
         if assert_id is not None:
@@ -191,9 +234,17 @@ class Assert(LoaderoResource):
     def create(self) -> Assert:
         """Creates new assert with given data.
 
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - test_id
+            - expected
+            - operator
+            - path
+
         Raises:
             ValueError: If resource params do not sufficiently identify parent
-                resource or resource params required attributes are None.
+            resource or resource params required attributes are None.
+
             APIException: If API call fails.
 
         Returns:
@@ -207,9 +258,15 @@ class Assert(LoaderoResource):
     def read(self) -> Assert:
         """Reads information about an existing assert.
 
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - test_id
+            - assert_id
+
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource.
+            resource.
+
             APIException: If API call fails.
 
         Returns:
@@ -223,9 +280,18 @@ class Assert(LoaderoResource):
     def update(self) -> Assert:
         """Updates assert with given parameters.
 
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - test_id
+            - assert_id
+            - expected
+            - operator
+            - path
+
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource or resource params required attributes are None.
+            resource or resource params required attributes are None.
+
             APIException: If API call fails.
 
         Returns:
@@ -239,9 +305,15 @@ class Assert(LoaderoResource):
     def delete(self) -> None:
         """Deletes and existing assert.
 
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - test_id
+            - assert_id
+
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource.
+            resource.
+
             APIException: If API call fails.
         """
 
@@ -250,9 +322,15 @@ class Assert(LoaderoResource):
     def duplicate(self) -> Assert:
         """Duplicates and existing assert.
 
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - test_id
+            - assert_id
+
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource.
+            resource.
+
             APIException: If API call fails.
 
         Returns:
@@ -273,17 +351,26 @@ class Assert(LoaderoResource):
     ) -> list[AssertPrecondition]:
         """Read all preconditions of assert.
 
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - test_id
+            - assert_id
+
         Args:
             query_params (QueryParams, optional): Describes query parameters
 
         Raises:
             ValueError: Assert.params.test_id must be a valid int
+
             ValueError: Assert.params.assert_id must be a valid int
+
             APIException: If API call fails.
 
         Returns:
             list[AssertPrecondition]: List of all preconditions of assert
+
             PaginationParams: Pagination parameters of request.
+
             dict[any, any]: Filters applied to in request.
         """
 
