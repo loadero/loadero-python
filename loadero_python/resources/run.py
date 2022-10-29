@@ -13,6 +13,11 @@ from __future__ import annotations
 from time import sleep
 from datetime import datetime
 from dateutil import parser
+
+from loadero_python.resources.run_participant import (
+    RunParticipant,
+    RunParticipantAPI,
+)
 from .pagination import PagedResponse, PaginationParams
 from ..api_client import APIClient
 from .resource import (
@@ -579,6 +584,44 @@ class Run(LoaderoResource):
 
         return (
             convert_params_list(Result, resp.results),
+            resp.pagination,
+            resp.filter,
+        )
+
+    def participants(
+        self, query_params: QueryParams or None = None
+    ) -> tuple[list[RunParticipant], PaginationParams, dict[any, any]]:
+        """Read all participants in run.
+
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - run_id
+
+        Args:
+            query_params (QueryParams, optional): Describes query parameters
+
+        Raises:
+            ValueError: Run.params.run_id must be a valid int.
+
+            APIException: If API call fails.
+
+        Returns:
+            list[RunParticipant]: List of run participants in test.
+
+            PaginationParams: Pagination parameters of request.
+
+            dict[any, any]: Filters applied to in request.
+        """
+
+        if self.params.run_id is None:
+            raise ValueError("Run.params.run_id must be a valid int")
+
+        resp = RunParticipantAPI.read_all(
+            self.params.run_id, query_params=query_params
+        )
+
+        return (
+            convert_params_list(Run, resp.results),
             resp.pagination,
             resp.filter,
         )

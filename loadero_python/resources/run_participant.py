@@ -15,7 +15,14 @@ Single RunParticipant object coresponds to single run participant in Loadero.
 from __future__ import annotations
 from datetime import datetime
 from dateutil import parser
-from .resource import LoaderoResourceParams
+
+from ..api_client import APIClient
+from .resource import (
+    FilterKey,
+    LoaderoResourceParams,
+    LoaderoResource,
+    QueryParams,
+)
 from .classificator import (
     ComputeUnit,
     AudioFeed,
@@ -24,6 +31,21 @@ from .classificator import (
     Network,
     VideoFeed,
 )
+from .pagination import PagedResponse
+
+
+class RunParticipantFilterKey(FilterKey):
+    """RunParticipantFilterKey is an enum of all filter keys for run participant
+    read all API operation.
+    """
+
+    NAME = "filter_name"
+    NUM_FROM = "filter_num_from"
+    NUM_TO = "filter_num_to"
+    GROUP_NAME = "filter_group_name"
+    GROUP_NUM_FROM = "filter_group_num_from"
+    GROUP_NUM_TO = "filter_group_num_to"
+    RECORD_AUDIO = "filter_record_audio"
 
 
 class RunParticipantParams(LoaderoResourceParams):
@@ -31,13 +53,17 @@ class RunParticipantParams(LoaderoResourceParams):
     attributes.
     """
 
-    def __init__(self, run_participant_id: int or None = None) -> None:
+    def __init__(
+        self, run_participant_id: int or None = None, run_id: int or None = None
+    ) -> None:
         """Creates a new RunParticipantParams instance that will contain single
         run participant resources attributes.
 
         Args:
             run_participant_id (int, optional): Existing run participant
             resources ID. Defaults to None.
+
+            run_id (int, optional): Existing run resources ID. Defaults to None.
         """
 
         super().__init__(
@@ -55,7 +81,7 @@ class RunParticipantParams(LoaderoResourceParams):
                 "location": "_location",
                 "network": "_network",
                 "video_feed": "_video_feed",
-                "run_id": "_run_id",
+                "run_id": "run_id",
                 "record_audio": "_record_audio",
             },
             custom_deserializers={
@@ -71,6 +97,8 @@ class RunParticipantParams(LoaderoResourceParams):
         )
 
         self.run_participant_id = run_participant_id
+        self.run_id = run_id
+
         self._created = None
         self._updated = None
         self._participant_num = None
@@ -85,7 +113,6 @@ class RunParticipantParams(LoaderoResourceParams):
         self._network = None
         self._video_feed = None
 
-        self._run_id = None
         self._record_audio = None
 
     @property
@@ -209,16 +236,6 @@ class RunParticipantParams(LoaderoResourceParams):
         return self._video_feed
 
     @property
-    def run_id(self) -> int:
-        """Run id that the participant belongs to.
-
-        Returns:
-            int: Run id that the participant belongs to.
-        """
-
-        return self._run_id
-
-    @property
     def record_audio(self) -> bool:
         """Flag indicating whether audio was recorded.
 
@@ -244,9 +261,170 @@ class RunParticipantParams(LoaderoResourceParams):
         return self
 
 
-class RunParticipant:
-    """Not implemented."""
+class RunParticipant(LoaderoResource):
+    """RunParticipant class allows to perform read operations on Loadero run
+    participant resources.
+
+    APIClient must be previously initialized with a valid Loadero access token.
+
+    The target Loadero run participant resource is determined by
+    RunParticipantParams.
+    """
+
+    def __init__(
+        self,
+        run_participant_id: int or None = None,
+        run_id: int or None = None,
+        params: RunParticipantParams or None = None,
+    ) -> None:
+        """Creates a new instance of RunParticipant that allows to perform read
+        operations on a single run participant resource.
+
+        The resources attribute data is stored in params field that is an
+        instance of RunParticipantParams.
+
+        Args:
+            run_participant_id (int, optional): Existing run_participant
+            resources ID. Defaults to None.
+
+            run_id (int, optional): Existing run resources ID. Defaults to None.
+
+            params (RunParticipantParams, optional): Instance of
+            RunParticipantParams that describes the run participant resource.
+            Defaults to None.
+        """
+
+        self.params = params or RunParticipantParams()
+
+        if run_participant_id is not None:
+            self.params.run_participant_id = run_participant_id
+
+        if run_id is not None:
+            self.params.run_id = run_id
+
+        super().__init__(self.params)
+
+    def read(self) -> RunParticipant:
+        """Reads information about an existing run participant.
+
+        Required attributes of params field that need to be populated, otherwise
+        the method will raise an exception:
+            - run_participant_id
+            - run_id
+
+        Raises:
+            ValueError: If resource params do not sufficiently identify
+            resource.
+
+            APIException: If API call fails.
+
+        Returns:
+            Test: Read run participants resource.
+        """
+
+        RunParticipantAPI.read(self.params)
+
+        return self
 
 
 class RunParticipantAPI:
-    """Not implemented."""
+    """RunParticipantAPI defines Loadero API operations for run participant
+    resources.
+    """
+
+    @staticmethod
+    def read(params: RunParticipantParams) -> RunParticipantParams:
+        """Read an existing run participant resource.
+
+        Args:
+            params (RunParticipantParams): Describes run participant resource to
+            read.
+
+        Returns:
+            RunParticipantParams: Read run participant resource.
+        """
+
+        RunParticipantAPI.__validate_identifiers(params)
+
+        print(RunParticipantAPI.route(params.run_id, params.run_participant_id))
+
+        return params.from_dict(
+            APIClient().get(
+                RunParticipantAPI.route(
+                    params.run_id, params.run_participant_id
+                )
+            )
+        )
+
+    @staticmethod
+    def read_all(
+        run_id: int, query_params: QueryParams or None = None
+    ) -> PagedResponse:
+        """Read all run participant resources.
+
+        Args:
+            run_id (int): Parent run resource id.
+            query_params (QueryParams, optional): Describes query parameters.
+
+        Raises:
+            APIException: If API call fails.
+
+        Returns:
+            PagedResponse: Paged response of run participant resources.
+        """
+
+        qp = None
+        if query_params is not None:
+            qp = query_params.parse()
+
+        return PagedResponse(RunParticipantParams).from_dict(
+            APIClient().get(RunParticipantAPI.route(run_id), query_params=qp)
+        )
+
+    @staticmethod
+    def route(run_id: int, run_particpant_id: int or None = None) -> str:
+        """Build run participant resource route
+
+        Args:
+            run_id (int): Run resource id.
+
+            run_particpant_id (int or None, optional): Run participant resource
+            id. Defaults to None. If omitted the route will point to all assert
+            resources.
+
+        Returns:
+            str: _description_
+        """
+        r = APIClient().project_route + f"runs/{run_id}/participants/"
+
+        if run_particpant_id is not None:
+            r += f"{run_particpant_id}/"
+
+        return r
+
+    @staticmethod
+    def __validate_identifiers(
+        params: RunParticipantParams, single: bool = True
+    ):
+        """Validate run participant resource identifiers.
+
+        Args:
+            params (TestParams): Run participant params.
+
+            single (bool, optional): Indicates if the resource identifiers
+            should be validated as pointing to a single resource.
+            Defaults to True.
+
+        Raises:
+            ValueError: RunParticipantParams.run_participant_id must be a valid
+            int.
+            ValueError: RunParticipantParams.run_id must be a valid int.
+        """
+
+        if params.run_id is None:
+            raise ValueError("RunParticipantParams.run_id must be a valid int.")
+
+        if single and params.run_participant_id is None:
+            raise ValueError(
+                "RunParticipantParams.run_participant_id must be a valid int"
+            )

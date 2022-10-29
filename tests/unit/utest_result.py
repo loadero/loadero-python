@@ -869,6 +869,7 @@ class UTestResultParams:
     "mos_status": "calculating",
     "participant_details": {
         "id": 233992,
+        "run_id": 937561,
         "created": "2022-04-01 13:54:25.689000+00:00",
         "updated": "2024-02-03 15:42:54.689000+00:00",
         "participant_num": 123,
@@ -881,7 +882,6 @@ class UTestResultParams:
         "location": "eu-central-1",
         "network": "4g",
         "video_feed": "480p-15fps",
-        "run_id": 937561,
         "record_audio": true
     },
     "log_paths": {

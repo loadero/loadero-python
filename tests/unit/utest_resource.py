@@ -397,3 +397,10 @@ class UTestQueryParams:
             ("filter_test_mode", "machine/cpu/percent/50th"),
             ("filter_test_mode", "machine/cpu/percent"),
         ]
+
+    @staticmethod
+    def utest_filter_no_values():
+        qp = QueryParams()
+        qp.filter(TestFilterKey.TEST_MODE)
+
+        assert not qp.parse()

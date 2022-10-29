@@ -31,3 +31,8 @@ class UTestPagedResponse:
 
         for a in pr.results:
             common.check_assert_params(a)
+
+    @staticmethod
+    def utest_none_results():
+        pr = PagedResponse(AssertParams)
+        assert pr.results == []

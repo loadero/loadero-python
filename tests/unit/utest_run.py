@@ -14,6 +14,9 @@ import httpretty
 from loadero_python.api_client import APIClient
 from loadero_python.resources.result import ResultFilterKey
 from loadero_python.resources.run import RunFilterKey, RunParams, RunAPI, Run
+from loadero_python.resources.run_participant import (
+    RunParticipantFilterKey,
+)
 from loadero_python.resources.classificator import (
     RunStatus,
     MetricStatus,
@@ -78,6 +81,20 @@ def mock():
         re.compile(
             r"^http://mock\.loadero\.api/v2/projects/\d*/runs/\d*/results/$"
         ),
+        body=json.dumps(pg),
+        forcing_headers={"Content-Type": "application/json"},
+    )
+
+    # read all run participants
+    pg = common.PAGED_RESPONSE_JSON.copy()
+    pg["results"] = [common.RUN_PARTICIPANT_JSON, common.RUN_PARTICIPANT_JSON]
+
+    httpretty.register_uri(
+        httpretty.GET,
+        f"{common.API_BASE}"
+        + f"projects/{common.PROJECT_ID}/"
+        + f"runs/{common.RUN_ID}/"
+        + "participants/",
         body=json.dumps(pg),
         forcing_headers={"Content-Type": "application/json"},
     )
@@ -401,6 +418,33 @@ class UTestRun:
         r = Run()
         with pytest.raises(ValueError):
             r.results()
+
+    @staticmethod
+    def utest_participants():
+        results, pagination, filters = Run(run_id=common.RUN_ID).participants(
+            common.build_query_params(list(RunParticipantFilterKey))
+        )
+
+        common.check_pagination_params(pagination)
+        assert filters == common.FILTER_JSON
+
+        assert len(results) == 2
+
+        for ret in results:
+            common.check_run_participant_params(ret.params)
+
+        assert (
+            len(parse_qs(urlparse(httpretty.last_request().url).query))
+            == len(RunParticipantFilterKey) + 2
+        )
+        assert httpretty.last_request().method == httpretty.GET
+        assert not httpretty.last_request().parsed_body
+
+    @staticmethod
+    def utest_participants_invalid_run_id():
+        r = Run()
+        with pytest.raises(ValueError):
+            r.participants()
 
 
 @pytest.mark.usefixtures("mock")
