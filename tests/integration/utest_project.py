@@ -11,7 +11,12 @@ import pytest
 from dateutil import parser
 from loadero_python.api_client import APIClient
 from loadero_python.resources.project import Project
-from loadero_python.resources.classificator import FileType, TestMode, Language
+from loadero_python.resources.classificator import (
+    FileType,
+    TestMode,
+    Language,
+    IncrementStrategy,
+)
 
 
 @pytest.fixture(scope="module")
@@ -43,22 +48,18 @@ class UTestProject:
 
         assert len(tests) == 1
 
-        assert (
-            str(tests[0])
-            == """{
-    "id": 657448,
-    "name": "black coffee test",
-    "start_interval": 1,
-    "participant_timeout": 600,
-    "mode": "performance",
-    "increment_strategy": "random",
-    "created": "2022-08-04 14:09:49+00:00",
-    "updated": "2022-08-04 14:09:49+00:00",
-    "script_file_id": 588205,
-    "group_count": 1,
-    "participant_count": 2
-}"""
-        )
+        test = tests[0]
+
+        assert test.params.test_id == 657448
+        assert test.params.name == "black coffee test"
+        assert test.params.start_interval == 1
+        assert test.params.participant_timeout == 600
+        assert test.params.mode == TestMode.TM_PERFORMANCE
+        assert test.params.increment_strategy == IncrementStrategy.IS_RANDOM
+        assert test.params.created == parser.parse("2022-08-04 14:09:49+00:00")
+        assert test.params.script.file_id == 588205
+        assert test.params.group_count == 1
+        assert test.params.participant_count == 2
 
     @staticmethod
     def utest_files():

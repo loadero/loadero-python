@@ -346,8 +346,6 @@ class RunParticipantAPI:
 
         RunParticipantAPI.__validate_identifiers(params)
 
-        print(RunParticipantAPI.route(params.run_id, params.run_participant_id))
-
         return params.from_dict(
             APIClient().get(
                 RunParticipantAPI.route(
@@ -389,12 +387,13 @@ class RunParticipantAPI:
             run_id (int): Run resource id.
 
             run_particpant_id (int or None, optional): Run participant resource
-            id. Defaults to None. If omitted the route will point to all assert
-            resources.
+            id. Defaults to None. If omitted the route will point to all run
+            participant resources.
 
         Returns:
-            str: _description_
+            str: Route to run participant resource/s.
         """
+
         r = APIClient().project_route + f"runs/{run_id}/participants/"
 
         if run_particpant_id is not None:
