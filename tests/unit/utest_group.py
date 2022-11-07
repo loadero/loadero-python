@@ -298,6 +298,9 @@ class UTestGroup:
         with pytest.raises(ValueError):
             Group().participants()
 
+        with pytest.raises(ValueError):
+            Group(test_id=common.TEST_ID).participants()
+
 
 @pytest.mark.usefixtures("mock")
 class UTestGroupAPI:

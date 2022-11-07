@@ -61,6 +61,7 @@ from loadero_python.resources.project import (
 from loadero_python.resources.pagination import PaginationParams
 from loadero_python.resources.resource import FilterKey, QueryParams
 
+
 API_BASE = "http://mock.loadero.api/v2/"
 ACCESS_TOKEN = "LOADERO_PROJECT_ACCESS_TOKEN"
 PROJECT_ID = 538591
