@@ -44,6 +44,19 @@ class ResultFilterKey(FilterKey):
     STATUS = "filter_status"
     SELENIUM_RESULT = "filter_selenium_result"
     MOS_STATUS = "filter_mos_status"
+    NAME = "filter_name"
+    NUM_FROM = "filter_num_from"
+    NUM_TO = "filter_num_to"
+    GROUP_NAME = "filter_group_name"
+    GROUP_NUM_FROM = "filter_group_num_from"
+    GROUP_NUM_TO = "filter_group_num_to"
+    RECORD_AUDIO = "filter_record_audio"
+    BROWSER = "filter_browser"
+    NETWORK = "filter_network"
+    LOCATION = "filter_location"
+    MEDIA_TYPE = "filter_media_type"
+    VIDEO_FEED = "filter_video_feed"
+    AUDIO_FEED = "filter_audio_feed"
 
 
 class ResultLogParams(LoaderoResourceParams):

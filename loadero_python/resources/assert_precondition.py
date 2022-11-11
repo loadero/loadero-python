@@ -33,9 +33,9 @@ class AssertPreconditionFilterKey(FilterKey):
     precondition read all API operation.
     """
 
-    FILTER_PROPERTY = "filter_property"
-    FILTER_OPERATOR = "filter_operator"
-    FILTER_EXPECTED = "filter_expected"
+    PROPERTY = "filter_property"
+    OPERATOR = "filter_operator"
+    EXPECTED = "filter_expected"
 
 
 class AssertPreconditionParams(LoaderoResourceParams):

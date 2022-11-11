@@ -46,6 +46,12 @@ class RunParticipantFilterKey(FilterKey):
     GROUP_NUM_FROM = "filter_group_num_from"
     GROUP_NUM_TO = "filter_group_num_to"
     RECORD_AUDIO = "filter_record_audio"
+    BROWSER = "filter_browser"
+    NETWORK = "filter_network"
+    LOCATION = "filter_location"
+    MEDIA_TYPE = "filter_media_type"
+    VIDEO_FEED = "filter_video_feed"
+    AUDIO_FEED = "filter_audio_feed"
 
 
 class RunParticipantParams(LoaderoResourceParams):
