@@ -47,9 +47,9 @@ class ParticipantFilterKey(FilterKey):
     BROWSER = "filter_browser"
     NETWORK = "filter_network"
     LOCATION = "filter_location"
-    MEDIATYPE = "filter_media_type"
-    VIDEOFEED = "filter_video_feed"
-    AUDIOFEED = "filter_audio_feed"
+    MEDIA_TYPE = "filter_media_type"
+    VIDEO_FEED = "filter_video_feed"
+    AUDIO_FEED = "filter_audio_feed"
 
 
 class ParticipantParams(LoaderoResourceParams):
