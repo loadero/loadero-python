@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>loadero_python.resources.result module &mdash; Loadero Python Client v1.0.0-4-g0c36f39
+ documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="loadero_python.resources.run module" href="loadero_python.resources.run.html" />
+    <link rel="prev" title="loadero_python.resources.resource module" href="loadero_python.resources.resource.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Loadero Python Client
+          </a>
+              <div class="version">
+                v1.0.0-4-g0c36f39
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="loadero_python.html">loadero_python package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="loadero_python.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="loadero_python.resources.html">loadero_python.resources package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="loadero_python.resources.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="loadero_python.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Loadero Python Client</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="loadero_python.html">loadero_python package</a></li>
+          <li class="breadcrumb-item"><a href="loadero_python.resources.html">loadero_python.resources package</a></li>
+      <li class="breadcrumb-item active">loadero_python.resources.result module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/loadero_python.resources.result.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-loadero_python.resources.result">
+<span id="loadero-python-resources-result-module"></span><h1>loadero_python.resources.result module<a class="headerlink" href="#module-loadero_python.resources.result" title="Permalink to this heading"></a></h1>
+<p>Loadero result resource.
+Result resource is seperated into three parts</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>ResultParams class describes result attributes</p></li>
+<li><p>ResultAPI group all API operations for result resource</p></li>
+<li><p>Result class combines ResultParams and ResultAPI</p></li>
+</ul>
+</div></blockquote>
+<p>Single result object coresponds to single result in Loadero.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ArtifactInfoParams">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">loadero_python.resources.result.</span></span><span class="sig-name descname"><span class="pre">ArtifactInfoParams</span></span><a class="reference internal" href="_modules/loadero_python/resources/result.html#ArtifactInfoParams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.result.ArtifactInfoParams" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="loadero_python.resources.resource.html#loadero_python.resources.resource.LoaderoResourceParams" title="loadero_python.resources.resource.LoaderoResourceParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">LoaderoResourceParams</span></code></a></p>
+<p>ArtifactInfoParams describes Loadero artifact resources.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ArtifactInfoParams.error">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">error</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#loadero_python.resources.result.ArtifactInfoParams.error" title="Permalink to this definition"></a></dt>
+<dd><p>Artifact error message.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>str: Artifact error message.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ArtifactInfoParams.paths">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">paths</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#loadero_python.resources.result.ArtifactInfoParams.paths" title="Permalink to this definition"></a></dt>
+<dd><p>URLs of artifact files.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>list[str]: URLs of artifact files.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ArtifactsInfoParams">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">loadero_python.resources.result.</span></span><span class="sig-name descname"><span class="pre">ArtifactsInfoParams</span></span><a class="reference internal" href="_modules/loadero_python/resources/result.html#ArtifactsInfoParams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.result.ArtifactsInfoParams" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="loadero_python.resources.resource.html#loadero_python.resources.resource.LoaderoResourceParams" title="loadero_python.resources.resource.LoaderoResourceParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">LoaderoResourceParams</span></code></a></p>
+<p>ArtifactsInfoParams describes Loadero artifacts of a single test run.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ArtifactsInfoParams.audio">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">audio</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#loadero_python.resources.result.ArtifactInfoParams" title="loadero_python.resources.result.ArtifactInfoParams"><span class="pre">ArtifactInfoParams</span></a></em><a class="headerlink" href="#loadero_python.resources.result.ArtifactsInfoParams.audio" title="Permalink to this definition"></a></dt>
+<dd><p>Audio artifacts.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>ArtifactInfoParams: Audio artifacts.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ArtifactsInfoParams.downloads">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">downloads</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#loadero_python.resources.result.ArtifactInfoParams" title="loadero_python.resources.result.ArtifactInfoParams"><span class="pre">ArtifactInfoParams</span></a></em><a class="headerlink" href="#loadero_python.resources.result.ArtifactsInfoParams.downloads" title="Permalink to this definition"></a></dt>
+<dd><p>Downloads artifacts.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>ArtifactInfoParams: Downloads artifacts.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ArtifactsInfoParams.screenshots">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">screenshots</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#loadero_python.resources.result.ArtifactInfoParams" title="loadero_python.resources.result.ArtifactInfoParams"><span class="pre">ArtifactInfoParams</span></a></em><a class="headerlink" href="#loadero_python.resources.result.ArtifactsInfoParams.screenshots" title="Permalink to this definition"></a></dt>
+<dd><p>Screenshots artifacts.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>ArtifactInfoParams: Screenshots artifacts.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ArtifactsInfoParams.video">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">video</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#loadero_python.resources.result.ArtifactInfoParams" title="loadero_python.resources.result.ArtifactInfoParams"><span class="pre">ArtifactInfoParams</span></a></em><a class="headerlink" href="#loadero_python.resources.result.ArtifactsInfoParams.video" title="Permalink to this definition"></a></dt>
+<dd><p>Video artifacts.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>ArtifactInfoParams: Video artifacts.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="loadero_python.resources.result.DataSyncParams">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">loadero_python.resources.result.</span></span><span class="sig-name descname"><span class="pre">DataSyncParams</span></span><a class="reference internal" href="_modules/loadero_python/resources/result.html#DataSyncParams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.result.DataSyncParams" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="loadero_python.resources.resource.html#loadero_python.resources.resource.LoaderoResourceParams" title="loadero_python.resources.resource.LoaderoResourceParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">LoaderoResourceParams</span></code></a></p>
+<p>DataSyncParams groups all datasync results result.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.DataSyncParams.result_timecards">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">result_timecards</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#loadero_python.resources.result.ResultTimecardParams" title="loadero_python.resources.result.ResultTimecardParams"><span class="pre">loadero_python.resources.result.ResultTimecardParams</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#loadero_python.resources.result.DataSyncParams.result_timecards" title="Permalink to this definition"></a></dt>
+<dd><p>List of timecards created duding test.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>list[ResultTimecardParams]: List of timecards created duding test.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="loadero_python.resources.result.MeanOpinionScoresParams">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">loadero_python.resources.result.</span></span><span class="sig-name descname"><span class="pre">MeanOpinionScoresParams</span></span><a class="reference internal" href="_modules/loadero_python/resources/result.html#MeanOpinionScoresParams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.result.MeanOpinionScoresParams" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="loadero_python.resources.resource.html#loadero_python.resources.resource.LoaderoResourceParams" title="loadero_python.resources.resource.LoaderoResourceParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">LoaderoResourceParams</span></code></a></p>
+<p>MeanOpinionScoresParams groups all MOS evaluations results.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.MeanOpinionScoresParams.visqol">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visqol</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#loadero_python.resources.result.ResultMOSParams" title="loadero_python.resources.result.ResultMOSParams"><span class="pre">loadero_python.resources.result.ResultMOSParams</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#loadero_python.resources.result.MeanOpinionScoresParams.visqol" title="Permalink to this definition"></a></dt>
+<dd><p>Mean opinion scores calculated using Visqol algorithm.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>list[ResultMOSParams]: Mean opinion scores calculated using Visqol
+algorithm.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="loadero_python.resources.result.MetricParams">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">loadero_python.resources.result.</span></span><span class="sig-name descname"><span class="pre">MetricParams</span></span><a class="reference internal" href="_modules/loadero_python/resources/result.html#MetricParams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.result.MetricParams" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="loadero_python.resources.resource.html#loadero_python.resources.resource.LoaderoResourceParams" title="loadero_python.resources.resource.LoaderoResourceParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">LoaderoResourceParams</span></code></a></p>
+<p>MetricParams describes single result metric of a Loadero test run.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.MetricParams.average">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">average</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#loadero_python.resources.result.MetricParams.average" title="Permalink to this definition"></a></dt>
+<dd><p>Average value of all data points of metric.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>float: Average value of all data points of metric.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.MetricParams.created">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">created</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span></em><a class="headerlink" href="#loadero_python.resources.result.MetricParams.created" title="Permalink to this definition"></a></dt>
+<dd><p>Time when metric was created.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>datetime: Time when metric was created.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.MetricParams.data_count">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data_count</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#loadero_python.resources.result.MetricParams.data_count" title="Permalink to this definition"></a></dt>
+<dd><p>Number of data points of metric.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>int: Number of data points of metric.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.MetricParams.maximum">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">maximum</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#loadero_python.resources.result.MetricParams.maximum" title="Permalink to this definition"></a></dt>
+<dd><p>Maximum value of all data points of metric.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>float: Maximum value of all data points of metric.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.MetricParams.metric_id">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">metric_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#loadero_python.resources.result.MetricParams.metric_id" title="Permalink to this definition"></a></dt>
+<dd><p>Metric id.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>int: Metric id.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.MetricParams.metric_path">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">metric_path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="loadero_python.resources.metric_path.html#loadero_python.resources.metric_path.MetricBasePath" title="loadero_python.resources.metric_path.MetricBasePath"><span class="pre">MetricBasePath</span></a></em><a class="headerlink" href="#loadero_python.resources.result.MetricParams.metric_path" title="Permalink to this definition"></a></dt>
+<dd><p>Metric base path of metric.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>MetricBasePath: Metric base path of metric.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.MetricParams.minimum">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">minimum</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#loadero_python.resources.result.MetricParams.minimum" title="Permalink to this definition"></a></dt>
+<dd><p>Minimum value of all data points of metric.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>float: Minimum value of all data points of metric.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.MetricParams.perc_1st">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">perc_1st</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#loadero_python.resources.result.MetricParams.perc_1st" title="Permalink to this definition"></a></dt>
+<dd><p>1st percentile of all data points of metric.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>float: 1st percentile of all data points of metric.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.MetricParams.perc_25th">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">perc_25th</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#loadero_python.resources.result.MetricParams.perc_25th" title="Permalink to this definition"></a></dt>
+<dd><p>25th percentile of all data points of metric.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>float: 25th percentile of all data points of metric.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.MetricParams.perc_50th">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">perc_50th</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#loadero_python.resources.result.MetricParams.perc_50th" title="Permalink to this definition"></a></dt>
+<dd><p>50th percentile of all data points of metric.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>float: 50th percentile of all data points of metric.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.MetricParams.perc_5th">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">perc_5th</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#loadero_python.resources.result.MetricParams.perc_5th" title="Permalink to this definition"></a></dt>
+<dd><p>5th percentile of all data points of metric.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>float: 5th percentile of all data points of metric.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.MetricParams.perc_75th">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">perc_75th</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#loadero_python.resources.result.MetricParams.perc_75th" title="Permalink to this definition"></a></dt>
+<dd><p>75th percentile of all data points of metric.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>float: 75th percentile of all data points of metric.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.MetricParams.perc_95th">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">perc_95th</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#loadero_python.resources.result.MetricParams.perc_95th" title="Permalink to this definition"></a></dt>
+<dd><p>95th percentile of all data points of metric.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>float: 95th percentile of all data points of metric.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.MetricParams.perc_99th">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">perc_99th</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#loadero_python.resources.result.MetricParams.perc_99th" title="Permalink to this definition"></a></dt>
+<dd><p>99th percentile of all data points of metric.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>float: 99th percentile of all data points of metric.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.MetricParams.rstddev">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rstddev</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#loadero_python.resources.result.MetricParams.rstddev" title="Permalink to this definition"></a></dt>
+<dd><p>Relative standard deviation of all data points of metric.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>float: Relative standard deviation of all data points of metric.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.MetricParams.stddev">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stddev</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#loadero_python.resources.result.MetricParams.stddev" title="Permalink to this definition"></a></dt>
+<dd><p>Standard deviation of all data points of metric.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>float: Standard deviation of all data points of metric.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.MetricParams.total">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">total</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#loadero_python.resources.result.MetricParams.total" title="Permalink to this definition"></a></dt>
+<dd><p>Total value of all data points of metric.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>float: Total value of all data points of metric.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.MetricParams.value">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#loadero_python.resources.result.MetricParams.value" title="Permalink to this definition"></a></dt>
+<dd><p>Value of metric.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>str: Value of metric.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="loadero_python.resources.result.MetricsParams">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">loadero_python.resources.result.</span></span><span class="sig-name descname"><span class="pre">MetricsParams</span></span><a class="reference internal" href="_modules/loadero_python/resources/result.html#MetricsParams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.result.MetricsParams" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="loadero_python.resources.resource.html#loadero_python.resources.resource.LoaderoResourceParams" title="loadero_python.resources.resource.LoaderoResourceParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">LoaderoResourceParams</span></code></a></p>
+<p>MetricsParams groups all result metrics of a Loadero test run.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.MetricsParams.machine">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">machine</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="loadero_python.resources.metric_path.html#loadero_python.resources.metric_path.MetricBasePath" title="loadero_python.resources.metric_path.MetricBasePath"><span class="pre">loadero_python.resources.metric_path.MetricBasePath</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#loadero_python.resources.result.MetricParams" title="loadero_python.resources.result.MetricParams"><span class="pre">loadero_python.resources.result.MetricParams</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#loadero_python.resources.result.MetricsParams.machine" title="Permalink to this definition"></a></dt>
+<dd><p>Machine metrics.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>dict[MetricBasePath, MetricParams]: Machine metrics.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.MetricsParams.webrtc">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">webrtc</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="loadero_python.resources.metric_path.html#loadero_python.resources.metric_path.MetricBasePath" title="loadero_python.resources.metric_path.MetricBasePath"><span class="pre">loadero_python.resources.metric_path.MetricBasePath</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#loadero_python.resources.result.MetricParams" title="loadero_python.resources.result.MetricParams"><span class="pre">loadero_python.resources.result.MetricParams</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#loadero_python.resources.result.MetricsParams.webrtc" title="Permalink to this definition"></a></dt>
+<dd><p>Webrtc metrics.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>dict[MetricBasePath, MetricParams]: Webrtc metrics.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="loadero_python.resources.result.Result">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">loadero_python.resources.result.</span></span><span class="sig-name descname"><span class="pre">Result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#loadero_python.resources.result.ResultParams" title="loadero_python.resources.result.ResultParams"><span class="pre">ResultParams</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/loadero_python/resources/result.html#Result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.result.Result" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="loadero_python.resources.resource.html#loadero_python.resources.resource.LoaderoResource" title="loadero_python.resources.resource.LoaderoResource"><code class="xref py py-class docutils literal notranslate"><span class="pre">LoaderoResource</span></code></a></p>
+<p>Result class allows to perform read operation of Loadero result resource.</p>
+<p>APIClient must be previously initialized with a valid Loadero access token.</p>
+<p>The target Loadero result resource is determined by ResultParams.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="loadero_python.resources.result.Result.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#loadero_python.resources.result.Result" title="loadero_python.resources.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="_modules/loadero_python/resources/result.html#Result.read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.result.Result.read" title="Permalink to this definition"></a></dt>
+<dd><p>Reads a existing result.</p>
+<p>Required attributes of params field that need to be populated, otherwise
+the method will raise an exception:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>result_id</p></li>
+<li><p>run_id</p></li>
+</ul>
+</div></blockquote>
+<dl>
+<dt>Raises:</dt><dd><p>ValueError: If resource params do not sufficiently identify
+resource.</p>
+<p>APIException: If API call fails.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Result: Read result resource.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultAPI">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">loadero_python.resources.result.</span></span><span class="sig-name descname"><span class="pre">ResultAPI</span></span><a class="reference internal" href="_modules/loadero_python/resources/result.html#ResultAPI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.result.ResultAPI" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>ResultAPI defines Loadero API operations for result resources.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultAPI.read">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#loadero_python.resources.result.ResultParams" title="loadero_python.resources.result.ResultParams"><span class="pre">ResultParams</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#loadero_python.resources.result.ResultParams" title="loadero_python.resources.result.ResultParams"><span class="pre">ResultParams</span></a></span></span><a class="reference internal" href="_modules/loadero_python/resources/result.html#ResultAPI.read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.result.ResultAPI.read" title="Permalink to this definition"></a></dt>
+<dd><p>Read an existing result resource.</p>
+<dl>
+<dt>Args:</dt><dd><p>params (ResultParams): Describes the result resource to read.</p>
+</dd>
+<dt>Raises:</dt><dd><p>ValueError: If resource params do not sufficiently identify
+resource.</p>
+<p>APIException: If API call fails.</p>
+</dd>
+<dt>Returns:</dt><dd><p>ResultParams: Read Result resource params.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultAPI.read_all">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">read_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="loadero_python.resources.resource.html#loadero_python.resources.resource.QueryParams" title="loadero_python.resources.resource.QueryParams"><span class="pre">QueryParams</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="loadero_python.resources.pagination.html#loadero_python.resources.pagination.PagedResponse" title="loadero_python.resources.pagination.PagedResponse"><span class="pre">PagedResponse</span></a></span></span><a class="reference internal" href="_modules/loadero_python/resources/result.html#ResultAPI.read_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.result.ResultAPI.read_all" title="Permalink to this definition"></a></dt>
+<dd><p>Read all result resources for run.</p>
+<dl>
+<dt>Args:</dt><dd><p>run_id (int): Parent run resource id.</p>
+<p>query_params (QueryParams, optional): Describes query parameters.</p>
+</dd>
+<dt>Raises:</dt><dd><p>APIException: If API call fails.</p>
+</dd>
+<dt>Returns:</dt><dd><p>PagedResponse: Paged response of result resources.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultAPI.route">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">route</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/loadero_python/resources/result.html#ResultAPI.route"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.result.ResultAPI.route" title="Permalink to this definition"></a></dt>
+<dd><p>Build result url route.</p>
+<dl>
+<dt>Args:</dt><dd><p>run_id (int): Run resource id.</p>
+<p>result_id (int, optional): Result resource id. Defaults to None. If
+omitted, the route will point to all result resources of parent
+run resource.</p>
+</dd>
+<dt>Returns:</dt><dd><p>str: Route to result resource/s.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultAssertParams">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">loadero_python.resources.result.</span></span><span class="sig-name descname"><span class="pre">ResultAssertParams</span></span><a class="reference internal" href="_modules/loadero_python/resources/result.html#ResultAssertParams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.result.ResultAssertParams" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="loadero_python.resources.resource.html#loadero_python.resources.resource.LoaderoResourceParams" title="loadero_python.resources.resource.LoaderoResourceParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">LoaderoResourceParams</span></code></a></p>
+<p>ResultAssert describes Loadero result assert resource attributes.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultAssertParams.actual">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">actual</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultAssertParams.actual" title="Permalink to this definition"></a></dt>
+<dd><p>Actual value of result assert.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>str: Actual value.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultAssertParams.created">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">created</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultAssertParams.created" title="Permalink to this definition"></a></dt>
+<dd><p>Time when result assert was created.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>datetime: Time when result assert was created.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultAssertParams.expected">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">expected</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultAssertParams.expected" title="Permalink to this definition"></a></dt>
+<dd><p>Expected value of result assert.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>str: Expected value.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultAssertParams.message">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">message</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultAssertParams.message" title="Permalink to this definition"></a></dt>
+<dd><p>Result assert message.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>str: Result assert message.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultAssertParams.operator">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">operator</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Operator" title="loadero_python.resources.classificator.Operator"><span class="pre">Operator</span></a></em><a class="headerlink" href="#loadero_python.resources.result.ResultAssertParams.operator" title="Permalink to this definition"></a></dt>
+<dd><p>Operator of result assert.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>Operator: Operator.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultAssertParams.path">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="loadero_python.resources.metric_path.html#loadero_python.resources.metric_path.MetricPath" title="loadero_python.resources.metric_path.MetricPath"><span class="pre">MetricPath</span></a></em><a class="headerlink" href="#loadero_python.resources.result.ResultAssertParams.path" title="Permalink to this definition"></a></dt>
+<dd><p>Metric pats of result assert.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>MetricPath: Metric path.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultAssertParams.result_assert_id">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">result_assert_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultAssertParams.result_assert_id" title="Permalink to this definition"></a></dt>
+<dd><p>Result assert id.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>int: Result assert id.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultAssertParams.result_id">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">result_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultAssertParams.result_id" title="Permalink to this definition"></a></dt>
+<dd><p>Result id that the result assert belongs to.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>int: Result id.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultAssertParams.run_assert_id">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run_assert_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultAssertParams.run_assert_id" title="Permalink to this definition"></a></dt>
+<dd><p>Run assert id that the result assert belongs to.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>int: Run assert id.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultAssertParams.status">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">status</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.AssertStatus" title="loadero_python.resources.classificator.AssertStatus"><span class="pre">AssertStatus</span></a></em><a class="headerlink" href="#loadero_python.resources.result.ResultAssertParams.status" title="Permalink to this definition"></a></dt>
+<dd><p>Result assert status.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>AssertStatus: Result assert status.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultFilterKey">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">loadero_python.resources.result.</span></span><span class="sig-name descname"><span class="pre">ResultFilterKey</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/loadero_python/resources/result.html#ResultFilterKey"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.result.ResultFilterKey" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="loadero_python.resources.resource.html#loadero_python.resources.resource.FilterKey" title="loadero_python.resources.resource.FilterKey"><code class="xref py py-class docutils literal notranslate"><span class="pre">FilterKey</span></code></a></p>
+<p>ResultFilterKey is an enum of all filter keys for result read all API
+operation.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultFilterKey.AUDIO_FEED">
+<span class="sig-name descname"><span class="pre">AUDIO_FEED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'filter_audio_feed'</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultFilterKey.AUDIO_FEED" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultFilterKey.BROWSER">
+<span class="sig-name descname"><span class="pre">BROWSER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'filter_browser'</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultFilterKey.BROWSER" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultFilterKey.END_FROM">
+<span class="sig-name descname"><span class="pre">END_FROM</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'filter_end_from'</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultFilterKey.END_FROM" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultFilterKey.END_TO">
+<span class="sig-name descname"><span class="pre">END_TO</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'filter_end_to'</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultFilterKey.END_TO" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultFilterKey.GROUP_NAME">
+<span class="sig-name descname"><span class="pre">GROUP_NAME</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'filter_group_name'</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultFilterKey.GROUP_NAME" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultFilterKey.GROUP_NUM_FROM">
+<span class="sig-name descname"><span class="pre">GROUP_NUM_FROM</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'filter_group_num_from'</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultFilterKey.GROUP_NUM_FROM" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultFilterKey.GROUP_NUM_TO">
+<span class="sig-name descname"><span class="pre">GROUP_NUM_TO</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'filter_group_num_to'</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultFilterKey.GROUP_NUM_TO" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultFilterKey.LOCATION">
+<span class="sig-name descname"><span class="pre">LOCATION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'filter_location'</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultFilterKey.LOCATION" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultFilterKey.MEDIA_TYPE">
+<span class="sig-name descname"><span class="pre">MEDIA_TYPE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'filter_media_type'</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultFilterKey.MEDIA_TYPE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultFilterKey.MOS_STATUS">
+<span class="sig-name descname"><span class="pre">MOS_STATUS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'filter_mos_status'</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultFilterKey.MOS_STATUS" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultFilterKey.NAME">
+<span class="sig-name descname"><span class="pre">NAME</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'filter_name'</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultFilterKey.NAME" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultFilterKey.NETWORK">
+<span class="sig-name descname"><span class="pre">NETWORK</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'filter_network'</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultFilterKey.NETWORK" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultFilterKey.NUM_FROM">
+<span class="sig-name descname"><span class="pre">NUM_FROM</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'filter_num_from'</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultFilterKey.NUM_FROM" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultFilterKey.NUM_TO">
+<span class="sig-name descname"><span class="pre">NUM_TO</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'filter_num_to'</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultFilterKey.NUM_TO" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultFilterKey.RECORD_AUDIO">
+<span class="sig-name descname"><span class="pre">RECORD_AUDIO</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'filter_record_audio'</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultFilterKey.RECORD_AUDIO" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultFilterKey.SELENIUM_RESULT">
+<span class="sig-name descname"><span class="pre">SELENIUM_RESULT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'filter_selenium_result'</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultFilterKey.SELENIUM_RESULT" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultFilterKey.START_FROM">
+<span class="sig-name descname"><span class="pre">START_FROM</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'filter_start_from'</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultFilterKey.START_FROM" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultFilterKey.START_TO">
+<span class="sig-name descname"><span class="pre">START_TO</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'filter_start_to'</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultFilterKey.START_TO" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultFilterKey.STATUS">
+<span class="sig-name descname"><span class="pre">STATUS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'filter_status'</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultFilterKey.STATUS" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultFilterKey.VIDEO_FEED">
+<span class="sig-name descname"><span class="pre">VIDEO_FEED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'filter_video_feed'</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultFilterKey.VIDEO_FEED" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultLogParams">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">loadero_python.resources.result.</span></span><span class="sig-name descname"><span class="pre">ResultLogParams</span></span><a class="reference internal" href="_modules/loadero_python/resources/result.html#ResultLogParams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.result.ResultLogParams" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="loadero_python.resources.resource.html#loadero_python.resources.resource.LoaderoResourceParams" title="loadero_python.resources.resource.LoaderoResourceParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">LoaderoResourceParams</span></code></a></p>
+<p>ResultLogParams describes Loadero result log resource attributes.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultLogParams.allure_report">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">allure_report</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultLogParams.allure_report" title="Permalink to this definition"></a></dt>
+<dd><p>Allure report URL.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>str: Allure report URL.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultLogParams.browser">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">browser</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultLogParams.browser" title="Permalink to this definition"></a></dt>
+<dd><p>Browser log URL.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>str: Browser log URL.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultLogParams.created">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">created</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultLogParams.created" title="Permalink to this definition"></a></dt>
+<dd><p>Time when result log  was created.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>datetime: Time when result log was created.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultLogParams.result_id">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">result_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultLogParams.result_id" title="Permalink to this definition"></a></dt>
+<dd><p>Result id that the result log belongs to.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>int: Result id.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultLogParams.result_log_id">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">result_log_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultLogParams.result_log_id" title="Permalink to this definition"></a></dt>
+<dd><p>Result log id.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>int: Result log id.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultLogParams.rru">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rru</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultLogParams.rru" title="Permalink to this definition"></a></dt>
+<dd><p>Result resource usage log URL.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>str: Result resource usage log URL.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultLogParams.selenium">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">selenium</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultLogParams.selenium" title="Permalink to this definition"></a></dt>
+<dd><p>Selenium log URL.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>str: Selenium log URL.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultLogParams.webrtc">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">webrtc</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultLogParams.webrtc" title="Permalink to this definition"></a></dt>
+<dd><p>WebRTC log URL.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>str: WebRTC log URL.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultMOSParams">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">loadero_python.resources.result.</span></span><span class="sig-name descname"><span class="pre">ResultMOSParams</span></span><a class="reference internal" href="_modules/loadero_python/resources/result.html#ResultMOSParams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.result.ResultMOSParams" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="loadero_python.resources.resource.html#loadero_python.resources.resource.LoaderoResourceParams" title="loadero_python.resources.resource.LoaderoResourceParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">LoaderoResourceParams</span></code></a></p>
+<p>ResultMOSParams describes a single MOS result.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultMOSParams.algorithm">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">algorithm</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MosAlgorithm" title="loadero_python.resources.classificator.MosAlgorithm"><span class="pre">MosAlgorithm</span></a></em><a class="headerlink" href="#loadero_python.resources.result.ResultMOSParams.algorithm" title="Permalink to this definition"></a></dt>
+<dd><p>Algorithm used to calculate MOS.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>MosAlgorithm: Algorithm used to calculate MOS.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultMOSParams.created">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">created</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultMOSParams.created" title="Permalink to this definition"></a></dt>
+<dd><p>Time when mos result was created.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>datetime: Time when mos result was created.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultMOSParams.end">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">end</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultMOSParams.end" title="Permalink to this definition"></a></dt>
+<dd><p>End time of audio fragment.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>datetime: End time of audio fragment.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultMOSParams.result_id">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">result_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultMOSParams.result_id" title="Permalink to this definition"></a></dt>
+<dd><p>Result id that the mos result belongs to.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>int: Result id that the mos result belongs to.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultMOSParams.result_mos_id">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">result_mos_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultMOSParams.result_mos_id" title="Permalink to this definition"></a></dt>
+<dd><p>Result MOS ID.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>int: Result MOS ID.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultMOSParams.score">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">score</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultMOSParams.score" title="Permalink to this definition"></a></dt>
+<dd><p>Mean opinion score.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>str: Mean opinion score.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultMOSParams.start">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">start</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultMOSParams.start" title="Permalink to this definition"></a></dt>
+<dd><p>Start time of audio fragment.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>datetime: Start time of audio fragment.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultParams">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">loadero_python.resources.result.</span></span><span class="sig-name descname"><span class="pre">ResultParams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/loadero_python/resources/result.html#ResultParams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.result.ResultParams" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="loadero_python.resources.resource.html#loadero_python.resources.resource.LoaderoResourceParams" title="loadero_python.resources.resource.LoaderoResourceParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">LoaderoResourceParams</span></code></a></p>
+<p>ResultParams represents Loadero result resource attributes.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultParams.artifacts">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">artifacts</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#loadero_python.resources.result.ArtifactsInfoParams" title="loadero_python.resources.result.ArtifactsInfoParams"><span class="pre">ArtifactsInfoParams</span></a></em><a class="headerlink" href="#loadero_python.resources.result.ResultParams.artifacts" title="Permalink to this definition"></a></dt>
+<dd><p>Artifacts created by participant.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>ArtifactsInfoParams: Artifacts created by participant.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultParams.asserts">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">asserts</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#loadero_python.resources.result.ResultAssertParams" title="loadero_python.resources.result.ResultAssertParams"><span class="pre">loadero_python.resources.result.ResultAssertParams</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#loadero_python.resources.result.ResultParams.asserts" title="Permalink to this definition"></a></dt>
+<dd><p>Assert results for participant.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>list[ResultAssertParams]: Assert results for participant.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultParams.created">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">created</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultParams.created" title="Permalink to this definition"></a></dt>
+<dd><p>Time when result was created.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>datetime: Time when result was created.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultParams.data_sync">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data_sync</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#loadero_python.resources.result.DataSyncParams" title="loadero_python.resources.result.DataSyncParams"><span class="pre">DataSyncParams</span></a></em><a class="headerlink" href="#loadero_python.resources.result.ResultParams.data_sync" title="Permalink to this definition"></a></dt>
+<dd><p>Data collected with datasync wy participant.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>DataSyncParams: Data collected with datasync wy participant.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultParams.end">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">end</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultParams.end" title="Permalink to this definition"></a></dt>
+<dd><p>Test particpiant execution end time.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>datetime: Test particpiant execution end time.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultParams.log_paths">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">log_paths</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#loadero_python.resources.result.ResultLogParams" title="loadero_python.resources.result.ResultLogParams"><span class="pre">ResultLogParams</span></a></em><a class="headerlink" href="#loadero_python.resources.result.ResultParams.log_paths" title="Permalink to this definition"></a></dt>
+<dd><p>Log paths.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>ResultLogParams: Log paths.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultParams.metrics">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">metrics</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#loadero_python.resources.result.MetricsParams" title="loadero_python.resources.result.MetricsParams"><span class="pre">MetricsParams</span></a></em><a class="headerlink" href="#loadero_python.resources.result.ResultParams.metrics" title="Permalink to this definition"></a></dt>
+<dd><p>Metrics results of participant.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>MetricsParams: Metrics results of participant.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultParams.mos">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mos</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#loadero_python.resources.result.MeanOpinionScoresParams" title="loadero_python.resources.result.MeanOpinionScoresParams"><span class="pre">MeanOpinionScoresParams</span></a></em><a class="headerlink" href="#loadero_python.resources.result.ResultParams.mos" title="Permalink to this definition"></a></dt>
+<dd><p>Mean opinion score results of participant.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>MeanOpinionScoresParams: Mean opinion score results of participant.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultParams.mos_status">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mos_status</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MetricStatus" title="loadero_python.resources.classificator.MetricStatus"><span class="pre">MetricStatus</span></a></em><a class="headerlink" href="#loadero_python.resources.result.ResultParams.mos_status" title="Permalink to this definition"></a></dt>
+<dd><p>Mean opinion score calculation status.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>MetricStatus: Mean opinion score calculation status.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultParams.participant_details">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">participant_details</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="loadero_python.resources.run_participant.html#loadero_python.resources.run_participant.RunParticipantParams" title="loadero_python.resources.run_participant.RunParticipantParams"><span class="pre">RunParticipantParams</span></a></em><a class="headerlink" href="#loadero_python.resources.result.ResultParams.participant_details" title="Permalink to this definition"></a></dt>
+<dd><p>Participant details.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>RunParticipantParams: Participant details.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultParams.selenium_result">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">selenium_result</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.ResultStatus" title="loadero_python.resources.classificator.ResultStatus"><span class="pre">ResultStatus</span></a></em><a class="headerlink" href="#loadero_python.resources.result.ResultParams.selenium_result" title="Permalink to this definition"></a></dt>
+<dd><p>Test script execution result of particpiant.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>ResultStatus: Test script execution result of particpiant.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultParams.start">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">start</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultParams.start" title="Permalink to this definition"></a></dt>
+<dd><p>Test particpiant execution start time.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>datetime: Test  particpiant execution start time.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultParams.status">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">status</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.ResultStatus" title="loadero_python.resources.classificator.ResultStatus"><span class="pre">ResultStatus</span></a></em><a class="headerlink" href="#loadero_python.resources.result.ResultParams.status" title="Permalink to this definition"></a></dt>
+<dd><p>Test particpiant execution status.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>ResultStatus: Test particpiant execution status.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultParams.updated">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">updated</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultParams.updated" title="Permalink to this definition"></a></dt>
+<dd><p>Time when result was last updated.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>datetime: Time when result was last updated.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultTimecardParams">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">loadero_python.resources.result.</span></span><span class="sig-name descname"><span class="pre">ResultTimecardParams</span></span><a class="reference internal" href="_modules/loadero_python/resources/result.html#ResultTimecardParams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.result.ResultTimecardParams" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="loadero_python.resources.resource.html#loadero_python.resources.resource.LoaderoResourceParams" title="loadero_python.resources.resource.LoaderoResourceParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">LoaderoResourceParams</span></code></a></p>
+<p>ResultTimecardParams describes a single timecard result.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultTimecardParams.created">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">created</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultTimecardParams.created" title="Permalink to this definition"></a></dt>
+<dd><p>Time when result timecard was created.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>datetime: Time when result timecard was created.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultTimecardParams.end">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">end</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultTimecardParams.end" title="Permalink to this definition"></a></dt>
+<dd><p>End time of timecard as Unix timestamp in milliseconds.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>int: End time of timecard as Unix timestamp in milliseconds.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultTimecardParams.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultTimecardParams.name" title="Permalink to this definition"></a></dt>
+<dd><p>Name of the timecard.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>str: Name of the timecard.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultTimecardParams.result_id">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">result_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultTimecardParams.result_id" title="Permalink to this definition"></a></dt>
+<dd><p>Result id that the timecard result belongs to.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>int: Result id that the timecard result belongs to.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultTimecardParams.result_timecard_id">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">result_timecard_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultTimecardParams.result_timecard_id" title="Permalink to this definition"></a></dt>
+<dd><p>Result timecard ID.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>int: Result timecard ID.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.result.ResultTimecardParams.start">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">start</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#loadero_python.resources.result.ResultTimecardParams.start" title="Permalink to this definition"></a></dt>
+<dd><p>Start time of timecard as Unix timestamp in milliseconds.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>int: Start time of timecard as Unix timestamp in milliseconds.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="loadero_python.resources.resource.html" class="btn btn-neutral float-left" title="loadero_python.resources.resource module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="loadero_python.resources.run.html" class="btn btn-neutral float-right" title="loadero_python.resources.run module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Loadero Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

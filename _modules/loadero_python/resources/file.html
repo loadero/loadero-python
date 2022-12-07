@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>loadero_python.resources.file &mdash; Loadero Python Client v1.0.0-4-g0c36f39
+ documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> Loadero Python Client
+          </a>
+              <div class="version">
+                v1.0.0-4-g0c36f39
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../loadero_python.html">loadero_python package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Loadero Python Client</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">loadero_python.resources.file</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for loadero_python.resources.file</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Loadero file resource.</span>
+
+<span class="sd">File resource is seperated into three parts</span>
+<span class="sd">    - FileParams class describes file attributes</span>
+
+<span class="sd">    - FileAPI class groups file related API calls</span>
+
+<span class="sd">    - File class combines FileParams and FileAPI</span>
+
+<span class="sd">Single File object coresponds to single file in Loadero.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">dateutil</span> <span class="kn">import</span> <span class="n">parser</span>
+
+<span class="kn">from</span> <span class="nn">.pagination</span> <span class="kn">import</span> <span class="n">PagedResponse</span>
+<span class="kn">from</span> <span class="nn">..api_client</span> <span class="kn">import</span> <span class="n">APIClient</span>
+<span class="kn">from</span> <span class="nn">.resource</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">FilterKey</span><span class="p">,</span>
+    <span class="n">LoaderoResourceParams</span><span class="p">,</span>
+    <span class="n">LoaderoResource</span><span class="p">,</span>
+    <span class="n">QueryParams</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.classificator</span> <span class="kn">import</span> <span class="n">FileType</span>
+
+
+<div class="viewcode-block" id="FileFilterKey"><a class="viewcode-back" href="../../../loadero_python.resources.file.html#loadero_python.resources.file.FileFilterKey">[docs]</a><span class="k">class</span> <span class="nc">FileFilterKey</span><span class="p">(</span><span class="n">FilterKey</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;FileFilterKey is an enum of all filter keys for file read all API</span>
+<span class="sd">    operation.&quot;&quot;&quot;</span>
+
+    <span class="n">FILE_TYPE</span> <span class="o">=</span> <span class="s2">&quot;filter_file_type&quot;</span></div>
+
+
+<div class="viewcode-block" id="FileParams"><a class="viewcode-back" href="../../../loadero_python.resources.file.html#loadero_python.resources.file.FileParams">[docs]</a><span class="k">class</span> <span class="nc">FileParams</span><span class="p">(</span><span class="n">LoaderoResourceParams</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;FileParams describes single Loadero file resources attributes.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">file_id</span><span class="p">:</span> <span class="nb">int</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">file_type</span><span class="p">:</span> <span class="n">FileType</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">content</span><span class="p">:</span> <span class="nb">str</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">password</span><span class="p">:</span> <span class="nb">str</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates a new FileParams instance that will contain single file</span>
+<span class="sd">        resources attributes.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            file_id (int, optional): Existing file resources ID.</span>
+<span class="sd">            Defaults to None.</span>
+
+<span class="sd">            file_type (FileType, optional): The file resources type.</span>
+<span class="sd">            Defaults to None.</span>
+
+<span class="sd">            content (str, optional): Content of file resource. Defaults to None.</span>
+
+<span class="sd">            password (str, optional): For SSL certificate files,</span>
+<span class="sd">            provides a password for file. Defaults to None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">attribute_map</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;file_id&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;created&quot;</span><span class="p">:</span> <span class="s2">&quot;_created&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;updated&quot;</span><span class="p">:</span> <span class="s2">&quot;_updated&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;file_type&quot;</span><span class="p">:</span> <span class="s2">&quot;file_type&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;content&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="s2">&quot;password&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="n">custom_deserializers</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;created&quot;</span><span class="p">:</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">,</span>
+                <span class="s2">&quot;updated&quot;</span><span class="p">:</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">,</span>
+                <span class="s2">&quot;file_type&quot;</span><span class="p">:</span> <span class="n">FileType</span><span class="o">.</span><span class="n">from_dict</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="n">body_attributes</span><span class="o">=</span><span class="p">[</span>
+                <span class="s2">&quot;content&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;file_type&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;password&quot;</span><span class="p">,</span>
+            <span class="p">],</span>
+            <span class="n">required_body_attributes</span><span class="o">=</span><span class="p">[</span>
+                <span class="s2">&quot;content&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;file_type&quot;</span><span class="p">,</span>
+            <span class="p">],</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_id</span> <span class="o">=</span> <span class="n">file_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_type</span> <span class="o">=</span> <span class="n">file_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="n">content</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">password</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_created</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_updated</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">created</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Time when file was created.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            datetime: Time when resource was created.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_created</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">updated</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Time when file was last updated.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            datetime: Time when file was last updated.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_updated</span></div>
+
+
+<div class="viewcode-block" id="File"><a class="viewcode-back" href="../../../loadero_python.resources.file.html#loadero_python.resources.file.File">[docs]</a><span class="k">class</span> <span class="nc">File</span><span class="p">(</span><span class="n">LoaderoResource</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;File allows to perform CRUD manipulatons on a single Loadero file</span>
+<span class="sd">    resource.</span>
+
+<span class="sd">    APIClient must be previously initialized with a valid Loadero access token.</span>
+
+<span class="sd">    The target Loadero file resource is determined by FileParams.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">file_id</span><span class="p">:</span> <span class="nb">int</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">FileParams</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates a new instance of File that allows to perform CRUD operations</span>
+<span class="sd">        of a single Loadero file resource.</span>
+
+<span class="sd">        The resources attribute data is stored in params field that is an</span>
+<span class="sd">        instance of FileParams.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            file_id (int, optional): Existing file resources ID.</span>
+<span class="sd">            Defaults to None.</span>
+
+<span class="sd">            params (FileParams, optional): Instance of FileParams that describes</span>
+<span class="sd">            the file resource. Defaults to None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="n">params</span> <span class="ow">or</span> <span class="n">FileParams</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">file_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">file_id</span> <span class="o">=</span> <span class="n">file_id</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">)</span>
+
+<div class="viewcode-block" id="File.create"><a class="viewcode-back" href="../../../loadero_python.resources.file.html#loadero_python.resources.file.File.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">File</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Creates a new file.</span>
+
+<span class="sd">        Required attributes of params field that need to be populated, otherwise</span>
+<span class="sd">        the method will raise an exception:</span>
+<span class="sd">            - content</span>
+<span class="sd">            - file_type</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            APIException: If API call fails.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            File: Created file resource.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">FileAPI</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="File.read"><a class="viewcode-back" href="../../../loadero_python.resources.file.html#loadero_python.resources.file.File.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">File</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Reads information about an existing file.</span>
+
+<span class="sd">        Required attributes of params field that need to be populated, otherwise</span>
+<span class="sd">        the method will raise an exception:</span>
+<span class="sd">            - file_id</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If resource params do not sufficiently identify</span>
+<span class="sd">            resource.</span>
+
+<span class="sd">            APIException: If API call fails.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            File: Read file resource.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">FileAPI</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="File.update"><a class="viewcode-back" href="../../../loadero_python.resources.file.html#loadero_python.resources.file.File.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">File</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Update information about an existing file.</span>
+
+<span class="sd">        Required attributes of params field that need to be populated, otherwise</span>
+<span class="sd">        the method will raise an exception:</span>
+<span class="sd">            - file_id</span>
+<span class="sd">            - content</span>
+<span class="sd">            - file_type</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If resource params do not sufficiently identify</span>
+<span class="sd">            resource.</span>
+
+<span class="sd">            APIException: If API call fails.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            File: Updated file resource.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">FileAPI</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="File.delete"><a class="viewcode-back" href="../../../loadero_python.resources.file.html#loadero_python.resources.file.File.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Delete an existing file.</span>
+
+<span class="sd">        Required attributes of params field that need to be populated, otherwise</span>
+<span class="sd">        the method will raise an exception:</span>
+<span class="sd">            - file_id</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If resource params do not sufficiently identify</span>
+<span class="sd">            resource.</span>
+
+<span class="sd">            APIException: If API call fails.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">FileAPI</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="FileAPI"><a class="viewcode-back" href="../../../loadero_python.resources.file.html#loadero_python.resources.file.FileAPI">[docs]</a><span class="k">class</span> <span class="nc">FileAPI</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;FileAPI defines Loadero API operations for file resources.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="FileAPI.create"><a class="viewcode-back" href="../../../loadero_python.resources.file.html#loadero_python.resources.file.FileAPI.create">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="n">FileParams</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FileParams</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Create a new file resource.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            params (FileParams): Describes the file resource to create.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            APIException: If API call fails.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            FileParams: Created file resource params.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">params</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span>
+            <span class="n">APIClient</span><span class="p">()</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">FileAPI</span><span class="o">.</span><span class="n">route</span><span class="p">(),</span> <span class="n">params</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="FileAPI.read"><a class="viewcode-back" href="../../../loadero_python.resources.file.html#loadero_python.resources.file.FileAPI.read">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="n">FileParams</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FileParams</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Read an existing file resource.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            params (FileParams): Describes the file resource to read.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            Exception: FileParams.file_id was not defined.</span>
+<span class="sd">            APIException: If API call fails.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            FileParams: Read file resource params.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">FileAPI</span><span class="o">.</span><span class="n">__validate_identifiers</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">params</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span>
+            <span class="n">APIClient</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">FileAPI</span><span class="p">()</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">file_id</span><span class="p">))</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="FileAPI.update"><a class="viewcode-back" href="../../../loadero_python.resources.file.html#loadero_python.resources.file.FileAPI.update">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="n">FileParams</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FileParams</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Update an existing file resource.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            params (FileParams): Describes the file and the changes to apply.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            Exception: FileParams.file_id was not defined.</span>
+<span class="sd">            APIException: If API call fails.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            FileParams: Read file resource.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">FileAPI</span><span class="o">.</span><span class="n">__validate_identifiers</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">params</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span>
+            <span class="n">APIClient</span><span class="p">()</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">FileAPI</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">file_id</span><span class="p">),</span> <span class="n">params</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="FileAPI.delete"><a class="viewcode-back" href="../../../loadero_python.resources.file.html#loadero_python.resources.file.FileAPI.delete">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="n">FileParams</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Delete an existing file resource.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            params (FileParams): Describes the file to delete.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            Exception: FileParams.file_id was not defined.</span>
+<span class="sd">            APIException: If API call fails.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            FileParams: Read file resource.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">FileAPI</span><span class="o">.</span><span class="n">__validate_identifiers</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+
+        <span class="n">APIClient</span><span class="p">()</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">FileAPI</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">file_id</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="FileAPI.read_all"><a class="viewcode-back" href="../../../loadero_python.resources.file.html#loadero_python.resources.file.FileAPI.read_all">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">read_all</span><span class="p">(</span><span class="n">query_params</span><span class="p">:</span> <span class="n">QueryParams</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PagedResponse</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Read all files in project.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            query_params (QueryParams, optional): Describes query parameters.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            APIException: If API call fails.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            PagedResponse: Paged response of file resources.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">qp</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">query_params</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">qp</span> <span class="o">=</span> <span class="n">query_params</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">PagedResponse</span><span class="p">(</span><span class="n">FileParams</span><span class="p">)</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span>
+            <span class="n">APIClient</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">FileAPI</span><span class="o">.</span><span class="n">route</span><span class="p">(),</span> <span class="n">qp</span><span class="p">)</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="FileAPI.route"><a class="viewcode-back" href="../../../loadero_python.resources.file.html#loadero_python.resources.file.FileAPI.route">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">route</span><span class="p">(</span><span class="n">file_id</span><span class="p">:</span> <span class="nb">int</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Build file resource url route.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            file_id (int, optional): File resource id. Defaults to None. If</span>
+<span class="sd">                omitted the route will point to all file resources</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: Route to file resource.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">r</span> <span class="o">=</span> <span class="n">APIClient</span><span class="p">()</span><span class="o">.</span><span class="n">project_route</span> <span class="o">+</span> <span class="s2">&quot;files/&quot;</span>
+
+        <span class="k">if</span> <span class="n">file_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">file_id</span><span class="si">}</span><span class="s2">/&quot;</span>
+
+        <span class="k">return</span> <span class="n">r</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__validate_identifiers</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="n">FileParams</span><span class="p">,</span> <span class="n">single</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Validate file resource identifiers.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            params (FileParams): File params.</span>
+<span class="sd">            single (bool, optional): Indicates if the resource identifiers</span>
+<span class="sd">                should be validated as pointing to a single resource.</span>
+<span class="sd">                Defaults to True.</span>
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: FileParams.file_id must be a valid int.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">single</span> <span class="ow">and</span> <span class="n">params</span><span class="o">.</span><span class="n">file_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;FileParams.file_id must be a valid int&quot;</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Loadero Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

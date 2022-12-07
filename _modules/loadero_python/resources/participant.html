@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>loadero_python.resources.participant &mdash; Loadero Python Client v1.0.0-4-g0c36f39
+ documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> Loadero Python Client
+          </a>
+              <div class="version">
+                v1.0.0-4-g0c36f39
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../loadero_python.html">loadero_python package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Loadero Python Client</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">loadero_python.resources.participant</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for loadero_python.resources.participant</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Loadero participant resource.</span>
+
+<span class="sd">Participant resources is seperated into three parts</span>
+<span class="sd">    - ParticipantParams class describes participant attributes</span>
+
+<span class="sd">    - ParticipantAPI groups all API operations with participant resource.</span>
+
+<span class="sd">    - Participant class combines ParticipantParams and ParticipantAPI.</span>
+
+<span class="sd">Single Participant object coresponds to single participant in Loadero.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">dateutil</span> <span class="kn">import</span> <span class="n">parser</span>
+<span class="kn">from</span> <span class="nn">..api_client</span> <span class="kn">import</span> <span class="n">APIClient</span>
+<span class="kn">from</span> <span class="nn">.resource</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">LoaderoResourceParams</span><span class="p">,</span>
+    <span class="n">LoaderoResource</span><span class="p">,</span>
+    <span class="n">DuplicateResourceBodyParams</span><span class="p">,</span>
+    <span class="n">from_dict_as_new</span><span class="p">,</span>
+    <span class="n">FilterKey</span><span class="p">,</span>
+    <span class="n">QueryParams</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.classificator</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ComputeUnit</span><span class="p">,</span>
+    <span class="n">AudioFeed</span><span class="p">,</span>
+    <span class="n">Browser</span><span class="p">,</span>
+    <span class="n">Location</span><span class="p">,</span>
+    <span class="n">Network</span><span class="p">,</span>
+    <span class="n">VideoFeed</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.pagination</span> <span class="kn">import</span> <span class="n">PagedResponse</span>
+
+
+<div class="viewcode-block" id="ParticipantFilterKey"><a class="viewcode-back" href="../../../loadero_python.resources.participant.html#loadero_python.resources.participant.ParticipantFilterKey">[docs]</a><span class="k">class</span> <span class="nc">ParticipantFilterKey</span><span class="p">(</span><span class="n">FilterKey</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;ParticipantFilterKey is an enum of all filter keys for participant read</span>
+<span class="sd">    all API operation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">NAME</span> <span class="o">=</span> <span class="s2">&quot;filter_name&quot;</span>
+    <span class="n">COUNT_FROM</span> <span class="o">=</span> <span class="s2">&quot;filter_count_from&quot;</span>
+    <span class="n">COUNT_TO</span> <span class="o">=</span> <span class="s2">&quot;filter_count_to&quot;</span>
+    <span class="n">COMPUTE_UNIT</span> <span class="o">=</span> <span class="s2">&quot;filter_compute_unit&quot;</span>
+    <span class="n">HAS_GROUP</span> <span class="o">=</span> <span class="s2">&quot;filter_has_group&quot;</span>
+    <span class="n">RECORD_AUDIO</span> <span class="o">=</span> <span class="s2">&quot;filter_record_audio&quot;</span>
+    <span class="n">BROWSER</span> <span class="o">=</span> <span class="s2">&quot;filter_browser&quot;</span>
+    <span class="n">NETWORK</span> <span class="o">=</span> <span class="s2">&quot;filter_network&quot;</span>
+    <span class="n">LOCATION</span> <span class="o">=</span> <span class="s2">&quot;filter_location&quot;</span>
+    <span class="n">MEDIA_TYPE</span> <span class="o">=</span> <span class="s2">&quot;filter_media_type&quot;</span>
+    <span class="n">VIDEO_FEED</span> <span class="o">=</span> <span class="s2">&quot;filter_video_feed&quot;</span>
+    <span class="n">AUDIO_FEED</span> <span class="o">=</span> <span class="s2">&quot;filter_audio_feed&quot;</span></div>
+
+
+<div class="viewcode-block" id="ParticipantParams"><a class="viewcode-back" href="../../../loadero_python.resources.participant.html#loadero_python.resources.participant.ParticipantParams">[docs]</a><span class="k">class</span> <span class="nc">ParticipantParams</span><span class="p">(</span><span class="n">LoaderoResourceParams</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;ParticipantParams describes single Loadero participant resources</span>
+<span class="sd">    attributes.</span>
+
+<span class="sd">    ParticipantParams has a builder pattern for Participant resource writeable</span>
+<span class="sd">    attributes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">participant_id</span><span class="p">:</span> <span class="nb">int</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">test_id</span><span class="p">:</span> <span class="nb">int</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">group_id</span><span class="p">:</span> <span class="nb">int</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">count</span><span class="p">:</span> <span class="nb">int</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">compute_unit</span><span class="p">:</span> <span class="n">ComputeUnit</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">record_audio</span><span class="p">:</span> <span class="nb">bool</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">audio_feed</span><span class="p">:</span> <span class="n">AudioFeed</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">browser</span><span class="p">:</span> <span class="n">Browser</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">location</span><span class="p">:</span> <span class="n">Location</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">network</span><span class="p">:</span> <span class="n">Network</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">video_feed</span><span class="p">:</span> <span class="n">VideoFeed</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Creates a new ParticipantParams instance that will contain single</span>
+<span class="sd">        participant resources attributes.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            participant_id (int, optional): Existing participant resources ID.</span>
+<span class="sd">            Defaults to None.</span>
+
+<span class="sd">            test_id (int, optional): Existing participant resources ID.</span>
+<span class="sd">            Defaults to None.</span>
+
+<span class="sd">            group_id (int, optional): Existing group resources ID.</span>
+<span class="sd">            Defaults to None.</span>
+
+<span class="sd">            name (str, optional): Name of participant. Defaults to None.</span>
+
+<span class="sd">            count (int, optional): Count of how many participants of this kind</span>
+<span class="sd">            should be created in test run. Defaults to None.</span>
+
+<span class="sd">            compute_unit (ComputeUnit, optional): Compute unit of participant.</span>
+<span class="sd">            Defaults to None.</span>
+
+<span class="sd">            record_audio (bool, optional): Flag that indicates whether to record</span>
+<span class="sd">            the participants audio. Defaults to None.</span>
+
+<span class="sd">            audio_feed (AudioFeed, optional): Audio feed of participant.</span>
+<span class="sd">            Defaults to None.</span>
+
+<span class="sd">            browser (Browser, optional): Browser of participant.</span>
+<span class="sd">            Defaults to None.</span>
+
+<span class="sd">            location (Location, optional): Location of participant.</span>
+<span class="sd">            Defaults to None.</span>
+
+<span class="sd">            network (Network, optional): Network settings of participant.</span>
+<span class="sd">            Defaults to None.</span>
+
+<span class="sd">            video_feed (VideoFeed, optional): Video feed of participant.</span>
+<span class="sd">            Defaults to None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">attribute_map</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;participant_id&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="s2">&quot;count&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;compute_unit&quot;</span><span class="p">:</span> <span class="s2">&quot;compute_unit&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;group_id&quot;</span><span class="p">:</span> <span class="s2">&quot;group_id&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;record_audio&quot;</span><span class="p">:</span> <span class="s2">&quot;record_audio&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;audio_feed&quot;</span><span class="p">:</span> <span class="s2">&quot;audio_feed&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;browser&quot;</span><span class="p">:</span> <span class="s2">&quot;browser&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;location&quot;</span><span class="p">:</span> <span class="s2">&quot;location&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;network&quot;</span><span class="p">:</span> <span class="s2">&quot;network&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;video_feed&quot;</span><span class="p">:</span> <span class="s2">&quot;video_feed&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;test_id&quot;</span><span class="p">:</span> <span class="s2">&quot;test_id&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;created&quot;</span><span class="p">:</span> <span class="s2">&quot;_created&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;updated&quot;</span><span class="p">:</span> <span class="s2">&quot;_updated&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="n">custom_deserializers</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;created&quot;</span><span class="p">:</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">,</span>
+                <span class="s2">&quot;updated&quot;</span><span class="p">:</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">,</span>
+                <span class="s2">&quot;compute_unit&quot;</span><span class="p">:</span> <span class="n">ComputeUnit</span><span class="o">.</span><span class="n">from_dict</span><span class="p">,</span>
+                <span class="s2">&quot;audio_feed&quot;</span><span class="p">:</span> <span class="n">AudioFeed</span><span class="o">.</span><span class="n">from_dict</span><span class="p">,</span>
+                <span class="s2">&quot;browser&quot;</span><span class="p">:</span> <span class="n">Browser</span><span class="o">.</span><span class="n">from_dict</span><span class="p">,</span>
+                <span class="s2">&quot;location&quot;</span><span class="p">:</span> <span class="n">Location</span><span class="o">.</span><span class="n">from_dict</span><span class="p">,</span>
+                <span class="s2">&quot;network&quot;</span><span class="p">:</span> <span class="n">Network</span><span class="o">.</span><span class="n">from_dict</span><span class="p">,</span>
+                <span class="s2">&quot;video_feed&quot;</span><span class="p">:</span> <span class="n">VideoFeed</span><span class="o">.</span><span class="n">from_dict</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="n">body_attributes</span><span class="o">=</span><span class="p">[</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;count&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;compute_unit&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;group_id&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;record_audio&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;audio_feed&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;browser&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;location&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;network&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;video_feed&quot;</span><span class="p">,</span>
+            <span class="p">],</span>
+            <span class="n">required_body_attributes</span><span class="o">=</span><span class="p">[</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;count&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;compute_unit&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;record_audio&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;audio_feed&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;browser&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;location&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;network&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;video_feed&quot;</span><span class="p">,</span>
+            <span class="p">],</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">participant_id</span> <span class="o">=</span> <span class="n">participant_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_id</span> <span class="o">=</span> <span class="n">test_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">=</span> <span class="n">count</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">compute_unit</span> <span class="o">=</span> <span class="n">compute_unit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group_id</span> <span class="o">=</span> <span class="n">group_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">record_audio</span> <span class="o">=</span> <span class="n">record_audio</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">audio_feed</span> <span class="o">=</span> <span class="n">audio_feed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">browser</span> <span class="o">=</span> <span class="n">browser</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">location</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">network</span> <span class="o">=</span> <span class="n">network</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">video_feed</span> <span class="o">=</span> <span class="n">video_feed</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_created</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_updated</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">created</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Time when participant was created.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            datetime: Time when participant was created.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_created</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">updated</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Time when particpant was last updated.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            datetime: Time when participant was last updated.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_updated</span>
+
+<div class="viewcode-block" id="ParticipantParams.with_id"><a class="viewcode-back" href="../../../loadero_python.resources.participant.html#loadero_python.resources.participant.ParticipantParams.with_id">[docs]</a>    <span class="k">def</span> <span class="nf">with_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">participant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ParticipantParams</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Set participant id.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            participant_id (int): Participant id.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ParticipantParams: Participant params with participant id set.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">participant_id</span> <span class="o">=</span> <span class="n">participant_id</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="ParticipantParams.in_test"><a class="viewcode-back" href="../../../loadero_python.resources.participant.html#loadero_python.resources.participant.ParticipantParams.in_test">[docs]</a>    <span class="k">def</span> <span class="nf">in_test</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">test_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ParticipantParams</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Set parent test id.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            test_id (int): Test id.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ParticipantParams: Participant params with parent test id set.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_id</span> <span class="o">=</span> <span class="n">test_id</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="ParticipantParams.with_name"><a class="viewcode-back" href="../../../loadero_python.resources.participant.html#loadero_python.resources.participant.ParticipantParams.with_name">[docs]</a>    <span class="k">def</span> <span class="nf">with_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ParticipantParams</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Set participant name.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): Participant name.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ParticipantParams: Participant params with participant name set.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="ParticipantParams.with_count"><a class="viewcode-back" href="../../../loadero_python.resources.participant.html#loadero_python.resources.participant.ParticipantParams.with_count">[docs]</a>    <span class="k">def</span> <span class="nf">with_count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ParticipantParams</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Set participant count.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            count (int): Participant count.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ParticipantParams: Participant params with participant count set.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">=</span> <span class="n">count</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="ParticipantParams.with_compute_unit"><a class="viewcode-back" href="../../../loadero_python.resources.participant.html#loadero_python.resources.participant.ParticipantParams.with_compute_unit">[docs]</a>    <span class="k">def</span> <span class="nf">with_compute_unit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">compute_unit</span><span class="p">:</span> <span class="n">ComputeUnit</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ParticipantParams</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Set participant compute unit.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            compute_unit (ComputeUnit): Compute unit.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ParticipantParams: Participant params with set compute unit.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">compute_unit</span> <span class="o">=</span> <span class="n">compute_unit</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="ParticipantParams.in_group"><a class="viewcode-back" href="../../../loadero_python.resources.participant.html#loadero_python.resources.participant.ParticipantParams.in_group">[docs]</a>    <span class="k">def</span> <span class="nf">in_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ParticipantParams</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Set participant parent group id.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            group_id (int): Group id.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ParticipantParams: Participant params with set parent group id.s</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">group_id</span> <span class="o">=</span> <span class="n">group_id</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="ParticipantParams.with_record_audio"><a class="viewcode-back" href="../../../loadero_python.resources.participant.html#loadero_python.resources.participant.ParticipantParams.with_record_audio">[docs]</a>    <span class="k">def</span> <span class="nf">with_record_audio</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record_audio</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ParticipantParams</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Set participant record audio flag.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            record_audio (bool): Participant record audio flag.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ParticipantParams: Participant params with set record audio flag.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">record_audio</span> <span class="o">=</span> <span class="n">record_audio</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="ParticipantParams.with_audio_feed"><a class="viewcode-back" href="../../../loadero_python.resources.participant.html#loadero_python.resources.participant.ParticipantParams.with_audio_feed">[docs]</a>    <span class="k">def</span> <span class="nf">with_audio_feed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">audio_feed</span><span class="p">:</span> <span class="n">AudioFeed</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ParticipantParams</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Set participant audio feed.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            audio_feed (AudioFeed): Participant audio feed.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ParticipantParams: Participant params with set audio feed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">audio_feed</span> <span class="o">=</span> <span class="n">audio_feed</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="ParticipantParams.with_browser"><a class="viewcode-back" href="../../../loadero_python.resources.participant.html#loadero_python.resources.participant.ParticipantParams.with_browser">[docs]</a>    <span class="k">def</span> <span class="nf">with_browser</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">browser</span><span class="p">:</span> <span class="n">Browser</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ParticipantParams</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Set participant browser.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            browser (Browser): Browser.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ParticipantParams: Participant params with set browser.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">browser</span> <span class="o">=</span> <span class="n">browser</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="ParticipantParams.with_location"><a class="viewcode-back" href="../../../loadero_python.resources.participant.html#loadero_python.resources.participant.ParticipantParams.with_location">[docs]</a>    <span class="k">def</span> <span class="nf">with_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">:</span> <span class="n">Location</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ParticipantParams</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Set participant location.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            location (Location): Location.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ParticipantParams: Participant params with set location.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">location</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="ParticipantParams.with_network"><a class="viewcode-back" href="../../../loadero_python.resources.participant.html#loadero_python.resources.participant.ParticipantParams.with_network">[docs]</a>    <span class="k">def</span> <span class="nf">with_network</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">network</span><span class="p">:</span> <span class="n">Network</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ParticipantParams</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Set participant network.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            network (Network): Network.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ParticipantParams: Participant params with set network.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">network</span> <span class="o">=</span> <span class="n">network</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="ParticipantParams.with_video_feed"><a class="viewcode-back" href="../../../loadero_python.resources.participant.html#loadero_python.resources.participant.ParticipantParams.with_video_feed">[docs]</a>    <span class="k">def</span> <span class="nf">with_video_feed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">video_feed</span><span class="p">:</span> <span class="n">VideoFeed</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ParticipantParams</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Set participant video feed.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            video_feed (VideoFeed): Video feed.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ParticipantParams: Participant params with set video feed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">video_feed</span> <span class="o">=</span> <span class="n">video_feed</span>
+        <span class="k">return</span> <span class="bp">self</span></div></div>
+
+
+<div class="viewcode-block" id="Participant"><a class="viewcode-back" href="../../../loadero_python.resources.participant.html#loadero_python.resources.participant.Participant">[docs]</a><span class="k">class</span> <span class="nc">Participant</span><span class="p">(</span><span class="n">LoaderoResource</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Participant class allows to perform CRUD operations on Loadero</span>
+<span class="sd">    participant resources.</span>
+
+<span class="sd">    APIClient must be previously initialized with a valid Loadero access token.</span>
+
+<span class="sd">    The target Loadero participant resource is determined by ParticipantParams.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">participant_id</span><span class="p">:</span> <span class="nb">int</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">test_id</span><span class="p">:</span> <span class="nb">int</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">params</span><span class="p">:</span> <span class="n">ParticipantParams</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Creates a new instance of Participant that allows to perform</span>
+<span class="sd">        CRUD operations on a single participant resource.</span>
+
+<span class="sd">        The resources attribute data is stored in params field that is an</span>
+<span class="sd">        instance of ParticipantParams.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            participant_id (int, optional): Existing participant resources ID.</span>
+<span class="sd">            Defaults to None.</span>
+
+<span class="sd">            test_id (int, optional): Existing test resources ID.</span>
+<span class="sd">            Defaults to None.</span>
+
+<span class="sd">            params (ParticipantParams, optional): Instance of ParticipantParams</span>
+<span class="sd">            that describes the participant resource. Defaults to None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="n">params</span> <span class="ow">or</span> <span class="n">ParticipantParams</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">participant_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">participant_id</span> <span class="o">=</span> <span class="n">participant_id</span>
+
+        <span class="k">if</span> <span class="n">test_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">test_id</span> <span class="o">=</span> <span class="n">test_id</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Participant.create"><a class="viewcode-back" href="../../../loadero_python.resources.participant.html#loadero_python.resources.participant.Participant.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Participant</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Creates new participant with given data.</span>
+
+<span class="sd">        Required attributes of params field that need to be populated, otherwise</span>
+<span class="sd">        the method will raise an exception:</span>
+<span class="sd">            - test_id</span>
+<span class="sd">            - name</span>
+<span class="sd">            - count</span>
+<span class="sd">            - compute_unit</span>
+<span class="sd">            - record_audio</span>
+<span class="sd">            - audio_feed</span>
+<span class="sd">            - browser</span>
+<span class="sd">            - location</span>
+<span class="sd">            - network</span>
+<span class="sd">            - video_feed</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If resource params do not sufficiently identify parent</span>
+<span class="sd">            resource or resource params required attributes are None.</span>
+
+<span class="sd">            APIException: If API call fails.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Participant: Created participant resource.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">ParticipantAPI</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Participant.read"><a class="viewcode-back" href="../../../loadero_python.resources.participant.html#loadero_python.resources.participant.Participant.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Participant</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Reads information about an existing participant.</span>
+
+<span class="sd">        Required attributes of params field that need to be populated, otherwise</span>
+<span class="sd">        the method will raise an exception:</span>
+<span class="sd">            - participant_id</span>
+<span class="sd">            - test_id</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If resource params do not sufficiently identify</span>
+<span class="sd">            resource.</span>
+
+<span class="sd">            APIException: If API call fails.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Participant: Read participant resource.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">ParticipantAPI</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Participant.update"><a class="viewcode-back" href="../../../loadero_python.resources.participant.html#loadero_python.resources.participant.Participant.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Participant</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Updates particpant with given parameters.</span>
+
+<span class="sd">        Required attributes of params field that need to be populated, otherwise</span>
+<span class="sd">        the method will raise an exception:</span>
+<span class="sd">            - participant_id</span>
+<span class="sd">            - test_id</span>
+<span class="sd">            - name</span>
+<span class="sd">            - count</span>
+<span class="sd">            - compute_unit</span>
+<span class="sd">            - record_audio</span>
+<span class="sd">            - audio_feed</span>
+<span class="sd">            - browser</span>
+<span class="sd">            - location</span>
+<span class="sd">            - network</span>
+<span class="sd">            - video_feed</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If resource params do not sufficiently identify</span>
+<span class="sd">            resource or resource params required attributes are None.</span>
+
+<span class="sd">            APIException: If API call fails.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Participant: Updated participant resource.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">ParticipantAPI</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Participant.delete"><a class="viewcode-back" href="../../../loadero_python.resources.participant.html#loadero_python.resources.participant.Participant.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Deletes and existing participant.</span>
+
+<span class="sd">        Required attributes of params field that need to be populated, otherwise</span>
+<span class="sd">        the method will raise an exception:</span>
+<span class="sd">            - test_id</span>
+<span class="sd">            - participant_id</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If resource params do not sufficiently identify</span>
+<span class="sd">            resource.</span>
+
+<span class="sd">            APIException: If API call fails.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">ParticipantAPI</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Participant.duplicate"><a class="viewcode-back" href="../../../loadero_python.resources.participant.html#loadero_python.resources.participant.Participant.duplicate">[docs]</a>    <span class="k">def</span> <span class="nf">duplicate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Participant</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Duplicates and existing participant.</span>
+
+<span class="sd">        Required attributes of params field that need to be populated, otherwise</span>
+<span class="sd">        the method will raise an exception:</span>
+<span class="sd">            - test_id</span>
+<span class="sd">            - participant_id</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): New name for the duplicate participant.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If resource params do not sufficiently identify</span>
+<span class="sd">            resource.</span>
+
+<span class="sd">            APIException: If API call fails.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Participant: Duplicate instance of participant.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">Participant</span><span class="p">(</span>
+            <span class="n">params</span><span class="o">=</span><span class="n">ParticipantAPI</span><span class="o">.</span><span class="n">duplicate</span><span class="p">(</span>
+                <span class="n">ParticipantParams</span><span class="p">(</span>
+                    <span class="n">participant_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">participant_id</span><span class="p">,</span>
+                    <span class="n">test_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">test_id</span><span class="p">,</span>
+                <span class="p">),</span>
+                <span class="n">name</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="ParticipantAPI"><a class="viewcode-back" href="../../../loadero_python.resources.participant.html#loadero_python.resources.participant.ParticipantAPI">[docs]</a><span class="k">class</span> <span class="nc">ParticipantAPI</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;ParticipantAPI defines Loadero API operations for participant</span>
+<span class="sd">    resources.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ParticipantAPI.create"><a class="viewcode-back" href="../../../loadero_python.resources.participant.html#loadero_python.resources.participant.ParticipantAPI.create">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="n">ParticipantParams</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ParticipantParams</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Create a new participant resource.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            params (ParticipantParams): Describes the participant resource to</span>
+<span class="sd">            be created.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If resource params do not sufficiently identify parent</span>
+<span class="sd">            resource or resource params required attributes are None.</span>
+
+<span class="sd">            APIException: If API call fails.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ParticipantParams: Created participant resource.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">ParticipantAPI</span><span class="o">.</span><span class="n">__validate_identifiers</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">params</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span>
+            <span class="n">APIClient</span><span class="p">()</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+                <span class="n">ParticipantAPI</span><span class="p">()</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">test_id</span><span class="p">),</span>
+                <span class="n">params</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span>
+            <span class="p">)</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ParticipantAPI.read"><a class="viewcode-back" href="../../../loadero_python.resources.participant.html#loadero_python.resources.participant.ParticipantAPI.read">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="n">ParticipantParams</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ParticipantParams</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Read an existing participant resource.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            params (ParticipantParams): Describes the participant resource to</span>
+<span class="sd">            read.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If resource params do not sufficiently identify</span>
+<span class="sd">            resource.</span>
+
+<span class="sd">            APIException: If API call fails.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ParticipantParams: Read participant resource.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">ParticipantAPI</span><span class="o">.</span><span class="n">__validate_identifiers</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">params</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span>
+            <span class="n">APIClient</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                <span class="n">ParticipantAPI</span><span class="p">()</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">test_id</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">participant_id</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ParticipantAPI.update"><a class="viewcode-back" href="../../../loadero_python.resources.participant.html#loadero_python.resources.participant.ParticipantAPI.update">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="n">ParticipantParams</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ParticipantParams</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Update an existing participant resource.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            params (ParticipantParams): Describes the participant resource to</span>
+<span class="sd">            update.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If resource params do not sufficiently identify</span>
+<span class="sd">            resource or resource params required attributes are None.</span>
+
+<span class="sd">            APIException: If API call fails.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ParticipantParams: Updated participant resource.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">ParticipantAPI</span><span class="o">.</span><span class="n">__validate_identifiers</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">params</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span>
+            <span class="n">APIClient</span><span class="p">()</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
+                <span class="n">ParticipantAPI</span><span class="p">()</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">test_id</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">participant_id</span><span class="p">),</span>
+                <span class="n">params</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span>
+            <span class="p">)</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ParticipantAPI.delete"><a class="viewcode-back" href="../../../loadero_python.resources.participant.html#loadero_python.resources.participant.ParticipantAPI.delete">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="n">ParticipantParams</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Delete an existing participant resource.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            params (ParticipantParams): Describes the participant resource to</span>
+<span class="sd">            delete.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If resource params do not sufficiently identify</span>
+<span class="sd">            resource.</span>
+
+<span class="sd">            APIException: If API call fails.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">ParticipantAPI</span><span class="o">.</span><span class="n">__validate_identifiers</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+
+        <span class="n">APIClient</span><span class="p">()</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span>
+            <span class="n">ParticipantAPI</span><span class="p">()</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">test_id</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">participant_id</span><span class="p">)</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ParticipantAPI.duplicate"><a class="viewcode-back" href="../../../loadero_python.resources.participant.html#loadero_python.resources.participant.ParticipantAPI.duplicate">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">duplicate</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="n">ParticipantParams</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ParticipantParams</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Duplicate an existing participant resource.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            params (ParticipantParams): Describes the participant resource to</span>
+<span class="sd">            duplicate and the name of duplicate participant resource.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If resource params do not sufficiently identify</span>
+<span class="sd">            resource.</span>
+
+<span class="sd">            APIException: If API call fails.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ParticipantParams: Duplicate participant resource.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">ParticipantAPI</span><span class="o">.</span><span class="n">__validate_identifiers</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">from_dict_as_new</span><span class="p">(</span><span class="n">ParticipantParams</span><span class="p">)(</span>
+            <span class="n">APIClient</span><span class="p">()</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+                <span class="n">ParticipantAPI</span><span class="p">()</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">test_id</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">participant_id</span><span class="p">)</span>
+                <span class="o">+</span> <span class="s2">&quot;copy/&quot;</span><span class="p">,</span>
+                <span class="n">DuplicateResourceBodyParams</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span>
+            <span class="p">)</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ParticipantAPI.read_all"><a class="viewcode-back" href="../../../loadero_python.resources.participant.html#loadero_python.resources.participant.ParticipantAPI.read_all">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">read_all</span><span class="p">(</span>
+        <span class="n">test_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">group_id</span><span class="p">:</span> <span class="nb">int</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">query_params</span><span class="p">:</span> <span class="n">QueryParams</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PagedResponse</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Real all participant resources.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            test_id (int): Parent test resource id.</span>
+
+<span class="sd">            group_id (int, optional): Parent group resource id. Defaults to</span>
+<span class="sd">            None. If omitted all participants in parent test will be read.</span>
+
+<span class="sd">            query_params (QueryParams, optional): Describes query parameters.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            PagedResponse: Paged response of participant resources.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">qp</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">query_params</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">qp</span> <span class="o">=</span> <span class="n">query_params</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">PagedResponse</span><span class="p">(</span><span class="n">ParticipantParams</span><span class="p">)</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span>
+            <span class="n">APIClient</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                <span class="n">ParticipantAPI</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="n">test_id</span><span class="p">,</span> <span class="n">group_id</span><span class="o">=</span><span class="n">group_id</span><span class="p">),</span>
+                <span class="n">query_params</span><span class="o">=</span><span class="n">qp</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ParticipantAPI.route"><a class="viewcode-back" href="../../../loadero_python.resources.participant.html#loadero_python.resources.participant.ParticipantAPI.route">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">route</span><span class="p">(</span>
+        <span class="n">test_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">participant_id</span><span class="p">:</span> <span class="nb">int</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">group_id</span><span class="p">:</span> <span class="nb">int</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Build participant resource url route.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            test_id (int): Test resource id.</span>
+
+<span class="sd">            participant_id (int, optional): Participant resource id. Defaults</span>
+<span class="sd">            to None. If omitted the route will point to all participant</span>
+<span class="sd">            resources.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: Route to participant resource/s.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">r</span> <span class="o">=</span> <span class="n">APIClient</span><span class="p">()</span><span class="o">.</span><span class="n">project_route</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;tests/</span><span class="si">{</span><span class="n">test_id</span><span class="si">}</span><span class="s2">/participants/&quot;</span>
+
+        <span class="k">if</span> <span class="n">group_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">APIClient</span><span class="p">()</span><span class="o">.</span><span class="n">project_route</span>
+                <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;tests/</span><span class="si">{</span><span class="n">test_id</span><span class="si">}</span><span class="s2">/groups/</span><span class="si">{</span><span class="n">group_id</span><span class="si">}</span><span class="s2">/participants/&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">participant_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">participant_id</span><span class="si">}</span><span class="s2">/&quot;</span>
+
+        <span class="k">return</span> <span class="n">r</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__validate_identifiers</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="n">ParticipantParams</span><span class="p">,</span> <span class="n">single</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Validate participant identifiers.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            params (ParticipantParams): Participant resource params.</span>
+
+<span class="sd">            single (bool, optional): Indicates if the resource identifiers</span>
+<span class="sd">            should be validated as pointing to a single resource (True) or</span>
+<span class="sd">            to all assert resources belinging to test resource.</span>
+<span class="sd">            Defaults to True.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: ParticipantParams.test_id must be a valid int</span>
+
+<span class="sd">            ValueError: ParticipantParams.participant_id must be a valid int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">test_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;ParticipantParams.test_id must be a valid int&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">single</span> <span class="ow">and</span> <span class="n">params</span><span class="o">.</span><span class="n">participant_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;ParticipantParams.participant_id must be a valid int&quot;</span>
+            <span class="p">)</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Loadero Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

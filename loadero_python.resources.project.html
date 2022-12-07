@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>loadero_python.resources.project module &mdash; Loadero Python Client v1.0.0-4-g0c36f39
+ documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="loadero_python.resources.resource module" href="loadero_python.resources.resource.html" />
+    <link rel="prev" title="loadero_python.resources.participant module" href="loadero_python.resources.participant.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Loadero Python Client
+          </a>
+              <div class="version">
+                v1.0.0-4-g0c36f39
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="loadero_python.html">loadero_python package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="loadero_python.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="loadero_python.resources.html">loadero_python.resources package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="loadero_python.resources.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="loadero_python.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Loadero Python Client</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="loadero_python.html">loadero_python package</a></li>
+          <li class="breadcrumb-item"><a href="loadero_python.resources.html">loadero_python.resources package</a></li>
+      <li class="breadcrumb-item active">loadero_python.resources.project module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/loadero_python.resources.project.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-loadero_python.resources.project">
+<span id="loadero-python-resources-project-module"></span><h1>loadero_python.resources.project module<a class="headerlink" href="#module-loadero_python.resources.project" title="Permalink to this heading"></a></h1>
+<p>Loadero project resource.</p>
+<dl class="simple">
+<dt>Project resource is seperated into three parts</dt><dd><ul class="simple">
+<li><p>ProjectParams class describes projects attributes</p></li>
+<li><p>ProjectAPI class groups all API operations related to projects.</p></li>
+<li><p>Project class combines ProjectParams and ProjectAPI.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Single Project object coresponds to single project in Loadero.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="loadero_python.resources.project.PlanLimitsParams">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">loadero_python.resources.project.</span></span><span class="sig-name descname"><span class="pre">PlanLimitsParams</span></span><a class="reference internal" href="_modules/loadero_python/resources/project.html#PlanLimitsParams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.project.PlanLimitsParams" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="loadero_python.resources.resource.html#loadero_python.resources.resource.LoaderoResourceParams" title="loadero_python.resources.resource.LoaderoResourceParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">LoaderoResourceParams</span></code></a></p>
+<p>PlanLimitsParams describes Loadero subscription plan limitations.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.PlanLimitsParams.api_access">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">api_access</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#loadero_python.resources.project.PlanLimitsParams.api_access" title="Permalink to this definition"></a></dt>
+<dd><p>Is API access allowed.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>bool: Is API access allowed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.PlanLimitsParams.assert_preconditions_access">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">assert_preconditions_access</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#loadero_python.resources.project.PlanLimitsParams.assert_preconditions_access" title="Permalink to this definition"></a></dt>
+<dd><p>Is assert preconditions access allowed.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>bool: Is assert preconditions access allowed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.PlanLimitsParams.aws_access">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">aws_access</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#loadero_python.resources.project.PlanLimitsParams.aws_access" title="Permalink to this definition"></a></dt>
+<dd><p>Is AWS access allowed.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>bool: Is AWS access allowed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.PlanLimitsParams.browsers">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">browsers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Browser" title="loadero_python.resources.classificator.Browser"><span class="pre">loadero_python.resources.classificator.Browser</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#loadero_python.resources.project.PlanLimitsParams.browsers" title="Permalink to this definition"></a></dt>
+<dd><p>Allowed browsers.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>list[Browser]: Allowed browsers.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.PlanLimitsParams.compute_units">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">compute_units</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.ComputeUnit" title="loadero_python.resources.classificator.ComputeUnit"><span class="pre">loadero_python.resources.classificator.ComputeUnit</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#loadero_python.resources.project.PlanLimitsParams.compute_units" title="Permalink to this definition"></a></dt>
+<dd><p>Allowed compute units.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>list[ComputeUnit]: Allowed compute units.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.PlanLimitsParams.included_compute_units">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">included_compute_units</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#loadero_python.resources.project.PlanLimitsParams.included_compute_units" title="Permalink to this definition"></a></dt>
+<dd><p>Included compute units.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>int: Included compute units.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.PlanLimitsParams.included_test_duration">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">included_test_duration</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#loadero_python.resources.project.PlanLimitsParams.included_test_duration" title="Permalink to this definition"></a></dt>
+<dd><p>Included test duration.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>str: Included test duration.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.PlanLimitsParams.locations">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">locations</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Location" title="loadero_python.resources.classificator.Location"><span class="pre">loadero_python.resources.classificator.Location</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#loadero_python.resources.project.PlanLimitsParams.locations" title="Permalink to this definition"></a></dt>
+<dd><p>Allowed test locations.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>list[Location]: Allowed test locations.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.PlanLimitsParams.max_monthly_cu">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">max_monthly_cu</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#loadero_python.resources.project.PlanLimitsParams.max_monthly_cu" title="Permalink to this definition"></a></dt>
+<dd><p>Maximum allowed compute unit usage per month.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>int: Maximum allowed compute unit usage per month.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.PlanLimitsParams.max_test_cu">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">max_test_cu</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#loadero_python.resources.project.PlanLimitsParams.max_test_cu" title="Permalink to this definition"></a></dt>
+<dd><p>Maximum allowed test compute unit.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>int: Maximum allowed test compute unit.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.PlanLimitsParams.max_test_duration">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">max_test_duration</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#loadero_python.resources.project.PlanLimitsParams.max_test_duration" title="Permalink to this definition"></a></dt>
+<dd><p>Maximum allowed test duration.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>str: Maximum allowed test duration.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.PlanLimitsParams.mos_enabled">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mos_enabled</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#loadero_python.resources.project.PlanLimitsParams.mos_enabled" title="Permalink to this definition"></a></dt>
+<dd><p>Are mean opinion score tests enabled.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>bool: Are mean opinion score tests enabled.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.PlanLimitsParams.plan_duration">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">plan_duration</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#loadero_python.resources.project.PlanLimitsParams.plan_duration" title="Permalink to this definition"></a></dt>
+<dd><p>Plan duration.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>str: Plan duration.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.PlanLimitsParams.session_recording_access">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">session_recording_access</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#loadero_python.resources.project.PlanLimitsParams.session_recording_access" title="Permalink to this definition"></a></dt>
+<dd><p>Is session recording access allowed.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>bool: Is session recording access allowed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="loadero_python.resources.project.Project">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">loadero_python.resources.project.</span></span><span class="sig-name descname"><span class="pre">Project</span></span><a class="reference internal" href="_modules/loadero_python/resources/project.html#Project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.project.Project" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="loadero_python.resources.resource.html#loadero_python.resources.resource.LoaderoResource" title="loadero_python.resources.resource.LoaderoResource"><code class="xref py py-class docutils literal notranslate"><span class="pre">LoaderoResource</span></code></a></p>
+<p>Project class allows read information about the project that the API
+client is configured for. APIClient must be previously initialized with a
+valid Loadero access token.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="loadero_python.resources.project.Project.files">
+<span class="sig-name descname"><span class="pre">files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="loadero_python.resources.resource.html#loadero_python.resources.resource.QueryParams" title="loadero_python.resources.resource.QueryParams"><span class="pre">QueryParams</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="loadero_python.resources.file.html#loadero_python.resources.file.File" title="loadero_python.resources.file.File"><span class="pre">loadero_python.resources.file.File</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="loadero_python.resources.pagination.html#loadero_python.resources.pagination.PaginationParams" title="loadero_python.resources.pagination.PaginationParams"><span class="pre">loadero_python.resources.pagination.PaginationParams</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/loadero_python/resources/project.html#Project.files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.project.Project.files" title="Permalink to this definition"></a></dt>
+<dd><p>Read all files in the project.</p>
+<dl>
+<dt>Args:</dt><dd><p>query_params (QueryParams, optional): Describes query parameters</p>
+</dd>
+<dt>Raises:</dt><dd><p>APIException: If API call fails.</p>
+</dd>
+<dt>Returns:</dt><dd><p>list[File]: List of files.</p>
+<p>PaginationParams: Pagination parameters of request.</p>
+<p>dict[any, any]: Filters applied to in request.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="loadero_python.resources.project.Project.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#loadero_python.resources.project.Project" title="loadero_python.resources.project.Project"><span class="pre">Project</span></a></span></span><a class="reference internal" href="_modules/loadero_python/resources/project.html#Project.read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.project.Project.read" title="Permalink to this definition"></a></dt>
+<dd><p>Reads information about project.</p>
+<dl class="simple">
+<dt>Raises:</dt><dd><p>APIException: If API call fails.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Assert: Read assert resource.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="loadero_python.resources.project.Project.runs">
+<span class="sig-name descname"><span class="pre">runs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="loadero_python.resources.resource.html#loadero_python.resources.resource.QueryParams" title="loadero_python.resources.resource.QueryParams"><span class="pre">QueryParams</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="loadero_python.resources.run.html#loadero_python.resources.run.Run" title="loadero_python.resources.run.Run"><span class="pre">loadero_python.resources.run.Run</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="loadero_python.resources.pagination.html#loadero_python.resources.pagination.PaginationParams" title="loadero_python.resources.pagination.PaginationParams"><span class="pre">loadero_python.resources.pagination.PaginationParams</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/loadero_python/resources/project.html#Project.runs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.project.Project.runs" title="Permalink to this definition"></a></dt>
+<dd><p>Read all runs in the project.</p>
+<dl>
+<dt>Args:</dt><dd><p>query_params (QueryParams, optional): Describes query parameters</p>
+</dd>
+<dt>Raises:</dt><dd><p>APIException: If API call fails.</p>
+</dd>
+<dt>Returns:</dt><dd><p>list[Run]: List of runs.</p>
+<p>PaginationParams: Pagination parameters of request.</p>
+<p>dict[any, any]: Filters applied to in request.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="loadero_python.resources.project.Project.tests">
+<span class="sig-name descname"><span class="pre">tests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="loadero_python.resources.resource.html#loadero_python.resources.resource.QueryParams" title="loadero_python.resources.resource.QueryParams"><span class="pre">QueryParams</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="loadero_python.resources.test.html#loadero_python.resources.test.Test" title="loadero_python.resources.test.Test"><span class="pre">loadero_python.resources.test.Test</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="loadero_python.resources.pagination.html#loadero_python.resources.pagination.PaginationParams" title="loadero_python.resources.pagination.PaginationParams"><span class="pre">loadero_python.resources.pagination.PaginationParams</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/loadero_python/resources/project.html#Project.tests"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.project.Project.tests" title="Permalink to this definition"></a></dt>
+<dd><p>Read all tests in the project.</p>
+<dl>
+<dt>Args:</dt><dd><p>query_params (QueryParams, optional): Describes query parameters</p>
+</dd>
+<dt>Raises:</dt><dd><p>APIException: If API call fails.</p>
+</dd>
+<dt>Returns:</dt><dd><p>list[Test]: List of tests.</p>
+<p>PaginationParams: Pagination parameters of request.</p>
+<p>dict[any, any]: Filters applied to in request.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="loadero_python.resources.project.ProjectAPI">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">loadero_python.resources.project.</span></span><span class="sig-name descname"><span class="pre">ProjectAPI</span></span><a class="reference internal" href="_modules/loadero_python/resources/project.html#ProjectAPI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.project.ProjectAPI" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>ProjectAPI defines Loadero API operations for project resource.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="loadero_python.resources.project.ProjectAPI.read">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#loadero_python.resources.project.ProjectParams" title="loadero_python.resources.project.ProjectParams"><span class="pre">ProjectParams</span></a></span></span><a class="reference internal" href="_modules/loadero_python/resources/project.html#ProjectAPI.read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.project.ProjectAPI.read" title="Permalink to this definition"></a></dt>
+<dd><p>Read an existing project resource that the API Client is configured
+too</p>
+<dl class="simple">
+<dt>Raises:</dt><dd><p>APIException: If API call fails.</p>
+</dd>
+<dt>Returns:</dt><dd><p>ProjectParams: Read project resource params.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="loadero_python.resources.project.ProjectComputeUnitUsageParams">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">loadero_python.resources.project.</span></span><span class="sig-name descname"><span class="pre">ProjectComputeUnitUsageParams</span></span><a class="reference internal" href="_modules/loadero_python/resources/project.html#ProjectComputeUnitUsageParams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.project.ProjectComputeUnitUsageParams" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="loadero_python.resources.resource.html#loadero_python.resources.resource.LoaderoResourceParams" title="loadero_python.resources.resource.LoaderoResourceParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">LoaderoResourceParams</span></code></a></p>
+<p>ProjectComputeUnitUsageParams describes compute unit usage for a single
+project.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.ProjectComputeUnitUsageParams.included">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">included</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#loadero_python.resources.project.ProjectComputeUnitUsageParams.included" title="Permalink to this definition"></a></dt>
+<dd><p>Compute unit included in the project.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>int: Compute unit included in the project.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.ProjectComputeUnitUsageParams.used">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">used</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#loadero_python.resources.project.ProjectComputeUnitUsageParams.used" title="Permalink to this definition"></a></dt>
+<dd><p>Compute unit used in the project.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>int: Compute unit used in the project.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="loadero_python.resources.project.ProjectParams">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">loadero_python.resources.project.</span></span><span class="sig-name descname"><span class="pre">ProjectParams</span></span><a class="reference internal" href="_modules/loadero_python/resources/project.html#ProjectParams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.project.ProjectParams" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="loadero_python.resources.resource.html#loadero_python.resources.resource.LoaderoResourceParams" title="loadero_python.resources.resource.LoaderoResourceParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">LoaderoResourceParams</span></code></a></p>
+<p>ProjectParams represents Loadero project resource attributes.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.ProjectParams.account_role">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">account_role</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MemberRole" title="loadero_python.resources.classificator.MemberRole"><span class="pre">MemberRole</span></a></em><a class="headerlink" href="#loadero_python.resources.project.ProjectParams.account_role" title="Permalink to this definition"></a></dt>
+<dd><p>Account role in the project.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>MemberRole: Account role in the project.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.ProjectParams.aws_info_id">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">aws_info_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#loadero_python.resources.project.ProjectParams.aws_info_id" title="Permalink to this definition"></a></dt>
+<dd><p>AWS info ID.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>str: AWS info ID.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.ProjectParams.compute_unit_usage">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">compute_unit_usage</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#loadero_python.resources.project.ProjectComputeUnitUsageParams" title="loadero_python.resources.project.ProjectComputeUnitUsageParams"><span class="pre">ProjectComputeUnitUsageParams</span></a></em><a class="headerlink" href="#loadero_python.resources.project.ProjectParams.compute_unit_usage" title="Permalink to this definition"></a></dt>
+<dd><p>Compute unit usage statistics.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>ProjectComputeUnitUsageParams: Compute unit usage statistics.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.ProjectParams.created">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">created</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span></em><a class="headerlink" href="#loadero_python.resources.project.ProjectParams.created" title="Permalink to this definition"></a></dt>
+<dd><p>Time when project was created.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>datetime: Time when project was created.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.ProjectParams.language">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">language</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Language" title="loadero_python.resources.classificator.Language"><span class="pre">Language</span></a></em><a class="headerlink" href="#loadero_python.resources.project.ProjectParams.language" title="Permalink to this definition"></a></dt>
+<dd><p>Test script programming language.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>Language: Test script programming language.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.ProjectParams.member_count">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">member_count</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#loadero_python.resources.project.ProjectParams.member_count" title="Permalink to this definition"></a></dt>
+<dd><p>Number of members in the project.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>int: Number of members in the project.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.ProjectParams.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#loadero_python.resources.project.ProjectParams.name" title="Permalink to this definition"></a></dt>
+<dd><p>Project name.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>str: Project name.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.ProjectParams.plan_limits">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">plan_limits</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#loadero_python.resources.project.PlanLimitsParams" title="loadero_python.resources.project.PlanLimitsParams"><span class="pre">PlanLimitsParams</span></a></em><a class="headerlink" href="#loadero_python.resources.project.ProjectParams.plan_limits" title="Permalink to this definition"></a></dt>
+<dd><p>Plan limits.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>PlanLimitsParams: Plan limits.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.ProjectParams.project_id">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">project_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#loadero_python.resources.project.ProjectParams.project_id" title="Permalink to this definition"></a></dt>
+<dd><p>Project ID.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>str: Project ID.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.ProjectParams.subscription">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">subscription</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#loadero_python.resources.project.SubscriptionParams" title="loadero_python.resources.project.SubscriptionParams"><span class="pre">SubscriptionParams</span></a></em><a class="headerlink" href="#loadero_python.resources.project.ProjectParams.subscription" title="Permalink to this definition"></a></dt>
+<dd><p>Subscription.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>SubscriptionParams: Subscription.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.ProjectParams.subscription_id">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">subscription_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#loadero_python.resources.project.ProjectParams.subscription_id" title="Permalink to this definition"></a></dt>
+<dd><p>Subscription ID.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>str: Subscription ID.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.ProjectParams.trial_expired">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trial_expired</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#loadero_python.resources.project.ProjectParams.trial_expired" title="Permalink to this definition"></a></dt>
+<dd><p>Whether project trial period has expired.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>bool: Whether project trial period has expired.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.ProjectParams.updated">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">updated</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span></em><a class="headerlink" href="#loadero_python.resources.project.ProjectParams.updated" title="Permalink to this definition"></a></dt>
+<dd><p>Time when project was last updated.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>datetime: Time when project was last updated.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="loadero_python.resources.project.SubscriptionParams">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">loadero_python.resources.project.</span></span><span class="sig-name descname"><span class="pre">SubscriptionParams</span></span><a class="reference internal" href="_modules/loadero_python/resources/project.html#SubscriptionParams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.project.SubscriptionParams" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="loadero_python.resources.resource.html#loadero_python.resources.resource.LoaderoResourceParams" title="loadero_python.resources.resource.LoaderoResourceParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">LoaderoResourceParams</span></code></a></p>
+<p>SubscriptionParams describes Loadero subscription.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.SubscriptionParams.activation_date">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">activation_date</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span></em><a class="headerlink" href="#loadero_python.resources.project.SubscriptionParams.activation_date" title="Permalink to this definition"></a></dt>
+<dd><p>Time when subscription was activated.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>datetime: Time when subscription was activated.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.SubscriptionParams.billing_email">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">billing_email</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#loadero_python.resources.project.SubscriptionParams.billing_email" title="Permalink to this definition"></a></dt>
+<dd><p>Billing email of subscription.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>str: Billing email of subscription.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.SubscriptionParams.created">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">created</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span></em><a class="headerlink" href="#loadero_python.resources.project.SubscriptionParams.created" title="Permalink to this definition"></a></dt>
+<dd><p>Time when subscription was created.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>datetime: Time when subscription was created.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.SubscriptionParams.payment_plan">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">payment_plan</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.PaymentPlan" title="loadero_python.resources.classificator.PaymentPlan"><span class="pre">PaymentPlan</span></a></em><a class="headerlink" href="#loadero_python.resources.project.SubscriptionParams.payment_plan" title="Permalink to this definition"></a></dt>
+<dd><p>Payment plan of subscription.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>PaymentPlan: Payment plan of subscription.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.SubscriptionParams.payment_status">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">payment_status</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.PaymentStatus" title="loadero_python.resources.classificator.PaymentStatus"><span class="pre">PaymentStatus</span></a></em><a class="headerlink" href="#loadero_python.resources.project.SubscriptionParams.payment_status" title="Permalink to this definition"></a></dt>
+<dd><p>Payment status of subscription.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>PaymentStatus: Payment status of subscription.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.SubscriptionParams.settings">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">settings</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#loadero_python.resources.project.SubscriptionSettingsParams" title="loadero_python.resources.project.SubscriptionSettingsParams"><span class="pre">SubscriptionSettingsParams</span></a></em><a class="headerlink" href="#loadero_python.resources.project.SubscriptionParams.settings" title="Permalink to this definition"></a></dt>
+<dd><p>Subscription settings.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>SubscriptionSettingsParams: Subscription settings.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.SubscriptionParams.subscription_id">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">subscription_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#loadero_python.resources.project.SubscriptionParams.subscription_id" title="Permalink to this definition"></a></dt>
+<dd><p>Subscription ID.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>str: Subscription ID.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.SubscriptionParams.updated">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">updated</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span></em><a class="headerlink" href="#loadero_python.resources.project.SubscriptionParams.updated" title="Permalink to this definition"></a></dt>
+<dd><p>Time when subscription was last updated.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>datetime: Time when subscription was last updated.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="loadero_python.resources.project.SubscriptionSettingsParams">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">loadero_python.resources.project.</span></span><span class="sig-name descname"><span class="pre">SubscriptionSettingsParams</span></span><a class="reference internal" href="_modules/loadero_python/resources/project.html#SubscriptionSettingsParams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.project.SubscriptionSettingsParams" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="loadero_python.resources.resource.html#loadero_python.resources.resource.LoaderoResourceParams" title="loadero_python.resources.resource.LoaderoResourceParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">LoaderoResourceParams</span></code></a></p>
+<p>SubscriptionSettingsParams describes Loadero subscription settings.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.SubscriptionSettingsParams.max_monthly_cu">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">max_monthly_cu</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#loadero_python.resources.project.SubscriptionSettingsParams.max_monthly_cu" title="Permalink to this definition"></a></dt>
+<dd><p>Maximum allowed compute unit usage per month.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>int: Maximum allowed compute unit usage per month.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.SubscriptionSettingsParams.max_participant_cu">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">max_participant_cu</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.ComputeUnit" title="loadero_python.resources.classificator.ComputeUnit"><span class="pre">ComputeUnit</span></a></em><a class="headerlink" href="#loadero_python.resources.project.SubscriptionSettingsParams.max_participant_cu" title="Permalink to this definition"></a></dt>
+<dd><p>Maximum allowed compute unit for a participant.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>ComputeUnit: Maximum allowed compute unit for a participant.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.SubscriptionSettingsParams.max_test_cu">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">max_test_cu</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#loadero_python.resources.project.SubscriptionSettingsParams.max_test_cu" title="Permalink to this definition"></a></dt>
+<dd><p>Maximum allowed compute unit usage per test.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>int: Maximum allowed compute unit usage per test.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.SubscriptionSettingsParams.max_test_duration">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">max_test_duration</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.TestDuration" title="loadero_python.resources.classificator.TestDuration"><span class="pre">TestDuration</span></a></em><a class="headerlink" href="#loadero_python.resources.project.SubscriptionSettingsParams.max_test_duration" title="Permalink to this definition"></a></dt>
+<dd><p>Maximum allowed test duration.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>TestDuration: Maximum allowed test duration.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.project.SubscriptionSettingsParams.mos_enabled">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mos_enabled</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#loadero_python.resources.project.SubscriptionSettingsParams.mos_enabled" title="Permalink to this definition"></a></dt>
+<dd><p>Are mean opinion score tests enabled.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>bool: Are mean opinion score tests enabled.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="loadero_python.resources.participant.html" class="btn btn-neutral float-left" title="loadero_python.resources.participant module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="loadero_python.resources.resource.html" class="btn btn-neutral float-right" title="loadero_python.resources.resource module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Loadero Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

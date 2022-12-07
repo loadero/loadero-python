@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>loadero_python.resources.group &mdash; Loadero Python Client v1.0.0-4-g0c36f39
+ documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> Loadero Python Client
+          </a>
+              <div class="version">
+                v1.0.0-4-g0c36f39
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../loadero_python.html">loadero_python package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Loadero Python Client</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">loadero_python.resources.group</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for loadero_python.resources.group</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Loadero group resource.</span>
+
+<span class="sd">Group resource is seperated into three parts</span>
+<span class="sd">    - GroupParams class describes groups attributes</span>
+
+<span class="sd">    - GroupAPI class groups all API operations related to groups.</span>
+
+<span class="sd">    - Group class combined GroupParams and GroupAPI</span>
+
+<span class="sd">Single group object coresponds to single group in Loadero.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">dateutil</span> <span class="kn">import</span> <span class="n">parser</span>
+<span class="kn">from</span> <span class="nn">..api_client</span> <span class="kn">import</span> <span class="n">APIClient</span>
+<span class="kn">from</span> <span class="nn">.resource</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">FilterKey</span><span class="p">,</span>
+    <span class="n">LoaderoResourceParams</span><span class="p">,</span>
+    <span class="n">LoaderoResource</span><span class="p">,</span>
+    <span class="n">DuplicateResourceBodyParams</span><span class="p">,</span>
+    <span class="n">convert_params_list</span><span class="p">,</span>
+    <span class="n">from_dict_as_new</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.participant</span> <span class="kn">import</span> <span class="n">Participant</span><span class="p">,</span> <span class="n">ParticipantAPI</span>
+<span class="kn">from</span> <span class="nn">.pagination</span> <span class="kn">import</span> <span class="n">PagedResponse</span><span class="p">,</span> <span class="n">PaginationParams</span>
+<span class="kn">from</span> <span class="nn">.resource</span> <span class="kn">import</span> <span class="n">QueryParams</span>
+
+
+<div class="viewcode-block" id="GroupFilterKey"><a class="viewcode-back" href="../../../loadero_python.resources.group.html#loadero_python.resources.group.GroupFilterKey">[docs]</a><span class="k">class</span> <span class="nc">GroupFilterKey</span><span class="p">(</span><span class="n">FilterKey</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;GroupFilterKey is an enum of all filter keys for group read all API</span>
+<span class="sd">    operation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">NAME</span> <span class="o">=</span> <span class="s2">&quot;filter_name&quot;</span>
+    <span class="n">COUNT_FROM</span> <span class="o">=</span> <span class="s2">&quot;filter_count_from&quot;</span>
+    <span class="n">COUNT_TO</span> <span class="o">=</span> <span class="s2">&quot;filter_count_to&quot;</span></div>
+
+
+<div class="viewcode-block" id="GroupParams"><a class="viewcode-back" href="../../../loadero_python.resources.group.html#loadero_python.resources.group.GroupParams">[docs]</a><span class="k">class</span> <span class="nc">GroupParams</span><span class="p">(</span><span class="n">LoaderoResourceParams</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;GroupParams represents Loadero group resource attributes.</span>
+
+<span class="sd">    GroupParams has a builder pattern for group resources writeable attributes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">group_id</span><span class="p">:</span> <span class="nb">int</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">test_id</span><span class="p">:</span> <span class="nb">int</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">count</span><span class="p">:</span> <span class="nb">int</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Creates a new GroupParams instance that will contain single group</span>
+<span class="sd">        resources attributes.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            group_id (int, optional): Existing group resources ID.</span>
+<span class="sd">            Defaults to None.</span>
+
+<span class="sd">            test_id (int, optional): Existing test resources ID.</span>
+<span class="sd">            Defaults to None.</span>
+
+<span class="sd">            name (str, optional): Name of group. Defaults to None.</span>
+
+<span class="sd">            count (int, optional): Count of how many groups of this kind should</span>
+<span class="sd">            be created in test run. Defaults to None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">attribute_map</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;group_id&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="s2">&quot;count&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;test_id&quot;</span><span class="p">:</span> <span class="s2">&quot;test_id&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;created&quot;</span><span class="p">:</span> <span class="s2">&quot;_created&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;updated&quot;</span><span class="p">:</span> <span class="s2">&quot;_updated&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;total_cu_count&quot;</span><span class="p">:</span> <span class="s2">&quot;_total_cu_count&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;participant_count&quot;</span><span class="p">:</span> <span class="s2">&quot;_participant_count&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="n">custom_deserializers</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;created&quot;</span><span class="p">:</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">,</span>
+                <span class="s2">&quot;updated&quot;</span><span class="p">:</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="n">body_attributes</span><span class="o">=</span><span class="p">[</span>
+                <span class="s2">&quot;count&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+            <span class="p">],</span>
+            <span class="n">required_body_attributes</span><span class="o">=</span><span class="p">[</span>
+                <span class="s2">&quot;count&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+            <span class="p">],</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">group_id</span> <span class="o">=</span> <span class="n">group_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">=</span> <span class="n">count</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_id</span> <span class="o">=</span> <span class="n">test_id</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_total_cu_count</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_participant_count</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_created</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_updated</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">created</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Time when group was created.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            datetime: Time when group was created.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_created</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">updated</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Time when group was last updated.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            datetime: Time when group was last updated.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_updated</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">total_cu_count</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Total compute unit count in group.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: Total compute unit count in group.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_total_cu_count</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">participant_count</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Participant count in group.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: Participant count in group.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_participant_count</span>
+
+<div class="viewcode-block" id="GroupParams.with_id"><a class="viewcode-back" href="../../../loadero_python.resources.group.html#loadero_python.resources.group.GroupParams.with_id">[docs]</a>    <span class="k">def</span> <span class="nf">with_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GroupParams</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Set group id.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            group_id (int): Group id.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            GroupParams: Group params with set group id.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">group_id</span> <span class="o">=</span> <span class="n">group_id</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="GroupParams.with_name"><a class="viewcode-back" href="../../../loadero_python.resources.group.html#loadero_python.resources.group.GroupParams.with_name">[docs]</a>    <span class="k">def</span> <span class="nf">with_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GroupParams</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Set group name.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): Group name.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            GroupParams: Group params with set group name.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="GroupParams.with_count"><a class="viewcode-back" href="../../../loadero_python.resources.group.html#loadero_python.resources.group.GroupParams.with_count">[docs]</a>    <span class="k">def</span> <span class="nf">with_count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GroupParams</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Set group count.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            count (int): Group count.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            GroupParams: Group params with set group count.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">=</span> <span class="n">count</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="GroupParams.in_test"><a class="viewcode-back" href="../../../loadero_python.resources.group.html#loadero_python.resources.group.GroupParams.in_test">[docs]</a>    <span class="k">def</span> <span class="nf">in_test</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tid</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GroupParams</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Set parent test id.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            tid (int): Test id.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            GroupParams: Group params with set parent test id.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_id</span> <span class="o">=</span> <span class="n">tid</span>
+        <span class="k">return</span> <span class="bp">self</span></div></div>
+
+
+<div class="viewcode-block" id="Group"><a class="viewcode-back" href="../../../loadero_python.resources.group.html#loadero_python.resources.group.Group">[docs]</a><span class="k">class</span> <span class="nc">Group</span><span class="p">(</span><span class="n">LoaderoResource</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Group class allows to perform CRUD operations on a single Loadero group</span>
+<span class="sd">    resource.</span>
+
+<span class="sd">    APIClient must be previously initialized with a valid Loadero access token.</span>
+
+<span class="sd">    The target Loadero group resource is determined by GroupParams.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">group_id</span><span class="p">:</span> <span class="nb">int</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">test_id</span><span class="p">:</span> <span class="nb">int</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">params</span><span class="p">:</span> <span class="n">GroupParams</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Creates a new instance of Group that allows to perform</span>
+<span class="sd">        CRUD operations on a single group resource.</span>
+
+<span class="sd">        The resources attribute data is stored in params field that is an</span>
+<span class="sd">        instance of GroupParams.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            group_id (int, optional): Existing group resources ID.</span>
+<span class="sd">            Defaults to None.</span>
+
+<span class="sd">            test_id (int, optional): Existing test resources ID.</span>
+<span class="sd">            Defaults to None.</span>
+
+<span class="sd">            params (GroupParams, optional): Instance of GroupParams that</span>
+<span class="sd">            describes the group resource. Defaults to None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="n">params</span> <span class="ow">or</span> <span class="n">GroupParams</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">group_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">group_id</span> <span class="o">=</span> <span class="n">group_id</span>
+
+        <span class="k">if</span> <span class="n">test_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">test_id</span> <span class="o">=</span> <span class="n">test_id</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Group.create"><a class="viewcode-back" href="../../../loadero_python.resources.group.html#loadero_python.resources.group.Group.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Group</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Creates new group with given data.</span>
+
+<span class="sd">        Required attributes of params field that need to be populated, otherwise</span>
+<span class="sd">        the method will raise an exception:</span>
+<span class="sd">            - test_id</span>
+<span class="sd">            - count</span>
+<span class="sd">            - name</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If resource params do not sufficiently identify parent</span>
+<span class="sd">            resource or resource params required attributes are None.</span>
+
+<span class="sd">            APIException: If API call fails.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Group: Created group resource.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">GroupAPI</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Group.read"><a class="viewcode-back" href="../../../loadero_python.resources.group.html#loadero_python.resources.group.Group.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Group</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Reads information about an existing group.</span>
+
+<span class="sd">        Required attributes of params field that need to be populated, otherwise</span>
+<span class="sd">        the method will raise an exception:</span>
+<span class="sd">            - test_id</span>
+<span class="sd">            - group_id</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If resource params do not sufficiently identify</span>
+<span class="sd">            resource.</span>
+
+<span class="sd">            APIException: If API call fails.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Group: Read group resource.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">GroupAPI</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Group.update"><a class="viewcode-back" href="../../../loadero_python.resources.group.html#loadero_python.resources.group.Group.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Group</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Updates group with given parameters.</span>
+
+<span class="sd">        Required attributes of params field that need to be populated, otherwise</span>
+<span class="sd">        the method will raise an exception:</span>
+<span class="sd">            - group_id</span>
+<span class="sd">            - test_id</span>
+<span class="sd">            - count</span>
+<span class="sd">            - name</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If resource params do not sufficiently identify</span>
+<span class="sd">            resource.</span>
+
+<span class="sd">            APIException: If API call fails.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Group: Updated group resource.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">GroupAPI</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Group.delete"><a class="viewcode-back" href="../../../loadero_python.resources.group.html#loadero_python.resources.group.Group.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Deletes and existing group.</span>
+
+<span class="sd">        Required attributes of params field that need to be populated, otherwise</span>
+<span class="sd">        the method will raise an exception:</span>
+<span class="sd">            - group_id</span>
+<span class="sd">            - test_id</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If resource params do not sufficiently identify</span>
+<span class="sd">            resource.</span>
+
+<span class="sd">            APIException: If API call fails.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">GroupAPI</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Group.duplicate"><a class="viewcode-back" href="../../../loadero_python.resources.group.html#loadero_python.resources.group.Group.duplicate">[docs]</a>    <span class="k">def</span> <span class="nf">duplicate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Group</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Duplicates and existing group.</span>
+
+<span class="sd">        Required attributes of params field that need to be populated, otherwise</span>
+<span class="sd">        the method will raise an exception:</span>
+<span class="sd">            - group_id</span>
+<span class="sd">            - test_id</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): New name for the duplicate group.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If resource params do not sufficiently identify</span>
+<span class="sd">            resource.</span>
+
+<span class="sd">            APIException: If API call fails.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Group: Duplicate instance of group.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">Group</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="n">GroupAPI</span><span class="o">.</span><span class="n">duplicate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Group.participants"><a class="viewcode-back" href="../../../loadero_python.resources.group.html#loadero_python.resources.group.Group.participants">[docs]</a>    <span class="k">def</span> <span class="nf">participants</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">query_params</span><span class="p">:</span> <span class="n">QueryParams</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Participant</span><span class="p">],</span> <span class="n">PaginationParams</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">any</span><span class="p">,</span> <span class="nb">any</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;Read all participants in group.</span>
+
+<span class="sd">        Required attributes of params field that need to be populated, otherwise</span>
+<span class="sd">        the method will raise an exception:</span>
+<span class="sd">            - group_id</span>
+<span class="sd">            - test_id</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            query_params (QueryParams, optional): Describes query parameters</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: Test.params.test_id must be a valid int.</span>
+
+<span class="sd">            APIException: If API call fails.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list[Participant]: List of participants in group.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">test_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Group.params.test_id must be a valid int&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">group_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Group.params.group_id must be a valid int&quot;</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">ParticipantAPI</span><span class="o">.</span><span class="n">read_all</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">test_id</span><span class="p">,</span>
+            <span class="n">group_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">group_id</span><span class="p">,</span>
+            <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">convert_params_list</span><span class="p">(</span><span class="n">Participant</span><span class="p">,</span> <span class="n">resp</span><span class="o">.</span><span class="n">results</span><span class="p">),</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">pagination</span><span class="p">,</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">filter</span><span class="p">,</span>
+        <span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="GroupAPI"><a class="viewcode-back" href="../../../loadero_python.resources.group.html#loadero_python.resources.group.GroupAPI">[docs]</a><span class="k">class</span> <span class="nc">GroupAPI</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;GroupAPI defines Loadero API operations for group resources.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="GroupAPI.create"><a class="viewcode-back" href="../../../loadero_python.resources.group.html#loadero_python.resources.group.GroupAPI.create">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="n">GroupParams</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GroupParams</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Create a new group resource.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            params (GroupParams): Describes the group resource to be created.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If resource params do not sufficiently identify parent</span>
+<span class="sd">            resource or resource params required attributes are None.</span>
+
+<span class="sd">            APIException: If API call fails.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            GroupParams: Created group resource.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">GroupAPI</span><span class="o">.</span><span class="n">__validate_identifiers</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">params</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span>
+            <span class="n">APIClient</span><span class="p">()</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">GroupAPI</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">test_id</span><span class="p">),</span> <span class="n">params</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="GroupAPI.read"><a class="viewcode-back" href="../../../loadero_python.resources.group.html#loadero_python.resources.group.GroupAPI.read">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="n">GroupParams</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GroupParams</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Read an existing group resource.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            params (GroupParams): Describes the group resource to read.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If resource params do not sufficiently identify</span>
+<span class="sd">            resource.</span>
+
+<span class="sd">            APIException: If API call fails.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            GroupParams: Read group resource.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">GroupAPI</span><span class="o">.</span><span class="n">__validate_identifiers</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">params</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span>
+            <span class="n">APIClient</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">GroupAPI</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">test_id</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">group_id</span><span class="p">))</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="GroupAPI.update"><a class="viewcode-back" href="../../../loadero_python.resources.group.html#loadero_python.resources.group.GroupAPI.update">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="n">GroupParams</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GroupParams</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Update an existing group resource.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            params (GroupParams): Describes the group resource to update.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If resource params do not sufficiently identify</span>
+<span class="sd">            resource or resource params required attributes are None.</span>
+
+<span class="sd">            APIException: If API call fails.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            GroupParams: Updated group resource.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">GroupAPI</span><span class="o">.</span><span class="n">__validate_identifiers</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">params</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span>
+            <span class="n">APIClient</span><span class="p">()</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
+                <span class="n">GroupAPI</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">test_id</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">group_id</span><span class="p">),</span>
+                <span class="n">params</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span>
+            <span class="p">)</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="GroupAPI.delete"><a class="viewcode-back" href="../../../loadero_python.resources.group.html#loadero_python.resources.group.GroupAPI.delete">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="n">GroupParams</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Delete an existing group resource.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            params (GroupParams): Describes the group resource to delete.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If resource params do not sufficiently identify</span>
+<span class="sd">            resource.</span>
+
+<span class="sd">            APIException: If API call fails.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">GroupAPI</span><span class="o">.</span><span class="n">__validate_identifiers</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+
+        <span class="n">APIClient</span><span class="p">()</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">GroupAPI</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">test_id</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">group_id</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="GroupAPI.duplicate"><a class="viewcode-back" href="../../../loadero_python.resources.group.html#loadero_python.resources.group.GroupAPI.duplicate">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">duplicate</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="n">GroupParams</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GroupParams</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Duplicate an existing group resource.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            params (GroupParams): Identified the group resource to duplicate.</span>
+
+<span class="sd">            name (str): Name of the duplicate group.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If resource params do not sufficiently identify</span>
+<span class="sd">            resource.</span>
+
+<span class="sd">            APIException: If API call fails.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            GroupParams: Duplicate group resource.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">GroupAPI</span><span class="o">.</span><span class="n">__validate_identifiers</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">from_dict_as_new</span><span class="p">(</span><span class="n">GroupParams</span><span class="p">)(</span>
+            <span class="n">APIClient</span><span class="p">()</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+                <span class="n">GroupAPI</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">test_id</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">group_id</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;copy/&quot;</span><span class="p">,</span>
+                <span class="n">DuplicateResourceBodyParams</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span>
+            <span class="p">)</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="GroupAPI.read_all"><a class="viewcode-back" href="../../../loadero_python.resources.group.html#loadero_python.resources.group.GroupAPI.read_all">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">read_all</span><span class="p">(</span>
+        <span class="n">test_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">query_params</span><span class="p">:</span> <span class="n">QueryParams</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PagedResponse</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Read all group resources.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            test_id (int): Parent test resource id.</span>
+
+<span class="sd">            query_params (QueryParams, optional): Describes query parameters.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            PagedResponse: Paged response of group resources.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">qp</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">query_params</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">qp</span> <span class="o">=</span> <span class="n">query_params</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">PagedResponse</span><span class="p">(</span><span class="n">GroupParams</span><span class="p">)</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span>
+            <span class="n">APIClient</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">GroupAPI</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="n">test_id</span><span class="p">),</span> <span class="n">query_params</span><span class="o">=</span><span class="n">qp</span><span class="p">)</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="GroupAPI.route"><a class="viewcode-back" href="../../../loadero_python.resources.group.html#loadero_python.resources.group.GroupAPI.route">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">route</span><span class="p">(</span><span class="n">test_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">group_id</span><span class="p">:</span> <span class="nb">int</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Build group resource url route.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            test_id (int): Test resource id.</span>
+
+<span class="sd">            group_id (int, optional): Group resource id. Defaults to None. If</span>
+<span class="sd">            omitted the route will point to all group resources.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: Route to group resource/s.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">r</span> <span class="o">=</span> <span class="n">APIClient</span><span class="p">()</span><span class="o">.</span><span class="n">project_route</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;tests/</span><span class="si">{</span><span class="n">test_id</span><span class="si">}</span><span class="s2">/groups/&quot;</span>
+
+        <span class="k">if</span> <span class="n">group_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">group_id</span><span class="si">}</span><span class="s2">/&quot;</span>
+
+        <span class="k">return</span> <span class="n">r</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__validate_identifiers</span><span class="p">(</span>
+        <span class="n">params</span><span class="p">:</span> <span class="n">GroupParams</span><span class="p">,</span> <span class="n">single</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Validate group resource identifiers.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            params (GroupParams): Group resource params.</span>
+
+<span class="sd">            single (bool, optional): Indicates if the resource identifiers</span>
+<span class="sd">            should be validated as pointing to a single resource (True) or</span>
+<span class="sd">            to all assert resources belinging to test resource.</span>
+<span class="sd">            Defaults to True.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: GroupParams.test_id must be a valid int</span>
+
+<span class="sd">            ValueError: GroupParams.group_id must be a valid int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">test_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;GroupParams.test_id must be a valid int&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">single</span> <span class="ow">and</span> <span class="n">params</span><span class="o">.</span><span class="n">group_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;GroupParams.group_id must be a valid int&quot;</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Loadero Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

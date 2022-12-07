@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>loadero_python.resources.run_participant module &mdash; Loadero Python Client v1.0.0-4-g0c36f39
+ documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="loadero_python.resources.test module" href="loadero_python.resources.test.html" />
+    <link rel="prev" title="loadero_python.resources.run module" href="loadero_python.resources.run.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Loadero Python Client
+          </a>
+              <div class="version">
+                v1.0.0-4-g0c36f39
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="loadero_python.html">loadero_python package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="loadero_python.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="loadero_python.resources.html">loadero_python.resources package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="loadero_python.resources.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="loadero_python.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Loadero Python Client</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="loadero_python.html">loadero_python package</a></li>
+          <li class="breadcrumb-item"><a href="loadero_python.resources.html">loadero_python.resources package</a></li>
+      <li class="breadcrumb-item active">loadero_python.resources.run_participant module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/loadero_python.resources.run_participant.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-loadero_python.resources.run_participant">
+<span id="loadero-python-resources-run-participant-module"></span><h1>loadero_python.resources.run_participant module<a class="headerlink" href="#module-loadero_python.resources.run_participant" title="Permalink to this heading"></a></h1>
+<p>Loadero run participant resource.</p>
+<dl>
+<dt>Run participant resources is seperated into three parts</dt><dd><ul class="simple">
+<li><p>RunParticipantParams class describes run participant attributes</p></li>
+<li><p>RunParticipantAPI class groups all API operations related to run</p></li>
+</ul>
+<p>participant.</p>
+<ul class="simple">
+<li><p>RunParticipant class combined RunParticipantParams and RunParticipantAPI.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Single RunParticipant object coresponds to single run participant in Loadero.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="loadero_python.resources.run_participant.RunParticipant">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">loadero_python.resources.run_participant.</span></span><span class="sig-name descname"><span class="pre">RunParticipant</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_participant_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#loadero_python.resources.run_participant.RunParticipantParams" title="loadero_python.resources.run_participant.RunParticipantParams"><span class="pre">RunParticipantParams</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/loadero_python/resources/run_participant.html#RunParticipant"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.run_participant.RunParticipant" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="loadero_python.resources.resource.html#loadero_python.resources.resource.LoaderoResource" title="loadero_python.resources.resource.LoaderoResource"><code class="xref py py-class docutils literal notranslate"><span class="pre">LoaderoResource</span></code></a></p>
+<p>RunParticipant class allows to perform read operations on Loadero run
+participant resources.</p>
+<p>APIClient must be previously initialized with a valid Loadero access token.</p>
+<p>The target Loadero run participant resource is determined by
+RunParticipantParams.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="loadero_python.resources.run_participant.RunParticipant.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#loadero_python.resources.run_participant.RunParticipant" title="loadero_python.resources.run_participant.RunParticipant"><span class="pre">RunParticipant</span></a></span></span><a class="reference internal" href="_modules/loadero_python/resources/run_participant.html#RunParticipant.read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.run_participant.RunParticipant.read" title="Permalink to this definition"></a></dt>
+<dd><p>Reads information about an existing run participant.</p>
+<p>Required attributes of params field that need to be populated, otherwise
+the method will raise an exception:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>run_participant_id</p></li>
+<li><p>run_id</p></li>
+</ul>
+</div></blockquote>
+<dl>
+<dt>Raises:</dt><dd><p>ValueError: If resource params do not sufficiently identify
+resource.</p>
+<p>APIException: If API call fails.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Test: Read run participants resource.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="loadero_python.resources.run_participant.RunParticipantAPI">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">loadero_python.resources.run_participant.</span></span><span class="sig-name descname"><span class="pre">RunParticipantAPI</span></span><a class="reference internal" href="_modules/loadero_python/resources/run_participant.html#RunParticipantAPI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.run_participant.RunParticipantAPI" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>RunParticipantAPI defines Loadero API operations for run participant
+resources.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="loadero_python.resources.run_participant.RunParticipantAPI.read">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#loadero_python.resources.run_participant.RunParticipantParams" title="loadero_python.resources.run_participant.RunParticipantParams"><span class="pre">RunParticipantParams</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#loadero_python.resources.run_participant.RunParticipantParams" title="loadero_python.resources.run_participant.RunParticipantParams"><span class="pre">RunParticipantParams</span></a></span></span><a class="reference internal" href="_modules/loadero_python/resources/run_participant.html#RunParticipantAPI.read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.run_participant.RunParticipantAPI.read" title="Permalink to this definition"></a></dt>
+<dd><p>Read an existing run participant resource.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>params (RunParticipantParams): Describes run participant resource to
+read.</p>
+</dd>
+<dt>Returns:</dt><dd><p>RunParticipantParams: Read run participant resource.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="loadero_python.resources.run_participant.RunParticipantAPI.read_all">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">read_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="loadero_python.resources.resource.html#loadero_python.resources.resource.QueryParams" title="loadero_python.resources.resource.QueryParams"><span class="pre">QueryParams</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="loadero_python.resources.pagination.html#loadero_python.resources.pagination.PagedResponse" title="loadero_python.resources.pagination.PagedResponse"><span class="pre">PagedResponse</span></a></span></span><a class="reference internal" href="_modules/loadero_python/resources/run_participant.html#RunParticipantAPI.read_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.run_participant.RunParticipantAPI.read_all" title="Permalink to this definition"></a></dt>
+<dd><p>Read all run participant resources.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>run_id (int): Parent run resource id.
+query_params (QueryParams, optional): Describes query parameters.</p>
+</dd>
+<dt>Raises:</dt><dd><p>APIException: If API call fails.</p>
+</dd>
+<dt>Returns:</dt><dd><p>PagedResponse: Paged response of run participant resources.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="loadero_python.resources.run_participant.RunParticipantAPI.route">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">route</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_particpant_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/loadero_python/resources/run_participant.html#RunParticipantAPI.route"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.run_participant.RunParticipantAPI.route" title="Permalink to this definition"></a></dt>
+<dd><p>Build run participant resource route</p>
+<dl>
+<dt>Args:</dt><dd><p>run_id (int): Run resource id.</p>
+<p>run_particpant_id (int or None, optional): Run participant resource
+id. Defaults to None. If omitted the route will point to all run
+participant resources.</p>
+</dd>
+<dt>Returns:</dt><dd><p>str: Route to run participant resource/s.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="loadero_python.resources.run_participant.RunParticipantFilterKey">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">loadero_python.resources.run_participant.</span></span><span class="sig-name descname"><span class="pre">RunParticipantFilterKey</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/loadero_python/resources/run_participant.html#RunParticipantFilterKey"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.run_participant.RunParticipantFilterKey" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="loadero_python.resources.resource.html#loadero_python.resources.resource.FilterKey" title="loadero_python.resources.resource.FilterKey"><code class="xref py py-class docutils literal notranslate"><span class="pre">FilterKey</span></code></a></p>
+<p>RunParticipantFilterKey is an enum of all filter keys for run participant
+read all API operation.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="loadero_python.resources.run_participant.RunParticipantFilterKey.AUDIO_FEED">
+<span class="sig-name descname"><span class="pre">AUDIO_FEED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'filter_audio_feed'</span></em><a class="headerlink" href="#loadero_python.resources.run_participant.RunParticipantFilterKey.AUDIO_FEED" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="loadero_python.resources.run_participant.RunParticipantFilterKey.BROWSER">
+<span class="sig-name descname"><span class="pre">BROWSER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'filter_browser'</span></em><a class="headerlink" href="#loadero_python.resources.run_participant.RunParticipantFilterKey.BROWSER" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="loadero_python.resources.run_participant.RunParticipantFilterKey.GROUP_NAME">
+<span class="sig-name descname"><span class="pre">GROUP_NAME</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'filter_group_name'</span></em><a class="headerlink" href="#loadero_python.resources.run_participant.RunParticipantFilterKey.GROUP_NAME" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="loadero_python.resources.run_participant.RunParticipantFilterKey.GROUP_NUM_FROM">
+<span class="sig-name descname"><span class="pre">GROUP_NUM_FROM</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'filter_group_num_from'</span></em><a class="headerlink" href="#loadero_python.resources.run_participant.RunParticipantFilterKey.GROUP_NUM_FROM" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="loadero_python.resources.run_participant.RunParticipantFilterKey.GROUP_NUM_TO">
+<span class="sig-name descname"><span class="pre">GROUP_NUM_TO</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'filter_group_num_to'</span></em><a class="headerlink" href="#loadero_python.resources.run_participant.RunParticipantFilterKey.GROUP_NUM_TO" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="loadero_python.resources.run_participant.RunParticipantFilterKey.LOCATION">
+<span class="sig-name descname"><span class="pre">LOCATION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'filter_location'</span></em><a class="headerlink" href="#loadero_python.resources.run_participant.RunParticipantFilterKey.LOCATION" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="loadero_python.resources.run_participant.RunParticipantFilterKey.MEDIA_TYPE">
+<span class="sig-name descname"><span class="pre">MEDIA_TYPE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'filter_media_type'</span></em><a class="headerlink" href="#loadero_python.resources.run_participant.RunParticipantFilterKey.MEDIA_TYPE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="loadero_python.resources.run_participant.RunParticipantFilterKey.NAME">
+<span class="sig-name descname"><span class="pre">NAME</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'filter_name'</span></em><a class="headerlink" href="#loadero_python.resources.run_participant.RunParticipantFilterKey.NAME" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="loadero_python.resources.run_participant.RunParticipantFilterKey.NETWORK">
+<span class="sig-name descname"><span class="pre">NETWORK</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'filter_network'</span></em><a class="headerlink" href="#loadero_python.resources.run_participant.RunParticipantFilterKey.NETWORK" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="loadero_python.resources.run_participant.RunParticipantFilterKey.NUM_FROM">
+<span class="sig-name descname"><span class="pre">NUM_FROM</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'filter_num_from'</span></em><a class="headerlink" href="#loadero_python.resources.run_participant.RunParticipantFilterKey.NUM_FROM" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="loadero_python.resources.run_participant.RunParticipantFilterKey.NUM_TO">
+<span class="sig-name descname"><span class="pre">NUM_TO</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'filter_num_to'</span></em><a class="headerlink" href="#loadero_python.resources.run_participant.RunParticipantFilterKey.NUM_TO" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="loadero_python.resources.run_participant.RunParticipantFilterKey.RECORD_AUDIO">
+<span class="sig-name descname"><span class="pre">RECORD_AUDIO</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'filter_record_audio'</span></em><a class="headerlink" href="#loadero_python.resources.run_participant.RunParticipantFilterKey.RECORD_AUDIO" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="loadero_python.resources.run_participant.RunParticipantFilterKey.VIDEO_FEED">
+<span class="sig-name descname"><span class="pre">VIDEO_FEED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'filter_video_feed'</span></em><a class="headerlink" href="#loadero_python.resources.run_participant.RunParticipantFilterKey.VIDEO_FEED" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="loadero_python.resources.run_participant.RunParticipantParams">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">loadero_python.resources.run_participant.</span></span><span class="sig-name descname"><span class="pre">RunParticipantParams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_participant_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/loadero_python/resources/run_participant.html#RunParticipantParams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.run_participant.RunParticipantParams" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="loadero_python.resources.resource.html#loadero_python.resources.resource.LoaderoResourceParams" title="loadero_python.resources.resource.LoaderoResourceParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">LoaderoResourceParams</span></code></a></p>
+<p>RunParticipantParams represents Loadero RunParticipant resource
+attributes.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.run_participant.RunParticipantParams.audio_feed">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">audio_feed</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.AudioFeed" title="loadero_python.resources.classificator.AudioFeed"><span class="pre">AudioFeed</span></a></em><a class="headerlink" href="#loadero_python.resources.run_participant.RunParticipantParams.audio_feed" title="Permalink to this definition"></a></dt>
+<dd><p>Audio feed of participant.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>AudioFeed: Audio feed of participant.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.run_participant.RunParticipantParams.browser">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">browser</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Browser" title="loadero_python.resources.classificator.Browser"><span class="pre">Browser</span></a></em><a class="headerlink" href="#loadero_python.resources.run_participant.RunParticipantParams.browser" title="Permalink to this definition"></a></dt>
+<dd><p>Browser of participant.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>Browser: Browser of participant.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.run_participant.RunParticipantParams.compute_unit">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">compute_unit</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.ComputeUnit" title="loadero_python.resources.classificator.ComputeUnit"><span class="pre">ComputeUnit</span></a></em><a class="headerlink" href="#loadero_python.resources.run_participant.RunParticipantParams.compute_unit" title="Permalink to this definition"></a></dt>
+<dd><p>Compute unit of participant.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>ComputeUnit: Compute unit of participant.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.run_participant.RunParticipantParams.created">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">created</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span></em><a class="headerlink" href="#loadero_python.resources.run_participant.RunParticipantParams.created" title="Permalink to this definition"></a></dt>
+<dd><p>Time when run participant was created.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>datetime: Time when run participant was created.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.run_participant.RunParticipantParams.group_name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">group_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#loadero_python.resources.run_participant.RunParticipantParams.group_name" title="Permalink to this definition"></a></dt>
+<dd><p>Name of the group that the participant is in.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>int: Name of the group that the participant is in.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.run_participant.RunParticipantParams.group_num">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">group_num</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#loadero_python.resources.run_participant.RunParticipantParams.group_num" title="Permalink to this definition"></a></dt>
+<dd><p>Group number in test that the participant is in.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>int: Group number in test that the participant is in.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.run_participant.RunParticipantParams.location">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">location</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Location" title="loadero_python.resources.classificator.Location"><span class="pre">Location</span></a></em><a class="headerlink" href="#loadero_python.resources.run_participant.RunParticipantParams.location" title="Permalink to this definition"></a></dt>
+<dd><p>Location of participant.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>Location: Location of participant.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.run_participant.RunParticipantParams.network">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">network</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Network" title="loadero_python.resources.classificator.Network"><span class="pre">Network</span></a></em><a class="headerlink" href="#loadero_python.resources.run_participant.RunParticipantParams.network" title="Permalink to this definition"></a></dt>
+<dd><p>Network of participant.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>Network: Network of participant.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.run_participant.RunParticipantParams.participant_name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">participant_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#loadero_python.resources.run_participant.RunParticipantParams.participant_name" title="Permalink to this definition"></a></dt>
+<dd><p>Participants name.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>str: Participants name.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.run_participant.RunParticipantParams.participant_num">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">participant_num</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#loadero_python.resources.run_participant.RunParticipantParams.participant_num" title="Permalink to this definition"></a></dt>
+<dd><p>Participants number in group.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>int: Participants number in group.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.run_participant.RunParticipantParams.record_audio">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">record_audio</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#loadero_python.resources.run_participant.RunParticipantParams.record_audio" title="Permalink to this definition"></a></dt>
+<dd><p>Flag indicating whether audio was recorded.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>bool: Flag indicating whether audio was recorded.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.run_participant.RunParticipantParams.updated">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">updated</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span></em><a class="headerlink" href="#loadero_python.resources.run_participant.RunParticipantParams.updated" title="Permalink to this definition"></a></dt>
+<dd><p>Time when run participant was last updated.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>datetime: Time when run participant was last updated.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="loadero_python.resources.run_participant.RunParticipantParams.video_feed">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">video_feed</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.VideoFeed" title="loadero_python.resources.classificator.VideoFeed"><span class="pre">VideoFeed</span></a></em><a class="headerlink" href="#loadero_python.resources.run_participant.RunParticipantParams.video_feed" title="Permalink to this definition"></a></dt>
+<dd><p>Video feed of participant.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>VideoFeed: Video feed of participant.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="loadero_python.resources.run_participant.RunParticipantParams.with_id">
+<span class="sig-name descname"><span class="pre">with_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_participant_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#loadero_python.resources.run_participant.RunParticipantParams" title="loadero_python.resources.run_participant.RunParticipantParams"><span class="pre">RunParticipantParams</span></a></span></span><a class="reference internal" href="_modules/loadero_python/resources/run_participant.html#RunParticipantParams.with_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.run_participant.RunParticipantParams.with_id" title="Permalink to this definition"></a></dt>
+<dd><p>Set run participant id.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>run_participant_id (int): Run participant id.</p>
+</dd>
+<dt>Returns:</dt><dd><p>RunParticipantParams: Run participant params with set id.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="loadero_python.resources.run.html" class="btn btn-neutral float-left" title="loadero_python.resources.run module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="loadero_python.resources.test.html" class="btn btn-neutral float-right" title="loadero_python.resources.test module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Loadero Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

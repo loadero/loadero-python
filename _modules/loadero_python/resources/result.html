@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>loadero_python.resources.result &mdash; Loadero Python Client v1.0.0-4-g0c36f39
+ documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> Loadero Python Client
+          </a>
+              <div class="version">
+                v1.0.0-4-g0c36f39
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../loadero_python.html">loadero_python package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Loadero Python Client</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">loadero_python.resources.result</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for loadero_python.resources.result</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Loadero result resource.</span>
+<span class="sd">Result resource is seperated into three parts</span>
+<span class="sd">    - ResultParams class describes result attributes</span>
+<span class="sd">    - ResultAPI group all API operations for result resource</span>
+<span class="sd">    - Result class combines ResultParams and ResultAPI</span>
+
+<span class="sd">Single result object coresponds to single result in Loadero.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">dateutil</span> <span class="kn">import</span> <span class="n">parser</span>
+
+<span class="kn">from</span> <span class="nn">..api_client</span> <span class="kn">import</span> <span class="n">APIClient</span>
+<span class="kn">from</span> <span class="nn">.resource</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">FilterKey</span><span class="p">,</span>
+    <span class="n">LoaderoResourceParams</span><span class="p">,</span>
+    <span class="n">LoaderoResource</span><span class="p">,</span>
+    <span class="n">QueryParams</span><span class="p">,</span>
+    <span class="n">from_dict_as_list</span><span class="p">,</span>
+    <span class="n">from_dict_as_new</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.metric_path</span> <span class="kn">import</span> <span class="n">MetricPath</span><span class="p">,</span> <span class="n">MetricBasePath</span>
+<span class="kn">from</span> <span class="nn">.classificator</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">MetricStatus</span><span class="p">,</span>
+    <span class="n">Operator</span><span class="p">,</span>
+    <span class="n">AssertStatus</span><span class="p">,</span>
+    <span class="n">ResultStatus</span><span class="p">,</span>
+    <span class="n">MosAlgorithm</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.run_participant</span> <span class="kn">import</span> <span class="n">RunParticipantParams</span>
+<span class="kn">from</span> <span class="nn">.pagination</span> <span class="kn">import</span> <span class="n">PagedResponse</span>
+
+
+<div class="viewcode-block" id="ResultFilterKey"><a class="viewcode-back" href="../../../loadero_python.resources.result.html#loadero_python.resources.result.ResultFilterKey">[docs]</a><span class="k">class</span> <span class="nc">ResultFilterKey</span><span class="p">(</span><span class="n">FilterKey</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;ResultFilterKey is an enum of all filter keys for result read all API</span>
+<span class="sd">    operation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">START_FROM</span> <span class="o">=</span> <span class="s2">&quot;filter_start_from&quot;</span>
+    <span class="n">START_TO</span> <span class="o">=</span> <span class="s2">&quot;filter_start_to&quot;</span>
+    <span class="n">END_FROM</span> <span class="o">=</span> <span class="s2">&quot;filter_end_from&quot;</span>
+    <span class="n">END_TO</span> <span class="o">=</span> <span class="s2">&quot;filter_end_to&quot;</span>
+    <span class="n">STATUS</span> <span class="o">=</span> <span class="s2">&quot;filter_status&quot;</span>
+    <span class="n">SELENIUM_RESULT</span> <span class="o">=</span> <span class="s2">&quot;filter_selenium_result&quot;</span>
+    <span class="n">MOS_STATUS</span> <span class="o">=</span> <span class="s2">&quot;filter_mos_status&quot;</span>
+    <span class="n">NAME</span> <span class="o">=</span> <span class="s2">&quot;filter_name&quot;</span>
+    <span class="n">NUM_FROM</span> <span class="o">=</span> <span class="s2">&quot;filter_num_from&quot;</span>
+    <span class="n">NUM_TO</span> <span class="o">=</span> <span class="s2">&quot;filter_num_to&quot;</span>
+    <span class="n">GROUP_NAME</span> <span class="o">=</span> <span class="s2">&quot;filter_group_name&quot;</span>
+    <span class="n">GROUP_NUM_FROM</span> <span class="o">=</span> <span class="s2">&quot;filter_group_num_from&quot;</span>
+    <span class="n">GROUP_NUM_TO</span> <span class="o">=</span> <span class="s2">&quot;filter_group_num_to&quot;</span>
+    <span class="n">RECORD_AUDIO</span> <span class="o">=</span> <span class="s2">&quot;filter_record_audio&quot;</span>
+    <span class="n">BROWSER</span> <span class="o">=</span> <span class="s2">&quot;filter_browser&quot;</span>
+    <span class="n">NETWORK</span> <span class="o">=</span> <span class="s2">&quot;filter_network&quot;</span>
+    <span class="n">LOCATION</span> <span class="o">=</span> <span class="s2">&quot;filter_location&quot;</span>
+    <span class="n">MEDIA_TYPE</span> <span class="o">=</span> <span class="s2">&quot;filter_media_type&quot;</span>
+    <span class="n">VIDEO_FEED</span> <span class="o">=</span> <span class="s2">&quot;filter_video_feed&quot;</span>
+    <span class="n">AUDIO_FEED</span> <span class="o">=</span> <span class="s2">&quot;filter_audio_feed&quot;</span></div>
+
+
+<div class="viewcode-block" id="ResultLogParams"><a class="viewcode-back" href="../../../loadero_python.resources.result.html#loadero_python.resources.result.ResultLogParams">[docs]</a><span class="k">class</span> <span class="nc">ResultLogParams</span><span class="p">(</span><span class="n">LoaderoResourceParams</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;ResultLogParams describes Loadero result log resource attributes.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">attribute_map</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;_result_log_id&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;created&quot;</span><span class="p">:</span> <span class="s2">&quot;_created&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;result_id&quot;</span><span class="p">:</span> <span class="s2">&quot;_result_id&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;webrtc&quot;</span><span class="p">:</span> <span class="s2">&quot;_webrtc&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;selenium&quot;</span><span class="p">:</span> <span class="s2">&quot;_selenium&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;browser&quot;</span><span class="p">:</span> <span class="s2">&quot;_browser&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;rru&quot;</span><span class="p">:</span> <span class="s2">&quot;_rru&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;allure_report&quot;</span><span class="p">:</span> <span class="s2">&quot;_allure_report&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="n">custom_deserializers</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;created&quot;</span><span class="p">:</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_result_log_id</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_created</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_result_id</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_webrtc</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_selenium</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_browser</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rru</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_allure_report</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">result_log_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Result log id.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: Result log id.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_result_log_id</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">created</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Time when result log  was created.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            datetime: Time when result log was created.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_created</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">result_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Result id that the result log belongs to.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: Result id.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_result_id</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">webrtc</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;WebRTC log URL.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: WebRTC log URL.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_webrtc</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">selenium</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Selenium log URL.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: Selenium log URL.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_selenium</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">browser</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Browser log URL.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: Browser log URL.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_browser</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">rru</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Result resource usage log URL.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: Result resource usage log URL.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rru</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">allure_report</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Allure report URL.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: Allure report URL.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_allure_report</span></div>
+
+
+<div class="viewcode-block" id="ResultAssertParams"><a class="viewcode-back" href="../../../loadero_python.resources.result.html#loadero_python.resources.result.ResultAssertParams">[docs]</a><span class="k">class</span> <span class="nc">ResultAssertParams</span><span class="p">(</span><span class="n">LoaderoResourceParams</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;ResultAssert describes Loadero result assert resource attributes.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">attribute_map</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;_result_assert_id&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;created&quot;</span><span class="p">:</span> <span class="s2">&quot;_created&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;_path&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;operator&quot;</span><span class="p">:</span> <span class="s2">&quot;_operator&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;expected&quot;</span><span class="p">:</span> <span class="s2">&quot;_expected&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;result_id&quot;</span><span class="p">:</span> <span class="s2">&quot;_result_id&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;run_assert_id&quot;</span><span class="p">:</span> <span class="s2">&quot;_run_assert_id&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;_message&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;actual&quot;</span><span class="p">:</span> <span class="s2">&quot;_actual&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;_status&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="n">custom_deserializers</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;created&quot;</span><span class="p">:</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">,</span>
+                <span class="s2">&quot;operator&quot;</span><span class="p">:</span> <span class="n">Operator</span><span class="o">.</span><span class="n">from_dict</span><span class="p">,</span>
+                <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="n">MetricPath</span><span class="o">.</span><span class="n">from_dict</span><span class="p">,</span>
+                <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="n">AssertStatus</span><span class="o">.</span><span class="n">from_dict</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_result_assert_id</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_created</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_operator</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_expected</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_result_id</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_run_assert_id</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_message</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_actual</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">result_assert_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Result assert id.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: Result assert id.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_result_assert_id</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">created</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Time when result assert was created.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            datetime: Time when result assert was created.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_created</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MetricPath</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Metric pats of result assert.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            MetricPath: Metric path.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">operator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Operator</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Operator of result assert.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Operator: Operator.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_operator</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">expected</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Expected value of result assert.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: Expected value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_expected</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">result_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Result id that the result assert belongs to.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: Result id.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_result_id</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">run_assert_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Run assert id that the result assert belongs to.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: Run assert id.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_assert_id</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">message</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Result assert message.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: Result assert message.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_message</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">actual</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Actual value of result assert.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: Actual value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_actual</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">status</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AssertStatus</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Result assert status.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            AssertStatus: Result assert status.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_status</span></div>
+
+
+<div class="viewcode-block" id="ArtifactInfoParams"><a class="viewcode-back" href="../../../loadero_python.resources.result.html#loadero_python.resources.result.ArtifactInfoParams">[docs]</a><span class="k">class</span> <span class="nc">ArtifactInfoParams</span><span class="p">(</span><span class="n">LoaderoResourceParams</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;ArtifactInfoParams describes Loadero artifact resources.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">attribute_map</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;_error&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;paths&quot;</span><span class="p">:</span> <span class="s2">&quot;_paths&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_error</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_paths</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">error</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Artifact error message.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: Artifact error message.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_error</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">paths</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;URLs of artifact files.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list[str]: URLs of artifact files.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_paths</span></div>
+
+
+<div class="viewcode-block" id="ArtifactsInfoParams"><a class="viewcode-back" href="../../../loadero_python.resources.result.html#loadero_python.resources.result.ArtifactsInfoParams">[docs]</a><span class="k">class</span> <span class="nc">ArtifactsInfoParams</span><span class="p">(</span><span class="n">LoaderoResourceParams</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;ArtifactsInfoParams describes Loadero artifacts of a single test run.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">attribute_map</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;audio&quot;</span><span class="p">:</span> <span class="s2">&quot;_audio&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;downloads&quot;</span><span class="p">:</span> <span class="s2">&quot;_downloads&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;screenshots&quot;</span><span class="p">:</span> <span class="s2">&quot;_screenshots&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;video&quot;</span><span class="p">:</span> <span class="s2">&quot;_video&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="n">custom_deserializers</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;audio&quot;</span><span class="p">:</span> <span class="n">from_dict_as_new</span><span class="p">(</span><span class="n">ArtifactInfoParams</span><span class="p">),</span>
+                <span class="s2">&quot;downloads&quot;</span><span class="p">:</span> <span class="n">from_dict_as_new</span><span class="p">(</span><span class="n">ArtifactInfoParams</span><span class="p">),</span>
+                <span class="s2">&quot;screenshots&quot;</span><span class="p">:</span> <span class="n">from_dict_as_new</span><span class="p">(</span><span class="n">ArtifactInfoParams</span><span class="p">),</span>
+                <span class="s2">&quot;video&quot;</span><span class="p">:</span> <span class="n">from_dict_as_new</span><span class="p">(</span><span class="n">ArtifactInfoParams</span><span class="p">),</span>
+            <span class="p">},</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_audio</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_downloads</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_screenshots</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_video</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">audio</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArtifactInfoParams</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Audio artifacts.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ArtifactInfoParams: Audio artifacts.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_audio</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">downloads</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArtifactInfoParams</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Downloads artifacts.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ArtifactInfoParams: Downloads artifacts.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_downloads</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">screenshots</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArtifactInfoParams</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Screenshots artifacts.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ArtifactInfoParams: Screenshots artifacts.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_screenshots</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">video</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArtifactInfoParams</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Video artifacts.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ArtifactInfoParams: Video artifacts.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_video</span></div>
+
+
+<div class="viewcode-block" id="MetricParams"><a class="viewcode-back" href="../../../loadero_python.resources.result.html#loadero_python.resources.result.MetricParams">[docs]</a><span class="k">class</span> <span class="nc">MetricParams</span><span class="p">(</span><span class="n">LoaderoResourceParams</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;MetricParams describes single result metric of a Loadero test run.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">attribute_map</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;_metric_id&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;created&quot;</span><span class="p">:</span> <span class="s2">&quot;_created&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;data_count&quot;</span><span class="p">:</span> <span class="s2">&quot;_data_count&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;metric_path&quot;</span><span class="p">:</span> <span class="s2">&quot;_metric_path&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;_value&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;total&quot;</span><span class="p">:</span> <span class="s2">&quot;_total&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;minimum&quot;</span><span class="p">:</span> <span class="s2">&quot;_minimum&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;maximum&quot;</span><span class="p">:</span> <span class="s2">&quot;_maximum&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;average&quot;</span><span class="p">:</span> <span class="s2">&quot;_average&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;stddev&quot;</span><span class="p">:</span> <span class="s2">&quot;_stddev&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;rstddev&quot;</span><span class="p">:</span> <span class="s2">&quot;_rstddev&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;perc_1st&quot;</span><span class="p">:</span> <span class="s2">&quot;_perc_1st&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;perc_5th&quot;</span><span class="p">:</span> <span class="s2">&quot;_perc_5th&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;perc_25th&quot;</span><span class="p">:</span> <span class="s2">&quot;_perc_25th&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;perc_50th&quot;</span><span class="p">:</span> <span class="s2">&quot;_perc_50th&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;perc_75th&quot;</span><span class="p">:</span> <span class="s2">&quot;_perc_75th&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;perc_95th&quot;</span><span class="p">:</span> <span class="s2">&quot;_perc_95th&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;perc_99th&quot;</span><span class="p">:</span> <span class="s2">&quot;_perc_99th&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="n">custom_deserializers</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;created&quot;</span><span class="p">:</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">,</span>
+                <span class="s2">&quot;metric_path&quot;</span><span class="p">:</span> <span class="n">MetricBasePath</span><span class="o">.</span><span class="n">from_dict</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_metric_id</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_created</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data_count</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_metric_path</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_total</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_minimum</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_maximum</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_average</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_stddev</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rstddev</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_perc_1st</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_perc_5th</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_perc_25th</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_perc_50th</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_perc_75th</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_perc_95th</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_perc_99th</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">metric_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Metric id.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: Metric id.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metric_id</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">created</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Time when metric was created.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            datetime: Time when metric was created.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_created</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">data_count</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Number of data points of metric.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: Number of data points of metric.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_count</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">metric_path</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MetricBasePath</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Metric base path of metric.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            MetricBasePath: Metric base path of metric.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metric_path</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Value of metric.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: Value of metric.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">total</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Total value of all data points of metric.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: Total value of all data points of metric.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_total</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">minimum</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Minimum value of all data points of metric.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: Minimum value of all data points of metric.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_minimum</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">maximum</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Maximum value of all data points of metric.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: Maximum value of all data points of metric.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_maximum</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">average</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Average value of all data points of metric.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: Average value of all data points of metric.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_average</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">stddev</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Standard deviation of all data points of metric.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: Standard deviation of all data points of metric.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stddev</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">rstddev</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Relative standard deviation of all data points of metric.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: Relative standard deviation of all data points of metric.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rstddev</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">perc_1st</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;1st percentile of all data points of metric.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: 1st percentile of all data points of metric.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_perc_1st</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">perc_5th</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;5th percentile of all data points of metric.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: 5th percentile of all data points of metric.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_perc_5th</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">perc_25th</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;25th percentile of all data points of metric.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: 25th percentile of all data points of metric.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_perc_25th</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">perc_50th</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;50th percentile of all data points of metric.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: 50th percentile of all data points of metric.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_perc_50th</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">perc_75th</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;75th percentile of all data points of metric.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: 75th percentile of all data points of metric.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_perc_75th</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">perc_95th</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;95th percentile of all data points of metric.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: 95th percentile of all data points of metric.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_perc_95th</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">perc_99th</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;99th percentile of all data points of metric.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: 99th percentile of all data points of metric.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_perc_99th</span></div>
+
+
+<div class="viewcode-block" id="MetricsParams"><a class="viewcode-back" href="../../../loadero_python.resources.result.html#loadero_python.resources.result.MetricsParams">[docs]</a><span class="k">class</span> <span class="nc">MetricsParams</span><span class="p">(</span><span class="n">LoaderoResourceParams</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;MetricsParams groups all result metrics of a Loadero test run.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">attribute_map</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;machine&quot;</span><span class="p">:</span> <span class="s2">&quot;_machine&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;webrtc&quot;</span><span class="p">:</span> <span class="s2">&quot;_webrtc&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="n">custom_deserializers</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;machine&quot;</span><span class="p">:</span> <span class="n">MetricsParams</span><span class="o">.</span><span class="n">__from_dict_metric_list</span><span class="p">,</span>
+                <span class="s2">&quot;webrtc&quot;</span><span class="p">:</span> <span class="n">MetricsParams</span><span class="o">.</span><span class="n">__from_dict_metric_list</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_machine</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_webrtc</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">machine</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="n">MetricBasePath</span><span class="p">,</span> <span class="n">MetricParams</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Machine metrics.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict[MetricBasePath, MetricParams]: Machine metrics.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_machine</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">webrtc</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="n">MetricBasePath</span><span class="p">,</span> <span class="n">MetricParams</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Webrtc metrics.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict[MetricBasePath, MetricParams]: Webrtc metrics.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_webrtc</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__from_dict_metric_list</span><span class="p">(</span>
+        <span class="n">json_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">any</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="n">MetricBasePath</span><span class="p">,</span> <span class="n">MetricParams</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Serializes metric list from JSON.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            json_value (dict[str, any]): JSON dictionary.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict[MetricPath, MetricParams]: Mapping of metric paths to metric.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">metric_list</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">json_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">MetricParams</span><span class="p">()</span>
+            <span class="n">metric_list</span><span class="p">[</span><span class="n">MetricBasePath</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">k</span><span class="p">)]</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">metric_list</span></div>
+
+
+<div class="viewcode-block" id="ResultMOSParams"><a class="viewcode-back" href="../../../loadero_python.resources.result.html#loadero_python.resources.result.ResultMOSParams">[docs]</a><span class="k">class</span> <span class="nc">ResultMOSParams</span><span class="p">(</span><span class="n">LoaderoResourceParams</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;ResultMOSParams describes a single MOS result.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">attribute_map</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;_result_mos_id&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;created&quot;</span><span class="p">:</span> <span class="s2">&quot;_created&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;result_id&quot;</span><span class="p">:</span> <span class="s2">&quot;_result_id&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;algorithm&quot;</span><span class="p">:</span> <span class="s2">&quot;_algorithm&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;score&quot;</span><span class="p">:</span> <span class="s2">&quot;_score&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="s2">&quot;_start&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;end&quot;</span><span class="p">:</span> <span class="s2">&quot;_end&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="n">custom_deserializers</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;created&quot;</span><span class="p">:</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">,</span>
+                <span class="s2">&quot;algorithm&quot;</span><span class="p">:</span> <span class="n">MosAlgorithm</span><span class="o">.</span><span class="n">from_dict</span><span class="p">,</span>
+                <span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">,</span>
+                <span class="s2">&quot;end&quot;</span><span class="p">:</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_result_mos_id</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_created</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_result_id</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_algorithm</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_score</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_start</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_end</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">result_mos_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Result MOS ID.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: Result MOS ID.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_result_mos_id</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">created</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Time when mos result was created.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            datetime: Time when mos result was created.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_created</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">result_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Result id that the mos result belongs to.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: Result id that the mos result belongs to.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_result_id</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">algorithm</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MosAlgorithm</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Algorithm used to calculate MOS.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            MosAlgorithm: Algorithm used to calculate MOS.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_algorithm</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Mean opinion score.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: Mean opinion score.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_score</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Start time of audio fragment.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            datetime: Start time of audio fragment.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">end</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;End time of audio fragment.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            datetime: End time of audio fragment.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_end</span></div>
+
+
+<div class="viewcode-block" id="MeanOpinionScoresParams"><a class="viewcode-back" href="../../../loadero_python.resources.result.html#loadero_python.resources.result.MeanOpinionScoresParams">[docs]</a><span class="k">class</span> <span class="nc">MeanOpinionScoresParams</span><span class="p">(</span><span class="n">LoaderoResourceParams</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;MeanOpinionScoresParams groups all MOS evaluations results.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">attribute_map</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;visqol&quot;</span><span class="p">:</span> <span class="s2">&quot;_visqol&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="n">custom_deserializers</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;visqol&quot;</span><span class="p">:</span> <span class="n">from_dict_as_list</span><span class="p">(</span><span class="n">ResultMOSParams</span><span class="p">),</span>
+            <span class="p">},</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_visqol</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">visqol</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">ResultMOSParams</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Mean opinion scores calculated using Visqol algorithm.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list[ResultMOSParams]: Mean opinion scores calculated using Visqol</span>
+<span class="sd">            algorithm.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_visqol</span></div>
+
+
+<div class="viewcode-block" id="ResultTimecardParams"><a class="viewcode-back" href="../../../loadero_python.resources.result.html#loadero_python.resources.result.ResultTimecardParams">[docs]</a><span class="k">class</span> <span class="nc">ResultTimecardParams</span><span class="p">(</span><span class="n">LoaderoResourceParams</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;ResultTimecardParams describes a single timecard result.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">attribute_map</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;_result_timecard_id&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;created&quot;</span><span class="p">:</span> <span class="s2">&quot;_created&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;result_id&quot;</span><span class="p">:</span> <span class="s2">&quot;_result_id&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;_name&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="s2">&quot;_start&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;end&quot;</span><span class="p">:</span> <span class="s2">&quot;_end&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="n">custom_deserializers</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;created&quot;</span><span class="p">:</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_result_timecard_id</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_created</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_result_id</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_start</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_end</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">result_timecard_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Result timecard ID.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: Result timecard ID.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_result_timecard_id</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">created</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Time when result timecard was created.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            datetime: Time when result timecard was created.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_created</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">result_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Result id that the timecard result belongs to.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: Result id that the timecard result belongs to.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_result_id</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Name of the timecard.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: Name of the timecard.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Start time of timecard as Unix timestamp in milliseconds.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: Start time of timecard as Unix timestamp in milliseconds.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">end</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;End time of timecard as Unix timestamp in milliseconds.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: End time of timecard as Unix timestamp in milliseconds.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_end</span></div>
+
+
+<div class="viewcode-block" id="DataSyncParams"><a class="viewcode-back" href="../../../loadero_python.resources.result.html#loadero_python.resources.result.DataSyncParams">[docs]</a><span class="k">class</span> <span class="nc">DataSyncParams</span><span class="p">(</span><span class="n">LoaderoResourceParams</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;DataSyncParams groups all datasync results result.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">attribute_map</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;result_timecards&quot;</span><span class="p">:</span> <span class="s2">&quot;_result_timecards&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="n">custom_deserializers</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;result_timecards&quot;</span><span class="p">:</span> <span class="n">from_dict_as_list</span><span class="p">(</span><span class="n">ResultTimecardParams</span><span class="p">),</span>
+            <span class="p">},</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_result_timecards</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">result_timecards</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">ResultTimecardParams</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;List of timecards created duding test.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list[ResultTimecardParams]: List of timecards created duding test.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_result_timecards</span></div>
+
+
+<div class="viewcode-block" id="ResultParams"><a class="viewcode-back" href="../../../loadero_python.resources.result.html#loadero_python.resources.result.ResultParams">[docs]</a><span class="k">class</span> <span class="nc">ResultParams</span><span class="p">(</span><span class="n">LoaderoResourceParams</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;ResultParams represents Loadero result resource attributes.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">result_id</span><span class="p">:</span> <span class="nb">int</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">run_id</span><span class="p">:</span> <span class="nb">int</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates a new ResultParams instance that will contain single result</span>
+<span class="sd">        resources attributes.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            result_id (int, optional): Existing result resources ID.</span>
+<span class="sd">            Defaults to None.</span>
+
+<span class="sd">            run_id (int, optional): Existing result resources run ID.</span>
+<span class="sd">            Defaults to None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">attribute_map</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;result_id&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;created&quot;</span><span class="p">:</span> <span class="s2">&quot;_created&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;updated&quot;</span><span class="p">:</span> <span class="s2">&quot;_updated&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="s2">&quot;_start&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;end&quot;</span><span class="p">:</span> <span class="s2">&quot;_end&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;_status&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;selenium_result&quot;</span><span class="p">:</span> <span class="s2">&quot;_selenium_result&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;mos_status&quot;</span><span class="p">:</span> <span class="s2">&quot;_mos_status&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;participant_details&quot;</span><span class="p">:</span> <span class="s2">&quot;_participant_details&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;log_paths&quot;</span><span class="p">:</span> <span class="s2">&quot;_log_paths&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;asserts&quot;</span><span class="p">:</span> <span class="s2">&quot;_asserts&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;artifacts&quot;</span><span class="p">:</span> <span class="s2">&quot;_artifacts&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;metrics&quot;</span><span class="p">:</span> <span class="s2">&quot;_metrics&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;mos&quot;</span><span class="p">:</span> <span class="s2">&quot;_mos&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;data_sync&quot;</span><span class="p">:</span> <span class="s2">&quot;_data_sync&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="n">custom_deserializers</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;created&quot;</span><span class="p">:</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">,</span>
+                <span class="s2">&quot;updated&quot;</span><span class="p">:</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">,</span>
+                <span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">,</span>
+                <span class="s2">&quot;end&quot;</span><span class="p">:</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">,</span>
+                <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="n">ResultStatus</span><span class="o">.</span><span class="n">from_dict</span><span class="p">,</span>
+                <span class="s2">&quot;selenium_result&quot;</span><span class="p">:</span> <span class="n">ResultStatus</span><span class="o">.</span><span class="n">from_dict</span><span class="p">,</span>
+                <span class="s2">&quot;mos_status&quot;</span><span class="p">:</span> <span class="n">MetricStatus</span><span class="o">.</span><span class="n">from_dict</span><span class="p">,</span>
+                <span class="s2">&quot;participant_details&quot;</span><span class="p">:</span> <span class="n">from_dict_as_new</span><span class="p">(</span><span class="n">RunParticipantParams</span><span class="p">),</span>
+                <span class="s2">&quot;log_paths&quot;</span><span class="p">:</span> <span class="n">from_dict_as_new</span><span class="p">(</span><span class="n">ResultLogParams</span><span class="p">),</span>
+                <span class="s2">&quot;asserts&quot;</span><span class="p">:</span> <span class="n">from_dict_as_list</span><span class="p">(</span><span class="n">ResultAssertParams</span><span class="p">),</span>
+                <span class="s2">&quot;artifacts&quot;</span><span class="p">:</span> <span class="n">from_dict_as_new</span><span class="p">(</span><span class="n">ArtifactsInfoParams</span><span class="p">),</span>
+                <span class="s2">&quot;metrics&quot;</span><span class="p">:</span> <span class="n">from_dict_as_new</span><span class="p">(</span><span class="n">MetricsParams</span><span class="p">),</span>
+                <span class="s2">&quot;mos&quot;</span><span class="p">:</span> <span class="n">from_dict_as_new</span><span class="p">(</span><span class="n">MeanOpinionScoresParams</span><span class="p">),</span>
+                <span class="s2">&quot;data_sync&quot;</span><span class="p">:</span> <span class="n">from_dict_as_new</span><span class="p">(</span><span class="n">DataSyncParams</span><span class="p">),</span>
+            <span class="p">},</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">result_id</span> <span class="o">=</span> <span class="n">result_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">run_id</span> <span class="o">=</span> <span class="n">run_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_created</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_updated</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_start</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_end</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_selenium_result</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mos_status</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_participant_details</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log_paths</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_asserts</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_artifacts</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_metrics</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mos</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data_sync</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">created</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Time when result was created.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            datetime: Time when result was created.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_created</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">updated</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Time when result was last updated.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            datetime: Time when result was last updated.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_updated</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Test particpiant execution start time.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            datetime: Test  particpiant execution start time.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">end</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Test particpiant execution end time.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            datetime: Test particpiant execution end time.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_end</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">status</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ResultStatus</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Test particpiant execution status.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ResultStatus: Test particpiant execution status.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_status</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">selenium_result</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ResultStatus</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Test script execution result of particpiant.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ResultStatus: Test script execution result of particpiant.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_selenium_result</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">mos_status</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MetricStatus</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Mean opinion score calculation status.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            MetricStatus: Mean opinion score calculation status.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mos_status</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">participant_details</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RunParticipantParams</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Participant details.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            RunParticipantParams: Participant details.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_participant_details</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">log_paths</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ResultLogParams</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Log paths.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ResultLogParams: Log paths.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_log_paths</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">asserts</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">ResultAssertParams</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Assert results for participant.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list[ResultAssertParams]: Assert results for participant.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_asserts</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">artifacts</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArtifactsInfoParams</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Artifacts created by participant.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ArtifactsInfoParams: Artifacts created by participant.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_artifacts</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MetricsParams</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Metrics results of participant.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            MetricsParams: Metrics results of participant.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metrics</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">mos</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MeanOpinionScoresParams</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Mean opinion score results of participant.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            MeanOpinionScoresParams: Mean opinion score results of participant.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mos</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">data_sync</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataSyncParams</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Data collected with datasync wy participant.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            DataSyncParams: Data collected with datasync wy participant.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_sync</span></div>
+
+
+<div class="viewcode-block" id="Result"><a class="viewcode-back" href="../../../loadero_python.resources.result.html#loadero_python.resources.result.Result">[docs]</a><span class="k">class</span> <span class="nc">Result</span><span class="p">(</span><span class="n">LoaderoResource</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Result class allows to perform read operation of Loadero result resource.</span>
+
+<span class="sd">    APIClient must be previously initialized with a valid Loadero access token.</span>
+
+<span class="sd">    The target Loadero result resource is determined by ResultParams.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">run_id</span><span class="p">:</span> <span class="nb">int</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">result_id</span><span class="p">:</span> <span class="nb">int</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">params</span><span class="p">:</span> <span class="n">ResultParams</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates a new instance of Result that allows to perform</span>
+<span class="sd">        read operation on a single result resource.</span>
+
+<span class="sd">        The resources attribute data is stored in params field that is an</span>
+<span class="sd">        instance of ResultParams.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            run_id (int, optional): Existing run resources ID. Defaults to None.</span>
+
+<span class="sd">            result_id (int, optional): Existing result resources ID.</span>
+<span class="sd">            Defaults to None.</span>
+
+<span class="sd">            params (ResultParams, optional): Instance of ResultParams that</span>
+<span class="sd">            describes the result resource. Defaults to None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="n">params</span> <span class="ow">or</span> <span class="n">ResultParams</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">run_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">run_id</span> <span class="o">=</span> <span class="n">run_id</span>
+
+        <span class="k">if</span> <span class="n">result_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">result_id</span> <span class="o">=</span> <span class="n">result_id</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Result.read"><a class="viewcode-back" href="../../../loadero_python.resources.result.html#loadero_python.resources.result.Result.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Result</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Reads a existing result.</span>
+
+<span class="sd">        Required attributes of params field that need to be populated, otherwise</span>
+<span class="sd">        the method will raise an exception:</span>
+<span class="sd">            - result_id</span>
+<span class="sd">            - run_id</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If resource params do not sufficiently identify</span>
+<span class="sd">            resource.</span>
+
+<span class="sd">            APIException: If API call fails.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Result: Read result resource.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">ResultAPI</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div></div>
+
+
+<div class="viewcode-block" id="ResultAPI"><a class="viewcode-back" href="../../../loadero_python.resources.result.html#loadero_python.resources.result.ResultAPI">[docs]</a><span class="k">class</span> <span class="nc">ResultAPI</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;ResultAPI defines Loadero API operations for result resources.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ResultAPI.read"><a class="viewcode-back" href="../../../loadero_python.resources.result.html#loadero_python.resources.result.ResultAPI.read">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="n">ResultParams</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ResultParams</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Read an existing result resource.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            params (ResultParams): Describes the result resource to read.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If resource params do not sufficiently identify</span>
+<span class="sd">            resource.</span>
+
+<span class="sd">            APIException: If API call fails.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ResultParams: Read Result resource params.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">ResultAPI</span><span class="o">.</span><span class="n">__validate_identifiers</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">params</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span>
+            <span class="n">APIClient</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ResultAPI</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">run_id</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">result_id</span><span class="p">))</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ResultAPI.read_all"><a class="viewcode-back" href="../../../loadero_python.resources.result.html#loadero_python.resources.result.ResultAPI.read_all">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">read_all</span><span class="p">(</span>
+        <span class="n">run_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">query_params</span><span class="p">:</span> <span class="n">QueryParams</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PagedResponse</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Read all result resources for run.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            run_id (int): Parent run resource id.</span>
+
+<span class="sd">            query_params (QueryParams, optional): Describes query parameters.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            APIException: If API call fails.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            PagedResponse: Paged response of result resources.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">qp</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">query_params</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">qp</span> <span class="o">=</span> <span class="n">query_params</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">PagedResponse</span><span class="p">(</span><span class="n">ResultParams</span><span class="p">)</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span>
+            <span class="n">APIClient</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ResultAPI</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="n">run_id</span><span class="p">),</span> <span class="n">query_params</span><span class="o">=</span><span class="n">qp</span><span class="p">)</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ResultAPI.route"><a class="viewcode-back" href="../../../loadero_python.resources.result.html#loadero_python.resources.result.ResultAPI.route">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">route</span><span class="p">(</span><span class="n">run_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">result_id</span><span class="p">:</span> <span class="nb">int</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Build result url route.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            run_id (int): Run resource id.</span>
+
+<span class="sd">            result_id (int, optional): Result resource id. Defaults to None. If</span>
+<span class="sd">            omitted, the route will point to all result resources of parent</span>
+<span class="sd">            run resource.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: Route to result resource/s.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">r</span> <span class="o">=</span> <span class="n">APIClient</span><span class="p">()</span><span class="o">.</span><span class="n">project_route</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;runs/</span><span class="si">{</span><span class="n">run_id</span><span class="si">}</span><span class="s2">/results/&quot;</span>
+
+        <span class="k">if</span> <span class="n">result_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">result_id</span><span class="si">}</span><span class="s2">/&quot;</span>
+
+        <span class="k">return</span> <span class="n">r</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__validate_identifiers</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="n">ResultParams</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Validate result params identifiers.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            params (ResultParams): Result params.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: Result result_id must be a valid int</span>
+
+<span class="sd">            ValueError: Result run_id must be a valid int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">result_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Result result_id must be a valid int&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">run_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Result run_id must be a valid int&quot;</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Loadero Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
