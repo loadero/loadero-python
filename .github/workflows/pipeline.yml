@@ -28,7 +28,6 @@ jobs:
               - 'loadero_python/**'
               - 'tests/**'
 
-
   checks:
     needs: check-changes
     if: ${{ needs.check-changes.outputs.source-changed == 'true' }}
@@ -43,7 +42,7 @@ jobs:
           python-version: '3.10' 
           cache: 'pip'
 
-      - name: install-requirements
+      - name: install requirements
         run: pip install -r requirements.txt
 
       - name: lint
@@ -87,3 +86,26 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           password: ${{ secrets.LOADERO_PYTHON_PYPI_API_TOKEN }}
+
+  build-publish-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10' 
+          cache: 'pip'
+
+      - name: install requirements
+        run: pip install -r docs-requirements.txt
+
+      - name: show branch
+        run: git describe
+
+      - name: build docs
+        run: |
+          cd docs
+          make html
