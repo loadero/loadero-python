@@ -13,7 +13,25 @@ on:
   workflow_dispatch:
 
 jobs:
+  check-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      source-changed: ${{ steps.filter.outputs.source-changed }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          base: ${{ github.ref }}
+          filters: |
+            source-changed:
+              - 'loadero_python/**'
+              - 'tests/**'
+
+
   checks:
+    needs: check-changes
+    if: ${{ needs.check-changes.outputs.source-changed == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: checkout
