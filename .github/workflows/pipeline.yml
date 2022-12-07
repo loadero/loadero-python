@@ -111,11 +111,18 @@ jobs:
         run: |
           cd docs
           make html
+          cd ..
+          cp -r docs-build/html /tmp
 
       - name: checkout docs
         uses: actions/checkout@v3
         with:
           ref: docs
+
+      - name: update docs
+        run: |
+          rm -rf *
+          cp -rT /tmp/html .
 
       - name: filesystem info
         run: |
