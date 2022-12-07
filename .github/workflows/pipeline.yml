@@ -124,11 +124,18 @@ jobs:
           rm -rf *
           cp -rT /tmp/html .
 
-      - name: filesystem info
+      - name: commit updates
         run: |
-          echo "-------- pwd ---------"
-          pwd
-          echo "--------- ls ---------"
-          ls -la
-          echo "--- docs-build dir ---"
-          ls -la docs-build
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "generated"
+          git push
+      # - name: filesystem info
+      #   run: |
+      #     echo "-------- pwd ---------"
+      #     pwd
+      #     echo "--------- ls ---------"
+      #     ls -la
+      #     echo "--- docs-build dir ---"
+      #     ls -la docs-build
