@@ -117,8 +117,11 @@ jobs:
         with:
           ref: docs
 
-      - name: ls
+      - name: filesystem info
         run: |
+          echo "-------- pwd ---------"
+          pwd
+          echo "--------- ls ---------"
           ls -la
           echo "--- docs-build dir ---"
           ls -la docs-build
