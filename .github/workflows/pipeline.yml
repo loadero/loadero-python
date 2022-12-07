@@ -88,6 +88,7 @@ jobs:
           password: ${{ secrets.LOADERO_PYTHON_PYPI_API_TOKEN }}
 
   build-publish-docs:
+    needs: publish
     runs-on: ubuntu-latest
     steps:
       - name: checkout
@@ -128,14 +129,7 @@ jobs:
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
+          git status
           git add .
           git commit -m "generated"
           git push
-      # - name: filesystem info
-      #   run: |
-      #     echo "-------- pwd ---------"
-      #     pwd
-      #     echo "--------- ls ---------"
-      #     ls -la
-      #     echo "--- docs-build dir ---"
-      #     ls -la docs-build
