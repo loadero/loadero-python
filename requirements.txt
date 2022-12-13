@@ -13,3 +13,8 @@ build
 # lib
 urllib3==1.26.9
 python-dateutil==2.8.2
+
+
+# docs
+Sphinx
+sphinx_rtd_theme

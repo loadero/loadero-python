@@ -13,7 +13,24 @@ on:
   workflow_dispatch:
 
 jobs:
+  check-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      source-changed: ${{ steps.filter.outputs.source-changed }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          base: ${{ github.ref }}
+          filters: |
+            source-changed:
+              - 'loadero_python/**'
+              - 'tests/**'
+
   checks:
+    needs: check-changes
+    if: ${{ needs.check-changes.outputs.source-changed == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: checkout
@@ -25,7 +42,7 @@ jobs:
           python-version: '3.10' 
           cache: 'pip'
 
-      - name: install-requirements
+      - name: install requirements
         run: pip install -r requirements.txt
 
       - name: lint
@@ -69,3 +86,50 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           password: ${{ secrets.LOADERO_PYTHON_PYPI_API_TOKEN }}
+
+  build-publish-docs:
+    needs: publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10' 
+          cache: 'pip'
+
+      - name: install requirements
+        run: pip install -r requirements.txt
+
+      - name: show branch
+        run: git describe
+
+      - name: build docs
+        run: |
+          cd docs
+          make html
+          cd ..
+          cp -r docs-build/html /tmp
+
+      - name: checkout docs
+        uses: actions/checkout@v3
+        with:
+          ref: docs
+
+      - name: update docs
+        run: |
+          rm -rf *
+          cp -rT /tmp/html .
+
+      - name: commit updates
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git status
+          git add .
+          git commit -m "generated"
+          git push
