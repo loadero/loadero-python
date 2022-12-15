@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 from enum import Enum
-from typing import Callable
+from typing import Callable, Dict, List, Tuple
 import json
 from datetime import datetime
 
@@ -12,16 +12,16 @@ class Serializable:
     converted to and from JSON using Python dictionary as a JSON representation.
     """
 
-    def to_dict(self) -> dict[str, any]:
+    def to_dict(self) -> Dict[str, any]:
         """Returns a dictionary representation of the object."""
         raise NotImplementedError
 
-    def to_dict_full(self) -> dict[str, any]:
+    def to_dict_full(self) -> Dict[str, any]:
         """Returns a dictionary representation of the object that contains all
         of the objects attributes."""
         raise NotImplementedError
 
-    def from_dict(self, json_dict: dict[str, any]) -> Serializable:
+    def from_dict(self, json_dict: Dict[str, any]) -> Serializable:
         """Returns an instance of the object from a dictionary."""
         raise NotImplementedError
 
@@ -66,7 +66,7 @@ class ParamsSerializer(Serializable):
         for k, v in self.__attribute_map.items():
             self.__reverse_attribute_map[v] = k
 
-    def to_dict(self) -> dict[str, any]:
+    def to_dict(self) -> Dict[str, any]:
         """Converts the resource params object to a dictionary JSON
         representation that contains only the body attributes.
 
@@ -132,7 +132,7 @@ class ParamsSerializer(Serializable):
 
         return attribute
 
-    def to_dict_full(self) -> dict[str, any]:
+    def to_dict_full(self) -> Dict[str, any]:
         """Returns a dictionary representation of the object that contains all
         of the objects attributes.
 
@@ -162,7 +162,7 @@ class ParamsSerializer(Serializable):
 
         return json_dict
 
-    def from_dict(self, json_dict: dict[str, any]) -> ParamsSerializer:
+    def from_dict(self, json_dict: Dict[str, any]) -> ParamsSerializer:
         """Sets the attributes of the resource params object from a JSON
         representation.
 
@@ -194,7 +194,7 @@ class ParamsSerializer(Serializable):
 
 def from_dict_as_list(
     resource_params_class: type,
-) -> Callable[[dict[str, any]], list[LoaderoResourceParams]]:
+) -> Callable[[Dict[str, any]], List[LoaderoResourceParams]]:
     """Returns a function that deserializes a dictionary to a list of new
     instances of the resource params class
 
@@ -223,7 +223,7 @@ def from_dict_as_list(
 
 def from_dict_as_new(
     resource_params_class: type,
-) -> Callable[[dict[str, any]], LoaderoResourceParams]:
+) -> Callable[[Dict[str, any]], LoaderoResourceParams]:
     """Returns a function that deserializes a dictionary to a new instance of
     the resource params class.
 
@@ -286,7 +286,7 @@ class DuplicateResourceBodyParams(LoaderoResourceParams):
 
 
 def convert_params_list(
-    resource_class: type, params: list[LoaderoResource]
+    resource_class: type, params: List[LoaderoResource]
 ) -> list:
     """Converts a list of resource params to a list of resource objects.
     User of this function is responsible for matching the type of params and
@@ -396,7 +396,7 @@ class QueryParams:
 
         self.__query_params[key].append(value)
 
-    def parse(self) -> list[tuple[str, any]]:
+    def parse(self) -> List[Tuple[str, any]]:
         """Parses QueryParams into a list of tuples representation that will be
             used for sending the request.
 

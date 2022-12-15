@@ -9,6 +9,7 @@ pip-check-updates==0.17.0
 Jinja2==3.1.2
 twine
 build
+tox
 
 # lib
 urllib3==1.26.9

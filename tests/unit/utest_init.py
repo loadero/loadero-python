@@ -5,7 +5,10 @@
 # pylint: disable=import-outside-toplevel
 
 
-def contains(got: list[str], want: list[str]) -> bool:
+from typing import List
+
+
+def contains(got: List[str], want: List[str]) -> bool:
     for w in want:
         if w not in got:
             print(f"{w} not in {got}")
