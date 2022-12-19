@@ -225,3 +225,4 @@ dev-files
 .vscode
 pytest-coverage.txt
 docs-build
+pypi-tests/integration

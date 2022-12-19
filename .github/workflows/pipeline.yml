@@ -32,6 +32,9 @@ jobs:
     needs: check-changes
     if: ${{ needs.check-changes.outputs.source-changed == 'true' }}
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -39,7 +42,7 @@ jobs:
       - name: setup python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10' 
+          python-version: ${{ matrix.python-version }}
           cache: 'pip'
 
       - name: install requirements
@@ -57,10 +60,10 @@ jobs:
       - name: generate coverage report
         run: ./check.sh test report
 
-      - name: comment coverage
-        uses: coroo/pytest-coverage-commentator@v1.0.2
-        with:
-          pytest-coverage: pytest-coverage.txt
+      # - name: comment coverage
+      #   uses: coroo/pytest-coverage-commentator@v1.0.2
+      #   with:
+      #     pytest-coverage: pytest-coverage.txt
 
   publish:
     needs: checks
