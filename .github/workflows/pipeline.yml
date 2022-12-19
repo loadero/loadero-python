@@ -28,9 +28,33 @@ jobs:
               - 'loadero_python/**'
               - 'tests/**'
 
-  checks:
-    needs: check-changes
+  lint:
     if: ${{ needs.check-changes.outputs.source-changed == 'true' }}
+    needs: check-changes
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+          cache: 'pip'
+
+      - name: install requirements
+        run: pip install -r requirements.txt
+
+      - name: lint
+        run: ./check.sh lint
+
+      - name: format
+        run: ./check.sh format
+
+
+  tests:
+    needs: lint
+    # if: ${{ needs.check-changes.outputs.source-changed == 'true' }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -48,17 +72,17 @@ jobs:
       - name: install requirements
         run: pip install -r requirements.txt
 
-      - name: lint
-        run: ./check.sh lint
+      # - name: lint
+      #   run: ./check.sh lint
 
-      - name: format
-        run: ./check.sh format
+      # - name: format
+      #   run: ./check.sh format
 
       - name: test
         run: ./check.sh test unit
 
-      - name: generate coverage report
-        run: ./check.sh test report
+      # - name: generate coverage report
+      #   run: ./check.sh test report
 
       # - name: comment coverage
       #   uses: coroo/pytest-coverage-commentator@v1.0.2
