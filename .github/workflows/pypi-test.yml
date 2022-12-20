@@ -1,15 +1,6 @@
 name: PYPI-TEST
 
 on:
-  # push:
-  #   branches: 
-  #     - 'master'
-  #   tags:
-  #     - '*'
-  # pull_request:
-  #   branches: 
-  #     - 'master'
-
   workflow_dispatch:
 
 jobs:
@@ -34,8 +25,13 @@ jobs:
           pip install -r requirements/test.txt
           pip install loadero-python
 
+      - name: set env
+        env:
+          PROJECT_ID: ${{ secrets.PROJECT_ID }}
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          API_BASE: ${{ secrets.API_BASE }}
+
       - name: test
         run: |
           cd tests/integration
-          export $(grep -v '^#' ../../.env | xargs)
           pytest -v
