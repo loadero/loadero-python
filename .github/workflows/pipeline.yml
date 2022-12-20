@@ -43,7 +43,9 @@ jobs:
           cache: 'pip'
 
       - name: install requirements
-        run: pip install -r requirements.txt
+        run: |
+          pip install -r requirements/lib.txt
+          pip install -r requirements/dev.txt
 
       - name: lint
         run: ./check.sh lint
@@ -54,7 +56,6 @@ jobs:
 
   tests:
     needs: lint
-    # if: ${{ needs.check-changes.outputs.source-changed == 'true' }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -70,24 +71,13 @@ jobs:
           cache: 'pip'
 
       - name: install requirements
-        run: pip install -r requirements.txt
-
-      # - name: lint
-      #   run: ./check.sh lint
-
-      # - name: format
-      #   run: ./check.sh format
+        run: |
+          pip install -r requirements/lib.txt
+          pip install -r requirements/dev.txt
+          pip install -r requirements/test.txt
 
       - name: test
         run: ./check.sh test unit
-
-      # - name: generate coverage report
-      #   run: ./check.sh test report
-
-      # - name: comment coverage
-      #   uses: coroo/pytest-coverage-commentator@v1.0.2
-      #   with:
-      #     pytest-coverage: pytest-coverage.txt
 
   publish:
     needs: tests
@@ -130,7 +120,9 @@ jobs:
           cache: 'pip'
 
       - name: install requirements
-        run: pip install -r requirements.txt
+        run: |
+          pip install -r requirements/lib.txt
+          pip install -r requirements/docs.txt
 
       - name: show branch
         run: git describe
