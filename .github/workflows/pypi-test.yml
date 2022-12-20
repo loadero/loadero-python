@@ -32,7 +32,8 @@ jobs:
       - name: install requirements
         run: |
           pip install -r requirements/test.txt
-          pip install loadero-python
+        
+        # pip install loadero-python
 
       - name: import location
         run:  python -c "import loadero_python; print(loadero_python)"
