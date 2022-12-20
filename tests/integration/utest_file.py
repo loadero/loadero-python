@@ -26,21 +26,21 @@ def api_client():
 
 @pytest.mark.usefixtures("api_client")
 class UTestFile:
-    @staticmethod
-    def utest_create():
-        file_count = len(Project().files()[0])
+    # @staticmethod
+    # def utest_create():
+    #     file_count = len(Project().files()[0])
 
-        f = File(
-            params=FileParams(
-                file_type=FileType.FT_SSL_CERTIFICATE, content="hello"
-            )
-        )
+    #     f = File(
+    #         params=FileParams(
+    #             file_type=FileType.FT_SSL_CERTIFICATE, content="hello"
+    #         )
+    #     )
 
-        f.create()
+    #     f.create()
 
-        assert file_count + 1 == len(Project().files()[0])
+    #     assert file_count + 1 == len(Project().files()[0])
 
-        f.delete()
+    #     f.delete()
 
     @staticmethod
     def utest_read():
@@ -58,42 +58,42 @@ class UTestFile:
         )
         assert f.params.file_type == FileType.FT_TEST_SCRIPT
 
-    @staticmethod
-    def utest_update():
-        f = File(
-            params=FileParams(
-                file_type=FileType.FT_SSL_CERTIFICATE, content="hello"
-            )
-        )
+    # @staticmethod
+    # def utest_update():
+    #     f = File(
+    #         params=FileParams(
+    #             file_type=FileType.FT_SSL_CERTIFICATE, content="hello"
+    #         )
+    #     )
 
-        f.create()
+    #     f.create()
 
-        f.params.content = "world"
+    #     f.params.content = "world"
 
-        f.update()
+    #     f.update()
 
-        f = File(file_id=f.params.file_id)
+    #     f = File(file_id=f.params.file_id)
 
-        f.read()
+    #     f.read()
 
-        assert f.params.content == "world"
+    #     assert f.params.content == "world"
 
-        f.delete()
+    #     f.delete()
 
-    @staticmethod
-    def utest_delete():
-        file_count = len(Project().files()[0])
+    # @staticmethod
+    # def utest_delete():
+    #     file_count = len(Project().files()[0])
 
-        f = File(
-            params=FileParams(
-                file_type=FileType.FT_SSL_CERTIFICATE, content="hello"
-            )
-        )
+    #     f = File(
+    #         params=FileParams(
+    #             file_type=FileType.FT_SSL_CERTIFICATE, content="hello"
+    #         )
+    #     )
 
-        f.create()
+    #     f.create()
 
-        assert file_count + 1 == len(Project().files()[0])
+    #     assert file_count + 1 == len(Project().files()[0])
 
-        f.delete()
+    #     f.delete()
 
-        assert file_count == len(Project().files()[0])
+    #     assert file_count == len(Project().files()[0])
