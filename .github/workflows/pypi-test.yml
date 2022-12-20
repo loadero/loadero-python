@@ -34,6 +34,9 @@ jobs:
           pip install -r requirements/test.txt
           pip install loadero-python
 
+      - name: import location
+        run:  python -c "import loadero_python; print(loadero_python)"
+
       - name: run tests
         env:
           PROJECT_ID: ${{ secrets.PROJECT_ID }}
