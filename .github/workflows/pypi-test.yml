@@ -32,8 +32,7 @@ jobs:
       - name: install requirements
         run: |
           pip install -r requirements/test.txt
-        
-        # pip install loadero-python
+          pip install loadero-python
 
       - name: import location
         run:  python -c "import loadero_python; print(loadero_python)"
@@ -44,5 +43,6 @@ jobs:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           API_BASE: ${{ secrets.API_BASE }}
         run: |
+          rm -rf loadero_python
           cd tests/integration
           pytest -v
