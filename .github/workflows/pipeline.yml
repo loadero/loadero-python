@@ -73,7 +73,6 @@ jobs:
           cache: 'pip'
           cache-dependency-path: requirements/*.txt
 
-
       - name: install requirements
         run: |
           pip install -r requirements/lib.txt
