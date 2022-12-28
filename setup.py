@@ -24,15 +24,15 @@ setup(
         "Intended Audience :: Developers",
         "Topic :: Software Development :: Quality Assurance",
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
-        "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
     ],
     keywords="loadero",
     project_urls={
-        # "Documentation": "", # not yet
+        "Documentation": "https://loadero.github.io/loadero-python/",
         "Source": "https://github.com/loadero/loadero-python",
         "Tracker": "https://github.com/loadero/loadero-python/issues",
         "Loadero": "https://loadero.com/",

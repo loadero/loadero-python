@@ -4,6 +4,7 @@ Pagination describes and provides a way to manage large read all operation
 responses
 """
 
+from typing import Dict, List
 from .resource import LoaderoResourceParams, from_dict_as_list, from_dict_as_new
 
 
@@ -110,11 +111,11 @@ class PagedResponse(LoaderoResourceParams):
         return self._pagination
 
     @property
-    def results(self) -> list[LoaderoResourceParams]:
+    def results(self) -> List[LoaderoResourceParams]:
         """Request results.
 
         Returns:
-            list[LoaderoResourceParams]: Results.
+            List[LoaderoResourceParams]: Results.
         """
 
         if self._results is None:
@@ -123,12 +124,12 @@ class PagedResponse(LoaderoResourceParams):
         return self._results
 
     @property
-    def filter(self) -> dict[any, any]:
+    def filter(self) -> Dict[any, any]:
         """Filters applied in request. Filter keys and values are NOT parsed to
         their python types.
 
         Returns:
-            dict[any, any]: Filters.
+            Dict[any, any]: Filters.
         """
 
         return self._filter

@@ -28,9 +28,9 @@ jobs:
               - 'loadero_python/**'
               - 'tests/**'
 
-  checks:
-    needs: check-changes
+  lint:
     if: ${{ needs.check-changes.outputs.source-changed == 'true' }}
+    needs: check-changes
     runs-on: ubuntu-latest
     steps:
       - name: checkout
@@ -39,11 +39,15 @@ jobs:
       - name: setup python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10' 
+          python-version: "3.10"
           cache: 'pip'
+          cache-dependency-path: requirements/*.txt
 
       - name: install requirements
-        run: pip install -r requirements.txt
+        run: |
+          pip install -r requirements/lib.txt
+          pip install -r requirements/dev.txt
+          pip install -r requirements/test.txt
 
       - name: lint
         run: ./check.sh lint
@@ -51,19 +55,35 @@ jobs:
       - name: format
         run: ./check.sh format
 
+
+  tests:
+    needs: lint
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+          cache-dependency-path: requirements/*.txt
+
+      - name: install requirements
+        run: |
+          pip install -r requirements/lib.txt
+          pip install -r requirements/dev.txt
+          pip install -r requirements/test.txt
+
       - name: test
         run: ./check.sh test unit
 
-      - name: generate coverage report
-        run: ./check.sh test report
-
-      - name: comment coverage
-        uses: coroo/pytest-coverage-commentator@v1.0.2
-        with:
-          pytest-coverage: pytest-coverage.txt
-
   publish:
-    needs: checks
+    needs: tests
     if: startsWith(github.ref, 'refs/tags')
     runs-on: ubuntu-latest
     steps:
@@ -75,6 +95,7 @@ jobs:
         with:
           python-version: '3.10' 
           cache: 'pip'
+          cache-dependency-path: requirements/*.txt
         
       - name: install build
         run: python -m pip install build --user
@@ -101,9 +122,12 @@ jobs:
         with:
           python-version: '3.10' 
           cache: 'pip'
+          cache-dependency-path: requirements/*.txt
 
       - name: install requirements
-        run: pip install -r requirements.txt
+        run: |
+          pip install -r requirements/lib.txt
+          pip install -r requirements/docs.txt
 
       - name: show branch
         run: git describe

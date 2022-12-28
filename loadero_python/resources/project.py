@@ -10,6 +10,7 @@ Single Project object coresponds to single project in Loadero.
 
 from __future__ import annotations
 from datetime import datetime
+from typing import Dict, List, Tuple
 from dateutil import parser
 
 from .pagination import PaginationParams
@@ -656,7 +657,6 @@ class Project(LoaderoResource):
         self.params = ProjectAPI.read()
         return self
 
-    # pylint: disable=no-self-use
     def tests(
         self, query_params: QueryParams or None = None
     ) -> tuple[list[Test], PaginationParams, dict[any, any]]:
@@ -684,7 +684,6 @@ class Project(LoaderoResource):
             resp.filter,
         )
 
-    # pylint: disable=no-self-use
     def files(
         self, query_params: QueryParams or None = None
     ) -> tuple[list[File], PaginationParams, dict[any, any]]:
@@ -712,10 +711,9 @@ class Project(LoaderoResource):
             resp.filter,
         )
 
-    # pylint: disable=no-self-use
     def runs(
         self, query_params: QueryParams or None = None
-    ) -> tuple[list[Run], PaginationParams, dict[any, any]]:
+    ) -> Tuple[List[Run], PaginationParams, Dict[any, any]]:
         """Read all runs in the project.
 
         Args:

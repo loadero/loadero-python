@@ -4,6 +4,7 @@
 # pylint: disable=unused-variable
 
 
+from typing import List
 from dateutil import parser
 from loadero_python.resources.assert_resource import AssertParams
 from loadero_python.resources.assert_precondition import (
@@ -817,7 +818,7 @@ QUERY_PARAM_VALUES = [
 ]
 
 
-def build_query_params(keys: list[FilterKey]) -> QueryParams:
+def build_query_params(keys: List[FilterKey]) -> QueryParams:
     qp = QueryParams()
 
     qp.limit(LIMIT)
