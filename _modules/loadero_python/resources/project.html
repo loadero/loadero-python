@@ -1,38 +1,76 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>loadero_python.resources.project &mdash; Loadero Python Client v1.0.0-13-g77eb305
+  
+  <title>loadero_python.resources.project &mdash; Loadero Python Client v1.0.0-8-gb26f0e1
  documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
         <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/jquery.js"></script>
-        <script src="../../../_static/underscore.js"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../_static/doctools.js"></script>
         <script src="../../../_static/sphinx_highlight.js"></script>
-    <script src="../../../_static/js/theme.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav"> 
+<body class="wy-body-for-nav">
+
+   
   <div class="wy-grid-for-nav">
+    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
+          
+
+          
             <a href="../../../index.html" class="icon icon-home"> Loadero Python Client
+          
+
+          
           </a>
+
+          
+            
+            
               <div class="version">
-                v1.0.0-13-g77eb305
+                v1.0.0-8-gb26f0e1
 
               </div>
+            
+          
+
+          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -40,36 +78,86 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../loadero_python.html">loadero_python package</a></li>
 </ul>
 
+            
+          
         </div>
+        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../../index.html">Loadero Python Client</a>
+        
       </nav>
 
+
       <div class="wy-nav-content">
+        
         <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a></li>
-          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
-      <li class="breadcrumb-item active">loadero_python.resources.project</li>
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>loadero_python.resources.project</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
+        
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-             
+            
   <h1>Source code for loadero_python.resources.project</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Loadero project resource.</span>
 
@@ -83,6 +171,7 @@
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
 <span class="kn">from</span> <span class="nn">dateutil</span> <span class="kn">import</span> <span class="n">parser</span>
 
 <span class="kn">from</span> <span class="nn">.pagination</span> <span class="kn">import</span> <span class="n">PaginationParams</span>
@@ -110,7 +199,7 @@
 
 
 <div class="viewcode-block" id="PlanLimitsParams"><a class="viewcode-back" href="../../../loadero_python.resources.project.html#loadero_python.resources.project.PlanLimitsParams">[docs]</a><span class="k">class</span> <span class="nc">PlanLimitsParams</span><span class="p">(</span><span class="n">LoaderoResourceParams</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;PlanLimitsParams describes Loadero subscription plan limitations.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;PlanLimitsParams describes Loadero subscription plan limitations.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
@@ -155,7 +244,7 @@
     <span class="c1"># TODO: create a parser for duration.</span>
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">plan_duration</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Plan duration.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plan duration.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            str: Plan duration.</span>
@@ -165,7 +254,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">max_test_duration</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Maximum allowed test duration.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Maximum allowed test duration.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            str: Maximum allowed test duration.</span>
@@ -175,7 +264,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">included_test_duration</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Included test duration.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Included test duration.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            str: Included test duration.</span>
@@ -185,7 +274,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">max_test_cu</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Maximum allowed test compute unit.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Maximum allowed test compute unit.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            int: Maximum allowed test compute unit.</span>
@@ -195,7 +284,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">max_monthly_cu</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Maximum allowed compute unit usage per month.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Maximum allowed compute unit usage per month.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            int: Maximum allowed compute unit usage per month.</span>
@@ -205,7 +294,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">included_compute_units</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Included compute units.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Included compute units.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            int: Included compute units.</span>
@@ -215,7 +304,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">mos_enabled</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Are mean opinion score tests enabled.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Are mean opinion score tests enabled.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            bool: Are mean opinion score tests enabled.</span>
@@ -225,7 +314,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">locations</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Location</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Allowed test locations.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Allowed test locations.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            list[Location]: Allowed test locations.</span>
@@ -235,7 +324,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">compute_units</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">ComputeUnit</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Allowed compute units.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Allowed compute units.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            list[ComputeUnit]: Allowed compute units.</span>
@@ -245,7 +334,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">browsers</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Browser</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Allowed browsers.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Allowed browsers.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            list[Browser]: Allowed browsers.</span>
@@ -255,7 +344,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">api_access</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Is API access allowed.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Is API access allowed.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            bool: Is API access allowed.</span>
@@ -265,7 +354,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">aws_access</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Is AWS access allowed.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Is AWS access allowed.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            bool: Is AWS access allowed.</span>
@@ -275,7 +364,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">session_recording_access</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Is session recording access allowed.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Is session recording access allowed.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            bool: Is session recording access allowed.</span>
@@ -285,7 +374,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">assert_preconditions_access</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Is assert preconditions access allowed.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Is assert preconditions access allowed.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            bool: Is assert preconditions access allowed.</span>
@@ -295,7 +384,7 @@
 
 
 <div class="viewcode-block" id="SubscriptionSettingsParams"><a class="viewcode-back" href="../../../loadero_python.resources.project.html#loadero_python.resources.project.SubscriptionSettingsParams">[docs]</a><span class="k">class</span> <span class="nc">SubscriptionSettingsParams</span><span class="p">(</span><span class="n">LoaderoResourceParams</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;SubscriptionSettingsParams describes Loadero subscription settings.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;SubscriptionSettingsParams describes Loadero subscription settings.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
@@ -320,7 +409,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">max_participant_cu</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ComputeUnit</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Maximum allowed compute unit for a participant.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Maximum allowed compute unit for a participant.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            ComputeUnit: Maximum allowed compute unit for a participant.</span>
@@ -330,7 +419,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">max_test_duration</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TestDuration</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Maximum allowed test duration.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Maximum allowed test duration.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            TestDuration: Maximum allowed test duration.</span>
@@ -340,7 +429,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">max_monthly_cu</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Maximum allowed compute unit usage per month.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Maximum allowed compute unit usage per month.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            int: Maximum allowed compute unit usage per month.</span>
@@ -350,7 +439,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">max_test_cu</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Maximum allowed compute unit usage per test.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Maximum allowed compute unit usage per test.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            int: Maximum allowed compute unit usage per test.</span>
@@ -360,7 +449,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">mos_enabled</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Are mean opinion score tests enabled.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Are mean opinion score tests enabled.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            bool: Are mean opinion score tests enabled.</span>
@@ -370,7 +459,7 @@
 
 
 <div class="viewcode-block" id="SubscriptionParams"><a class="viewcode-back" href="../../../loadero_python.resources.project.html#loadero_python.resources.project.SubscriptionParams">[docs]</a><span class="k">class</span> <span class="nc">SubscriptionParams</span><span class="p">(</span><span class="n">LoaderoResourceParams</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;SubscriptionParams describes Loadero subscription.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;SubscriptionParams describes Loadero subscription.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
@@ -405,7 +494,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">subscription_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Subscription ID.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Subscription ID.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            str: Subscription ID.</span>
@@ -415,7 +504,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">created</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Time when subscription was created.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Time when subscription was created.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            datetime: Time when subscription was created.</span>
@@ -425,7 +514,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">updated</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Time when subscription was last updated.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Time when subscription was last updated.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            datetime: Time when subscription was last updated.</span>
@@ -435,7 +524,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">payment_plan</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PaymentPlan</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Payment plan of subscription.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Payment plan of subscription.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            PaymentPlan: Payment plan of subscription.</span>
@@ -445,7 +534,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">activation_date</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Time when subscription was activated.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Time when subscription was activated.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            datetime: Time when subscription was activated.</span>
@@ -455,7 +544,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">payment_status</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PaymentStatus</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Payment status of subscription.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Payment status of subscription.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            PaymentStatus: Payment status of subscription.</span>
@@ -465,7 +554,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">billing_email</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Billing email of subscription.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Billing email of subscription.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            str: Billing email of subscription.</span>
@@ -475,7 +564,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">settings</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SubscriptionSettingsParams</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Subscription settings.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Subscription settings.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            SubscriptionSettingsParams: Subscription settings.</span>
@@ -485,7 +574,7 @@
 
 
 <div class="viewcode-block" id="ProjectComputeUnitUsageParams"><a class="viewcode-back" href="../../../loadero_python.resources.project.html#loadero_python.resources.project.ProjectComputeUnitUsageParams">[docs]</a><span class="k">class</span> <span class="nc">ProjectComputeUnitUsageParams</span><span class="p">(</span><span class="n">LoaderoResourceParams</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;ProjectComputeUnitUsageParams describes compute unit usage for a single</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;ProjectComputeUnitUsageParams describes compute unit usage for a single</span>
 <span class="sd">    project.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -502,7 +591,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">included</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Compute unit included in the project.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute unit included in the project.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            int: Compute unit included in the project.</span>
@@ -512,7 +601,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">used</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Compute unit used in the project.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute unit used in the project.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            int: Compute unit used in the project.</span>
@@ -522,7 +611,7 @@
 
 
 <div class="viewcode-block" id="ProjectParams"><a class="viewcode-back" href="../../../loadero_python.resources.project.html#loadero_python.resources.project.ProjectParams">[docs]</a><span class="k">class</span> <span class="nc">ProjectParams</span><span class="p">(</span><span class="n">LoaderoResourceParams</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;ProjectParams represents Loadero project resource attributes.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;ProjectParams represents Loadero project resource attributes.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
@@ -570,7 +659,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">project_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Project ID.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Project ID.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            str: Project ID.</span>
@@ -580,7 +669,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">created</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Time when project was created.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Time when project was created.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            datetime: Time when project was created.</span>
@@ -590,7 +679,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">updated</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Time when project was last updated.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Time when project was last updated.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            datetime: Time when project was last updated.</span>
@@ -600,7 +689,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Project name.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Project name.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            str: Project name.</span>
@@ -610,7 +699,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">trial_expired</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Whether project trial period has expired.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Whether project trial period has expired.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            bool: Whether project trial period has expired.</span>
@@ -620,7 +709,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">member_count</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Number of members in the project.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Number of members in the project.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            int: Number of members in the project.</span>
@@ -630,7 +719,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">account_role</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MemberRole</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Account role in the project.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Account role in the project.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            MemberRole: Account role in the project.</span>
@@ -640,7 +729,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">language</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Language</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Test script programming language.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Test script programming language.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Language: Test script programming language.</span>
@@ -650,7 +739,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">aws_info_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;AWS info ID.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;AWS info ID.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            str: AWS info ID.</span>
@@ -660,7 +749,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">subscription_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Subscription ID.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Subscription ID.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            str: Subscription ID.</span>
@@ -670,7 +759,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">plan_limits</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PlanLimitsParams</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Plan limits.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plan limits.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            PlanLimitsParams: Plan limits.</span>
@@ -680,7 +769,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">subscription</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SubscriptionParams</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Subscription.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Subscription.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            SubscriptionParams: Subscription.</span>
@@ -690,7 +779,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">compute_unit_usage</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ProjectComputeUnitUsageParams</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Compute unit usage statistics.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute unit usage statistics.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            ProjectComputeUnitUsageParams: Compute unit usage statistics.</span>
@@ -700,13 +789,13 @@
 
 
 <div class="viewcode-block" id="Project"><a class="viewcode-back" href="../../../loadero_python.resources.project.html#loadero_python.resources.project.Project">[docs]</a><span class="k">class</span> <span class="nc">Project</span><span class="p">(</span><span class="n">LoaderoResource</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Project class allows read information about the project that the API</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Project class allows read information about the project that the API</span>
 <span class="sd">    client is configured for. APIClient must be previously initialized with a</span>
 <span class="sd">    valid Loadero access token.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Creates a new instance of Project that allows to perform read</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates a new instance of Project that allows to perform read</span>
 <span class="sd">        operation on a single project resource and its child resources.</span>
 
 <span class="sd">        The resources attribute data is stored in params field that is an</span>
@@ -717,7 +806,7 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Project.read"><a class="viewcode-back" href="../../../loadero_python.resources.project.html#loadero_python.resources.project.Project.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Project</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Reads information about project.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reads information about project.</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">            APIException: If API call fails.</span>
@@ -729,11 +818,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="n">ProjectAPI</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-    <span class="c1"># pylint: disable=no-self-use</span>
 <div class="viewcode-block" id="Project.tests"><a class="viewcode-back" href="../../../loadero_python.resources.project.html#loadero_python.resources.project.Project.tests">[docs]</a>    <span class="k">def</span> <span class="nf">tests</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">query_params</span><span class="p">:</span> <span class="n">QueryParams</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Test</span><span class="p">],</span> <span class="n">PaginationParams</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">any</span><span class="p">,</span> <span class="nb">any</span><span class="p">]]:</span>
-        <span class="sd">&quot;&quot;&quot;Read all tests in the project.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read all tests in the project.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            query_params (QueryParams, optional): Describes query parameters</span>
@@ -757,11 +845,10 @@
             <span class="n">resp</span><span class="o">.</span><span class="n">filter</span><span class="p">,</span>
         <span class="p">)</span></div>
 
-    <span class="c1"># pylint: disable=no-self-use</span>
 <div class="viewcode-block" id="Project.files"><a class="viewcode-back" href="../../../loadero_python.resources.project.html#loadero_python.resources.project.Project.files">[docs]</a>    <span class="k">def</span> <span class="nf">files</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">query_params</span><span class="p">:</span> <span class="n">QueryParams</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">File</span><span class="p">],</span> <span class="n">PaginationParams</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">any</span><span class="p">,</span> <span class="nb">any</span><span class="p">]]:</span>
-        <span class="sd">&quot;&quot;&quot;Read all files in the project.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read all files in the project.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            query_params (QueryParams, optional): Describes query parameters</span>
@@ -785,11 +872,10 @@
             <span class="n">resp</span><span class="o">.</span><span class="n">filter</span><span class="p">,</span>
         <span class="p">)</span></div>
 
-    <span class="c1"># pylint: disable=no-self-use</span>
 <div class="viewcode-block" id="Project.runs"><a class="viewcode-back" href="../../../loadero_python.resources.project.html#loadero_python.resources.project.Project.runs">[docs]</a>    <span class="k">def</span> <span class="nf">runs</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">query_params</span><span class="p">:</span> <span class="n">QueryParams</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Run</span><span class="p">],</span> <span class="n">PaginationParams</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">any</span><span class="p">,</span> <span class="nb">any</span><span class="p">]]:</span>
-        <span class="sd">&quot;&quot;&quot;Read all runs in the project.</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Run</span><span class="p">],</span> <span class="n">PaginationParams</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">any</span><span class="p">,</span> <span class="nb">any</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read all runs in the project.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            query_params (QueryParams, optional): Describes query parameters</span>
@@ -815,11 +901,11 @@
 
 
 <div class="viewcode-block" id="ProjectAPI"><a class="viewcode-back" href="../../../loadero_python.resources.project.html#loadero_python.resources.project.ProjectAPI">[docs]</a><span class="k">class</span> <span class="nc">ProjectAPI</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;ProjectAPI defines Loadero API operations for project resource.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;ProjectAPI defines Loadero API operations for project resource.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="ProjectAPI.read"><a class="viewcode-back" href="../../../loadero_python.resources.project.html#loadero_python.resources.project.ProjectAPI.read">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">read</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">ProjectParams</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Read an existing project resource that the API Client is configured</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read an existing project resource that the API Client is configured</span>
 <span class="sd">        too</span>
 
 <span class="sd">        Raises:</span>
@@ -835,30 +921,46 @@
 </pre></div>
 
            </div>
+           
           </div>
           <footer>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2022, Loadero Team.</p>
-  </div>
+    <p>
+        &#169; Copyright 2022, Loadero Team.
 
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
         </div>
       </div>
+
     </section>
+
   </div>
-  <script>
+  
+
+  <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>
