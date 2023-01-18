@@ -582,8 +582,12 @@ class Run(LoaderoResource):
 
         resp = ResultAPI.read_all(self.params.run_id, query_params=query_params)
 
+        results = convert_params_list(Result, resp.results)
+        for r in results:
+            r.params.run_id = self.params.run_id
+
         return (
-            convert_params_list(Result, resp.results),
+            results,
             resp.pagination,
             resp.filter,
         )
