@@ -1,3 +1,6 @@
+# github actions has no way of manually triggering a single job, 
+# hence this workflow duplicates a job to allow manual triggering.
+
 name: PYPI-TEST
 
 on:

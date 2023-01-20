@@ -809,10 +809,19 @@ class MetricPath(Serializable, Enum):
 
     WEBRTC_VIDEO_RTT_STDDEV = "webrtc/video/rtt/stddev"
 
+    UNKNOWN = "unknown"
+
     # pylint: disable=arguments-differ
     @staticmethod
     def from_dict(jv: str) -> MetricPath:
-        return MetricPath(jv)
+        m = None
+
+        try:
+            m = MetricPath(jv)
+        except:  # pylint: disable=bare-except
+            m = MetricPath.UNKNOWN
+
+        return m
 
     def to_dict(self) -> str:
         return self.value

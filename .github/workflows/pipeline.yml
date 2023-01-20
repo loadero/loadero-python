@@ -140,3 +140,42 @@ jobs:
           git add .
           git commit -m "generated"
           git push
+
+  install-and-test:
+    needs: publish
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+      fail-fast: false
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+          cache-dependency-path: requirements/*.txt
+
+      - name: install requirements
+        run: |
+          pip install -r requirements/test.txt
+          pip install loadero-python
+
+      - name: delete source
+        run: |
+          rm -rf loadero_python      
+
+      - name: import location
+        run:  python -c "import loadero_python; print(loadero_python)"
+
+      - name: run tests
+        env:
+          PROJECT_ID: ${{ secrets.PROJECT_ID }}
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          API_BASE: ${{ secrets.API_BASE }}
+        run: |
+          cd tests/integration
+          pytest -v
