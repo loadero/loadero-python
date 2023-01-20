@@ -166,7 +166,9 @@ def get_test(output_dir: str, test_id: int, project_language: Language):
     asserts_path = os.path.join(test_path, "asserts")
     os.makedirs(asserts_path)
 
-    for a in test.asserts()[0]:
+    asserts, _, _ = test.asserts()
+
+    for a in asserts:
         assert_path = os.path.join(asserts_path, str(a.params.assert_id))
         os.makedirs(assert_path)
 
@@ -180,7 +182,9 @@ def get_test(output_dir: str, test_id: int, project_language: Language):
         preconditions_path = os.path.join(assert_path, "preconditions")
         os.makedirs(preconditions_path)
 
-        for precondition in a.preconditions()[0]:
+        preconditions, _, _ = a.preconditions()
+
+        for precondition in preconditions:
             precondition_path = os.path.join(
                 preconditions_path,
                 str(precondition.params.assert_precondition_id),
@@ -273,7 +277,6 @@ if __name__ == "__main__":
     APIClient(
         project_id=args.project_id,
         access_token=args.access_token,
-        api_base="https://api.stage.loadero.com/v2/",
     )
 
     os.makedirs(args.output_dir, exist_ok=True)
