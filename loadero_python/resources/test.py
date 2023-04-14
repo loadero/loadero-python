@@ -1,11 +1,10 @@
 """Loadero test resource.
 
 Test resource is seperated into three parts
-    - TestParams class describes test attributes
 
-    - TestAPI class groups API operation with test resources.
-
-    - Test class combines TestParams and TestAPI.
+- TestParams class describes test attributes
+- TestAPI class groups API operation with test resources.
+- Test class combines TestParams and TestAPI.
 
 Single Test object coresponds to single test in Loadero.
 """
@@ -469,11 +468,12 @@ class Test(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - name
-            - start_interval
-            - participant_timeout
-            - mode
-            - increment_strategy
+
+        - name
+        - start_interval
+        - participant_timeout
+        - mode
+        - increment_strategy
 
         Raises:
             ValueError: If resource params do not sufficiently identify parent
@@ -493,7 +493,8 @@ class Test(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - test_id
+
+        - test_id
 
         Raises:
             ValueError: If resource params do not sufficiently identify
@@ -513,12 +514,13 @@ class Test(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - test_id
-            - name
-            - start_interval
-            - participant_timeout
-            - mode
-            - increment_strategy
+
+        - test_id
+        - name
+        - start_interval
+        - participant_timeout
+        - mode
+        - increment_strategy
 
         Raises:
             ValueError: If resource params do not sufficiently identify
@@ -538,7 +540,8 @@ class Test(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - test_id
+
+        - test_id
 
         Raises:
             ValueError: If resource params do not sufficiently identify
@@ -558,7 +561,8 @@ class Test(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - test_id
+
+        - test_id
 
         Args:
             name (str): New name for the duplicate test.
@@ -582,7 +586,8 @@ class Test(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - test_id
+
+        - test_id
 
         Raises:
             ValueError: If resource params do not sufficiently identify
@@ -605,7 +610,8 @@ class Test(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - test_id
+
+        - test_id
 
         Args:
             query_params (QueryParams, optional): Describes query parameters
@@ -641,7 +647,8 @@ class Test(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - test_id
+
+        - test_id
 
         Args:
             query_params (QueryParams, optional): Describes query parameters
@@ -679,7 +686,8 @@ class Test(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - test_id
+
+        - test_id
 
         Args:
             query_params (QueryParams, optional): Describes query parameters
@@ -717,7 +725,8 @@ class Test(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - test_id
+
+        - test_id
 
         Args:
             query_params (QueryParams, optional): Describes query parameters

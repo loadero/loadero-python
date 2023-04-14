@@ -1,11 +1,11 @@
 """Loadero group resource.
 
 Group resource is seperated into three parts
-    - GroupParams class describes groups attributes
+    GroupParams class describes groups attributes
 
-    - GroupAPI class groups all API operations related to groups.
+    GroupAPI class groups all API operations related to groups.
 
-    - Group class combined GroupParams and GroupAPI
+    Group class combined GroupParams and GroupAPI
 
 Single group object coresponds to single group in Loadero.
 """
@@ -241,9 +241,10 @@ class Group(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - test_id
-            - count
-            - name
+
+        - test_id
+        - count
+        - name
 
         Raises:
             ValueError: If resource params do not sufficiently identify parent
@@ -264,8 +265,9 @@ class Group(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - test_id
-            - group_id
+
+        - test_id
+        - group_id
 
         Raises:
             ValueError: If resource params do not sufficiently identify
@@ -286,10 +288,11 @@ class Group(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - group_id
-            - test_id
-            - count
-            - name
+
+        - group_id
+        - test_id
+        - count
+        - name
 
         Raises:
             ValueError: If resource params do not sufficiently identify
@@ -310,8 +313,9 @@ class Group(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - group_id
-            - test_id
+
+        - group_id
+        - test_id
 
         Raises:
             ValueError: If resource params do not sufficiently identify
@@ -327,8 +331,9 @@ class Group(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - group_id
-            - test_id
+
+        - group_id
+        - test_id
 
         Args:
             name (str): New name for the duplicate group.
@@ -352,8 +357,9 @@ class Group(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - group_id
-            - test_id
+
+        - group_id
+        - test_id
 
         Args:
             query_params (QueryParams, optional): Describes query parameters

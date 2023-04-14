@@ -1,11 +1,11 @@
 """Loadero participant resource.
 
 Participant resources is seperated into three parts
-    - ParticipantParams class describes participant attributes
+    ParticipantParams class describes participant attributes
 
-    - ParticipantAPI groups all API operations with participant resource.
+    ParticipantAPI groups all API operations with participant resource.
 
-    - Participant class combines ParticipantParams and ParticipantAPI.
+    Participant class combines ParticipantParams and ParticipantAPI.
 
 Single Participant object coresponds to single participant in Loadero.
 """
@@ -407,16 +407,17 @@ class Participant(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - test_id
-            - name
-            - count
-            - compute_unit
-            - record_audio
-            - audio_feed
-            - browser
-            - location
-            - network
-            - video_feed
+
+        - test_id
+        - name
+        - count
+        - compute_unit
+        - record_audio
+        - audio_feed
+        - browser
+        - location
+        - network
+        - video_feed
 
         Raises:
             ValueError: If resource params do not sufficiently identify parent
@@ -437,8 +438,9 @@ class Participant(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - participant_id
-            - test_id
+
+        - participant_id
+        - test_id
 
         Raises:
             ValueError: If resource params do not sufficiently identify
@@ -459,17 +461,18 @@ class Participant(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - participant_id
-            - test_id
-            - name
-            - count
-            - compute_unit
-            - record_audio
-            - audio_feed
-            - browser
-            - location
-            - network
-            - video_feed
+
+        - participant_id
+        - test_id
+        - name
+        - count
+        - compute_unit
+        - record_audio
+        - audio_feed
+        - browser
+        - location
+        - network
+        - video_feed
 
         Raises:
             ValueError: If resource params do not sufficiently identify
@@ -490,8 +493,9 @@ class Participant(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - test_id
-            - participant_id
+
+        - test_id
+        - participant_id
 
         Raises:
             ValueError: If resource params do not sufficiently identify
@@ -507,8 +511,9 @@ class Participant(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - test_id
-            - participant_id
+
+        - test_id
+        - participant_id
 
         Args:
             name (str): New name for the duplicate participant.

@@ -1,8 +1,10 @@
 """Loadero result resource.
+
 Result resource is seperated into three parts
-    - ResultParams class describes result attributes
-    - ResultAPI group all API operations for result resource
-    - Result class combines ResultParams and ResultAPI
+
+- ResultParams class describes result attributes
+- ResultAPI group all API operations for result resource
+- Result class combines ResultParams and ResultAPI
 
 Single result object coresponds to single result in Loadero.
 """
@@ -1193,8 +1195,9 @@ class Result(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - result_id
-            - run_id
+
+        - result_id
+        - run_id
 
         Raises:
             ValueError: If resource params do not sufficiently identify

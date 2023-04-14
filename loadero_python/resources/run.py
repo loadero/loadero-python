@@ -1,11 +1,11 @@
 """Loadero run resource.
 
-Run resources is seperated into three parts:
-    - RunParams class that describes runs attributes
+Run resources is seperated into three parts
+    RunParams class that describes runs attributes
 
-    - RunAPI class implements run resources API operations
+    RunAPI class implements run resources API operations
 
-    - Runs class that in combination with RunParams and RunAPI allows to manage
+    Runs class that in combination with RunParams and RunAPI allows to manage
     a single run resources instance.
 """
 
@@ -438,7 +438,8 @@ class Run(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - test_id
+
+        - test_id
 
         Raises:
             ValueError: If resource params do not sufficiently identify parent
@@ -459,7 +460,8 @@ class Run(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - run_id
+
+        - run_id
 
         Raises:
             ValueError: If resource params do not sufficiently identify
@@ -481,7 +483,8 @@ class Run(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - run_id
+
+        - run_id
 
         Raises:
             ValueError: If resource params do not sufficiently identify
@@ -504,7 +507,8 @@ class Run(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - run_id
+
+        - run_id
 
         Args:
             interval (float, optional): Poll interval in seconds.
@@ -559,7 +563,8 @@ class Run(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - run_id
+
+        - run_id
 
         Args:
             query_params (QueryParams, optional): Describes query parameters
@@ -599,7 +604,8 @@ class Run(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - run_id
+
+        - run_id
 
         Args:
             query_params (QueryParams, optional): Describes query parameters
@@ -640,11 +646,12 @@ class RunAPI:
 
         Args:
             params (RunParams): Describes the run resource to be created. Only
-                the RunParams.test_id field is required.
+            the RunParams.test_id field is required.
 
         Raises:
             ValueError: If resource params do not sufficiently identify parent
-                resource.
+            resource.
+
             APIException: If API call fails.
 
         Returns:
@@ -666,7 +673,8 @@ class RunAPI:
 
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource.
+            resource.
+
             APIException: If API call fails.
 
         Returns:
@@ -688,12 +696,14 @@ class RunAPI:
 
         Args:
             test_id (int, optional): Parent test resource id. Defaults to None.
-                If omitted all runs in project will be read.
+            If omitted all runs in project will be read.
+
             query_params (QueryParams, optional): Describes query parameters.
 
         Raises:
             ValueError: If resource params do not sufficiently identify parent
-                resource.
+            resource.
+
             APIException: If API call fails.
 
         Returns:
@@ -717,7 +727,8 @@ class RunAPI:
 
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource.
+            resource.
+
             APIException: If API call fails.
         """
 
@@ -735,10 +746,11 @@ class RunAPI:
 
         Args:
             test_id (int, optional): Test resource id. Defaults to None. If
-                omitted route will point to all runs in project.
+            omitted route will point to all runs in project.
+
             run_id (int, optional): Run resource id. Defaults to None. If
-                omitted the route will point to all run resources that belong
-                to parent resource, either test or project.
+            omitted the route will point to all run resources that belong
+            to parent resource, either test or project.
 
         Returns:
             str: Route to run resource/s.
@@ -764,14 +776,17 @@ class RunAPI:
 
         Args:
             params (RunParams): Run params.
+
             single (bool, optional): Indicates if the resource identifiers
-                should be validated as pointing to a single resource.
-                Defaults to True.
+            should be validated as pointing to a single resource.
+            Defaults to True.
+
             project_run (bool, optional): Indicates if the resource identifiers
-                should include a valid test id. Defaults to True.
+            should include a valid test id. Defaults to True.
 
         Raises:
             ValueError: RunParams.run_id must be a valid int.
+
             ValueError: RunParams.test_id must be a valid int.
         """
 
