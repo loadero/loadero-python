@@ -1,11 +1,12 @@
 """Loadero run participant resource.
 
 Run participant resources is seperated into three parts
-
-- RunParticipantParams class describes run participant attributes
-- RunParticipantAPI class groups all API operations related to run
-  participant.
-- RunParticipant class combined RunParticipantParams and RunParticipantAPI.
+    RunParticipantParams class describes run participant attributes
+    
+    RunParticipantAPI class groups all API operations related to run
+    participant.
+    
+    RunParticipant class combined RunParticipantParams and RunParticipantAPI.
 
 Single RunParticipant object coresponds to single run participant in Loadero.
 """

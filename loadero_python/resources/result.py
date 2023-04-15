@@ -1,10 +1,11 @@
 """Loadero result resource.
 
 Result resource is seperated into three parts
+    ResultParams class describes result attributes
 
-- ResultParams class describes result attributes
-- ResultAPI group all API operations for result resource
-- Result class combines ResultParams and ResultAPI
+    ResultAPI group all API operations for result resource
+
+    Result class combines ResultParams and ResultAPI
 
 Single result object coresponds to single result in Loadero.
 """

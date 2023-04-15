@@ -1,11 +1,12 @@
 """Loadero assert resource.
 
 Assert resource is seperated into three parts
+    AssertPreconditionParams class describes assert preconditions attributes
 
-- AssertPreconditionParams class describes assert preconditions attributes
-- AssertPreconditionAPI class that groups all API operations with assert
+    AssertPreconditionAPI class that groups all API operations with assert
     preconditions attributes.
-- AssertPrecondition class combines AssertPreconditionParams and
+
+    AssertPrecondition class combines AssertPreconditionParams and
     AssertPreconditionAPI.
 
 Single AssertPrecondition object coresponds to a single assert precondition in

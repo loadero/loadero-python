@@ -1,10 +1,11 @@
 """Loadero test resource.
 
 Test resource is seperated into three parts
+    TestParams class describes test attributes
 
-- TestParams class describes test attributes
-- TestAPI class groups API operation with test resources.
-- Test class combines TestParams and TestAPI.
+    TestAPI class groups API operation with test resources.
+
+    Test class combines TestParams and TestAPI.
 
 Single Test object coresponds to single test in Loadero.
 """
