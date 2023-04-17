@@ -1,12 +1,12 @@
 """Loadero assert resource.
 
 Assert resource is seperated into three parts
-    - AssertPreconditionParams class describes assert preconditions attributes
+    AssertPreconditionParams class describes assert preconditions attributes
 
-    - AssertPreconditionAPI class that groups all API operations with assert
+    AssertPreconditionAPI class that groups all API operations with assert
     preconditions attributes.
 
-    - AssertPrecondition class combines AssertPreconditionParams and
+    AssertPrecondition class combines AssertPreconditionParams and
     AssertPreconditionAPI.
 
 Single AssertPrecondition object coresponds to a single assert precondition in
@@ -266,11 +266,12 @@ class AssertPrecondition(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - test_id
-            - assert_id
-            - expected
-            - operator
-            - property
+
+        - test_id
+        - assert_id
+        - expected
+        - operator
+        - property
 
         Raises:
             ValueError: If resource params do not sufficiently identify parent
@@ -291,9 +292,10 @@ class AssertPrecondition(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - test_id
-            - assert_id
-            - assert_precondition_id
+
+        - test_id
+        - assert_id
+        - assert_precondition_id
 
         Raises:
             ValueError: If resource params do not sufficiently identify
@@ -314,12 +316,13 @@ class AssertPrecondition(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - test_id
-            - assert_id
-            - assert_precondition_id
-            - expected
-            - operator
-            - property
+
+        - test_id
+        - assert_id
+        - assert_precondition_id
+        - expected
+        - operator
+        - property
 
         Raises:
             ValueError: If resource params do not sufficiently identify
@@ -340,9 +343,10 @@ class AssertPrecondition(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - test_id
-            - assert_id
-            - assert_precondition_id
+
+        - test_id
+        - assert_id
+        - assert_precondition_id
 
         Raises:
             ValueError: If resource params do not sufficiently identify

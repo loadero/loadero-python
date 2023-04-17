@@ -1,11 +1,11 @@
 """Loadero assert resource.
 
 Assert resource is seperated into three parts
-    - AssertParams class describes assert attributes
+    AssertParams class describes assert attributes
 
-    - AssertAPI class that groups all API operations with assert resource.
+    AssertAPI class that groups all API operations with assert resource.
 
-    - Assert class that combines AssertParams and AssertAPI.
+    Assert class that combines AssertParams and AssertAPI.
 
 Single Assert object coresponds to single assert in Loadero.
 """
@@ -236,10 +236,11 @@ class Assert(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - test_id
-            - expected
-            - operator
-            - path
+
+        - test_id
+        - expected
+        - operator
+        - path
 
         Raises:
             ValueError: If resource params do not sufficiently identify parent
@@ -260,8 +261,9 @@ class Assert(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - test_id
-            - assert_id
+
+        - test_id
+        - assert_id
 
         Raises:
             ValueError: If resource params do not sufficiently identify
@@ -282,11 +284,12 @@ class Assert(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - test_id
-            - assert_id
-            - expected
-            - operator
-            - path
+
+        - test_id
+        - assert_id
+        - expected
+        - operator
+        - path
 
         Raises:
             ValueError: If resource params do not sufficiently identify
@@ -307,8 +310,9 @@ class Assert(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - test_id
-            - assert_id
+
+        - test_id
+        - assert_id
 
         Raises:
             ValueError: If resource params do not sufficiently identify
@@ -324,8 +328,9 @@ class Assert(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - test_id
-            - assert_id
+
+        - test_id
+        - assert_id
 
         Raises:
             ValueError: If resource params do not sufficiently identify
@@ -353,8 +358,9 @@ class Assert(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - test_id
-            - assert_id
+
+        - test_id
+        - assert_id
 
         Args:
             query_params (QueryParams, optional): Describes query parameters
@@ -405,7 +411,8 @@ class AssertAPI:
 
         Raises:
             ValueError: If resource params do not sufficiently identify parent
-                resource or resource params required attributes are None.
+            resource or resource params required attributes are None.
+
             APIException: If API call fails.
 
         Returns:
@@ -427,7 +434,8 @@ class AssertAPI:
 
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource.
+            resource.
+
             APIException: If API call fails.
 
         Returns:
@@ -449,7 +457,8 @@ class AssertAPI:
 
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource or resource params required attributes are None.
+            resource or resource params required attributes are None.
+
             APIException: If API call fails.
 
         Returns:
@@ -474,7 +483,8 @@ class AssertAPI:
 
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource.
+            resource.
+
             APIException: If API call fails.
         """
 
@@ -492,7 +502,8 @@ class AssertAPI:
 
         Raises:
             ValueError: If resource params do not sufficiently identify
-                resource.
+            resource.
+
             APIException: If API call fails.
 
         Returns:
@@ -541,8 +552,9 @@ class AssertAPI:
 
         Args:
             test_id (int): Test resource id.
-            assert_id (int, optional): Assert resource id. Defaults to None. If
-                omitted the route will point to all assert resources.
+
+            assert_id (int, optional): Assert resource id. Defaults to None.
+            If omitted the route will point to all assert resources.
 
         Returns:
             str: Route to assert resource/s.

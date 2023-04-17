@@ -1,9 +1,11 @@
 """Loadero project resource.
 
 Project resource is seperated into three parts
-    - ProjectParams class describes projects attributes
-    - ProjectAPI class groups all API operations related to projects.
-    - Project class combines ProjectParams and ProjectAPI.
+    ProjectParams class describes projects attributes
+
+    ProjectAPI class groups all API operations related to projects.
+
+    Project class combines ProjectParams and ProjectAPI.
 
 Single Project object coresponds to single project in Loadero.
 """

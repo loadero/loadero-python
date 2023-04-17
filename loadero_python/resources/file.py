@@ -1,11 +1,11 @@
 """Loadero file resource.
 
 File resource is seperated into three parts
-    - FileParams class describes file attributes
+    FileParams class describes file attributes
 
-    - FileAPI class groups file related API calls
+    FileAPI class groups file related API calls
 
-    - File class combines FileParams and FileAPI
+    File class combines FileParams and FileAPI
 
 Single File object coresponds to single file in Loadero.
 """
@@ -150,8 +150,9 @@ class File(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - content
-            - file_type
+
+        - content
+        - file_type
 
         Raises:
             APIException: If API call fails.
@@ -168,7 +169,8 @@ class File(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - file_id
+
+        - file_id
 
         Raises:
             ValueError: If resource params do not sufficiently identify
@@ -188,9 +190,10 @@ class File(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - file_id
-            - content
-            - file_type
+
+        - file_id
+        - content
+        - file_type
 
         Raises:
             ValueError: If resource params do not sufficiently identify
@@ -210,7 +213,8 @@ class File(LoaderoResource):
 
         Required attributes of params field that need to be populated, otherwise
         the method will raise an exception:
-            - file_id
+
+        - file_id
 
         Raises:
             ValueError: If resource params do not sufficiently identify
@@ -252,6 +256,7 @@ class FileAPI:
 
         Raises:
             Exception: FileParams.file_id was not defined.
+
             APIException: If API call fails.
 
         Returns:
@@ -273,6 +278,7 @@ class FileAPI:
 
         Raises:
             Exception: FileParams.file_id was not defined.
+
             APIException: If API call fails.
 
         Returns:
@@ -294,6 +300,7 @@ class FileAPI:
 
         Raises:
             Exception: FileParams.file_id was not defined.
+
             APIException: If API call fails.
 
         Returns:
@@ -332,7 +339,7 @@ class FileAPI:
 
         Args:
             file_id (int, optional): File resource id. Defaults to None. If
-                omitted the route will point to all file resources
+            omitted the route will point to all file resources
 
         Returns:
             str: Route to file resource.
@@ -351,9 +358,11 @@ class FileAPI:
 
         Args:
             params (FileParams): File params.
+
             single (bool, optional): Indicates if the resource identifiers
-                should be validated as pointing to a single resource.
-                Defaults to True.
+            should be validated as pointing to a single resource.
+            Defaults to True.
+
         Raises:
             ValueError: FileParams.file_id must be a valid int.
         """
