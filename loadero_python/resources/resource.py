@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 from enum import Enum
-from typing import Callable, Dict, List, Tuple
+from typing import Callable, Dict, List, Tuple, Any
 import json
 from datetime import datetime
+
+from loadero_python.api_client import APIClient
 
 
 class Serializable:
@@ -12,16 +14,16 @@ class Serializable:
     converted to and from JSON using Python dictionary as a JSON representation.
     """
 
-    def to_dict(self) -> Dict[str, any]:
+    def to_dict(self) -> Dict[str, Any]:
         """Returns a dictionary representation of the object."""
         raise NotImplementedError
 
-    def to_dict_full(self) -> Dict[str, any]:
+    def to_dict_full(self) -> Dict[str, Any]:
         """Returns a dictionary representation of the object that contains all
         of the objects attributes."""
         raise NotImplementedError
 
-    def from_dict(self, json_dict: Dict[str, any]) -> Serializable:
+    def from_dict(self, _: Dict[str, Any]) -> Serializable:
         """Returns an instance of the object from a dictionary."""
         raise NotImplementedError
 
@@ -33,7 +35,7 @@ class ParamsSerializer(Serializable):
     def __init__(
         self,
         attribute_map: dict[str, str] = {},
-        custom_deserializers: dict[str, any] = {},
+        custom_deserializers: dict[str, Any] = {},
         body_attributes: list[str] = [],
         required_body_attributes: list[str] = [],
     ):
@@ -66,7 +68,7 @@ class ParamsSerializer(Serializable):
         for k, v in self.__attribute_map.items():
             self.__reverse_attribute_map[v] = k
 
-    def to_dict(self) -> Dict[str, any]:
+    def to_dict(self) -> Dict[str, Any]:
         """Converts the resource params object to a dictionary JSON
         representation that contains only the body attributes.
 
@@ -132,7 +134,7 @@ class ParamsSerializer(Serializable):
 
         return attribute
 
-    def to_dict_full(self) -> Dict[str, any]:
+    def to_dict_full(self) -> Dict[str, Any]:
         """Returns a dictionary representation of the object that contains all
         of the objects attributes.
 
@@ -162,7 +164,7 @@ class ParamsSerializer(Serializable):
 
         return json_dict
 
-    def from_dict(self, json_dict: Dict[str, any]) -> ParamsSerializer:
+    def from_dict(self, json_dict: Dict[str, Any]) -> ParamsSerializer:
         """Sets the attributes of the resource params object from a JSON
         representation.
 
@@ -194,7 +196,7 @@ class ParamsSerializer(Serializable):
 
 def from_dict_as_list(
     resource_params_class: type,
-) -> Callable[[Dict[str, any]], List[LoaderoResourceParams]]:
+) -> Callable[[Dict[str, Any]], List[LoaderoResourceParams]]:
     """Returns a function that deserializes a dictionary to a list of new
     instances of the resource params class
 
@@ -206,7 +208,7 @@ def from_dict_as_list(
         LoaderoResourceParams objects.
     """
 
-    def func(json_value: dict[str, any]) -> list[LoaderoResourceParams]:
+    def func(json_value: dict[str, Any]) -> list[LoaderoResourceParams]:
         if json_value is None:
             return []
 
@@ -223,7 +225,7 @@ def from_dict_as_list(
 
 def from_dict_as_new(
     resource_params_class: type,
-) -> Callable[[Dict[str, any]], LoaderoResourceParams]:
+) -> Callable[[Dict[str, Any]], LoaderoResourceParams]:
     """Returns a function that deserializes a dictionary to a new instance of
     the resource params class.
 
@@ -235,7 +237,7 @@ def from_dict_as_new(
         LoaderoResourceParams object.
     """
 
-    def func(json_value: dict[str, any]) -> LoaderoResourceParams:
+    def func(json_value: dict[str, Any]) -> LoaderoResourceParams:
         r = resource_params_class()
         r.from_dict(json_value)
 
@@ -273,7 +275,7 @@ class LoaderoResource:
 class DuplicateResourceBodyParams(LoaderoResourceParams):
     """Duplicate resource body params."""
 
-    def __init__(self, name: str or None = None):
+    def __init__(self, name: str | None = None):
         super().__init__(
             attribute_map={
                 "name": "name",
@@ -351,7 +353,7 @@ class QueryParams:
         self.__set_param("offset", offset)
         return self
 
-    def filter(self, key: FilterKey, *values: any) -> QueryParams:
+    def filter(self, key: FilterKey, *values: Any) -> QueryParams:
         """Set filter for read all operation.
 
         Args:
@@ -385,19 +387,19 @@ class QueryParams:
         self.__add_param(str(key), value)
         return self
 
-    def __set_param(self, key: str, value: any):
+    def __set_param(self, key: str, value: Any):
         if key not in self.__query_params:
             self.__query_params[key] = []
 
         self.__query_params[key] = [value]
 
-    def __add_param(self, key: str, value: any):
+    def __add_param(self, key: str, value: Any):
         if key not in self.__query_params:
             self.__query_params[key] = []
 
         self.__query_params[key].append(value)
 
-    def parse(self) -> List[Tuple[str, any]]:
+    def parse(self) -> List[Tuple[str, Any]]:
         """Parses QueryParams into a list of tuples representation that will be
             used for sending the request.
 
@@ -412,3 +414,44 @@ class QueryParams:
                 query_params.append((key, v))
 
         return query_params
+
+
+class URL(Serializable):
+    """URL describes a single Loadero log file or artifact. Allows downloading
+    without manually spplying access token."""
+
+    def __init__(self, url: str = ""):
+        self.__url = url
+
+    def url(self) -> str:
+        """Returns URL string
+
+        Returns:
+            str: URL string
+        """
+
+        return self.__url
+
+    def download(self) -> str:
+        """Downloads the contents of a the URL, storing the result as a file in
+        current working directory
+
+        Returns
+            str: File name of the download.
+        """
+
+        name = self.url().rsplit("/", 1)[-1]
+        with open(name, "wb") as dest:
+            APIClient().get_raw(self.url(), dest)
+
+        return name
+
+    def from_dict(self, json_dict: str) -> URL:
+        self.__url = json_dict
+        return self
+
+    def to_dict(self) -> str:
+        return self.url()
+
+    def to_dict_full(self) -> str:
+        return self.to_dict()

@@ -354,11 +354,11 @@ def check_result_log_params(params: ResultLogParams):
     assert params.result_log_id == RESULT_LOG_ID
     assert params.created == CREATED_TIME
     assert params.result_id == RESULT_ID
-    assert params.webrtc == "webrtc_log.txt"
-    assert params.selenium == "selenium_log.txt"
-    assert params.browser == "browser_log.txt"
-    assert params.rru == "rru_log.txt"
-    assert params.allure_report == "allure_report_log.txt"
+    assert params.webrtc.url() == "webrtc_log.txt"
+    assert params.selenium.url() == "selenium_log.txt"
+    assert params.browser.url() == "browser_log.txt"
+    assert params.rru.url() == "rru_log.txt"
+    assert params.allure_report.url() == "allure_report_log.txt"
 
 
 RESULT_ASSERT_JSON = {
@@ -404,17 +404,16 @@ ARTIFACTS_INFO_JSON = {
 
 
 def check_artifacts_info_params(params: ArtifactsInfoParams):
-    assert params.audio.paths == [
-        "artifact_path1",
-        "artifact_path2",
-    ]
+    assert params.audio.paths[0].url() == "artifact_path1"
+    assert params.audio.paths[1].url() == "artifact_path2"
     assert params.audio.error == "artifact error"
+
     assert params.downloads.paths is None
-    assert params.screenshots.paths == [
-        "artifact_path1",
-        "artifact_path2",
-    ]
+
+    assert params.screenshots.paths[0].url() == "artifact_path1"
+    assert params.screenshots.paths[1].url() == "artifact_path2"
     assert params.screenshots.error == "artifact error"
+
     assert params.video.paths is None
 
 

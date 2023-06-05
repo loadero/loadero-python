@@ -5,7 +5,7 @@
 # pylint: disable=missing-class-docstring
 # pylint: disable=unused-variable
 
-
+import io
 import time
 import pytest
 import httpretty
@@ -158,6 +158,47 @@ class UTestAPIClientGet:
         )
 
         assert APIClient().get("route/") is None
+
+
+@pytest.mark.usefixtures("api", "reset")
+class UTestAPIClientGetRaw:
+    @staticmethod
+    def utest_valid():
+        httpretty.register_uri(
+            httpretty.GET,
+            common.API_BASE + "route/",
+            body='{"hello":"world"}',
+        )
+
+        dest = io.BytesIO()
+
+        APIClient().get_raw(common.API_BASE + "route/", dest)
+
+        dest.seek(0)
+
+        assert dest.read() == b'{"hello":"world"}'
+
+        dict_includes(
+            {
+                "Accept-Encoding": "identity",
+                "Authorization": "LoaderoAuth LOADERO_PROJECT_ACCESS_TOKEN",
+                "Host": "mock.loadero.api",
+            },
+            dict(httpretty.last_request().headers),
+        )
+
+    @staticmethod
+    def utest_non_success_resp():
+        httpretty.register_uri(
+            httpretty.GET,
+            common.API_BASE + "route/",
+            status=500,
+        )
+
+        dest = io.BytesIO()
+
+        with pytest.raises(Exception):
+            APIClient().get_raw(common.API_BASE + "route/", dest)
 
 
 @pytest.mark.usefixtures("api", "reset")
