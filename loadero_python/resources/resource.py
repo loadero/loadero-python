@@ -418,7 +418,7 @@ class QueryParams:
 
 class URL(Serializable):
     """URL describes a single Loadero log file or artifact. Allows downloading
-    without manually spplying access token."""
+    without manually supplying access token."""
 
     def __init__(self, url: str = ""):
         self.__url = url
