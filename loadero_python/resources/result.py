@@ -20,6 +20,7 @@ from .resource import (
     LoaderoResourceParams,
     LoaderoResource,
     QueryParams,
+    URL,
     from_dict_as_list,
     from_dict_as_new,
 )
@@ -79,17 +80,22 @@ class ResultLogParams(LoaderoResourceParams):
             },
             custom_deserializers={
                 "created": parser.parse,
+                "webrtc": from_dict_as_new(URL),
+                "selenium": from_dict_as_new(URL),
+                "browser": from_dict_as_new(URL),
+                "rru": from_dict_as_new(URL),
+                "allure_report": from_dict_as_new(URL),
             },
         )
 
-        self._result_log_id = None
-        self._created = None
-        self._result_id = None
-        self._webrtc = None
-        self._selenium = None
-        self._browser = None
-        self._rru = None
-        self._allure_report = None
+        self._result_log_id: int
+        self._created: datetime
+        self._result_id: int
+        self._webrtc: URL
+        self._selenium: URL
+        self._browser: URL
+        self._rru: URL
+        self._allure_report: URL
 
     @property
     def result_log_id(self) -> int:
@@ -122,17 +128,17 @@ class ResultLogParams(LoaderoResourceParams):
         return self._result_id
 
     @property
-    def webrtc(self) -> str:
+    def webrtc(self) -> URL:
         """WebRTC log URL.
 
         Returns:
-            str: WebRTC log URL.
+            URL: WebRTC log URL.
         """
 
         return self._webrtc
 
     @property
-    def selenium(self) -> str:
+    def selenium(self) -> URL:
         """Selenium log URL.
 
         Returns:
@@ -142,7 +148,7 @@ class ResultLogParams(LoaderoResourceParams):
         return self._selenium
 
     @property
-    def browser(self) -> str:
+    def browser(self) -> URL:
         """Browser log URL.
 
         Returns:
@@ -152,7 +158,7 @@ class ResultLogParams(LoaderoResourceParams):
         return self._browser
 
     @property
-    def rru(self) -> str:
+    def rru(self) -> URL:
         """Result resource usage log URL.
 
         Returns:
@@ -162,7 +168,7 @@ class ResultLogParams(LoaderoResourceParams):
         return self._rru
 
     @property
-    def allure_report(self) -> str:
+    def allure_report(self) -> URL:
         """Allure report URL.
 
         Returns:
@@ -318,13 +324,16 @@ class ArtifactInfoParams(LoaderoResourceParams):
                 "error": "_error",
                 "paths": "_paths",
             },
+            custom_deserializers={
+                "paths": from_dict_as_list(URL),
+            },
         )
 
         self._error = None
         self._paths = None
 
     @property
-    def error(self) -> str:
+    def error(self) -> str | None:
         """Artifact error message.
 
         Returns:
@@ -334,11 +343,11 @@ class ArtifactInfoParams(LoaderoResourceParams):
         return self._error
 
     @property
-    def paths(self) -> list[str]:
+    def paths(self) -> list[URL] | None:
         """URLs of artifact files.
 
         Returns:
-            list[str]: URLs of artifact files.
+            list[URL]: URLs of artifact files.
         """
 
         return self._paths
@@ -363,10 +372,10 @@ class ArtifactsInfoParams(LoaderoResourceParams):
             },
         )
 
-        self._audio = None
-        self._downloads = None
-        self._screenshots = None
-        self._video = None
+        self._audio: ArtifactInfoParams
+        self._downloads: ArtifactInfoParams
+        self._screenshots: ArtifactInfoParams
+        self._video: ArtifactInfoParams
 
     @property
     def audio(self) -> ArtifactInfoParams:

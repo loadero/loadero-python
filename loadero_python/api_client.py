@@ -169,6 +169,42 @@ class APIClient:
 
         return json.loads(resp.data)
 
+    def get_raw(self, url, dest):
+        """Sends a HTTP GET request to Loadero API. Writes raw response to
+        destination
+
+        Args:
+            url (str): URL to a Loadero resource.
+
+            dest: Destination where request response is going to be written.
+                Must implement write method from file interface.
+
+        Raises:
+            APIException: When Loadero API request fails. Either because of
+                client error or server error.
+        """
+
+        req = self.__http.request(
+            method="GET",
+            url=url,
+            headers=self._build_headers(),
+            preload_content=False,
+        )
+
+        while True:
+            data = req.read(256)
+            if not data:
+                break
+
+            dest.write(data)
+
+        req.release_conn()
+
+        if req.status // 100 != 2:
+            raise APIException(
+                f"Loadero API request failed with status code {req.status}"
+            )
+
     def post(self, route: str, body: dict) -> dict or None:
         """Sends a HTTP POST request to Loadero API.
 

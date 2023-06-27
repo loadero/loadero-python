@@ -5,7 +5,8 @@
 # pylint: disable=missing-class-docstring
 # pylint: disable=unused-variable
 
-
+import os
+import httpretty
 import pytest
 from dateutil import parser
 from loadero_python.resources.classificator import TestMode
@@ -16,11 +17,35 @@ from loadero_python.resources.resource import (
     ParamsSerializer,
     from_dict_as_list,
     LoaderoResourceParams,
+    URL,
 )
 from loadero_python.resources.group import GroupParams
 from loadero_python.resources.test import TestFilterKey
 from loadero_python.resources.metric_path import MetricPath, MetricBasePath
+from loadero_python.api_client import APIClient
 from . import common
+
+
+@pytest.fixture(scope="class")
+def api():
+    httpretty.enable(allow_net_connect=False, verbose=True)
+
+    APIClient(
+        project_id=common.PROJECT_ID,
+        access_token=common.ACCESS_TOKEN,
+        api_base=common.API_BASE,
+        rate_limit=False,
+    )
+
+    yield
+
+    httpretty.disable()
+
+
+@pytest.fixture(scope="function")
+def reset():
+    httpretty.reset()
+    yield
 
 
 class UTestSerializable:
@@ -404,3 +429,30 @@ class UTestQueryParams:
         qp.filter(TestFilterKey.TEST_MODE)
 
         assert not qp.parse()
+
+
+class UTestURL:
+    @staticmethod
+    def utest_init():
+        u = URL()
+        assert u.url() == ""
+
+        u = URL("hello")
+        assert u.url() == "hello"
+
+    @staticmethod
+    @pytest.mark.usefixtures("api", "reset")
+    def utest_download():
+        httpretty.register_uri(
+            httpretty.GET,
+            common.API_BASE + "route/file",
+            body='{"hello":"world"}',
+        )
+
+        u = URL(common.API_BASE + "route/file")
+        u.download()
+
+        with open("file", "rb") as f:
+            assert f.read() == b'{"hello":"world"}'
+
+        os.remove("file")

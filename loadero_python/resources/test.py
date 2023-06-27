@@ -11,6 +11,7 @@ Single Test object coresponds to single test in Loadero.
 """
 
 from __future__ import annotations
+from typing import Any
 from datetime import datetime
 from dateutil import parser
 from ..api_client import APIClient
@@ -118,7 +119,7 @@ class Script(Serializable):
 
         return self.to_dict()
 
-    def from_dict(self, json_dict: dict[str, any]) -> Script:
+    def from_dict(self, _: dict[str, Any]) -> Script:
         """Loads script from a dictionary. Never used. Required for
         serialization.
 
