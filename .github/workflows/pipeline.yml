@@ -2,12 +2,12 @@ name: PIPELINE
 
 on:
   push:
-    branches: 
+    branches:
       - 'master'
     tags:
       - '*'
   pull_request:
-    branches: 
+    branches:
       - 'master'
 
   workflow_dispatch:
@@ -76,13 +76,13 @@ jobs:
       - name: setup python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10' 
+          python-version: '3.10'
           cache: 'pip'
           cache-dependency-path: requirements/*.txt
-        
+
       - name: install build
         run: python -m pip install build --user
-          
+
       - name: build wheel and source tarball
         run: python -m build --sdist --wheel --outdir dist/ .
 
@@ -103,7 +103,7 @@ jobs:
       - name: setup python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10' 
+          python-version: '3.10'
           cache: 'pip'
           cache-dependency-path: requirements/*.txt
 
@@ -166,7 +166,7 @@ jobs:
 
       - name: delete source
         run: |
-          rm -rf loadero_python      
+          rm -rf loadero_python
 
       - name: import location
         run:  python -c "import loadero_python; print(loadero_python)"
