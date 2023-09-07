@@ -52,7 +52,7 @@ pip install loadero-python
 Before using the Loadero-Python client an API access token needs to be acquired.
 This can be done in the projects settings page in Loadero web-app.
 More information about the API can be found in the
-[Loadero wiki](https://wiki.loadero.com/loadero-usage/api/)
+[Loadero wiki](https://wiki.loadero.com/docs/loadero-usage/api/direct-api-access)
 
 **Note** Access tokens are project specific and cannot be used across multiple
 projects. Make sure to specify the project ID in the request for an access
