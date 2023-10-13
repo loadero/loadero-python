@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>loadero_python.resources.pagination module &mdash; Loadero Python Client v1.0.0-19-g4f9c18d
+  <title>loadero_python.resources.pagination module &mdash; Loadero Python Client v1.2.0-3-g6e13b71
  documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
@@ -12,11 +12,11 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="_static/jquery.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=f5c6b245"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -36,7 +36,7 @@
             Loadero Python Client
           </a>
               <div class="version">
-                v1.0.0-19-g4f9c18d
+                v1.2.0-3-g6e13b71
 
               </div>
 <div role="search">
@@ -89,19 +89,19 @@
            <div itemprop="articleBody">
              
   <section id="module-loadero_python.resources.pagination">
-<span id="loadero-python-resources-pagination-module"></span><h1>loadero_python.resources.pagination module<a class="headerlink" href="#module-loadero_python.resources.pagination" title="Permalink to this heading"></a></h1>
+<span id="loadero-python-resources-pagination-module"></span><h1>loadero_python.resources.pagination module<a class="headerlink" href="#module-loadero_python.resources.pagination" title="Link to this heading"></a></h1>
 <p>Loadero resource pagination.</p>
 <p>Pagination describes and provides a way to manage large read all operation
 responses</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="loadero_python.resources.pagination.PagedResponse">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">loadero_python.resources.pagination.</span></span><span class="sig-name descname"><span class="pre">PagedResponse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resource_params_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/loadero_python/resources/pagination.html#PagedResponse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.pagination.PagedResponse" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">loadero_python.resources.pagination.</span></span><span class="sig-name descname"><span class="pre">PagedResponse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resource_params_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/loadero_python/resources/pagination.html#PagedResponse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.pagination.PagedResponse" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="loadero_python.resources.resource.html#loadero_python.resources.resource.LoaderoResourceParams" title="loadero_python.resources.resource.LoaderoResourceParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">LoaderoResourceParams</span></code></a></p>
 <p>PagedResponse is a generic representation of Loadero read all
 responses.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="loadero_python.resources.pagination.PagedResponse.filter">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">filter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">any</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#loadero_python.resources.pagination.PagedResponse.filter" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">filter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">any</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#loadero_python.resources.pagination.PagedResponse.filter" title="Link to this definition"></a></dt>
 <dd><p>Filters applied in request. Filter keys and values are NOT parsed to
 their python types.</p>
 <dl class="simple">
@@ -112,7 +112,7 @@ their python types.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="loadero_python.resources.pagination.PagedResponse.pagination">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pagination</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#loadero_python.resources.pagination.PaginationParams" title="loadero_python.resources.pagination.PaginationParams"><span class="pre">PaginationParams</span></a></em><a class="headerlink" href="#loadero_python.resources.pagination.PagedResponse.pagination" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pagination</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#loadero_python.resources.pagination.PaginationParams" title="loadero_python.resources.pagination.PaginationParams"><span class="pre">PaginationParams</span></a></em><a class="headerlink" href="#loadero_python.resources.pagination.PagedResponse.pagination" title="Link to this definition"></a></dt>
 <dd><p>Pagination information of request results.</p>
 <dl class="simple">
 <dt>Returns:</dt><dd><p>PaginationParams: Pagination params.</p>
@@ -122,7 +122,7 @@ their python types.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="loadero_python.resources.pagination.PagedResponse.results">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">results</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="loadero_python.resources.resource.html#loadero_python.resources.resource.LoaderoResourceParams" title="loadero_python.resources.resource.LoaderoResourceParams"><span class="pre">LoaderoResourceParams</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#loadero_python.resources.pagination.PagedResponse.results" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">results</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="loadero_python.resources.resource.html#loadero_python.resources.resource.LoaderoResourceParams" title="loadero_python.resources.resource.LoaderoResourceParams"><span class="pre">LoaderoResourceParams</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#loadero_python.resources.pagination.PagedResponse.results" title="Link to this definition"></a></dt>
 <dd><p>Request results.</p>
 <dl class="simple">
 <dt>Returns:</dt><dd><p>List[LoaderoResourceParams]: Results.</p>
@@ -134,12 +134,12 @@ their python types.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="loadero_python.resources.pagination.PaginationParams">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">loadero_python.resources.pagination.</span></span><span class="sig-name descname"><span class="pre">PaginationParams</span></span><a class="reference internal" href="_modules/loadero_python/resources/pagination.html#PaginationParams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.pagination.PaginationParams" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">loadero_python.resources.pagination.</span></span><span class="sig-name descname"><span class="pre">PaginationParams</span></span><a class="reference internal" href="_modules/loadero_python/resources/pagination.html#PaginationParams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadero_python.resources.pagination.PaginationParams" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="loadero_python.resources.resource.html#loadero_python.resources.resource.LoaderoResourceParams" title="loadero_python.resources.resource.LoaderoResourceParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">LoaderoResourceParams</span></code></a></p>
 <p>PaginationParams describes Loadero pagination attributes.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="loadero_python.resources.pagination.PaginationParams.limit">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">limit</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#loadero_python.resources.pagination.PaginationParams.limit" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">limit</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#loadero_python.resources.pagination.PaginationParams.limit" title="Link to this definition"></a></dt>
 <dd><p>Maximum number of items to returned per page.</p>
 <dl class="simple">
 <dt>Returns:</dt><dd><p>int: Maximum number of items to returned per page.</p>
@@ -149,7 +149,7 @@ their python types.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="loadero_python.resources.pagination.PaginationParams.offset">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">offset</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#loadero_python.resources.pagination.PaginationParams.offset" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">offset</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#loadero_python.resources.pagination.PaginationParams.offset" title="Link to this definition"></a></dt>
 <dd><p>Offset of the first item to in page.</p>
 <dl class="simple">
 <dt>Returns:</dt><dd><p>int: Offset of the first item to return.</p>
@@ -159,7 +159,7 @@ their python types.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="loadero_python.resources.pagination.PaginationParams.page">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">page</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#loadero_python.resources.pagination.PaginationParams.page" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">page</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#loadero_python.resources.pagination.PaginationParams.page" title="Link to this definition"></a></dt>
 <dd><p>Index of the returned page.</p>
 <dl class="simple">
 <dt>Returns:</dt><dd><p>int: Index of the returned page.</p>
@@ -169,7 +169,7 @@ their python types.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="loadero_python.resources.pagination.PaginationParams.total_items">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">total_items</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#loadero_python.resources.pagination.PaginationParams.total_items" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">total_items</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#loadero_python.resources.pagination.PaginationParams.total_items" title="Link to this definition"></a></dt>
 <dd><p>Total number of items.</p>
 <dl class="simple">
 <dt>Returns:</dt><dd><p>int: Total number of items.</p>
@@ -179,7 +179,7 @@ their python types.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="loadero_python.resources.pagination.PaginationParams.total_pages">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">total_pages</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#loadero_python.resources.pagination.PaginationParams.total_pages" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">total_pages</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#loadero_python.resources.pagination.PaginationParams.total_pages" title="Link to this definition"></a></dt>
 <dd><p>Total number of pages.</p>
 <dl class="simple">
 <dt>Returns:</dt><dd><p>int: Total number of pages.</p>

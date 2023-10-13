@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>loadero_python.resources.resource &mdash; Loadero Python Client v1.0.0-19-g4f9c18d
+  <title>loadero_python.resources.resource &mdash; Loadero Python Client v1.2.0-3-g6e13b71
  documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
@@ -11,11 +11,11 @@
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../../_static/jquery.js"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=f5c6b245"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -33,7 +33,7 @@
             Loadero Python Client
           </a>
               <div class="version">
-                v1.0.0-19-g4f9c18d
+                v1.2.0-3-g6e13b71
 
               </div>
 <div role="search">
@@ -85,26 +85,40 @@
 <span class="kn">from</span> <span class="nn">loadero_python.api_client</span> <span class="kn">import</span> <span class="n">APIClient</span>
 
 
-<div class="viewcode-block" id="Serializable"><a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.Serializable">[docs]</a><span class="k">class</span> <span class="nc">Serializable</span><span class="p">:</span>
+<div class="viewcode-block" id="Serializable">
+<a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.Serializable">[docs]</a>
+<span class="k">class</span> <span class="nc">Serializable</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for serializable objects. Serializable objects can be</span>
 <span class="sd">    converted to and from JSON using Python dictionary as a JSON representation.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Serializable.to_dict"><a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.Serializable.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<div class="viewcode-block" id="Serializable.to_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.Serializable.to_dict">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a dictionary representation of the object.&quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="Serializable.to_dict_full"><a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.Serializable.to_dict_full">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict_full</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+
+<div class="viewcode-block" id="Serializable.to_dict_full">
+<a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.Serializable.to_dict_full">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_dict_full</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a dictionary representation of the object that contains all</span>
 <span class="sd">        of the objects attributes.&quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="Serializable.from_dict"><a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.Serializable.from_dict">[docs]</a>    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Serializable</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Serializable.from_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.Serializable.from_dict">[docs]</a>
+    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Serializable</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns an instance of the object from a dictionary.&quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+</div>
 
 
-<div class="viewcode-block" id="ParamsSerializer"><a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.ParamsSerializer">[docs]</a><span class="k">class</span> <span class="nc">ParamsSerializer</span><span class="p">(</span><span class="n">Serializable</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ParamsSerializer">
+<a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.ParamsSerializer">[docs]</a>
+<span class="k">class</span> <span class="nc">ParamsSerializer</span><span class="p">(</span><span class="n">Serializable</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;ParamsSerializer implements Serializable for Loadero resource params.&quot;&quot;&quot;</span>
 
     <span class="c1"># pylint: disable=dangerous-default-value</span>
@@ -144,7 +158,9 @@
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__attribute_map</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__reverse_attribute_map</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">k</span>
 
-<div class="viewcode-block" id="ParamsSerializer.to_dict"><a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.ParamsSerializer.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<div class="viewcode-block" id="ParamsSerializer.to_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.ParamsSerializer.to_dict">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Converts the resource params object to a dictionary JSON</span>
 <span class="sd">        representation that contains only the body attributes.</span>
 
@@ -183,6 +199,7 @@
 
         <span class="k">return</span> <span class="n">json_dict</span></div>
 
+
     <span class="k">def</span> <span class="nf">__get_attribute_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Recursively converts the attribute to a dictionary that only</span>
 <span class="sd">        contains the body attributes.</span>
@@ -210,7 +227,9 @@
 
         <span class="k">return</span> <span class="n">attribute</span>
 
-<div class="viewcode-block" id="ParamsSerializer.to_dict_full"><a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.ParamsSerializer.to_dict_full">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict_full</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<div class="viewcode-block" id="ParamsSerializer.to_dict_full">
+<a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.ParamsSerializer.to_dict_full">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_dict_full</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a dictionary representation of the object that contains all</span>
 <span class="sd">        of the objects attributes.</span>
 
@@ -240,7 +259,10 @@
 
         <span class="k">return</span> <span class="n">json_dict</span></div>
 
-<div class="viewcode-block" id="ParamsSerializer.from_dict"><a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.ParamsSerializer.from_dict">[docs]</a>    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_dict</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ParamsSerializer</span><span class="p">:</span>
+
+<div class="viewcode-block" id="ParamsSerializer.from_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.ParamsSerializer.from_dict">[docs]</a>
+    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_dict</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ParamsSerializer</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the attributes of the resource params object from a JSON</span>
 <span class="sd">        representation.</span>
 
@@ -267,10 +289,14 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">python_attribute_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">json_attribute_value</span>
 
-        <span class="k">return</span> <span class="bp">self</span></div></div>
+        <span class="k">return</span> <span class="bp">self</span></div>
+</div>
 
 
-<div class="viewcode-block" id="from_dict_as_list"><a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.from_dict_as_list">[docs]</a><span class="k">def</span> <span class="nf">from_dict_as_list</span><span class="p">(</span>
+
+<div class="viewcode-block" id="from_dict_as_list">
+<a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.from_dict_as_list">[docs]</a>
+<span class="k">def</span> <span class="nf">from_dict_as_list</span><span class="p">(</span>
     <span class="n">resource_params_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">List</span><span class="p">[</span><span class="n">LoaderoResourceParams</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a function that deserializes a dictionary to a list of new</span>
@@ -299,7 +325,10 @@
     <span class="k">return</span> <span class="n">func</span></div>
 
 
-<div class="viewcode-block" id="from_dict_as_new"><a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.from_dict_as_new">[docs]</a><span class="k">def</span> <span class="nf">from_dict_as_new</span><span class="p">(</span>
+
+<div class="viewcode-block" id="from_dict_as_new">
+<a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.from_dict_as_new">[docs]</a>
+<span class="k">def</span> <span class="nf">from_dict_as_new</span><span class="p">(</span>
     <span class="n">resource_params_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">LoaderoResourceParams</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a function that deserializes a dictionary to a new instance of</span>
@@ -322,7 +351,10 @@
     <span class="k">return</span> <span class="n">func</span></div>
 
 
-<div class="viewcode-block" id="LoaderoResourceParams"><a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.LoaderoResourceParams">[docs]</a><span class="k">class</span> <span class="nc">LoaderoResourceParams</span><span class="p">(</span><span class="n">ParamsSerializer</span><span class="p">):</span>
+
+<div class="viewcode-block" id="LoaderoResourceParams">
+<a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.LoaderoResourceParams">[docs]</a>
+<span class="k">class</span> <span class="nc">LoaderoResourceParams</span><span class="p">(</span><span class="n">ParamsSerializer</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for Loadero resource params.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -332,7 +364,10 @@
         <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">to_dict_full</span><span class="p">(),</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="LoaderoResource"><a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.LoaderoResource">[docs]</a><span class="k">class</span> <span class="nc">LoaderoResource</span><span class="p">:</span>
+
+<div class="viewcode-block" id="LoaderoResource">
+<a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.LoaderoResource">[docs]</a>
+<span class="k">class</span> <span class="nc">LoaderoResource</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for Loadero resources.</span>
 
 <span class="sd">    All Loadero resources have</span>
@@ -348,7 +383,10 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="DuplicateResourceBodyParams"><a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.DuplicateResourceBodyParams">[docs]</a><span class="k">class</span> <span class="nc">DuplicateResourceBodyParams</span><span class="p">(</span><span class="n">LoaderoResourceParams</span><span class="p">):</span>
+
+<div class="viewcode-block" id="DuplicateResourceBodyParams">
+<a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.DuplicateResourceBodyParams">[docs]</a>
+<span class="k">class</span> <span class="nc">DuplicateResourceBodyParams</span><span class="p">(</span><span class="n">LoaderoResourceParams</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Duplicate resource body params.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
@@ -364,7 +402,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span></div>
 
 
-<div class="viewcode-block" id="convert_params_list"><a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.convert_params_list">[docs]</a><span class="k">def</span> <span class="nf">convert_params_list</span><span class="p">(</span>
+
+<div class="viewcode-block" id="convert_params_list">
+<a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.convert_params_list">[docs]</a>
+<span class="k">def</span> <span class="nf">convert_params_list</span><span class="p">(</span>
     <span class="n">resource_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">LoaderoResource</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Converts a list of resource params to a list of resource objects.</span>
@@ -387,21 +428,29 @@
     <span class="k">return</span> <span class="n">resources</span></div>
 
 
-<div class="viewcode-block" id="FilterKey"><a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.FilterKey">[docs]</a><span class="k">class</span> <span class="nc">FilterKey</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+
+<div class="viewcode-block" id="FilterKey">
+<a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.FilterKey">[docs]</a>
+<span class="k">class</span> <span class="nc">FilterKey</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;FilterKey is a base class that all resource filter keys inherit form.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span></div>
 
 
-<div class="viewcode-block" id="QueryParams"><a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.QueryParams">[docs]</a><span class="k">class</span> <span class="nc">QueryParams</span><span class="p">:</span>
+
+<div class="viewcode-block" id="QueryParams">
+<a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.QueryParams">[docs]</a>
+<span class="k">class</span> <span class="nc">QueryParams</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;QueryParams allows setting pagination settings an filters for</span>
 <span class="sd">    requests.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__query_params</span> <span class="o">=</span> <span class="p">{}</span>
 
-<div class="viewcode-block" id="QueryParams.limit"><a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.QueryParams.limit">[docs]</a>    <span class="k">def</span> <span class="nf">limit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QueryParams</span><span class="p">:</span>
+<div class="viewcode-block" id="QueryParams.limit">
+<a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.QueryParams.limit">[docs]</a>
+    <span class="k">def</span> <span class="nf">limit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QueryParams</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set maximum number of resources to return in a single read all</span>
 <span class="sd">        operation.</span>
 
@@ -415,7 +464,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__set_param</span><span class="p">(</span><span class="s2">&quot;limit&quot;</span><span class="p">,</span> <span class="n">limit</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="QueryParams.offset"><a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.QueryParams.offset">[docs]</a>    <span class="k">def</span> <span class="nf">offset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offset</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QueryParams</span><span class="p">:</span>
+
+<div class="viewcode-block" id="QueryParams.offset">
+<a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.QueryParams.offset">[docs]</a>
+    <span class="k">def</span> <span class="nf">offset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offset</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QueryParams</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the number of resources the read all response should be offset</span>
 <span class="sd">        by.</span>
 
@@ -429,7 +481,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__set_param</span><span class="p">(</span><span class="s2">&quot;offset&quot;</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="QueryParams.filter"><a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.QueryParams.filter">[docs]</a>    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">FilterKey</span><span class="p">,</span> <span class="o">*</span><span class="n">values</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QueryParams</span><span class="p">:</span>
+
+<div class="viewcode-block" id="QueryParams.filter">
+<a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.QueryParams.filter">[docs]</a>
+    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">FilterKey</span><span class="p">,</span> <span class="o">*</span><span class="n">values</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QueryParams</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set filter for read all operation.</span>
 
 <span class="sd">        Args:</span>
@@ -463,6 +518,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__add_param</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="n">value</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
+
     <span class="k">def</span> <span class="nf">__set_param</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__query_params</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__query_params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
@@ -475,7 +531,9 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">__query_params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
-<div class="viewcode-block" id="QueryParams.parse"><a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.QueryParams.parse">[docs]</a>    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+<div class="viewcode-block" id="QueryParams.parse">
+<a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.QueryParams.parse">[docs]</a>
+    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Parses QueryParams into a list of tuples representation that will be</span>
 <span class="sd">            used for sending the request.</span>
 
@@ -489,17 +547,23 @@
             <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
                 <span class="n">query_params</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
 
-        <span class="k">return</span> <span class="n">query_params</span></div></div>
+        <span class="k">return</span> <span class="n">query_params</span></div>
+</div>
 
 
-<div class="viewcode-block" id="URL"><a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.URL">[docs]</a><span class="k">class</span> <span class="nc">URL</span><span class="p">(</span><span class="n">Serializable</span><span class="p">):</span>
+
+<div class="viewcode-block" id="URL">
+<a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.URL">[docs]</a>
+<span class="k">class</span> <span class="nc">URL</span><span class="p">(</span><span class="n">Serializable</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;URL describes a single Loadero log file or artifact. Allows downloading</span>
 <span class="sd">    without manually supplying access token.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__url</span> <span class="o">=</span> <span class="n">url</span>
 
-<div class="viewcode-block" id="URL.url"><a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.URL.url">[docs]</a>    <span class="k">def</span> <span class="nf">url</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="URL.url">
+<a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.URL.url">[docs]</a>
+    <span class="k">def</span> <span class="nf">url</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns URL string</span>
 
 <span class="sd">        Returns:</span>
@@ -508,7 +572,10 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__url</span></div>
 
-<div class="viewcode-block" id="URL.download"><a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.URL.download">[docs]</a>    <span class="k">def</span> <span class="nf">download</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+
+<div class="viewcode-block" id="URL.download">
+<a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.URL.download">[docs]</a>
+    <span class="k">def</span> <span class="nf">download</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Downloads the contents of a the URL, storing the result as a file in</span>
 <span class="sd">        current working directory</span>
 
@@ -522,15 +589,26 @@
 
         <span class="k">return</span> <span class="n">name</span></div>
 
-<div class="viewcode-block" id="URL.from_dict"><a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.URL.from_dict">[docs]</a>    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_dict</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">URL</span><span class="p">:</span>
+
+<div class="viewcode-block" id="URL.from_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.URL.from_dict">[docs]</a>
+    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_dict</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">URL</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__url</span> <span class="o">=</span> <span class="n">json_dict</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="URL.to_dict"><a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.URL.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+
+<div class="viewcode-block" id="URL.to_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.URL.to_dict">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="URL.to_dict_full"><a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.URL.to_dict_full">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict_full</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span></div></div>
+
+<div class="viewcode-block" id="URL.to_dict_full">
+<a class="viewcode-back" href="../../../loadero_python.resources.resource.html#loadero_python.resources.resource.URL.to_dict_full">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_dict_full</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span></div>
+</div>
+
 </pre></div>
 
            </div>
