@@ -10,7 +10,7 @@ long_description = (root_path / "README.md").read_text(encoding="utf-8")
 
 setup(
     name="loadero_python",
-    version="1.2.0",
+    version="1.2.1",
     description="Python client for Loadero API",
     long_description=long_description,
     long_description_content_type="text/markdown",
