@@ -11,6 +11,8 @@ from .resource import Serializable
 class MetricPath(Serializable, Enum):
     """MetricPath enumerates Loadero metric path constants."""
 
+    ACTIONS_TIMEEXECUTION_NAME = "actions/timeExecution/{name}"
+
     MACHINE_CPU_AVAILABLE_TOTAL = "machine/cpu/available/total"
 
     MACHINE_CPU_PERCENT_1ST = "machine/cpu/percent/1st"
@@ -210,6 +212,8 @@ class MetricPath(Serializable, Enum):
     MACHINE_RAM_USED_RSTDDEV = "machine/ram/used/rstddev"
 
     MACHINE_RAM_USED_STDDEV = "machine/ram/used/stddev"
+
+    MOS_AUDIO_EMODEL_AVG = "mos/audio/e-model/avg"
 
     WEBRTC_AUDIO_BITRATE_IN_1ST = "webrtc/audio/bitrate/in/1st"
 

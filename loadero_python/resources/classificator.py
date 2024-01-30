@@ -197,6 +197,10 @@ class ComputeUnit(Serializable, Enum):
 
     CU_G6 = "g6"
 
+    CU_G8 = "g8"
+
+    CU_G12 = "g12"
+
     # pylint: disable=arguments-differ
     @staticmethod
     def from_dict(jv: str) -> ComputeUnit:
@@ -204,6 +208,36 @@ class ComputeUnit(Serializable, Enum):
             return None
 
         return ComputeUnit(jv)
+
+    def to_dict(self) -> str:
+        return self.value
+
+    def to_dict_full(self) -> str:
+        return self.to_dict()
+
+
+class CUUsageStatus(Serializable, Enum):
+    """CUUsageStatus enumerates Loadero classificator constants for
+    cu_usage_status classificator type.
+    """
+
+    CUUS_RUN_ACTIVE = "run-active"
+
+    CUUS_REPORTED = "reported"
+
+    CUUS_PAYMENT_FAILED = "payment-failed"
+
+    CUUS_PAID = "paid"
+
+    CUUS_VOID = "void"
+
+    # pylint: disable=arguments-differ
+    @staticmethod
+    def from_dict(jv: str) -> CUUsageStatus:
+        if jv == "":
+            return None
+
+        return CUUsageStatus(jv)
 
     def to_dict(self) -> str:
         return self.value
@@ -503,6 +537,12 @@ class MetricKey(Serializable, Enum):
 
     MK_DYNAMIC_NAME = "{name}"
 
+    MK_MOS = "mos"
+
+    MK_E_MODEL = "e-model"
+
+    MK_VISQOL = "visqol"
+
     # pylint: disable=arguments-differ
     @staticmethod
     def from_dict(jv: str) -> MetricKey:
@@ -556,6 +596,8 @@ class MosAlgorithm(Serializable, Enum):
     """
 
     MA_VISQOL = "visqol"
+
+    MA_E_MODEL = "e-model"
 
     # pylint: disable=arguments-differ
     @staticmethod
@@ -946,6 +988,8 @@ class VideoFeed(Serializable, Enum):
     VF_1080P_MARKED_TOP_LEFT = "1080p-marked-top-left"
 
     VF_1080P_MEETING = "1080p-meeting"
+
+    VF_1080P_MEETING_CLEAN = "1080p-meeting-clean"
 
     VF_240P = "240p"
 
