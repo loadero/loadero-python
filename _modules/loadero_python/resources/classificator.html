@@ -1,19 +1,21 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>loadero_python.resources.classificator &mdash; Loadero Python Client v1.2.0-3-g6e13b71
+  <title>loadero_python.resources.classificator &mdash; Loadero Python Client v1.2.0-6-ga222234
  documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
         <script src="../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=f5c6b245"></script>
+        <script src="../../../_static/documentation_options.js?v=13d321ef"></script>
         <script src="../../../_static/doctools.js?v=888ff710"></script>
         <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
@@ -33,7 +35,7 @@
             Loadero Python Client
           </a>
               <div class="version">
-                v1.2.0-3-g6e13b71
+                v1.2.0-6-ga222234
 
               </div>
 <div role="search">
@@ -302,6 +304,10 @@
 
     <span class="n">CU_G6</span> <span class="o">=</span> <span class="s2">&quot;g6&quot;</span>
 
+    <span class="n">CU_G8</span> <span class="o">=</span> <span class="s2">&quot;g8&quot;</span>
+
+    <span class="n">CU_G12</span> <span class="o">=</span> <span class="s2">&quot;g12&quot;</span>
+
     <span class="c1"># pylint: disable=arguments-differ</span>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">jv</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ComputeUnit</span><span class="p">:</span>
@@ -309,6 +315,39 @@
             <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">return</span> <span class="n">ComputeUnit</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+
+    <span class="k">def</span> <span class="nf">to_dict_full</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="CUUsageStatus">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.CUUsageStatus">[docs]</a>
+<span class="k">class</span> <span class="nc">CUUsageStatus</span><span class="p">(</span><span class="n">Serializable</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;CUUsageStatus enumerates Loadero classificator constants for</span>
+<span class="sd">    cu_usage_status classificator type.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">CUUS_RUN_ACTIVE</span> <span class="o">=</span> <span class="s2">&quot;run-active&quot;</span>
+
+    <span class="n">CUUS_REPORTED</span> <span class="o">=</span> <span class="s2">&quot;reported&quot;</span>
+
+    <span class="n">CUUS_PAYMENT_FAILED</span> <span class="o">=</span> <span class="s2">&quot;payment-failed&quot;</span>
+
+    <span class="n">CUUS_PAID</span> <span class="o">=</span> <span class="s2">&quot;paid&quot;</span>
+
+    <span class="n">CUUS_VOID</span> <span class="o">=</span> <span class="s2">&quot;void&quot;</span>
+
+    <span class="c1"># pylint: disable=arguments-differ</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">jv</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CUUsageStatus</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">jv</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="n">CUUsageStatus</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
@@ -629,6 +668,12 @@
 
     <span class="n">MK_DYNAMIC_NAME</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{name}</span><span class="s2">&quot;</span>
 
+    <span class="n">MK_MOS</span> <span class="o">=</span> <span class="s2">&quot;mos&quot;</span>
+
+    <span class="n">MK_E_MODEL</span> <span class="o">=</span> <span class="s2">&quot;e-model&quot;</span>
+
+    <span class="n">MK_VISQOL</span> <span class="o">=</span> <span class="s2">&quot;visqol&quot;</span>
+
     <span class="c1"># pylint: disable=arguments-differ</span>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">jv</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MetricKey</span><span class="p">:</span>
@@ -688,6 +733,8 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">MA_VISQOL</span> <span class="o">=</span> <span class="s2">&quot;visqol&quot;</span>
+
+    <span class="n">MA_E_MODEL</span> <span class="o">=</span> <span class="s2">&quot;e-model&quot;</span>
 
     <span class="c1"># pylint: disable=arguments-differ</span>
     <span class="nd">@staticmethod</span>
@@ -1111,6 +1158,8 @@
     <span class="n">VF_1080P_MARKED_TOP_LEFT</span> <span class="o">=</span> <span class="s2">&quot;1080p-marked-top-left&quot;</span>
 
     <span class="n">VF_1080P_MEETING</span> <span class="o">=</span> <span class="s2">&quot;1080p-meeting&quot;</span>
+
+    <span class="n">VF_1080P_MEETING_CLEAN</span> <span class="o">=</span> <span class="s2">&quot;1080p-meeting-clean&quot;</span>
 
     <span class="n">VF_240P</span> <span class="o">=</span> <span class="s2">&quot;240p&quot;</span>
 
