@@ -59,7 +59,6 @@ jobs:
       - name: install requirements
         run: |
           pip install -r requirements/lib.txt
-          pip install -r requirements/dev.txt
           pip install -r requirements/test.txt
 
       - name: test

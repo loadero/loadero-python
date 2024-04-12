@@ -183,10 +183,10 @@ class ParamsSerializer(Serializable):
             python_attribute_name = self.__attribute_map[json_attribute_name]
 
             if json_attribute_name in self.__custom_deserializers:
-                self.__dict__[
-                    python_attribute_name
-                ] = self.__custom_deserializers[json_attribute_name](
-                    json_attribute_value
+                self.__dict__[python_attribute_name] = (
+                    self.__custom_deserializers[json_attribute_name](
+                        json_attribute_value
+                    )
                 )
             else:
                 self.__dict__[python_attribute_name] = json_attribute_value

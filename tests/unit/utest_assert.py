@@ -1,6 +1,5 @@
 """Assert resource tests"""
 
-
 # pylint: disable=missing-function-docstring
 # pylint: disable=missing-class-docstring
 # pylint: disable=no-member
