@@ -11,7 +11,6 @@ Run participant resources is seperated into three parts
 Single RunParticipant object coresponds to single run participant in Loadero.
 """
 
-
 from __future__ import annotations
 from datetime import datetime
 from dateutil import parser

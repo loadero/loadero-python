@@ -1,6 +1,5 @@
 """Pagination resource tests"""
 
-
 # pylint: disable=missing-function-docstring
 # pylint: disable=missing-class-docstring
 
