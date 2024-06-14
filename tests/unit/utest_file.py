@@ -113,7 +113,7 @@ class UTestFileParams:
             "content": "pytest test script",
             "file_type": "test_script",
             "password": "hello",
-            "name": "script.py"
+            "name": "script.py",
         }
 
 
@@ -124,9 +124,9 @@ class UTestFile:
         common.check_file_params(
             File(
                 params=FileParams(
-                    file_type=FileType.FT_SSL_CERTIFICATE, 
+                    file_type=FileType.FT_SSL_CERTIFICATE,
                     content="hello world",
-                    name="script.py"
+                    name="script.py",
                 )
             )
             .create()
@@ -145,7 +145,7 @@ class UTestFile:
                 params=FileParams(
                     file_type=FileType.FT_SSL_CERTIFICATE,
                     content="hello world",
-                    name="script.py"
+                    name="script.py",
                 ),
             )
             .update()
@@ -166,7 +166,7 @@ class UTestFileAPI:
                 FileParams(
                     file_type=FileType.FT_TEST_SCRIPT,
                     content="pytest test script",
-                    name="script.py"
+                    name="script.py",
                 )
             )
         )
@@ -175,7 +175,7 @@ class UTestFileAPI:
         assert httpretty.last_request().parsed_body == {
             "content": "pytest test script",
             "file_type": "test_script",
-            "name": "script.py"
+            "name": "script.py",
         }
 
     @staticmethod
@@ -195,7 +195,7 @@ class UTestFileAPI:
                     file_id=common.FILE_ID,
                     file_type=FileType.FT_TEST_SCRIPT,
                     content="pytest test script",
-                    name="script.py"
+                    name="script.py",
                 )
             )
         )
@@ -204,7 +204,7 @@ class UTestFileAPI:
         assert httpretty.last_request().parsed_body == {
             "content": "pytest test script",
             "file_type": "test_script",
-            "name": "script.py"
+            "name": "script.py",
         }
 
     @staticmethod
