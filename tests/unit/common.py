@@ -149,7 +149,6 @@ PARTICIPANT_JSON = {
     "audio_feed": "silence",
     "browser": "chromeLatest",
     "location": "eu-central-1",
-    "media_type": "custom",
     "network": "4g",
     "video_feed": "480p-15fps",
 }
@@ -572,7 +571,6 @@ RUN_PARTICIPANT_JSON = {
     "audio_feed": "silence",
     "browser": "chromeLatest",
     "location": "eu-central-1",
-    "media_type": "custom",
     "network": "4g",
     "video_feed": "480p-15fps",
 }

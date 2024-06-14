@@ -41,6 +41,7 @@ class FileParams(LoaderoResourceParams):
         file_type: FileType or None = None,
         content: str or None = None,
         password: str or None = None,
+        name: str or None = None,
     ):
         """Creates a new FileParams instance that will contain single file
         resources attributes.
@@ -56,6 +57,8 @@ class FileParams(LoaderoResourceParams):
 
             password (str, optional): For SSL certificate files,
             provides a password for file. Defaults to None.
+
+            name (str, optional): Name of the file resource. Defaults to None.
         """
 
         super().__init__(
@@ -65,6 +68,7 @@ class FileParams(LoaderoResourceParams):
                 "updated": "_updated",
                 "file_type": "file_type",
                 "content": "content",
+                "name": "name",
                 "password": "password",
             },
             custom_deserializers={
@@ -76,10 +80,12 @@ class FileParams(LoaderoResourceParams):
                 "content",
                 "file_type",
                 "password",
+                "name",
             ],
             required_body_attributes=[
                 "content",
                 "file_type",
+                "name",
             ],
         )
 
@@ -87,6 +93,7 @@ class FileParams(LoaderoResourceParams):
         self.file_type = file_type
         self.content = content
         self.password = password
+        self.name = name
 
         self._created = None
         self._updated = None
