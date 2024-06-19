@@ -107,11 +107,13 @@ class UTestFileParams:
     def utest_to_dict():
         fp = FileParams().from_dict(common.FILE_JSON)
         fp.password = "hello"
+        fp.name = "script.py"
 
         assert fp.to_dict() == {
             "content": "pytest test script",
             "file_type": "test_script",
             "password": "hello",
+            "name": "script.py",
         }
 
 
@@ -122,7 +124,9 @@ class UTestFile:
         common.check_file_params(
             File(
                 params=FileParams(
-                    file_type=FileType.FT_SSL_CERTIFICATE, content="hello world"
+                    file_type=FileType.FT_SSL_CERTIFICATE,
+                    content="hello world",
+                    name="script.py",
                 )
             )
             .create()
@@ -139,7 +143,9 @@ class UTestFile:
             File(
                 file_id=common.FILE_ID,
                 params=FileParams(
-                    file_type=FileType.FT_SSL_CERTIFICATE, content="hello world"
+                    file_type=FileType.FT_SSL_CERTIFICATE,
+                    content="hello world",
+                    name="script.py",
                 ),
             )
             .update()
@@ -160,6 +166,7 @@ class UTestFileAPI:
                 FileParams(
                     file_type=FileType.FT_TEST_SCRIPT,
                     content="pytest test script",
+                    name="script.py",
                 )
             )
         )
@@ -168,6 +175,7 @@ class UTestFileAPI:
         assert httpretty.last_request().parsed_body == {
             "content": "pytest test script",
             "file_type": "test_script",
+            "name": "script.py",
         }
 
     @staticmethod
@@ -187,6 +195,7 @@ class UTestFileAPI:
                     file_id=common.FILE_ID,
                     file_type=FileType.FT_TEST_SCRIPT,
                     content="pytest test script",
+                    name="script.py",
                 )
             )
         )
@@ -195,6 +204,7 @@ class UTestFileAPI:
         assert httpretty.last_request().parsed_body == {
             "content": "pytest test script",
             "file_type": "test_script",
+            "name": "script.py",
         }
 
     @staticmethod

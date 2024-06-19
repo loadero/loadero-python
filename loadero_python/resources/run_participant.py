@@ -48,7 +48,6 @@ class RunParticipantFilterKey(FilterKey):
     BROWSER = "filter_browser"
     NETWORK = "filter_network"
     LOCATION = "filter_location"
-    MEDIA_TYPE = "filter_media_type"
     VIDEO_FEED = "filter_video_feed"
     AUDIO_FEED = "filter_audio_feed"
 

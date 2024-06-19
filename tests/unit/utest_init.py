@@ -61,7 +61,6 @@ class UTestResources:
                 "IncrementStrategy",
                 "Language",
                 "Location",
-                "MediaType",
                 "MemberRole",
                 "MetricKey",
                 "MetricStatus",

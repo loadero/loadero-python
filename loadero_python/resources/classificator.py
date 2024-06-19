@@ -372,56 +372,6 @@ class Location(Serializable, Enum):
         return self.to_dict()
 
 
-class MediaType(Serializable, Enum):
-    """MediaType enumerates Loadero classificator constants for
-    media_type classificator type.
-    """
-
-    MT_1080PAV = "1080pAV"
-
-    MT_1080P_20DB = "1080p-20db"
-
-    MT_1080P_30DB = "1080p-30db"
-
-    MT_1080P_50DB = "1080p-50db"
-
-    MT_240PAV = "240pAV"
-
-    MT_240P_50DB = "240p-50db"
-
-    MT_360PAV = "360pAV"
-
-    MT_360P_50DB = "360p-50db"
-
-    MT_480PAV = "480pAV"
-
-    MT_480P_50DB = "480p-50db"
-
-    MT_720PAV = "720pAV"
-
-    MT_720P_50DB = "720p-50db"
-
-    MT_720P_MARKED = "720p-marked"
-
-    MT_CUSTOM = "custom"
-
-    MT_DEFAULT = "default"
-
-    # pylint: disable=arguments-differ
-    @staticmethod
-    def from_dict(jv: str) -> MediaType:
-        if jv == "":
-            return None
-
-        return MediaType(jv)
-
-    def to_dict(self) -> str:
-        return self.value
-
-    def to_dict_full(self) -> str:
-        return self.to_dict()
-
-
 class MemberRole(Serializable, Enum):
     """MemberRole enumerates Loadero classificator constants for
     member_role classificator type.
