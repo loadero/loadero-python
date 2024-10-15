@@ -183,8 +183,8 @@ class AwsStatus(Serializable, Enum):
 
 
 class ComputeUnit(Serializable, Enum):
-    """AwsStatus enumerates Loadero classificator constants for
-    aws_status classificator type.
+    """ComputeUnit enumerates Loadero classificator constants for
+    compute_unit classificator type.
     """
 
     CU_G0_5 = "g0.5"
