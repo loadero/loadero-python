@@ -1,23 +1,21 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>loadero_python.resources.file &mdash; Loadero Python Client v1.2.0-6-ga222234
+  <title>loadero_python.resources.file &mdash; Loadero Python Client v1.2.0-11-g65e549e
  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=13d321ef"></script>
-        <script src="../../../_static/doctools.js?v=888ff710"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=621dd902"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -34,10 +32,6 @@
           <a href="../../../index.html" class="icon icon-home">
             Loadero Python Client
           </a>
-              <div class="version">
-                v1.2.0-6-ga222234
-
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -124,6 +118,7 @@
         <span class="n">file_type</span><span class="p">:</span> <span class="n">FileType</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">content</span><span class="p">:</span> <span class="nb">str</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">password</span><span class="p">:</span> <span class="nb">str</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates a new FileParams instance that will contain single file</span>
 <span class="sd">        resources attributes.</span>
@@ -139,6 +134,8 @@
 
 <span class="sd">            password (str, optional): For SSL certificate files,</span>
 <span class="sd">            provides a password for file. Defaults to None.</span>
+
+<span class="sd">            name (str, optional): Name of the file resource. Defaults to None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
@@ -148,6 +145,7 @@
                 <span class="s2">&quot;updated&quot;</span><span class="p">:</span> <span class="s2">&quot;_updated&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;file_type&quot;</span><span class="p">:</span> <span class="s2">&quot;file_type&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;content&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="s2">&quot;password&quot;</span><span class="p">,</span>
             <span class="p">},</span>
             <span class="n">custom_deserializers</span><span class="o">=</span><span class="p">{</span>
@@ -159,10 +157,12 @@
                 <span class="s2">&quot;content&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;file_type&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;password&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">,</span>
             <span class="p">],</span>
             <span class="n">required_body_attributes</span><span class="o">=</span><span class="p">[</span>
                 <span class="s2">&quot;content&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;file_type&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">,</span>
             <span class="p">],</span>
         <span class="p">)</span>
 
@@ -170,6 +170,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">file_type</span> <span class="o">=</span> <span class="n">file_type</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="n">content</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">password</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_created</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_updated</span> <span class="o">=</span> <span class="kc">None</span>

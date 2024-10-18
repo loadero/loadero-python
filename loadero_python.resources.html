@@ -1,24 +1,22 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="./">
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>loadero_python.resources package &mdash; Loadero Python Client v1.2.0-6-ga222234
+  <title>loadero_python.resources package &mdash; Loadero Python Client v1.2.0-11-g65e549e
  documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="_static/jquery.js?v=5d32c60e"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=13d321ef"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
-        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=621dd902"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -37,10 +35,6 @@
           <a href="index.html" class="icon icon-home">
             Loadero Python Client
           </a>
-              <div class="version">
-                v1.2.0-6-ga222234
-
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -202,12 +196,18 @@ way to interact with Loadero API responses and utility functions.</p>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Artifact.A_DOWNLOADS"><code class="docutils literal notranslate"><span class="pre">Artifact.A_DOWNLOADS</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Artifact.A_SCREENSHOT"><code class="docutils literal notranslate"><span class="pre">Artifact.A_SCREENSHOT</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Artifact.A_VIDEO"><code class="docutils literal notranslate"><span class="pre">Artifact.A_VIDEO</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Artifact.from_dict"><code class="docutils literal notranslate"><span class="pre">Artifact.from_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Artifact.to_dict"><code class="docutils literal notranslate"><span class="pre">Artifact.to_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Artifact.to_dict_full"><code class="docutils literal notranslate"><span class="pre">Artifact.to_dict_full()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.AssertStatus"><code class="docutils literal notranslate"><span class="pre">AssertStatus</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.AssertStatus.AS_FAIL"><code class="docutils literal notranslate"><span class="pre">AssertStatus.AS_FAIL</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.AssertStatus.AS_PASS"><code class="docutils literal notranslate"><span class="pre">AssertStatus.AS_PASS</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.AssertStatus.AS_SKIPPED"><code class="docutils literal notranslate"><span class="pre">AssertStatus.AS_SKIPPED</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.AssertStatus.from_dict"><code class="docutils literal notranslate"><span class="pre">AssertStatus.from_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.AssertStatus.to_dict"><code class="docutils literal notranslate"><span class="pre">AssertStatus.to_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.AssertStatus.to_dict_full"><code class="docutils literal notranslate"><span class="pre">AssertStatus.to_dict_full()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.AudioFeed"><code class="docutils literal notranslate"><span class="pre">AudioFeed</span></code></a><ul>
@@ -219,6 +219,9 @@ way to interact with Loadero API responses and utility functions.</p>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.AudioFeed.AF_NEG_50DB"><code class="docutils literal notranslate"><span class="pre">AudioFeed.AF_NEG_50DB</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.AudioFeed.AF_SILENCE"><code class="docutils literal notranslate"><span class="pre">AudioFeed.AF_SILENCE</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.AudioFeed.AF_VISQOL_SPEECH"><code class="docutils literal notranslate"><span class="pre">AudioFeed.AF_VISQOL_SPEECH</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.AudioFeed.from_dict"><code class="docutils literal notranslate"><span class="pre">AudioFeed.from_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.AudioFeed.to_dict"><code class="docutils literal notranslate"><span class="pre">AudioFeed.to_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.AudioFeed.to_dict_full"><code class="docutils literal notranslate"><span class="pre">AudioFeed.to_dict_full()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.AwsStatus"><code class="docutils literal notranslate"><span class="pre">AwsStatus</span></code></a><ul>
@@ -228,11 +231,17 @@ way to interact with Loadero API responses and utility functions.</p>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.AwsStatus.AS_INITIALIZING"><code class="docutils literal notranslate"><span class="pre">AwsStatus.AS_INITIALIZING</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.AwsStatus.AS_PENDING"><code class="docutils literal notranslate"><span class="pre">AwsStatus.AS_PENDING</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.AwsStatus.AS_READY"><code class="docutils literal notranslate"><span class="pre">AwsStatus.AS_READY</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.AwsStatus.from_dict"><code class="docutils literal notranslate"><span class="pre">AwsStatus.from_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.AwsStatus.to_dict"><code class="docutils literal notranslate"><span class="pre">AwsStatus.to_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.AwsStatus.to_dict_full"><code class="docutils literal notranslate"><span class="pre">AwsStatus.to_dict_full()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Browser"><code class="docutils literal notranslate"><span class="pre">Browser</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Browser.B_CHROMELATEST"><code class="docutils literal notranslate"><span class="pre">Browser.B_CHROMELATEST</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Browser.B_FIREFOXLATEST"><code class="docutils literal notranslate"><span class="pre">Browser.B_FIREFOXLATEST</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Browser.from_dict"><code class="docutils literal notranslate"><span class="pre">Browser.from_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Browser.to_dict"><code class="docutils literal notranslate"><span class="pre">Browser.to_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Browser.to_dict_full"><code class="docutils literal notranslate"><span class="pre">Browser.to_dict_full()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.CUUsageStatus"><code class="docutils literal notranslate"><span class="pre">CUUsageStatus</span></code></a><ul>
@@ -241,6 +250,9 @@ way to interact with Loadero API responses and utility functions.</p>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.CUUsageStatus.CUUS_REPORTED"><code class="docutils literal notranslate"><span class="pre">CUUsageStatus.CUUS_REPORTED</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.CUUsageStatus.CUUS_RUN_ACTIVE"><code class="docutils literal notranslate"><span class="pre">CUUsageStatus.CUUS_RUN_ACTIVE</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.CUUsageStatus.CUUS_VOID"><code class="docutils literal notranslate"><span class="pre">CUUsageStatus.CUUS_VOID</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.CUUsageStatus.from_dict"><code class="docutils literal notranslate"><span class="pre">CUUsageStatus.from_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.CUUsageStatus.to_dict"><code class="docutils literal notranslate"><span class="pre">CUUsageStatus.to_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.CUUsageStatus.to_dict_full"><code class="docutils literal notranslate"><span class="pre">CUUsageStatus.to_dict_full()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.ComputeUnit"><code class="docutils literal notranslate"><span class="pre">ComputeUnit</span></code></a><ul>
@@ -251,6 +263,9 @@ way to interact with Loadero API responses and utility functions.</p>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.ComputeUnit.CU_G4"><code class="docutils literal notranslate"><span class="pre">ComputeUnit.CU_G4</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.ComputeUnit.CU_G6"><code class="docutils literal notranslate"><span class="pre">ComputeUnit.CU_G6</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.ComputeUnit.CU_G8"><code class="docutils literal notranslate"><span class="pre">ComputeUnit.CU_G8</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.ComputeUnit.from_dict"><code class="docutils literal notranslate"><span class="pre">ComputeUnit.from_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.ComputeUnit.to_dict"><code class="docutils literal notranslate"><span class="pre">ComputeUnit.to_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.ComputeUnit.to_dict_full"><code class="docutils literal notranslate"><span class="pre">ComputeUnit.to_dict_full()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.FileType"><code class="docutils literal notranslate"><span class="pre">FileType</span></code></a><ul>
@@ -258,6 +273,9 @@ way to interact with Loadero API responses and utility functions.</p>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.FileType.FT_RUN_SSL_CERTIFICATE"><code class="docutils literal notranslate"><span class="pre">FileType.FT_RUN_SSL_CERTIFICATE</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.FileType.FT_SSL_CERTIFICATE"><code class="docutils literal notranslate"><span class="pre">FileType.FT_SSL_CERTIFICATE</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.FileType.FT_TEST_SCRIPT"><code class="docutils literal notranslate"><span class="pre">FileType.FT_TEST_SCRIPT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.FileType.from_dict"><code class="docutils literal notranslate"><span class="pre">FileType.from_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.FileType.to_dict"><code class="docutils literal notranslate"><span class="pre">FileType.to_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.FileType.to_dict_full"><code class="docutils literal notranslate"><span class="pre">FileType.to_dict_full()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.IncrementStrategy"><code class="docutils literal notranslate"><span class="pre">IncrementStrategy</span></code></a><ul>
@@ -265,12 +283,18 @@ way to interact with Loadero API responses and utility functions.</p>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.IncrementStrategy.IS_LINEAR_GROUP"><code class="docutils literal notranslate"><span class="pre">IncrementStrategy.IS_LINEAR_GROUP</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.IncrementStrategy.IS_RANDOM"><code class="docutils literal notranslate"><span class="pre">IncrementStrategy.IS_RANDOM</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.IncrementStrategy.IS_RANDOM_GROUP"><code class="docutils literal notranslate"><span class="pre">IncrementStrategy.IS_RANDOM_GROUP</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.IncrementStrategy.from_dict"><code class="docutils literal notranslate"><span class="pre">IncrementStrategy.from_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.IncrementStrategy.to_dict"><code class="docutils literal notranslate"><span class="pre">IncrementStrategy.to_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.IncrementStrategy.to_dict_full"><code class="docutils literal notranslate"><span class="pre">IncrementStrategy.to_dict_full()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Language"><code class="docutils literal notranslate"><span class="pre">Language</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Language.L_JAVA"><code class="docutils literal notranslate"><span class="pre">Language.L_JAVA</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Language.L_JAVASCRIPT"><code class="docutils literal notranslate"><span class="pre">Language.L_JAVASCRIPT</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Language.L_PYTHON"><code class="docutils literal notranslate"><span class="pre">Language.L_PYTHON</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Language.from_dict"><code class="docutils literal notranslate"><span class="pre">Language.from_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Language.to_dict"><code class="docutils literal notranslate"><span class="pre">Language.to_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Language.to_dict_full"><code class="docutils literal notranslate"><span class="pre">Language.to_dict_full()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Location"><code class="docutils literal notranslate"><span class="pre">Location</span></code></a><ul>
@@ -286,30 +310,18 @@ way to interact with Loadero API responses and utility functions.</p>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Location.L_US_EAST_1"><code class="docutils literal notranslate"><span class="pre">Location.L_US_EAST_1</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Location.L_US_EAST_2"><code class="docutils literal notranslate"><span class="pre">Location.L_US_EAST_2</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Location.L_US_WEST_2"><code class="docutils literal notranslate"><span class="pre">Location.L_US_WEST_2</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MediaType"><code class="docutils literal notranslate"><span class="pre">MediaType</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MediaType.MT_1080PAV"><code class="docutils literal notranslate"><span class="pre">MediaType.MT_1080PAV</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MediaType.MT_1080P_20DB"><code class="docutils literal notranslate"><span class="pre">MediaType.MT_1080P_20DB</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MediaType.MT_1080P_30DB"><code class="docutils literal notranslate"><span class="pre">MediaType.MT_1080P_30DB</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MediaType.MT_1080P_50DB"><code class="docutils literal notranslate"><span class="pre">MediaType.MT_1080P_50DB</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MediaType.MT_240PAV"><code class="docutils literal notranslate"><span class="pre">MediaType.MT_240PAV</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MediaType.MT_240P_50DB"><code class="docutils literal notranslate"><span class="pre">MediaType.MT_240P_50DB</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MediaType.MT_360PAV"><code class="docutils literal notranslate"><span class="pre">MediaType.MT_360PAV</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MediaType.MT_360P_50DB"><code class="docutils literal notranslate"><span class="pre">MediaType.MT_360P_50DB</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MediaType.MT_480PAV"><code class="docutils literal notranslate"><span class="pre">MediaType.MT_480PAV</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MediaType.MT_480P_50DB"><code class="docutils literal notranslate"><span class="pre">MediaType.MT_480P_50DB</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MediaType.MT_720PAV"><code class="docutils literal notranslate"><span class="pre">MediaType.MT_720PAV</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MediaType.MT_720P_50DB"><code class="docutils literal notranslate"><span class="pre">MediaType.MT_720P_50DB</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MediaType.MT_720P_MARKED"><code class="docutils literal notranslate"><span class="pre">MediaType.MT_720P_MARKED</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MediaType.MT_CUSTOM"><code class="docutils literal notranslate"><span class="pre">MediaType.MT_CUSTOM</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MediaType.MT_DEFAULT"><code class="docutils literal notranslate"><span class="pre">MediaType.MT_DEFAULT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Location.from_dict"><code class="docutils literal notranslate"><span class="pre">Location.from_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Location.to_dict"><code class="docutils literal notranslate"><span class="pre">Location.to_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Location.to_dict_full"><code class="docutils literal notranslate"><span class="pre">Location.to_dict_full()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MemberRole"><code class="docutils literal notranslate"><span class="pre">MemberRole</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MemberRole.MR_ADMINISTRATOR"><code class="docutils literal notranslate"><span class="pre">MemberRole.MR_ADMINISTRATOR</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MemberRole.MR_DEVELOPER"><code class="docutils literal notranslate"><span class="pre">MemberRole.MR_DEVELOPER</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MemberRole.MR_VISITOR"><code class="docutils literal notranslate"><span class="pre">MemberRole.MR_VISITOR</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MemberRole.from_dict"><code class="docutils literal notranslate"><span class="pre">MemberRole.from_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MemberRole.to_dict"><code class="docutils literal notranslate"><span class="pre">MemberRole.to_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MemberRole.to_dict_full"><code class="docutils literal notranslate"><span class="pre">MemberRole.to_dict_full()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MetricKey"><code class="docutils literal notranslate"><span class="pre">MetricKey</span></code></a><ul>
@@ -358,6 +370,9 @@ way to interact with Loadero API responses and utility functions.</p>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MetricKey.MK_VIDEO"><code class="docutils literal notranslate"><span class="pre">MetricKey.MK_VIDEO</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MetricKey.MK_VISQOL"><code class="docutils literal notranslate"><span class="pre">MetricKey.MK_VISQOL</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MetricKey.MK_WEBRTC"><code class="docutils literal notranslate"><span class="pre">MetricKey.MK_WEBRTC</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MetricKey.from_dict"><code class="docutils literal notranslate"><span class="pre">MetricKey.from_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MetricKey.to_dict"><code class="docutils literal notranslate"><span class="pre">MetricKey.to_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MetricKey.to_dict_full"><code class="docutils literal notranslate"><span class="pre">MetricKey.to_dict_full()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MetricStatus"><code class="docutils literal notranslate"><span class="pre">MetricStatus</span></code></a><ul>
@@ -367,11 +382,17 @@ way to interact with Loadero API responses and utility functions.</p>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MetricStatus.MS_CALCULATION_TIMEOUT"><code class="docutils literal notranslate"><span class="pre">MetricStatus.MS_CALCULATION_TIMEOUT</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MetricStatus.MS_NONE"><code class="docutils literal notranslate"><span class="pre">MetricStatus.MS_NONE</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MetricStatus.MS_REQUESTED"><code class="docutils literal notranslate"><span class="pre">MetricStatus.MS_REQUESTED</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MetricStatus.from_dict"><code class="docutils literal notranslate"><span class="pre">MetricStatus.from_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MetricStatus.to_dict"><code class="docutils literal notranslate"><span class="pre">MetricStatus.to_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MetricStatus.to_dict_full"><code class="docutils literal notranslate"><span class="pre">MetricStatus.to_dict_full()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MosAlgorithm"><code class="docutils literal notranslate"><span class="pre">MosAlgorithm</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MosAlgorithm.MA_E_MODEL"><code class="docutils literal notranslate"><span class="pre">MosAlgorithm.MA_E_MODEL</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MosAlgorithm.MA_VISQOL"><code class="docutils literal notranslate"><span class="pre">MosAlgorithm.MA_VISQOL</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MosAlgorithm.from_dict"><code class="docutils literal notranslate"><span class="pre">MosAlgorithm.from_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MosAlgorithm.to_dict"><code class="docutils literal notranslate"><span class="pre">MosAlgorithm.to_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.MosAlgorithm.to_dict_full"><code class="docutils literal notranslate"><span class="pre">MosAlgorithm.to_dict_full()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Network"><code class="docutils literal notranslate"><span class="pre">Network</span></code></a><ul>
@@ -390,6 +411,9 @@ way to interact with Loadero API responses and utility functions.</p>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Network.N_JITTER"><code class="docutils literal notranslate"><span class="pre">Network.N_JITTER</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Network.N_LATENCY"><code class="docutils literal notranslate"><span class="pre">Network.N_LATENCY</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Network.N_SATELLITE"><code class="docutils literal notranslate"><span class="pre">Network.N_SATELLITE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Network.from_dict"><code class="docutils literal notranslate"><span class="pre">Network.from_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Network.to_dict"><code class="docutils literal notranslate"><span class="pre">Network.to_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Network.to_dict_full"><code class="docutils literal notranslate"><span class="pre">Network.to_dict_full()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.NodeStatus"><code class="docutils literal notranslate"><span class="pre">NodeStatus</span></code></a><ul>
@@ -398,6 +422,9 @@ way to interact with Loadero API responses and utility functions.</p>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.NodeStatus.NS_RUNNING"><code class="docutils literal notranslate"><span class="pre">NodeStatus.NS_RUNNING</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.NodeStatus.NS_STOPPED"><code class="docutils literal notranslate"><span class="pre">NodeStatus.NS_STOPPED</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.NodeStatus.NS_TERMINATING"><code class="docutils literal notranslate"><span class="pre">NodeStatus.NS_TERMINATING</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.NodeStatus.from_dict"><code class="docutils literal notranslate"><span class="pre">NodeStatus.from_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.NodeStatus.to_dict"><code class="docutils literal notranslate"><span class="pre">NodeStatus.to_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.NodeStatus.to_dict_full"><code class="docutils literal notranslate"><span class="pre">NodeStatus.to_dict_full()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Operator"><code class="docutils literal notranslate"><span class="pre">Operator</span></code></a><ul>
@@ -408,6 +435,9 @@ way to interact with Loadero API responses and utility functions.</p>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Operator.O_LTE"><code class="docutils literal notranslate"><span class="pre">Operator.O_LTE</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Operator.O_NEQ"><code class="docutils literal notranslate"><span class="pre">Operator.O_NEQ</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Operator.O_REGEX"><code class="docutils literal notranslate"><span class="pre">Operator.O_REGEX</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Operator.from_dict"><code class="docutils literal notranslate"><span class="pre">Operator.from_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Operator.to_dict"><code class="docutils literal notranslate"><span class="pre">Operator.to_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Operator.to_dict_full"><code class="docutils literal notranslate"><span class="pre">Operator.to_dict_full()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.PaymentPlan"><code class="docutils literal notranslate"><span class="pre">PaymentPlan</span></code></a><ul>
@@ -416,6 +446,9 @@ way to interact with Loadero API responses and utility functions.</p>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.PaymentPlan.PP_SINGLE_BASIC"><code class="docutils literal notranslate"><span class="pre">PaymentPlan.PP_SINGLE_BASIC</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.PaymentPlan.PP_SINGLE_PRO"><code class="docutils literal notranslate"><span class="pre">PaymentPlan.PP_SINGLE_PRO</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.PaymentPlan.PP_YEARLY"><code class="docutils literal notranslate"><span class="pre">PaymentPlan.PP_YEARLY</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.PaymentPlan.from_dict"><code class="docutils literal notranslate"><span class="pre">PaymentPlan.from_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.PaymentPlan.to_dict"><code class="docutils literal notranslate"><span class="pre">PaymentPlan.to_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.PaymentPlan.to_dict_full"><code class="docutils literal notranslate"><span class="pre">PaymentPlan.to_dict_full()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.PaymentStatus"><code class="docutils literal notranslate"><span class="pre">PaymentStatus</span></code></a><ul>
@@ -426,6 +459,9 @@ way to interact with Loadero API responses and utility functions.</p>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.PaymentStatus.PS_SKIP_RENEWAL"><code class="docutils literal notranslate"><span class="pre">PaymentStatus.PS_SKIP_RENEWAL</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.PaymentStatus.PS_SUCCESS"><code class="docutils literal notranslate"><span class="pre">PaymentStatus.PS_SUCCESS</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.PaymentStatus.PS_VAT_INVALID"><code class="docutils literal notranslate"><span class="pre">PaymentStatus.PS_VAT_INVALID</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.PaymentStatus.from_dict"><code class="docutils literal notranslate"><span class="pre">PaymentStatus.from_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.PaymentStatus.to_dict"><code class="docutils literal notranslate"><span class="pre">PaymentStatus.to_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.PaymentStatus.to_dict_full"><code class="docutils literal notranslate"><span class="pre">PaymentStatus.to_dict_full()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Property"><code class="docutils literal notranslate"><span class="pre">Property</span></code></a><ul>
@@ -440,6 +476,9 @@ way to interact with Loadero API responses and utility functions.</p>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Property.P_PARTICIPANT_NAME"><code class="docutils literal notranslate"><span class="pre">Property.P_PARTICIPANT_NAME</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Property.P_PARTICIPANT_NUM"><code class="docutils literal notranslate"><span class="pre">Property.P_PARTICIPANT_NUM</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Property.P_VIDEO_FEED"><code class="docutils literal notranslate"><span class="pre">Property.P_VIDEO_FEED</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Property.from_dict"><code class="docutils literal notranslate"><span class="pre">Property.from_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Property.to_dict"><code class="docutils literal notranslate"><span class="pre">Property.to_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.Property.to_dict_full"><code class="docutils literal notranslate"><span class="pre">Property.to_dict_full()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.ResultStatus"><code class="docutils literal notranslate"><span class="pre">ResultStatus</span></code></a><ul>
@@ -447,6 +486,9 @@ way to interact with Loadero API responses and utility functions.</p>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.ResultStatus.RS_FAIL"><code class="docutils literal notranslate"><span class="pre">ResultStatus.RS_FAIL</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.ResultStatus.RS_PASS"><code class="docutils literal notranslate"><span class="pre">ResultStatus.RS_PASS</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.ResultStatus.RS_TIMEOUT"><code class="docutils literal notranslate"><span class="pre">ResultStatus.RS_TIMEOUT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.ResultStatus.from_dict"><code class="docutils literal notranslate"><span class="pre">ResultStatus.from_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.ResultStatus.to_dict"><code class="docutils literal notranslate"><span class="pre">ResultStatus.to_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.ResultStatus.to_dict_full"><code class="docutils literal notranslate"><span class="pre">ResultStatus.to_dict_full()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.RunStatus"><code class="docutils literal notranslate"><span class="pre">RunStatus</span></code></a><ul>
@@ -464,6 +506,9 @@ way to interact with Loadero API responses and utility functions.</p>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.RunStatus.RS_STOPPING"><code class="docutils literal notranslate"><span class="pre">RunStatus.RS_STOPPING</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.RunStatus.RS_TIMEOUT_EXCEEDED"><code class="docutils literal notranslate"><span class="pre">RunStatus.RS_TIMEOUT_EXCEEDED</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.RunStatus.RS_WAITING_RESULTS"><code class="docutils literal notranslate"><span class="pre">RunStatus.RS_WAITING_RESULTS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.RunStatus.from_dict"><code class="docutils literal notranslate"><span class="pre">RunStatus.from_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.RunStatus.to_dict"><code class="docutils literal notranslate"><span class="pre">RunStatus.to_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.RunStatus.to_dict_full"><code class="docutils literal notranslate"><span class="pre">RunStatus.to_dict_full()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.TestDuration"><code class="docutils literal notranslate"><span class="pre">TestDuration</span></code></a><ul>
@@ -474,12 +519,18 @@ way to interact with Loadero API responses and utility functions.</p>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.TestDuration.TD_45M"><code class="docutils literal notranslate"><span class="pre">TestDuration.TD_45M</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.TestDuration.TD_4H"><code class="docutils literal notranslate"><span class="pre">TestDuration.TD_4H</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.TestDuration.TD_8H"><code class="docutils literal notranslate"><span class="pre">TestDuration.TD_8H</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.TestDuration.from_dict"><code class="docutils literal notranslate"><span class="pre">TestDuration.from_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.TestDuration.to_dict"><code class="docutils literal notranslate"><span class="pre">TestDuration.to_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.TestDuration.to_dict_full"><code class="docutils literal notranslate"><span class="pre">TestDuration.to_dict_full()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.TestMode"><code class="docutils literal notranslate"><span class="pre">TestMode</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.TestMode.TM_LOAD"><code class="docutils literal notranslate"><span class="pre">TestMode.TM_LOAD</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.TestMode.TM_PERFORMANCE"><code class="docutils literal notranslate"><span class="pre">TestMode.TM_PERFORMANCE</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.TestMode.TM_SESSION_RECORD"><code class="docutils literal notranslate"><span class="pre">TestMode.TM_SESSION_RECORD</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.TestMode.from_dict"><code class="docutils literal notranslate"><span class="pre">TestMode.from_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.TestMode.to_dict"><code class="docutils literal notranslate"><span class="pre">TestMode.to_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.TestMode.to_dict_full"><code class="docutils literal notranslate"><span class="pre">TestMode.to_dict_full()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.VersionedBrowser"><code class="docutils literal notranslate"><span class="pre">VersionedBrowser</span></code></a><ul>
@@ -523,6 +574,9 @@ way to interact with Loadero API responses and utility functions.</p>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.VideoFeed.VF_720P_MARKED_TOP_LEFT"><code class="docutils literal notranslate"><span class="pre">VideoFeed.VF_720P_MARKED_TOP_LEFT</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.VideoFeed.VF_720P_MEETING"><code class="docutils literal notranslate"><span class="pre">VideoFeed.VF_720P_MEETING</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.VideoFeed.VF_DEFAULT"><code class="docutils literal notranslate"><span class="pre">VideoFeed.VF_DEFAULT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.VideoFeed.from_dict"><code class="docutils literal notranslate"><span class="pre">VideoFeed.from_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.VideoFeed.to_dict"><code class="docutils literal notranslate"><span class="pre">VideoFeed.to_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.classificator.html#loadero_python.resources.classificator.VideoFeed.to_dict_full"><code class="docutils literal notranslate"><span class="pre">VideoFeed.to_dict_full()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -652,6 +706,9 @@ way to interact with Loadero API responses and utility functions.</p>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.metric_path.html#loadero_python.resources.metric_path.MetricBasePath.WEBRTC_VIDEO_PACKETS_IN"><code class="docutils literal notranslate"><span class="pre">MetricBasePath.WEBRTC_VIDEO_PACKETS_IN</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.metric_path.html#loadero_python.resources.metric_path.MetricBasePath.WEBRTC_VIDEO_PACKETS_OUT"><code class="docutils literal notranslate"><span class="pre">MetricBasePath.WEBRTC_VIDEO_PACKETS_OUT</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.metric_path.html#loadero_python.resources.metric_path.MetricBasePath.WEBRTC_VIDEO_RTT"><code class="docutils literal notranslate"><span class="pre">MetricBasePath.WEBRTC_VIDEO_RTT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.metric_path.html#loadero_python.resources.metric_path.MetricBasePath.from_dict"><code class="docutils literal notranslate"><span class="pre">MetricBasePath.from_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.metric_path.html#loadero_python.resources.metric_path.MetricBasePath.to_dict"><code class="docutils literal notranslate"><span class="pre">MetricBasePath.to_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.metric_path.html#loadero_python.resources.metric_path.MetricBasePath.to_dict_full"><code class="docutils literal notranslate"><span class="pre">MetricBasePath.to_dict_full()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="loadero_python.resources.metric_path.html#loadero_python.resources.metric_path.MetricPath"><code class="docutils literal notranslate"><span class="pre">MetricPath</span></code></a><ul>
@@ -1052,6 +1109,9 @@ way to interact with Loadero API responses and utility functions.</p>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.metric_path.html#loadero_python.resources.metric_path.MetricPath.WEBRTC_VIDEO_RTT_MAX"><code class="docutils literal notranslate"><span class="pre">MetricPath.WEBRTC_VIDEO_RTT_MAX</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.metric_path.html#loadero_python.resources.metric_path.MetricPath.WEBRTC_VIDEO_RTT_RSTDDEV"><code class="docutils literal notranslate"><span class="pre">MetricPath.WEBRTC_VIDEO_RTT_RSTDDEV</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.metric_path.html#loadero_python.resources.metric_path.MetricPath.WEBRTC_VIDEO_RTT_STDDEV"><code class="docutils literal notranslate"><span class="pre">MetricPath.WEBRTC_VIDEO_RTT_STDDEV</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.metric_path.html#loadero_python.resources.metric_path.MetricPath.from_dict"><code class="docutils literal notranslate"><span class="pre">MetricPath.from_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.metric_path.html#loadero_python.resources.metric_path.MetricPath.to_dict"><code class="docutils literal notranslate"><span class="pre">MetricPath.to_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.metric_path.html#loadero_python.resources.metric_path.MetricPath.to_dict_full"><code class="docutils literal notranslate"><span class="pre">MetricPath.to_dict_full()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -1100,7 +1160,6 @@ way to interact with Loadero API responses and utility functions.</p>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.participant.html#loadero_python.resources.participant.ParticipantFilterKey.COUNT_TO"><code class="docutils literal notranslate"><span class="pre">ParticipantFilterKey.COUNT_TO</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.participant.html#loadero_python.resources.participant.ParticipantFilterKey.HAS_GROUP"><code class="docutils literal notranslate"><span class="pre">ParticipantFilterKey.HAS_GROUP</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.participant.html#loadero_python.resources.participant.ParticipantFilterKey.LOCATION"><code class="docutils literal notranslate"><span class="pre">ParticipantFilterKey.LOCATION</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.participant.html#loadero_python.resources.participant.ParticipantFilterKey.MEDIA_TYPE"><code class="docutils literal notranslate"><span class="pre">ParticipantFilterKey.MEDIA_TYPE</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.participant.html#loadero_python.resources.participant.ParticipantFilterKey.NAME"><code class="docutils literal notranslate"><span class="pre">ParticipantFilterKey.NAME</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.participant.html#loadero_python.resources.participant.ParticipantFilterKey.NETWORK"><code class="docutils literal notranslate"><span class="pre">ParticipantFilterKey.NETWORK</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.participant.html#loadero_python.resources.participant.ParticipantFilterKey.RECORD_AUDIO"><code class="docutils literal notranslate"><span class="pre">ParticipantFilterKey.RECORD_AUDIO</span></code></a></li>
@@ -1313,7 +1372,6 @@ way to interact with Loadero API responses and utility functions.</p>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.result.html#loadero_python.resources.result.ResultFilterKey.GROUP_NUM_FROM"><code class="docutils literal notranslate"><span class="pre">ResultFilterKey.GROUP_NUM_FROM</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.result.html#loadero_python.resources.result.ResultFilterKey.GROUP_NUM_TO"><code class="docutils literal notranslate"><span class="pre">ResultFilterKey.GROUP_NUM_TO</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.result.html#loadero_python.resources.result.ResultFilterKey.LOCATION"><code class="docutils literal notranslate"><span class="pre">ResultFilterKey.LOCATION</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.result.html#loadero_python.resources.result.ResultFilterKey.MEDIA_TYPE"><code class="docutils literal notranslate"><span class="pre">ResultFilterKey.MEDIA_TYPE</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.result.html#loadero_python.resources.result.ResultFilterKey.MOS_STATUS"><code class="docutils literal notranslate"><span class="pre">ResultFilterKey.MOS_STATUS</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.result.html#loadero_python.resources.result.ResultFilterKey.NAME"><code class="docutils literal notranslate"><span class="pre">ResultFilterKey.NAME</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.result.html#loadero_python.resources.result.ResultFilterKey.NETWORK"><code class="docutils literal notranslate"><span class="pre">ResultFilterKey.NETWORK</span></code></a></li>
@@ -1464,7 +1522,6 @@ way to interact with Loadero API responses and utility functions.</p>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.run_participant.html#loadero_python.resources.run_participant.RunParticipantFilterKey.GROUP_NUM_FROM"><code class="docutils literal notranslate"><span class="pre">RunParticipantFilterKey.GROUP_NUM_FROM</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.run_participant.html#loadero_python.resources.run_participant.RunParticipantFilterKey.GROUP_NUM_TO"><code class="docutils literal notranslate"><span class="pre">RunParticipantFilterKey.GROUP_NUM_TO</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.run_participant.html#loadero_python.resources.run_participant.RunParticipantFilterKey.LOCATION"><code class="docutils literal notranslate"><span class="pre">RunParticipantFilterKey.LOCATION</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.run_participant.html#loadero_python.resources.run_participant.RunParticipantFilterKey.MEDIA_TYPE"><code class="docutils literal notranslate"><span class="pre">RunParticipantFilterKey.MEDIA_TYPE</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.run_participant.html#loadero_python.resources.run_participant.RunParticipantFilterKey.NAME"><code class="docutils literal notranslate"><span class="pre">RunParticipantFilterKey.NAME</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.run_participant.html#loadero_python.resources.run_participant.RunParticipantFilterKey.NETWORK"><code class="docutils literal notranslate"><span class="pre">RunParticipantFilterKey.NETWORK</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="loadero_python.resources.run_participant.html#loadero_python.resources.run_participant.RunParticipantFilterKey.NUM_FROM"><code class="docutils literal notranslate"><span class="pre">RunParticipantFilterKey.NUM_FROM</span></code></a></li>

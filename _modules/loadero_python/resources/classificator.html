@@ -1,23 +1,21 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>loadero_python.resources.classificator &mdash; Loadero Python Client v1.2.0-6-ga222234
+  <title>loadero_python.resources.classificator &mdash; Loadero Python Client v1.2.0-11-g65e549e
  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=13d321ef"></script>
-        <script src="../../../_static/doctools.js?v=888ff710"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=621dd902"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -34,10 +32,6 @@
           <a href="../../../index.html" class="icon icon-home">
             Loadero Python Client
           </a>
-              <div class="version">
-                v1.2.0-6-ga222234
-
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -133,6 +127,8 @@
     <span class="n">B_FIREFOXLATEST</span> <span class="o">=</span> <span class="s2">&quot;firefoxLatest&quot;</span>
 
     <span class="c1"># pylint: disable=arguments-differ</span>
+<div class="viewcode-block" id="Browser.from_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.Browser.from_dict">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">jv</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Browser</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">jv</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
@@ -143,13 +139,20 @@
         <span class="k">if</span> <span class="n">jv</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">browsers</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">VersionedBrowser</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">Browser</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Browser</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="Browser.to_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.Browser.to_dict">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span></div>
 
+
+<div class="viewcode-block" id="Browser.to_dict_full">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.Browser.to_dict_full">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict_full</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span></div>
+</div>
 
 
 
@@ -169,18 +172,27 @@
     <span class="n">A_VIDEO</span> <span class="o">=</span> <span class="s2">&quot;video&quot;</span>
 
     <span class="c1"># pylint: disable=arguments-differ</span>
+<div class="viewcode-block" id="Artifact.from_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.Artifact.from_dict">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">jv</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Artifact</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">jv</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="k">return</span> <span class="n">Artifact</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Artifact</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="Artifact.to_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.Artifact.to_dict">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span></div>
 
+
+<div class="viewcode-block" id="Artifact.to_dict_full">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.Artifact.to_dict_full">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict_full</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span></div>
+</div>
 
 
 
@@ -198,18 +210,27 @@
     <span class="n">AS_SKIPPED</span> <span class="o">=</span> <span class="s2">&quot;skipped&quot;</span>
 
     <span class="c1"># pylint: disable=arguments-differ</span>
+<div class="viewcode-block" id="AssertStatus.from_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.AssertStatus.from_dict">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">jv</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AssertStatus</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">jv</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="k">return</span> <span class="n">AssertStatus</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">AssertStatus</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="AssertStatus.to_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.AssertStatus.to_dict">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span></div>
 
+
+<div class="viewcode-block" id="AssertStatus.to_dict_full">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.AssertStatus.to_dict_full">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict_full</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span></div>
+</div>
 
 
 
@@ -237,18 +258,27 @@
     <span class="n">AF_VISQOL_SPEECH</span> <span class="o">=</span> <span class="s2">&quot;visqol-speech&quot;</span>
 
     <span class="c1"># pylint: disable=arguments-differ</span>
+<div class="viewcode-block" id="AudioFeed.from_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.AudioFeed.from_dict">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">jv</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AudioFeed</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">jv</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="k">return</span> <span class="n">AudioFeed</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">AudioFeed</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="AudioFeed.to_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.AudioFeed.to_dict">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span></div>
 
+
+<div class="viewcode-block" id="AudioFeed.to_dict_full">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.AudioFeed.to_dict_full">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict_full</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span></div>
+</div>
 
 
 
@@ -272,18 +302,27 @@
     <span class="n">AS_READY</span> <span class="o">=</span> <span class="s2">&quot;ready&quot;</span>
 
     <span class="c1"># pylint: disable=arguments-differ</span>
+<div class="viewcode-block" id="AwsStatus.from_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.AwsStatus.from_dict">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">jv</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AwsStatus</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">jv</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="k">return</span> <span class="n">AwsStatus</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">AwsStatus</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="AwsStatus.to_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.AwsStatus.to_dict">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span></div>
 
+
+<div class="viewcode-block" id="AwsStatus.to_dict_full">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.AwsStatus.to_dict_full">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict_full</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span></div>
+</div>
 
 
 
@@ -309,18 +348,27 @@
     <span class="n">CU_G12</span> <span class="o">=</span> <span class="s2">&quot;g12&quot;</span>
 
     <span class="c1"># pylint: disable=arguments-differ</span>
+<div class="viewcode-block" id="ComputeUnit.from_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.ComputeUnit.from_dict">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">jv</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ComputeUnit</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">jv</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="k">return</span> <span class="n">ComputeUnit</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ComputeUnit</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="ComputeUnit.to_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.ComputeUnit.to_dict">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span></div>
 
+
+<div class="viewcode-block" id="ComputeUnit.to_dict_full">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.ComputeUnit.to_dict_full">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict_full</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span></div>
+</div>
 
 
 
@@ -342,18 +390,27 @@
     <span class="n">CUUS_VOID</span> <span class="o">=</span> <span class="s2">&quot;void&quot;</span>
 
     <span class="c1"># pylint: disable=arguments-differ</span>
+<div class="viewcode-block" id="CUUsageStatus.from_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.CUUsageStatus.from_dict">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">jv</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CUUsageStatus</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">jv</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="k">return</span> <span class="n">CUUsageStatus</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">CUUsageStatus</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="CUUsageStatus.to_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.CUUsageStatus.to_dict">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span></div>
 
+
+<div class="viewcode-block" id="CUUsageStatus.to_dict_full">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.CUUsageStatus.to_dict_full">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict_full</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span></div>
+</div>
 
 
 
@@ -373,18 +430,27 @@
     <span class="n">FT_TEST_SCRIPT</span> <span class="o">=</span> <span class="s2">&quot;test_script&quot;</span>
 
     <span class="c1"># pylint: disable=arguments-differ</span>
+<div class="viewcode-block" id="FileType.from_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.FileType.from_dict">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">jv</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FileType</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">jv</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="k">return</span> <span class="n">FileType</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">FileType</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="FileType.to_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.FileType.to_dict">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span></div>
 
+
+<div class="viewcode-block" id="FileType.to_dict_full">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.FileType.to_dict_full">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict_full</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span></div>
+</div>
 
 
 
@@ -404,18 +470,27 @@
     <span class="n">IS_RANDOM_GROUP</span> <span class="o">=</span> <span class="s2">&quot;random_group&quot;</span>
 
     <span class="c1"># pylint: disable=arguments-differ</span>
+<div class="viewcode-block" id="IncrementStrategy.from_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.IncrementStrategy.from_dict">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">jv</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IncrementStrategy</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">jv</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="k">return</span> <span class="n">IncrementStrategy</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">IncrementStrategy</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="IncrementStrategy.to_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.IncrementStrategy.to_dict">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span></div>
 
+
+<div class="viewcode-block" id="IncrementStrategy.to_dict_full">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.IncrementStrategy.to_dict_full">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict_full</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span></div>
+</div>
 
 
 
@@ -433,18 +508,27 @@
     <span class="n">L_PYTHON</span> <span class="o">=</span> <span class="s2">&quot;python&quot;</span>
 
     <span class="c1"># pylint: disable=arguments-differ</span>
+<div class="viewcode-block" id="Language.from_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.Language.from_dict">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">jv</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Language</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">jv</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="k">return</span> <span class="n">Language</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Language</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="Language.to_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.Language.to_dict">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span></div>
 
+
+<div class="viewcode-block" id="Language.to_dict_full">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.Language.to_dict_full">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict_full</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span></div>
+</div>
 
 
 
@@ -480,71 +564,27 @@
     <span class="n">L_US_WEST_2</span> <span class="o">=</span> <span class="s2">&quot;us-west-2&quot;</span>
 
     <span class="c1"># pylint: disable=arguments-differ</span>
+<div class="viewcode-block" id="Location.from_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.Location.from_dict">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">jv</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Location</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">jv</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="k">return</span> <span class="n">Location</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Location</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="Location.to_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.Location.to_dict">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span></div>
 
+
+<div class="viewcode-block" id="Location.to_dict_full">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.Location.to_dict_full">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict_full</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span></div>
-
-
-
-<div class="viewcode-block" id="MediaType">
-<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.MediaType">[docs]</a>
-<span class="k">class</span> <span class="nc">MediaType</span><span class="p">(</span><span class="n">Serializable</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;MediaType enumerates Loadero classificator constants for</span>
-<span class="sd">    media_type classificator type.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">MT_1080PAV</span> <span class="o">=</span> <span class="s2">&quot;1080pAV&quot;</span>
-
-    <span class="n">MT_1080P_20DB</span> <span class="o">=</span> <span class="s2">&quot;1080p-20db&quot;</span>
-
-    <span class="n">MT_1080P_30DB</span> <span class="o">=</span> <span class="s2">&quot;1080p-30db&quot;</span>
-
-    <span class="n">MT_1080P_50DB</span> <span class="o">=</span> <span class="s2">&quot;1080p-50db&quot;</span>
-
-    <span class="n">MT_240PAV</span> <span class="o">=</span> <span class="s2">&quot;240pAV&quot;</span>
-
-    <span class="n">MT_240P_50DB</span> <span class="o">=</span> <span class="s2">&quot;240p-50db&quot;</span>
-
-    <span class="n">MT_360PAV</span> <span class="o">=</span> <span class="s2">&quot;360pAV&quot;</span>
-
-    <span class="n">MT_360P_50DB</span> <span class="o">=</span> <span class="s2">&quot;360p-50db&quot;</span>
-
-    <span class="n">MT_480PAV</span> <span class="o">=</span> <span class="s2">&quot;480pAV&quot;</span>
-
-    <span class="n">MT_480P_50DB</span> <span class="o">=</span> <span class="s2">&quot;480p-50db&quot;</span>
-
-    <span class="n">MT_720PAV</span> <span class="o">=</span> <span class="s2">&quot;720pAV&quot;</span>
-
-    <span class="n">MT_720P_50DB</span> <span class="o">=</span> <span class="s2">&quot;720p-50db&quot;</span>
-
-    <span class="n">MT_720P_MARKED</span> <span class="o">=</span> <span class="s2">&quot;720p-marked&quot;</span>
-
-    <span class="n">MT_CUSTOM</span> <span class="o">=</span> <span class="s2">&quot;custom&quot;</span>
-
-    <span class="n">MT_DEFAULT</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span>
-
-    <span class="c1"># pylint: disable=arguments-differ</span>
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">jv</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MediaType</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">jv</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span>
-
-        <span class="k">return</span> <span class="n">MediaType</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
-
-    <span class="k">def</span> <span class="nf">to_dict_full</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span></div>
+</div>
 
 
 
@@ -562,18 +602,27 @@
     <span class="n">MR_VISITOR</span> <span class="o">=</span> <span class="s2">&quot;visitor&quot;</span>
 
     <span class="c1"># pylint: disable=arguments-differ</span>
+<div class="viewcode-block" id="MemberRole.from_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.MemberRole.from_dict">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">jv</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MemberRole</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">jv</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="k">return</span> <span class="n">MemberRole</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">MemberRole</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="MemberRole.to_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.MemberRole.to_dict">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span></div>
 
+
+<div class="viewcode-block" id="MemberRole.to_dict_full">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.MemberRole.to_dict_full">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict_full</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span></div>
+</div>
 
 
 
@@ -675,18 +724,27 @@
     <span class="n">MK_VISQOL</span> <span class="o">=</span> <span class="s2">&quot;visqol&quot;</span>
 
     <span class="c1"># pylint: disable=arguments-differ</span>
+<div class="viewcode-block" id="MetricKey.from_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.MetricKey.from_dict">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">jv</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MetricKey</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">jv</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="k">return</span> <span class="n">MetricKey</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">MetricKey</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="MetricKey.to_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.MetricKey.to_dict">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span></div>
 
+
+<div class="viewcode-block" id="MetricKey.to_dict_full">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.MetricKey.to_dict_full">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict_full</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span></div>
+</div>
 
 
 
@@ -710,18 +768,27 @@
     <span class="n">MS_REQUESTED</span> <span class="o">=</span> <span class="s2">&quot;requested&quot;</span>
 
     <span class="c1"># pylint: disable=arguments-differ</span>
+<div class="viewcode-block" id="MetricStatus.from_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.MetricStatus.from_dict">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">jv</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MetricStatus</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">jv</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="k">return</span> <span class="n">MetricStatus</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">MetricStatus</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="MetricStatus.to_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.MetricStatus.to_dict">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span></div>
 
+
+<div class="viewcode-block" id="MetricStatus.to_dict_full">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.MetricStatus.to_dict_full">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict_full</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span></div>
+</div>
 
 
 
@@ -737,18 +804,27 @@
     <span class="n">MA_E_MODEL</span> <span class="o">=</span> <span class="s2">&quot;e-model&quot;</span>
 
     <span class="c1"># pylint: disable=arguments-differ</span>
+<div class="viewcode-block" id="MosAlgorithm.from_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.MosAlgorithm.from_dict">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">jv</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MosAlgorithm</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">jv</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="k">return</span> <span class="n">MosAlgorithm</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">MosAlgorithm</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="MosAlgorithm.to_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.MosAlgorithm.to_dict">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span></div>
 
+
+<div class="viewcode-block" id="MosAlgorithm.to_dict_full">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.MosAlgorithm.to_dict_full">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict_full</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span></div>
+</div>
 
 
 
@@ -790,18 +866,27 @@
     <span class="n">N_SATELLITE</span> <span class="o">=</span> <span class="s2">&quot;satellite&quot;</span>
 
     <span class="c1"># pylint: disable=arguments-differ</span>
+<div class="viewcode-block" id="Network.from_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.Network.from_dict">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">jv</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Network</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">jv</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="k">return</span> <span class="n">Network</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Network</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="Network.to_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.Network.to_dict">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span></div>
 
+
+<div class="viewcode-block" id="Network.to_dict_full">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.Network.to_dict_full">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict_full</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span></div>
+</div>
 
 
 
@@ -823,18 +908,27 @@
     <span class="n">NS_TERMINATING</span> <span class="o">=</span> <span class="s2">&quot;terminating&quot;</span>
 
     <span class="c1"># pylint: disable=arguments-differ</span>
+<div class="viewcode-block" id="NodeStatus.from_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.NodeStatus.from_dict">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">jv</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NodeStatus</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">jv</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="k">return</span> <span class="n">NodeStatus</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">NodeStatus</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="NodeStatus.to_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.NodeStatus.to_dict">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span></div>
 
+
+<div class="viewcode-block" id="NodeStatus.to_dict_full">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.NodeStatus.to_dict_full">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict_full</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span></div>
+</div>
 
 
 
@@ -860,18 +954,27 @@
     <span class="n">O_REGEX</span> <span class="o">=</span> <span class="s2">&quot;regex&quot;</span>
 
     <span class="c1"># pylint: disable=arguments-differ</span>
+<div class="viewcode-block" id="Operator.from_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.Operator.from_dict">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">jv</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Operator</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">jv</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="k">return</span> <span class="n">Operator</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Operator</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="Operator.to_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.Operator.to_dict">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span></div>
 
+
+<div class="viewcode-block" id="Operator.to_dict_full">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.Operator.to_dict_full">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict_full</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span></div>
+</div>
 
 
 
@@ -893,18 +996,27 @@
     <span class="n">PP_YEARLY</span> <span class="o">=</span> <span class="s2">&quot;yearly&quot;</span>
 
     <span class="c1"># pylint: disable=arguments-differ</span>
+<div class="viewcode-block" id="PaymentPlan.from_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.PaymentPlan.from_dict">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">jv</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PaymentPlan</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">jv</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="k">return</span> <span class="n">PaymentPlan</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">PaymentPlan</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="PaymentPlan.to_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.PaymentPlan.to_dict">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span></div>
 
+
+<div class="viewcode-block" id="PaymentPlan.to_dict_full">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.PaymentPlan.to_dict_full">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict_full</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span></div>
+</div>
 
 
 
@@ -930,18 +1042,27 @@
     <span class="n">PS_VAT_INVALID</span> <span class="o">=</span> <span class="s2">&quot;vat_invalid&quot;</span>
 
     <span class="c1"># pylint: disable=arguments-differ</span>
+<div class="viewcode-block" id="PaymentStatus.from_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.PaymentStatus.from_dict">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">jv</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PaymentStatus</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">jv</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="k">return</span> <span class="n">PaymentStatus</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">PaymentStatus</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="PaymentStatus.to_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.PaymentStatus.to_dict">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span></div>
 
+
+<div class="viewcode-block" id="PaymentStatus.to_dict_full">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.PaymentStatus.to_dict_full">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict_full</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span></div>
+</div>
 
 
 
@@ -975,18 +1096,27 @@
     <span class="n">P_VIDEO_FEED</span> <span class="o">=</span> <span class="s2">&quot;video_feed&quot;</span>
 
     <span class="c1"># pylint: disable=arguments-differ</span>
+<div class="viewcode-block" id="Property.from_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.Property.from_dict">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">jv</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Property</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">jv</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="k">return</span> <span class="n">Property</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Property</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="Property.to_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.Property.to_dict">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span></div>
 
+
+<div class="viewcode-block" id="Property.to_dict_full">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.Property.to_dict_full">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict_full</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span></div>
+</div>
 
 
 
@@ -1006,18 +1136,27 @@
     <span class="n">RS_TIMEOUT</span> <span class="o">=</span> <span class="s2">&quot;timeout&quot;</span>
 
     <span class="c1"># pylint: disable=arguments-differ</span>
+<div class="viewcode-block" id="ResultStatus.from_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.ResultStatus.from_dict">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">jv</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ResultStatus</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">jv</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="k">return</span> <span class="n">ResultStatus</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ResultStatus</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="ResultStatus.to_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.ResultStatus.to_dict">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span></div>
 
+
+<div class="viewcode-block" id="ResultStatus.to_dict_full">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.ResultStatus.to_dict_full">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict_full</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span></div>
+</div>
 
 
 
@@ -1057,18 +1196,27 @@
     <span class="n">RS_WAITING_RESULTS</span> <span class="o">=</span> <span class="s2">&quot;waiting-results&quot;</span>
 
     <span class="c1"># pylint: disable=arguments-differ</span>
+<div class="viewcode-block" id="RunStatus.from_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.RunStatus.from_dict">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">jv</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RunStatus</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">jv</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="k">return</span> <span class="n">RunStatus</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">RunStatus</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="RunStatus.to_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.RunStatus.to_dict">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span></div>
 
+
+<div class="viewcode-block" id="RunStatus.to_dict_full">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.RunStatus.to_dict_full">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict_full</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span></div>
+</div>
 
 
 
@@ -1094,18 +1242,27 @@
     <span class="n">TD_8H</span> <span class="o">=</span> <span class="s2">&quot;8h&quot;</span>
 
     <span class="c1"># pylint: disable=arguments-differ</span>
+<div class="viewcode-block" id="TestDuration.from_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.TestDuration.from_dict">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">jv</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TestDuration</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">jv</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="k">return</span> <span class="n">TestDuration</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">TestDuration</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="TestDuration.to_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.TestDuration.to_dict">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span></div>
 
+
+<div class="viewcode-block" id="TestDuration.to_dict_full">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.TestDuration.to_dict_full">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict_full</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span></div>
+</div>
 
 
 
@@ -1123,18 +1280,27 @@
     <span class="n">TM_SESSION_RECORD</span> <span class="o">=</span> <span class="s2">&quot;session-record&quot;</span>
 
     <span class="c1"># pylint: disable=arguments-differ</span>
+<div class="viewcode-block" id="TestMode.from_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.TestMode.from_dict">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">jv</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TestMode</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">jv</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="k">return</span> <span class="n">TestMode</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">TestMode</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="TestMode.to_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.TestMode.to_dict">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span></div>
 
+
+<div class="viewcode-block" id="TestMode.to_dict_full">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.TestMode.to_dict_full">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict_full</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span></div>
+</div>
 
 
 
@@ -1214,18 +1380,27 @@
     <span class="n">VF_DEFAULT</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span>
 
     <span class="c1"># pylint: disable=arguments-differ</span>
+<div class="viewcode-block" id="VideoFeed.from_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.VideoFeed.from_dict">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">jv</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">VideoFeed</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">jv</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="k">return</span> <span class="n">VideoFeed</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">VideoFeed</span><span class="p">(</span><span class="n">jv</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="VideoFeed.to_dict">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.VideoFeed.to_dict">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span></div>
 
+
+<div class="viewcode-block" id="VideoFeed.to_dict_full">
+<a class="viewcode-back" href="../../../loadero_python.resources.classificator.html#loadero_python.resources.classificator.VideoFeed.to_dict_full">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dict_full</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span></div>
+</div>
 
 </pre></div>
 
