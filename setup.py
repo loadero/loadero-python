@@ -40,7 +40,7 @@ setup(
     packages=find_packages(exclude=["tests", "tests.*"]),
     python_requires=">=3.9, <4",
     install_requires=[
-        "urllib3==1.26.18",
+        "urllib3==1.26.19",
         "python-dateutil==2.8.2",
     ],
 )
