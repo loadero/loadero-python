@@ -10,7 +10,7 @@ long_description = (root_path / "README.md").read_text(encoding="utf-8")
 
 setup(
     name="loadero_python",
-    version="1.2.2",
+    version="1.3.0",
     description="Python client for Loadero API",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -38,7 +38,7 @@ setup(
         "Loadero": "https://loadero.com/",
     },
     packages=find_packages(exclude=["tests", "tests.*"]),
-    python_requires=">=3.7, <4",
+    python_requires=">=3.9, <4",
     install_requires=[
         "urllib3==1.26.18",
         "python-dateutil==2.8.2",
