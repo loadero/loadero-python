@@ -342,8 +342,16 @@ amount of attributes, so this showcase will cover only common use cases.
 
 ##### Log/Artifact Retrieval
 
-```py
+Log paths are available through the `log_paths` attribute of the `ResultParams`
+object, which is a dictionary of URL objects, pointing to the different log types.
 
+`result.read().params.log_paths.{LOG_TYPE}` is a URL object that points to the
+corresponding log. Supported log types are `selenium`, `webrtc`, `browser`, and 
+`rru`. The log itself must be downloaded by calling the `download()` method on
+the URL. The method returns the file name and the file itself will be created in
+the current working directory.
+
+```py
 name = result.params.log_paths.selenium.download()
 
 print(
@@ -352,11 +360,21 @@ print(
 )
 ```
 
-Log paths are available through the `log_paths` attribute of the `ResultParams` object, which is a dictionary of URL objects, pointing to the different log types.
+Artifacts can be accessed in a similar manner through the `artifacts` attribute
+of the `ResultParams` object, however, artifacts are not treated as being unique
+per type like logs are. You can use `result.read().params.artifacts.{ARTIFACT_TYPE}.paths[{INDEX_OF_ARTIFACT}].download()`
+to download an artifact into your working directory. An example of downloading
+all screenshots of one result:
 
-`result.read().params.log_paths.{LOG_TYPE}` is a URL object that points to the corresponding log. Supported log types are `selenium`, `webrtc`, `browser`, and `rru`. The log itself must be downloaded by calling the `download()` method on the URL. The method returns the file name and the file itself will be created in the current working directory.
-
-Artifacts can be accessed in a similar manner through the `artifacts` attribute of the `ResultParams` object, however, artifacts are not treated as being unique per type like logs are. You can use `result.read().params.artifacts.{ARTIFACT_TYPE}.paths[{INDEX_OF_ARTIFACT}].download()` to download an artifact into your working directory. An example of downloading all screenshots of one result:
+```py
+screenshots = result.params.artifacts.screenshots.paths
+for screenshot in screenshots:
+    name = screenshot.download()
+    print(
+        "screenshot of participant "
+        f"{result.params.participant_details.run_participant_id}: {name}"
+    )
+```
 
 ##### Extracting Failed Asserts
 
