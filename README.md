@@ -352,14 +352,11 @@ print(
 )
 ```
 
-`result.params.log_paths.selenium` is an URL object that points to an Selenium 
-log. It first needs to be downloaded by calling an `.download()` method on the 
-URL. The method returns the file name and the file it self will be created in 
-the current working directory.
+Log paths are available through the `log_paths` attribute of the `ResultParams` object, which is a dictionary of URL objects, pointing to the different log types.
 
-Log paths are available through the `log_paths` attribute of the `ResultParams`,
-which is a dictionary of URL objects. Artifacts are available through the
-`artifacts` attribute of the `ResultParams` in the same manner.
+`result.read().params.log_paths.{LOG_TYPE}` is a URL object that points to the corresponding log. Supported log types are `selenium`, `webrtc`, `browser`, and `rru`. The log itself must be downloaded by calling the `download()` method on the URL. The method returns the file name and the file itself will be created in the current working directory.
+
+Artifacts can be accessed in a similar manner through the `artifacts` attribute of the `ResultParams` object, however, artifacts are not treated as being unique per type like logs are. You can use `result.read().params.artifacts.{ARTIFACT_TYPE}.paths[{INDEX_OF_ARTIFACT}].download()` to download an artifact into your working directory. An example of downloading all screenshots of one result:
 
 ##### Extracting Failed Asserts
 
