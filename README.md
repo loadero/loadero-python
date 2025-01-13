@@ -11,30 +11,32 @@ Loadero tests as a part of CI/CD.
 
 <!-- generate with https://luciopaiva.com/markdown-toc/ -->
 
-- [Installation](#installation)
-- [Usage](#usage)
-  - [API Access](#api-access)
-  - [Initialization](#initialization)
-  - [Working with Existing Resources](#working-with-existing-resources)
-  - [Creating a Test](#creating-a-test)
-  - [Running a Test](#running-a-test)
-    - [Polling](#polling)
-    - [Stopping Test Execution](#stopping-test-execution)
-  - [Getting Results](#getting-results)
-    - [Participant Results](#participant-results)
-      - [Log Retrieval](#log-retrieval)
-      - [Extracting Failed Asserts](#extracting-failed-asserts)
-      - [Checking metrics](#checking-metrics)
-  - [Filtering and Pagination](#filtering-and-pagination)
-    - [Filtering](#filtering)
-    - [Pagination](#pagination)
-- [Structure](#structure)
-  - [API client](#api-client)
-  - [Resources](#resources)
-  - [Resource Params](#resource-params)
-  - [Constants](#constants)
-  - [Resource API](#resource-api)
-- [Contributing](#contributing)
+- [Loadero-Python](#loadero-python)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+  - [Usage](#usage)
+    - [API Access](#api-access)
+    - [Initialization](#initialization)
+    - [Working with Existing Resources](#working-with-existing-resources)
+    - [Creating a Test](#creating-a-test)
+    - [Running a Test](#running-a-test)
+      - [Polling](#polling)
+      - [Stopping Test Execution](#stopping-test-execution)
+    - [Getting Results](#getting-results)
+      - [Participant Results](#participant-results)
+        - [Log/Artifact Retrieval](#logartifact-retrieval)
+        - [Extracting Failed Asserts](#extracting-failed-asserts)
+        - [Checking metrics](#checking-metrics)
+    - [Filtering and Pagination](#filtering-and-pagination)
+      - [Filtering](#filtering)
+      - [Pagination](#pagination)
+  - [Structure](#structure)
+    - [API client](#api-client)
+    - [Resources](#resources)
+    - [Resource Params](#resource-params)
+    - [Constants](#constants)
+    - [Resource API](#resource-api)
+  - [Contributing](#contributing)
 
 ## Installation
 
@@ -338,23 +340,41 @@ module. A single result corresponds to a single participant in the test.
 `ResultParams` that contains its attributes. The result resource has the largest
 amount of attributes, so this showcase will cover only common use cases.
 
-##### Log Retrieval
+##### Log/Artifact Retrieval
+
+Log paths are available through the `log_paths` attribute of the `ResultParams`
+object, which is a dictionary of URL objects, pointing to the different log types.
+
+`result.read().params.log_paths.{LOG_TYPE}` is a URL object that points to the
+corresponding log. Supported log types are `selenium`, `webrtc`, `browser`, and 
+`rru`. The log itself must be downloaded by calling the `download()` method on
+the URL. The method returns the file name and the file itself will be created in
+the current working directory.
 
 ```py
-import requests
+name = result.params.log_paths.selenium.download()
 
-resp = requests.get(result.params.log_paths.selenium)
-if not resp:
-    print("failed to download selenium log")
-    exit(1)
-
-with open(f"selenium_log_of_result_{result.params.result_id}", "w") as f:
-    f.write(resp.text)
+print(
+    "selenium log of participant "
+    f"{result.params.participant_details.run_participant_id}: {name}"
+)
 ```
 
-`result.params.log_paths.selenium` is an URL to an Selenium log. It first needs
-to be downloaded using the HTTP library `requests`. Then it can be written to a
-file.
+Artifacts can be accessed in a similar manner through the `artifacts` attribute
+of the `ResultParams` object, however, artifacts are not treated as being unique
+per type like logs are. You can use `result.read().params.artifacts.{ARTIFACT_TYPE}.paths[{INDEX_OF_ARTIFACT}].download()`
+to download an artifact into your working directory. An example of downloading
+all screenshots of one result:
+
+```py
+screenshots = result.params.artifacts.screenshots.paths
+for screenshot in screenshots:
+    name = screenshot.download()
+    print(
+        "screenshot of participant "
+        f"{result.params.participant_details.run_participant_id}: {name}"
+    )
+```
 
 ##### Extracting Failed Asserts
 
