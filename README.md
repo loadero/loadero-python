@@ -324,8 +324,8 @@ detailed result information about each test participant's results needs to be
 read.
 
 ```py
-results, _, _ = run.Results()
-result = results[0]
+results, _, _ = run.results()
+result = results[0].read()
 ```
 
 The ignored return values are pagination and filters. They are not relevant for
@@ -345,7 +345,7 @@ amount of attributes, so this showcase will cover only common use cases.
 Log paths are available through the `log_paths` attribute of the `ResultParams`
 object, which is a dictionary of URL objects, pointing to the different log types.
 
-`result.read().params.log_paths.{LOG_TYPE}` is a URL object that points to the
+`result.params.log_paths.{LOG_TYPE}` is a URL object that points to the
 corresponding log. Supported log types are `selenium`, `webrtc`, `browser`, and 
 `rru`. The log itself must be downloaded by calling the `download()` method on
 the URL. The method returns the file name and the file itself will be created in
@@ -362,7 +362,7 @@ print(
 
 Artifacts can be accessed in a similar manner through the `artifacts` attribute
 of the `ResultParams` object, however, artifacts are not treated as being unique
-per type like logs are. You can use `result.read().params.artifacts.{ARTIFACT_TYPE}.paths[{INDEX_OF_ARTIFACT}].download()`
+per type like logs are. You can use `result.params.artifacts.{ARTIFACT_TYPE}.paths[{INDEX_OF_ARTIFACT}].download()`
 to download an artifact into your working directory. An example of downloading
 all screenshots of one result:
 
