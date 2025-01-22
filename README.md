@@ -363,7 +363,8 @@ print(
 Artifacts can be accessed in a similar manner through the `artifacts` attribute
 of the `ResultParams` object, however, artifacts are not treated as being unique
 per type like logs are. You can use `result.params.artifacts.{ARTIFACT_TYPE}.paths[{INDEX_OF_ARTIFACT}].download()`
-to download an artifact into your working directory. An example of downloading
+to download an artifact into your working directory. Supported artifact types
+are `screenshots`, `audio`, `video`, and `downloads`. An example of downloading
 all screenshots of one result:
 
 ```py
